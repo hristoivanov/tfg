@@ -1,0 +1,117 @@
+\chapter{Diseño del sistema}
+\label{cap4}
+
+\section{Arquitectura de Software}
+
+La manera en la que se estructure nuestra aplicación será fundamental a la hora
+del diseño, ya que se ha elegido una plataforma Cliente-Servidor, explicada más
+adelante. La arquitectura hace referencia a la manera en la que está diseñada
+la aplicación. En la arquitectura se pueden especificar detalles físicos
+(hardware) y lógicos (software). Lo ideal es que la arquitectura esté
+modularizada y las diferentes capas sean independientes, ya que se buscará al
+máximo la portabilidad, la escalabilidad y la flexibilidad.
+
+\subsection{Modelo Cliente-Servidor}
+
+Es aquel utilizado para describir una aplicación en la que hay al menos dos
+procesos separados trabajando con el fin de completar una misma tarea. El
+cliente solicita al servidor la ejecución de una operación particular, llevando
+a cabo un proceso cooperativo.
+
+Nunc dictum, lacus sodales auctor iaculis, lectus turpis pulvinar dolor, in
+gravida nibh enim sit amet elit. Vestibulum sit amet volutpat sapien. Curabitur
+nec ultricies massa. Aliquam erat volutpat. Donec maximus volutpat maximus. In
+eu elementum ante. Pellentesque neque libero, pellentesque quis sagittis ac,
+tempor vel mauris. Praesent et arcu nisi. Maecenas non iaculis mauris.
+
+\subsection{Patrones de diseño software}
+
+Es la base de la que parte la búsqueda de soluciones para problemas comunes de
+desarrollo software u otros ámbitos relacionados con el diseño y desarrollo
+software.
+
+Partimos de un problema de diseño. A partir de él, diseñamos un patrón que
+posea una serie de características que proporcionen una solución estándar a
+raíz de un problema dado.
+
+Para que un diseño pueda ser denominado patrón, tendrá que tener como
+característica fundamental la reusabilidad, ya que deberá ser aplicable a
+diferentes problemas de diseño en distintas situaciones.
+
+\subsection{Patrón Modelo-Vista-Controlador}
+
+Nunc dictum, lacus sodales auctor iaculis, lectus turpis pulvinar dolor, in
+gravida nibh enim sit amet elit. Vestibulum sit amet volutpat sapien. Curabitur
+nec ultricies massa. Aliquam erat volutpat. Donec maximus volutpat maximus. In
+eu elementum ante. Pellentesque neque libero, pellentesque quis sagittis ac,
+tempor vel mauris. Praesent et arcu nisi. Maecenas non iaculis mauris.
+
+\section{Arquitectura general de la aplicación}
+
+Nunc dictum, lacus sodales auctor iaculis, lectus turpis pulvinar dolor, in
+gravida nibh enim sit amet elit. Vestibulum sit amet volutpat sapien. Curabitur
+nec ultricies massa. Aliquam erat volutpat. Donec maximus volutpat maximus. In
+eu elementum ante. Pellentesque neque libero, pellentesque quis sagittis ac,
+tempor vel mauris. Praesent et arcu nisi. Maecenas non iaculis mauris.
+
+\section{Diseño del software del cliente}
+
+Nunc dictum, lacus sodales auctor iaculis, lectus turpis pulvinar dolor, in
+gravida nibh enim sit amet elit. Vestibulum sit amet volutpat sapien. Curabitur
+nec ultricies massa. Aliquam erat volutpat. Donec maximus volutpat maximus. In
+eu elementum ante. Pellentesque neque libero, pellentesque quis sagittis ac,
+tempor vel mauris. Praesent et arcu nisi. Maecenas non iaculis mauris.
+
+\subsection{Componentes utilizados, jerarquía e interconexión}
+
+Nunc dictum, lacus sodales auctor iaculis, lectus turpis pulvinar dolor, in
+gravida nibh enim sit amet elit. Vestibulum sit amet volutpat sapien. Curabitur
+nec ultricies massa. Aliquam erat volutpat. Donec maximus volutpat maximus. In
+eu elementum ante. Pellentesque neque libero, pellentesque quis sagittis ac,
+tempor vel mauris. Praesent et arcu nisi. Maecenas non iaculis mauris.
+
+\section{Diseño del software del servidor}
+
+Nunc dictum, lacus sodales auctor iaculis, lectus turpis pulvinar dolor, in
+gravida nibh enim sit amet elit. Vestibulum sit amet volutpat sapien. Curabitur
+nec ultricies massa. Aliquam erat volutpat. Donec maximus volutpat maximus. In
+eu elementum ante. Pellentesque neque libero, pellentesque quis sagittis ac,
+tempor vel mauris. Praesent et arcu nisi. Maecenas non iaculis mauris.
+
+\section{Arquitectura del sistema informático}
+
+Nunc dictum, lacus sodales auctor iaculis, lectus turpis pulvinar dolor, in
+gravida nibh enim sit amet elit. Vestibulum sit amet volutpat sapien. Curabitur
+nec ultricies massa. Aliquam erat volutpat. Donec maximus volutpat maximus. In
+eu elementum ante. Pellentesque neque libero, pellentesque quis sagittis ac,
+tempor vel mauris. Praesent et arcu nisi. Maecenas non iaculis mauris.
+
+\subsection{Servidor WEB (Apache)}
+
+Nunc dictum, lacus sodales auctor iaculis, lectus turpis pulvinar dolor, in
+gravida nibh enim sit amet elit. Vestibulum sit amet volutpat sapien. Curabitur
+nec ultricies massa. Aliquam erat volutpat. Donec maximus volutpat maximus. In
+eu elementum ante. Pellentesque neque libero, pellentesque quis sagittis ac,
+tempor vel mauris. Praesent et arcu nisi. Maecenas non iaculis mauris.
+
+\subsection{Intérprete de PHP (mod-php)}
+
+Nunc dictum, lacus sodales auctor iaculis, lectus turpis pulvinar dolor, in
+gravida nibh enim sit amet elit. Vestibulum sit amet volutpat sapien. Curabitur
+nec ultricies massa. Aliquam erat volutpat. Donec maximus volutpat maximus. In
+eu elementum ante. Pellentesque neque libero, pellentesque quis sagittis ac,
+tempor vel mauris. Praesent et arcu nisi. Maecenas non iaculis mauris.
+
+\begin{lstlisting}
+function db_open($server,$user,$pass){
+	$link=mysql_connect($server,$user,$pass);
+    if(!$link){
+    	$error=mysql_error();
+        print ("<H1>No esta autorizado para acceder al servidor: $server</H1><BR>");
+        print ("<P>Error: $error<P>");
+        exit;
+    }
+    return $link;
+}
+\end{lstlisting}
+

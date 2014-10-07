@@ -1,0 +1,187 @@
+\documentclass[twoside,spanish,a4paper,openright,11pt]{book}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[T1]{fontenc}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage{listings}
+\usepackage{colourlist}
+\usepackage{booktabs}
+\usepackage{amssymb}
+
+
+
+%Configuración del paquete hyperref
+% colores definidos
+\definecolor{mygray}{rgb}{.86,.86,.86}
+\definecolor{myblue}{rgb}{.20,.20,.6}
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+\definecolor{whitesmoke}{rgb}{0.96,0.96,0.96}
+
+% configuración del paquete hyperref
+\hypersetup{    pdfauthor = {Rajesh Ramayan Koothrappali}
+               pdftitle = {The Dumpling Paradox of the The Maternal Capacitance
+               and its Robotic Manipulation.},
+               pdfkeywords = {MVC, Via-Plata, Fichas,TFC},
+               pdfsubject = {Proyecto Final de Carrera},
+               colorlinks={true},
+               pdfstartview={FitV},
+               linkcolor={myblue},
+               citecolor={myblue},
+               urlcolor={myblue}
+}
+
+
+
+
+
+%Nos permite definir los márgenes como queramos del documento completo
+\usepackage{anysize}
+\marginsize{3.5cm}{3cm}{2cm}{2cm}
+
+%Con esta definición pordemos cambiar los márgenes sobre la marcha utilizando
+% \begin{changemargin}{7cm}{0cm}
+%	.. .. ..
+% \end{changemargin}
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+
+
+
+
+
+% Control de lneas viudas y huérfanas
+\clubpenalty=100000
+\widowpenalty=10000
+\displaywidowpenalty=1000
+\looseness=1
+
+%-----------------------------------------------------------------------------%
+%
+% Formato de las cabeceras
+%
+\pagestyle{fancyplain}
+
+\lhead[
+        \fancyplain{}
+	    {\textrm{\textbf{\thepage}\hspace{4mm}\small\leftmark}}]
+        {\fancyplain{}
+        {\textrm{\footnotesize\ GSO}}}
+\rhead[
+        \fancyplain{}
+        {\textrm{\footnotesize\ Rajesh Ramayan Koothrappali}}]
+        {\fancyplain{}
+        {\textrm{\small\rightmark\hspace{4mm}\normalsize\textbf{\thepage}}}}
+\cfoot[]{} % En el pie de página no ponemos nada
+\renewcommand{\headrulewidth}{0.1mm}
+
+\graphicspath{{img/}}
+
+
+
+%Definiciónes para la representación de consola, ficheros y código
+\usepackage{listings}
+\lstset{ frame=Ltb,
+     framerule=.2pt,
+     aboveskip=0.5cm,
+     framextopmargin=3pt,
+     framexbottommargin=3pt,
+     framexleftmargin=0.4cm,
+     framesep=0pt,
+     rulesep=.4pt,
+ %    backgroundcolor=\color{gray97},
+ %    rulesepcolor=\color{black},
+     %
+     stringstyle=\ttfamily,
+     showstringspaces = false,
+ %    basicstyle=\small\ttfamily,
+    commentstyle=\color{gray45},
+     keywordstyle=\bfseries,
+     %
+     numbers=left,
+     numbersep=15pt,
+     numberstyle=\tiny,
+     numberfirstline = false,
+     breaklines=true
+   }
+ 
+% minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]
+   {\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+ 
+\lstdefinestyle{consola}
+   {basicstyle=\scriptsize\bf\ttfamily,
+    backgroundcolor=\color{gray75},
+   }
+
+\lstdefinestyle{Fichero}
+   {basicstyle=\scriptsize\bf\ttfamily,
+    backgroundcolor=\color{whitesmoke},
+   }
+ 
+\lstdefinestyle{C}
+   {language=C
+   }
+\lstdefinestyle{Java}
+   {language=Java,
+moredelim={**[il][\rlap{\textcolor{azure2}{\rule[-4pt]{\linewidth}{\baselineskip}}}]{--}}
+%Esta última línea se pone para que cuando se añade delante de una línea de código se resalta 
+%poniéndola en el color indicado
+   }
+
+
+
+\begin{document}
+
+\include{portada}
+\newpage{\pagestyle{empty}\cleardoublepage}
+
+
+\pagenumbering{arabic}
+\setcounter{page}{3}
+
+\setcounter{tocdepth}{3}
+\include{agradecimientos}
+
+\tableofcontents
+\newpage
+\listoffigures % Índice de figuras
+\newpage
+\renewcommand{\listtablename}{Índice de tablas}
+\listoftables % Índice de tablas
+\newpage
+
+
+\include{introduccion}
+\include{ambitoyobjetivos}
+\include{analisisderequisitos}
+\include{diseno}
+\include{implementacion}
+\include{manuales}
+\include{conclusiones}
+
+%Incluyo la bibliografía
+\addcontentsline{toc}{chapter}{Referencias bibliográficas}
+%\let\antiguaLM\leftmark
+%\let\antiguaRM\rightmark
+%\renewcommand\leftmark{}
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{Bibliografia}
+
+%Incluyo un glosario
+%\addcontentsline{toc}{chapter}{Glosario}
+%\let\antiguaLM\leftmark
+%\let\antiguaRM\rightmark
+%\renewcommand\leftmark{}
+%\renewcommand\rightmark{Glosario}
+%\include{glosario}
+
+\end{document}
