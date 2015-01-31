@@ -114,3 +114,91 @@
 		Actualmente el equipo de CALMA hace uso de herramientas que les ayudan a analizar la información desde el punto de vista científico. Estas 
 		herramientas están muy bien para los científicos, pero actualmente no existe ninguna herramienta que nos de información sobre el estado técnico 
 		de la estación. Nuestra idea es crear una herramienta Web para poder automatizar algunas de las tareas que ahora son realizadas manualmente. 
+
+
+\section{Objetivos}
+	El objetivo de este proyecto es desarrollar el software para el nuevo sistema de adquisición de datos y también desarrollar una herramienta
+	que nos permita operar y monitorizar el estado de la estación. 
+	\subsection{Software adquisición de datos}
+		Actualmente El equipo de CALMA esta desarrollando un nuevo sistema de adquisición de datos para su estación. Como comentamos
+		anteriormente este estará basado en un sistema empotrado Linux. En ese entorno Linux se ejecutara el software de control. El software
+		de control es el encargado del correcto funcionamiento de los demás componentes que forman el sistema de adquisición. A grandes rasgos
+		el software de control deberá cumplir los siguientes objetivos.
+		\begin{itemize}
+			\item 	Controlar la estación. El objetivo principal es controlar la estación y todos los módulos que la componen. El software
+			  	debe ser capaz de configurar los demás módulos, pedirles la información que generan y guardar esta en una base de datos. 
+			\item 	Iniciar automáticamente la estación. Una vez configurado adecuadamente, ante la presencia de corriente eléctrica, el
+			  	software debe ser capaz de arrancar automáticamente la estación, esto implica configurar y sincronizar los demás
+				módulos. Las ventajas de que el arranque sea automático son muchas y muy fáciles de concebir.
+			\item 	Detectar estados anormales. El software debe ser capaz de detectar cuando no esta funcionando según lo previsto. En
+			  	una estación de este tipo funcionar mal la mayoría de veces es no generar datos o generar datos anormales. Ante la
+				presencia de un estado anormal el software debe generar algún tipo de alerta y si es posible intentar solucionar el
+				problema que en la mayoría de las veces consiste en realizar un reinicio.
+		\end{itemize}
+		Uno de los objetivos de este trabajo es realizar, implantar y mantener este software de control. Los demás módulos son desarrollados
+		por el equipo de CALMA. El autor de este trabajo no ha formado parte en el desarrollo de estos, pero a lo largo de este trabajo se
+		describirán las interfaces de estos dado que es necesario para entender este trabajo. 
+	\subsection{Herramienta Web}
+		El segundo objetivo de este trabajo es el desarrollo de una herramienta que facilite la gestión de una estación. La idea de esta
+		herramienta es del equipo de CALMA. Procederemos a detallar las funcionalidades de la herramienta tal y como la concibe el equipo de
+		CALMA.
+		\begin{itemize}
+	         	\item	Spike Tool. Módulo que nos permita la detección de Spikes. Usando los datos proporcionados por el sistema de
+			  	adquisición este módulo debe generar gráficos. Estos gráficos serán interactivos y su propósito sera hacer fácil la
+				detección de Spikes. Los Spikes detectados podrán ser marcados como nulos en el conjunto de datos revisados. 
+			\item 	Configuración de la estación. Este módulo nos permitirá cambiar las configuración de la estación en tiempo real. Nos
+			  	permitirá desconectar tubos contadores, lo que viene muy bien si se detecta algún tubo que esta funcionando mal. Este
+				módulo se comunicaría directamente con el software de control del sistema de adquisición. 
+			\item 	Estadísticas Online. Módulo que calculara estadísticas en tiempo real. Esto nos permitirá detectar problemas y en
+			  	consecuencia aplicar las acciones necesarias. 
+			\item	Alertas. La herramienta debe generar alertas cuando se detectan comportamientos no deseados, por ejemplo la
+			  	herramienta tendría que generar una alerta cada vez que se detecta que no se están generando datos.
+			\item 	Histogramas con la intensidad de los eventos. El nuevo sistema de adquisición proporciona información sobre la energía
+			  	de las partículas incidentes. Este modulo debería generar histogramas con estos datos. Estos histogramas nos
+				permitirían hacer mejores diagnósticos sobre el funcionamiento de los tubos contadores. 
+		\end{itemize}
+		Podemos ver que la herramienta ofrece un gran abanico de funcionalidades, por desgracia en este trabajo tan solo nos centraremos en el
+		primer módulo. Realizar los demás módulos estaría fuera del alcance de un trabajo como este. También es de destacar que tan solo
+		nos centraremos en la implementación, no implantaremos ni mantendremos la herramienta. La herramienta sera una herramienta Web 
+		intuitiva y altamente interactiva. 
+		
+
+\section{Diseño preliminar}
+	\subsection{Software de control}
+		Procederemos a especificar un diseño preliminar del software de control. El software se ejecutara en un sistema empotrado Linux sobre
+		una BeagleBone Black. La distribución elegida para desarrollar este trabajo es Ångström, la que viene por defecto con la BeagleBone
+		Black. Actualmente nos estamos planteando cambiar la distribución a alguna derivada de Debian, sobre esto hablaremos mas a fondo en el
+		capitulo \emph{Conclusiones y Trabajos futuros}. El desarrollo del software se hará en Python. Hemos elegido Python por gustos
+		personales, detrás de esta elección no hay algún motivo relevante. Para la gestión de la base de datos hemos elegido Sqlite3,
+		Sqlite3 es una elección popular en sistemas empotrados como el que estamos realizando. 
+		\par
+		En la figura \ref{fig:soft_control_preliminar} podemos ver el diseño preliminar de nuestro software. Al iniciar lo primero que 
+		tiene que hacer es configurar la estación. Esto implica configurar a los demás módulos y también configurarse a si mismo. Si la
+		configuración no ha sido exitosa procedemos a re intentarlo y si es posible notificar. Si la configuración ha sido exitosa pasamos al
+		funcionamiento nominal, adquisición de datos. El funcionamiento nominal consiste en registrar los valores medidos cada minuto. Los
+		valores da cada minuto son entonces guardados en una base de datos local.
+		\begin{figure}[h]
+			\centering
+			\includegraphics[keepaspectratio, width=1\textwidth]{./img/soft_control_preliminar.png}
+			\caption{Software de Control. Diseño preliminar.}
+			\label{fig:soft_control_preliminar}
+		\end{figure}
+	\subsection{Herramienta Web}
+		En la figura \ref{fig:herramienta_web_preliminar} podemos ver el diseño de nuestra App. Como podemos ver el diseño esta fuertemente basado en el patrón MVC. A continuación 
+		explicaremos los tres componentes básicos. 
+		\begin{description}
+			\item[Base de Datos]    En este componente residen los datos de nuestra estación. Para la gestión de estos utilizamos un servidor MySQL.
+			\item[Back-end]    	Este componente es el encargado de recibir y procesar las solicitudes provenientes del Front-end. Una vez procesadas
+			  			las solicitudes si estas son válidas este componente se comunica con la base de datos para ejecutar las solicitudes. 
+						Por último devuelve los resultados de las solicitudes. Para la implementación de este componente hemos utilizado
+						ZendFramework y Apygility.  
+			\item[Front-end]    	Este componente implementa la interfaz de nuestra aplicación. Es el encargado de presentarnos la información y
+			  			manejar las peticiones del usuario. El módulo esta basado en el patrón MVC. Para implementar la Vista hemos
+						utilizado HighStock, para el Controlador ExtJs y para el modelo peticiones Ajax.
+		\end{description}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[keepaspectratio, width=1\textwidth]{./img/herramienta_web_preliminar.png}
+			\caption{Herramienta Web. Diseño preliminar}
+			\label{fig:herramienta_web_preliminar}
+		\end{figure}
