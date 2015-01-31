@@ -77,3 +77,40 @@
 	científicos no necesariamente relacionados con la radiación cósmica. 
 
 
+\section{CALMA}
+	CALMA es el primer y único monitor de neutrones en España. CALMA forma parte del NMDB. Dispone de 15 tubos contadores llenos con trifluoruro 
+	de boro y un sistema de adquisición de datos que consiste en un sistema empotrado Linux que hace uso de una FPGA que es la encargada de 
+	llevar las cuentas de los tubos. El sistema de adquisición actual ha sido desarrollado por el equipo de CALMA y también esta implantado en 
+	otras estaciones que forman parte del NMDB. CALMA empezó a operar de forma plena de diciembre de 2012 y desde entonces lleva haciéndolo 
+	ininterrumpidamente con pequeñas excepciones. El equipo técnico de  CALMA esta profundamente implicado en desarrollar sistemas y herramientas 
+	que mejoren el funcionamiento del NMDB. La idea para este trabajo es desarrollar el software del nuevo sistema de adquisición que el equipo 
+	de CALMA esta desarrollando, una vez realizado el nuevo sistema de adquisición desarrollaremos una herramienta que nos permitirá monitorizar 
+	el estado de nuestra estación
+	Desde su puesta en marcha CALMA ha registrado 18 Forbush decreases. Desafortunadamente aun no ha habido ningún GLE que detectar, aunque este
+	tendría que ser muy energético para ser detectado por CALMA. Debido a que CALMA esta situada en una latitud media, el vertical cutoff rigidity
+	es bastante elevado, por lo que un GLE tendría que ser bastante energético para ser detectado por CALMA. 
+	Procederemos a hablar más a fondo del estado actual de CALMA, hablaremos del sistema de adquisición, base da datos, herramientas y técnicas
+	que son usadas.
+	\subsection{Sistema de adquisición}
+		Actualmente el sistema de adquisición que esta implantado en CALMA es producto del equipo de CALMA. El sistema consiste en un sistema empotrado
+		Linux que hace uso de una FPGA que procesa las señales procedentes de los tubos. Antes de llegar a la FPGA las señales pasan por un circuito 
+		adaptador, las señales pasan de analógicas a digitales. La FPGA se encarga de llevar la cuenta del numero de eventos para los 18 canales. El 
+		software que se ejecuta en el sistema Linux tiene como tarea comunicarse con la FPGA, pedirle las cuentas cada minuto y finalmente guardar los
+		datos en una base de datos. Desafortunadamente todo esto no es tan simple. El software tiene que recoger la información del barómetro y de las
+		fuentes de alimentación cuyo funcionamiento es también monitorizado. 
+		\par 
+		El nuevo sistema que se esta diseñando a grandes rasgos seria lo mismo, un sistema empotrado Linux con una FPGA. La idea es que el nuevo sistema
+		de adquisición sea muy flexible, pueda suportar diferentes tubos, barómetros y otros periféricos. Esta flexibilidad nos permitirá implantar 
+		fácilmente este sistema en otras estaciones. El sistema también esta pensado para futuramente ser extendido y poder procesar información 
+		procedente de detectores de muones. Aparte de la flexibilidad el nuevo sistema de adquisición nos proporcionaría mas información tipos de 
+		información, no tan solo cuentas, pero de eso hablaremos mas tarde. 
+	\subsection{Bases de datos}
+		Actualmente la base de datos que genera CALMA tiene esta diseñada de acuerdo con el estandart impuesto por NMDB. Actualmente existen dos replicas
+		de la base de datos. Tenemos una replica de los datos crudos adquiridos en el propio sistema, para gestionar esta replica utilizamos sqlite3. La
+		segunda replica esta en otra maquina conectada por red con el sistema de adquisición de datos. La segunda replica contiene los datos crudos y 
+		también contiene la corrección por presión de estos. Para la segunda replica usamos MySQL. Los datos que mandamos al NMDB son los datos de la 
+		segunda replica.
+	\subsection{Herramientas y técnicas}
+		Actualmente el equipo de CALMA hace uso de herramientas que les ayudan a analizar la información desde el punto de vista científico. Estas 
+		herramientas están muy bien para los científicos, pero actualmente no existe ninguna herramienta que nos de información sobre el estado técnico 
+		de la estación. Nuestra idea es crear una herramienta Web para poder automatizar algunas de las tareas que ahora son realizadas manualmente. 
