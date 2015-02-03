@@ -39,7 +39,9 @@
 			medición. 
 		\item   Productor. La siguiente capa, generalmente de material denso tiene como objetivo conseguir algo parecido a las cascadas 
 		        atmosféricas. La idea es tener un material denso para que sea muy probable que las partículas impacten con las partículas 
-			del material y como resultado se produzcan mas partículas. De esta manera la señal es amplificada. 
+			del material y como resultado se produzcan mas partículas. A las partículas generadas en esta capa se les da el nombre de
+			neutrones de evaporación. Son estas partículas las que finalmente serán medidas por el instrumento, también son las que le dan
+			nombre. Los neutrones producidos tienen menos energía, por lo que son más fáciles de medir. 
 		\item   Moderador. A pesar de que las partículas que tenemos a este nivel tienen tan solo una fracción de la energía original estas
 		        aun siguen siendo demasiado energéticas para ser capturadas. La siguiente capa tiene como objetivo ralentizar, disminuir 
 			la energía, de las partículas para así poder capturarlas.
@@ -106,7 +108,7 @@
 		información, no tan solo cuentas, pero de eso hablaremos mas tarde. 
 	\subsection{Bases de datos}
 		Actualmente la base de datos que genera CALMA tiene esta diseñada de acuerdo con el estandart impuesto por NMDB. Actualmente existen dos replicas
-		de la base de datos. Tenemos una replica de los datos crudos adquiridos en el propio sistema, para gestionar esta replica utilizamos sqlite3. La
+		de la base de datos. Tenemos una replica de los datos crudos adquiridos en el propio sistema, para gestionar esta replica utilizamos Sqlite3. La
 		segunda replica esta en otra maquina conectada por red con el sistema de adquisición de datos. La segunda replica contiene los datos crudos y 
 		también contiene la corrección por presión de estos. Para la segunda replica usamos MySQL. Los datos que mandamos al NMDB son los datos de la 
 		segunda replica.
@@ -202,3 +204,50 @@
 			\caption{Herramienta Web. Diseño preliminar}
 			\label{fig:herramienta_web_preliminar}
 		\end{figure}
+\section{Proceso de adquisición}
+	\subsection{Overview general}
+		Procederemos a explicar más a fondo el proceso de adquisición, haremos hincapié en los aspectos más relevantes para este trabajo. Empezaremos
+		por los tubos contadores y terminaremos por los datos generados y su significado.
+		\par
+		Como ya comentamos, la radiación cósmica termina generando neutrones de baja energía. Son estas partículas las que interaccionan con el gas de
+		los tubos contadores, en el proceso es liberada una pequeña cantidad de energía.  Esta pequeña cantidad de energía es capturada en forma de
+		señal eléctrica. Las señales resultantes son muy pequeñas, por lo que estas pasan por un circuito de adaptación. 
+		\par
+		En el circuito de adaptación las señales son amplificadas y digitalizadas. En el sistema de adquisición anterior para cada señal el circuito
+		de adaptación generaba un pulso fijo. El nuevo sistema de adquisición incorpora nuevo circuito de adaptación. Este nuevo circuito de
+		adaptación genera un pulso cuyo ancho de banda es proporcional a la energía de las señales. 
+		\par
+		Las señales generadas por el circuito de adaptación son dirigidas a la FPGA. La FPGA procesa las señales entrantes, para cada pulso recibido
+		registra un evento y ademas mide el ancho del pulso. La información es entonces transmitida a la BeagleBone Black, a nuestro software de
+		control. Más adelante en este trabajo explicaremos la interfaz de comunicación entre la BeagleBone y la FPGA, en este punto la vamos a omitir. 
+		\par
+		Como hemos podido ver la información de los eventos termina en manos de nuestro software de control. El software se encarga de recibir
+		correctamente dicha información y de guardarla en una base de datos con resolución de 1 minuto. A continuación explicaremos el formato de
+		dichos datos y su significado. 
+	\subsection{Multiples Tubos}
+		Hasta ahora siempre hemos hablado de tubos contadores, en plural, detrás de esto hay una razón. Normalmente las estaciones se componen de
+		varios tubos contadores, donde 18 tubos contadores es un estándar. Vamos a explicar el motivo de tener muchos tubos contadores. 
+		\par
+		Cuando un tubo contador registra un evento, es porque una partícula de alta energía ha impactado con la atmósfera terrestre. La cuestión esta
+		en que desde ese primer impacto hasta que se registra un evento en el tubo contador entremedias hay una serie de eventos cada uno con una
+		probabilidad asociada. No hemos hablado mucho de estas probabilidades así que continuación detallaremos algunas, para poder hacernos una idea. 
+		\begin{itemize}
+			\item Productor. 	Una partícula que llega al productor tiene cierta probabilidad de interactuar con este o no. Si dicha
+			  			interactuación se produce se generaran neutrones que medir.
+			\item Contador. 	Un tubo contador tiene una cierta probabilidad de detectar un neutrón o no hacerlo. Si el neutron se detecta
+			  			se registraría un evento.
+		\end{itemize}
+		Como vemos detectar una partícula depende de muchos eventos probabilístico, por lo tanto es en si mismo un evento probabilístico. Tener tan
+		solo un tubo no seria practico, los datos tendrían gran dispersión. La solución de este problema es tener mucho tubos, cuantos más mejor.
+	\subsection{Valores globales y correcciones}
+		Tener los datos de muchos tubos es bueno, sin embargo no es muy práctico trabajar con esos datos en crudo. Tener tan solo un valor es mucho
+		más practico. Es por eso por lo que el sistema de adquisición calcula uno a partir de los datos de todo los tubos. Hay diferentes modos de
+		calcular este valor global y es algo que esta en continua discusión. Nosotros también vamos a calcular este valor. Para este objetivo vamos
+		a utilizar el Median Algorithm. 
+		\par
+		Anteriormente hemos comentado que también medimos el valor de la presión atmosférica. Medimos este valor porque es útil. Ya hemos explicado
+		las cascadas atmosféricas donde partículas de la atmósfera chocan unas con otras. Tener diferentes niveles de presión atmosféricas afecta a
+		las cascadas atmosféricas, en consecuente a la cantidad de partículas que llegan a la superficie terrestre, a menos presión, más partículas,
+		y a más presión, menos partículas. Resumiendo este último párrafo  podemos decir que el valor global sin corregir es un indicativo de cuanta
+		radiación cósmica llega a la superficie terrestre, y el valor corregido en función de la presión es un indicativo de cuanta radiación cósmica
+		llega a nuestra atmósfera.
