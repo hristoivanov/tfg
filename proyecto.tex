@@ -138,6 +138,8 @@ moredelim={**[il][\rlap{\textcolor{azure2}{\rule[-4pt]{\linewidth}{\baselineskip
 
 
 
+\usepackage{glossaries}
+\makeglossaries
 \begin{document}
 
 \include{portada}
@@ -159,13 +161,18 @@ moredelim={**[il][\rlap{\textcolor{azure2}{\rule[-4pt]{\linewidth}{\baselineskip
 \newpage
 
 
+\include{abreviaturas}
 \include{introduccion}
-\include{ambitoyobjetivos}
-\include{analisisderequisitos}
-\include{diseno}
-\include{implementacion}
-\include{manuales}
-\include{conclusiones}
+%\include{ambitoyobjetivos}
+%\include{analisisderequisitos}
+%\include{diseno}
+%\include{implementacion}
+%\include{manuales}
+%\include{conclusiones}
+
+%Imprimir el glosario
+\printglossaries
+\newpage
 
 %Incluyo la bibliografía
 \addcontentsline{toc}{chapter}{Referencias bibliográficas}

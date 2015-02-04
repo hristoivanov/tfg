@@ -2,7 +2,8 @@
 \label{cap1}
 
 \section{Monitores de neutrones}
-	Un monitor de neutrones es un detector que detecta partículas provenientes del espacio, de alta energía que inciden en la atmósfera terrestre. 
+	
+	Un monitor de neutrones es un detector de partículas provenientes del espacio, partículas de alta energía que inciden en la atmósfera terrestre. 
 	Cuando una partícula proveniente del espacio penetra en la atmósfera esta choca con alguna de las partículas que forman la atmósfera. 
 	Este choque causa la división de las partículas en piezas más pequeñas, piezas que salen disparadas del violento choque y que a su vez 
 	se chocan con otras partículas para dar lugar a aún más piezas. Vemos como una sola partícula proveniente del espacio produce el fenómeno 
@@ -24,7 +25,7 @@
 		  	La radiación cósmica es un buen indicador de la actividad solar donde la relación es inversa. Menos radiación generalmente
 			significa una actividad solar elevada.	
 		\item	Forbush decrease. Estos sucesos consisten en un descenso rápido de los niveles de radiación cósmica medida en la Tierra. Estos
-		  	descensos son consecuencia de CME's. La materia expulsada en un CME al ser en su mayoría plasma extiende y intensifica el 		%%TODO CME nota a pie da página 
+		  	descensos son consecuencia de \gls{cme}'s. La materia expulsada en un \gls{cme} al ser en su mayoría plasma extiende y intensifica el 	
 			campo magnético solar. Como ya hemos explicado el aumento del campo magnético solar conlleva al descenso de radiación cósmica. 
 		\item	Ground level enhancements. Eventualmente la actividad solar es tan elevada que el Sol es capaz de emitir partículas
 		  	suficientemente energéticas para que alcancen la superficie Terrestre. Al alcanzar la superficie terrestre estas son 
@@ -56,7 +57,7 @@
 
 
 \section{NMDB}
-	NMDB es una red mundial de monitores de neutrones. Antes de proceder a hablar sobre la red en concreto expondremos las ventajas y razones de
+	\gls{nmdb} es una red mundial de monitores de neutrones. Antes de proceder a hablar sobre la red en concreto expondremos las ventajas y razones de
 	una red de monitores de neutrones.
 	\begin{itemize}
 		\item 	Espectro de energías. Al igual que el Sol, la Tierra tiene campo magnético. Este campo magnético repele con mayor fuerza en
@@ -71,49 +72,49 @@
 		\item 	Cooperación. Estar en una red implica mejorar la comunicación entre las diferentes estaciones. De esta manera los resultados
 		  	son mejores y el avance más rápido. 
 	\end{itemize}
-	Como ya hemos comentado NMDB es una red mundial, impulsada por la Comisión Europea. Actualmente la red supera las veinte estaciones. La red 
+	Como ya hemos comentado \gls{nmdb} es una red mundial, impulsada por la Comisión Europea. Actualmente la red supera las veinte estaciones. La red 
 	proporciona datos en tiempo real con resolución de 1 minuto. Los formatos de los datos están estandarizados entre las diferentes estaciones.
-	Los datos en tiempo real son utilizados para la elaboración de un sistema de alarma GLE. Un GLE fuerte podria tener un impacto grande en
-	nuestras vidas diarias, un impacto negativo. Es interesante poder detectar GLEs lo antes posible, este es uno de los objetivo de NMDB.
+	Los datos en tiempo real son utilizados para la elaboración de un sistema de alarma \gls{gle}. Un \gls{gle} fuerte podria tener un impacto grande en
+	nuestras vidas diarias, un impacto negativo. Es interesante poder detectar \gls{gle}s lo antes posible, este es uno de los objetivo de \gls{nmdb}.
 	Otro de los objetivos es hacer los datos fácilmente disponibles. Esto ha conllevado a que los datos de la red sean usados en otros campos 
 	científicos no necesariamente relacionados con la radiación cósmica. 
 
 
 \section{CALMA}
-	CALMA es el primer y único monitor de neutrones en España. CALMA forma parte del NMDB. Dispone de 15 tubos contadores llenos con trifluoruro 
-	de boro y un sistema de adquisición de datos que consiste en un sistema empotrado Linux que hace uso de una FPGA que es la encargada de 
-	llevar las cuentas de los tubos. El sistema de adquisición actual ha sido desarrollado por el equipo de CALMA y también esta implantado en 
-	otras estaciones que forman parte del NMDB. CALMA empezó a operar de forma plena de diciembre de 2012 y desde entonces lleva haciéndolo 
-	ininterrumpidamente con pequeñas excepciones. El equipo técnico de  CALMA esta profundamente implicado en desarrollar sistemas y herramientas 
-	que mejoren el funcionamiento del NMDB. La idea para este trabajo es desarrollar el software del nuevo sistema de adquisición que el equipo 
-	de CALMA esta desarrollando, una vez realizado el nuevo sistema de adquisición desarrollaremos una herramienta que nos permitirá monitorizar 
+	\gls{calma} es el primer y único monitor de neutrones en España. \gls{calma} forma parte del \gls{nmdb}. Dispone de 15 tubos contadores llenos con trifluoruro 
+	de boro y un sistema de adquisición de datos que consiste en un sistema empotrado Linux que hace uso de una \gls{fpga} que es la encargada de 
+	llevar las cuentas de los tubos. El sistema de adquisición actual ha sido desarrollado por el equipo de \gls{calma} y también esta implantado en 
+	otras estaciones que forman parte del \gls{nmdb}. \gls{calma} empezó a operar de forma plena de diciembre de 2012 y desde entonces lleva haciéndolo 
+	ininterrumpidamente con pequeñas excepciones. El equipo técnico de  \gls{calma} esta profundamente implicado en desarrollar sistemas y herramientas 
+	que mejoren el funcionamiento del \gls{nmdb}. La idea para este trabajo es desarrollar el software del nuevo sistema de adquisición que el equipo 
+	de \gls{calma} esta desarrollando, una vez realizado el nuevo sistema de adquisición desarrollaremos una herramienta que nos permitirá monitorizar 
 	el estado de nuestra estación
-	Desde su puesta en marcha CALMA ha registrado 18 Forbush decreases. Desafortunadamente aun no ha habido ningún GLE que detectar, aunque este
-	tendría que ser muy energético para ser detectado por CALMA. Debido a que CALMA esta situada en una latitud media, el vertical cutoff rigidity
-	es bastante elevado, por lo que un GLE tendría que ser bastante energético para ser detectado por CALMA. 
-	Procederemos a hablar más a fondo del estado actual de CALMA, hablaremos del sistema de adquisición, base da datos, herramientas y técnicas
+	Desde su puesta en marcha \gls{calma} ha registrado 18 Forbush decreases. Desafortunadamente aun no ha habido ningún \gls{gle} que detectar, aunque este
+	tendría que ser muy energético para ser detectado por \gls{calma}. Debido a que \gls{calma} esta situada en una latitud media, el vertical cutoff rigidity
+	es bastante elevado, por lo que un \gls{gle} tendría que ser bastante energético para ser detectado por \gls{calma}. 
+	Procederemos a hablar más a fondo del estado actual de \gls{calma}, hablaremos del sistema de adquisición, base da datos, herramientas y técnicas
 	que son usadas.
 	\subsection{Sistema de adquisición}
-		Actualmente el sistema de adquisición que esta implantado en CALMA es producto del equipo de CALMA. El sistema consiste en un sistema empotrado
-		Linux que hace uso de una FPGA que procesa las señales procedentes de los tubos. Antes de llegar a la FPGA las señales pasan por un circuito 
-		adaptador, las señales pasan de analógicas a digitales. La FPGA se encarga de llevar la cuenta del numero de eventos para los 18 canales. El 
-		software que se ejecuta en el sistema Linux tiene como tarea comunicarse con la FPGA, pedirle las cuentas cada minuto y finalmente guardar los
+		Actualmente el sistema de adquisición que esta implantado en \gls{calma} es producto del equipo de \gls{calma}. El sistema consiste en un sistema empotrado
+		Linux que hace uso de una \gls{fpga} que procesa las señales procedentes de los tubos. Antes de llegar a la \gls{fpga} las señales pasan por un circuito 
+		adaptador, las señales pasan de analógicas a digitales. La \gls{fpga} se encarga de llevar la cuenta del numero de eventos para los 18 canales. El 
+		software que se ejecuta en el sistema Linux tiene como tarea comunicarse con la \gls{fpga}, pedirle las cuentas cada minuto y finalmente guardar los
 		datos en una base de datos. Desafortunadamente todo esto no es tan simple. El software tiene que recoger la información del barómetro y de las
 		fuentes de alimentación cuyo funcionamiento es también monitorizado. 
 		\par 
-		El nuevo sistema que se esta diseñando a grandes rasgos seria lo mismo, un sistema empotrado Linux con una FPGA. La idea es que el nuevo sistema
+		El nuevo sistema que se esta diseñando a grandes rasgos seria lo mismo, un sistema empotrado Linux con una \gls{fpga}. La idea es que el nuevo sistema
 		de adquisición sea muy flexible, pueda suportar diferentes tubos, barómetros y otros periféricos. Esta flexibilidad nos permitirá implantar 
 		fácilmente este sistema en otras estaciones. El sistema también esta pensado para futuramente ser extendido y poder procesar información 
 		procedente de detectores de muones. Aparte de la flexibilidad el nuevo sistema de adquisición nos proporcionaría mas información tipos de 
 		información, no tan solo cuentas, pero de eso hablaremos mas tarde. 
 	\subsection{Bases de datos}
-		Actualmente la base de datos que genera CALMA tiene esta diseñada de acuerdo con el estandart impuesto por NMDB. Actualmente existen dos replicas
+		Actualmente la base de datos que genera \gls{calma} tiene esta diseñada de acuerdo con el estandart impuesto por \gls{nmdb}. Actualmente existen dos replicas
 		de la base de datos. Tenemos una replica de los datos crudos adquiridos en el propio sistema, para gestionar esta replica utilizamos Sqlite3. La
 		segunda replica esta en otra maquina conectada por red con el sistema de adquisición de datos. La segunda replica contiene los datos crudos y 
-		también contiene la corrección por presión de estos. Para la segunda replica usamos MySQL. Los datos que mandamos al NMDB son los datos de la 
+		también contiene la corrección por presión de estos. Para la segunda replica usamos MySQL. Los datos que mandamos al \gls{nmdb} son los datos de la 
 		segunda replica.
 	\subsection{Herramientas y técnicas}
-		Actualmente el equipo de CALMA hace uso de herramientas que les ayudan a analizar la información desde el punto de vista científico. Estas 
+		Actualmente el equipo de \gls{calma} hace uso de herramientas que les ayudan a analizar la información desde el punto de vista científico. Estas 
 		herramientas están muy bien para los científicos, pero actualmente no existe ninguna herramienta que nos de información sobre el estado técnico 
 		de la estación. Nuestra idea es crear una herramienta Web para poder automatizar algunas de las tareas que ahora son realizadas manualmente. 
 
@@ -122,7 +123,7 @@
 	El objetivo de este proyecto es desarrollar el software para el nuevo sistema de adquisición de datos y también desarrollar una herramienta
 	que nos permita operar y monitorizar el estado de la estación. 
 	\subsection{Software adquisición de datos}
-		Actualmente El equipo de CALMA esta desarrollando un nuevo sistema de adquisición de datos para su estación. Como comentamos
+	Actualmente El equipo de \gls{calma} esta desarrollando un nuevo sistema de adquisición de datos para su estación. Como comentamos
 		anteriormente este estará basado en un sistema empotrado Linux. En ese entorno Linux se ejecutara el software de control. El software
 		de control es el encargado del correcto funcionamiento de los demás componentes que forman el sistema de adquisición. A grandes rasgos
 		el software de control deberá cumplir los siguientes objetivos.
@@ -138,12 +139,12 @@
 				problema que en la mayoría de las veces consiste en realizar un reinicio.
 		\end{itemize}
 		Uno de los objetivos de este trabajo es realizar, implantar y mantener este software de control. Los demás módulos son desarrollados
-		por el equipo de CALMA. El autor de este trabajo no ha formado parte en el desarrollo de estos, pero a lo largo de este trabajo se
+		por el equipo de \gls{calma}. El autor de este trabajo no ha formado parte en el desarrollo de estos, pero a lo largo de este trabajo se
 		describirán las interfaces de estos dado que es necesario para entender este trabajo. 
 	\subsection{Herramienta Web}
 		El segundo objetivo de este trabajo es el desarrollo de una herramienta que facilite la gestión de una estación. La idea de esta
-		herramienta es del equipo de CALMA. Procederemos a detallar las funcionalidades de la herramienta tal y como la concibe el equipo de
-		CALMA.
+		herramienta es del equipo de \gls{calma}. Procederemos a detallar las funcionalidades de la herramienta tal y como la concibe el equipo de
+		\gls{calma}.
 		\begin{itemize}
 	         	\item	Spike Tool. Módulo que nos permita la detección de Spikes. Usando los datos proporcionados por el sistema de
 			  	adquisición este módulo debe generar gráficos. Estos gráficos serán interactivos y su propósito sera hacer fácil la
@@ -217,9 +218,9 @@
 		de adaptación generaba un pulso fijo. El nuevo sistema de adquisición incorpora nuevo circuito de adaptación. Este nuevo circuito de
 		adaptación genera un pulso cuyo ancho de banda es proporcional a la energía de las señales. 
 		\par
-		Las señales generadas por el circuito de adaptación son dirigidas a la FPGA. La FPGA procesa las señales entrantes, para cada pulso recibido
+		Las señales generadas por el circuito de adaptación son dirigidas a la \gls{fpga}. La \gls{fpga} procesa las señales entrantes, para cada pulso recibido
 		registra un evento y ademas mide el ancho del pulso. La información es entonces transmitida a la BeagleBone Black, a nuestro software de
-		control. Más adelante en este trabajo explicaremos la interfaz de comunicación entre la BeagleBone y la FPGA, en este punto la vamos a omitir. 
+		control. Más adelante en este trabajo explicaremos la interfaz de comunicación entre la BeagleBone y la \gls{fpga}, en este punto la vamos a omitir. 
 		\par
 		Como hemos podido ver la información de los eventos termina en manos de nuestro software de control. El software se encarga de recibir
 		correctamente dicha información y de guardarla en una base de datos con resolución de 1 minuto. A continuación explicaremos el formato de
@@ -238,12 +239,12 @@
 			  			se registraría un evento.
 		\end{itemize}
 		Como vemos detectar una partícula depende de muchos eventos probabilístico, por lo tanto es en si mismo un evento probabilístico. Tener tan
-		solo un tubo no seria practico, los datos tendrían gran dispersión. La solución de este problema es tener mucho tubos, cuantos más mejor.
+		solo un tubo no seria práctico, los datos tendrían gran dispersión. La solución de este problema es tener mucho tubos, cuantos más mejor.
 	\subsection{Valores globales y correcciones}
-		Tener los datos de muchos tubos es bueno, sin embargo no es muy práctico trabajar con esos datos en crudo. Tener tan solo un valor es mucho
-		más practico. Es por eso por lo que el sistema de adquisición calcula uno a partir de los datos de todo los tubos. Hay diferentes modos de
-		calcular este valor global y es algo que esta en continua discusión. Nosotros también vamos a calcular este valor. Para este objetivo vamos
-		a utilizar el Median Algorithm. 
+		Tener los datos de muchos tubos es bueno, sin embargo no es muy práctico trabajar con esos datos en crudo. Tener un valor global de toda la
+		estación es más representativo. Es por eso por lo que el sistema de adquisición calcula uno a partir de los datos de todo los tubos. Hay 
+		diferentes modos de calcular este valor global y es algo que esta en continua discusión. Nosotros también vamos a calcular este valor, 
+		utilizaremos el Median Algorithm.
 		\par
 		Anteriormente hemos comentado que también medimos el valor de la presión atmosférica. Medimos este valor porque es útil. Ya hemos explicado
 		las cascadas atmosféricas donde partículas de la atmósfera chocan unas con otras. Tener diferentes niveles de presión atmosféricas afecta a
