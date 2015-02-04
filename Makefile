@@ -10,9 +10,7 @@ implementacion.tex \
 introduccion.tex \
 manuales.tex \
 agradecimientos.tex \
-portada.tex \
-abreviaturas.tex
-
+portada.tex 
 
 USE_PDFLATEX=true
 
