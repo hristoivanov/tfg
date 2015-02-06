@@ -13,7 +13,8 @@
 \usepackage{colourlist}
 \usepackage{booktabs}
 \usepackage{amssymb}
-
+\usepackage[acronym, nonumberlist]{glossaries}
+\makeglossaries
 
 
 %Configuración del paquete hyperref
@@ -26,10 +27,9 @@
 \definecolor{whitesmoke}{rgb}{0.96,0.96,0.96}
 
 % configuración del paquete hyperref
-\hypersetup{    pdfauthor = {Rajesh Ramayan Koothrappali}
-               pdftitle = {The Dumpling Paradox of the The Maternal Capacitance
-               and its Robotic Manipulation.},
-               pdfkeywords = {MVC, Via-Plata, Fichas,TFC},
+\hypersetup{   pdfauthor = {Hristo Ivanov Ivanov}
+               pdftitle = {Software empotrado de control y gestión de un monitor de neutrones},
+               pdfkeywords = {NMDB, CALMA, TFC},
                pdfsubject = {Proyecto Final de Carrera},
                colorlinks={true},
                pdfstartview={FitV},
@@ -76,7 +76,7 @@
         {\textrm{\footnotesize\ GSO}}}
 \rhead[
         \fancyplain{}
-        {\textrm{\footnotesize\ Rajesh Ramayan Koothrappali}}]
+        {\textrm{\footnotesize\ Hristo Ivanov Ivanov}}]
         {\fancyplain{}
         {\textrm{\small\rightmark\hspace{4mm}\normalsize\textbf{\thepage}}}}
 \cfoot[]{} % En el pie de página no ponemos nada
@@ -137,9 +137,9 @@ moredelim={**[il][\rlap{\textcolor{azure2}{\rule[-4pt]{\linewidth}{\baselineskip
    }
 
 
-
 \begin{document}
 
+\include{abreviaturas}
 \include{portada}
 \newpage{\pagestyle{empty}\cleardoublepage}
 
@@ -159,12 +159,14 @@ moredelim={**[il][\rlap{\textcolor{azure2}{\rule[-4pt]{\linewidth}{\baselineskip
 \newpage
 
 \include{introduccion}
+\include{softwareControl}
 %\include{ambitoyobjetivos}
 %\include{analisisderequisitos}
 %\include{diseno}
 %\include{implementacion}
 %\include{manuales}
 %\include{conclusiones}
+
 
 %Incluyo la bibliografía
 \addcontentsline{toc}{chapter}{Referencias bibliográficas}
@@ -174,6 +176,12 @@ moredelim={**[il][\rlap{\textcolor{azure2}{\rule[-4pt]{\linewidth}{\baselineskip
 \nocite{*}
 \bibliographystyle{plain}
 \bibliography{Bibliografia}
+
+%Acronyms
+\addcontentsline{toc}{chapter}{Acrónimos}
+\printglossary[type=\acronymtype]
+\newpage
+
 
 %Incluyo un glosario
 %\addcontentsline{toc}{chapter}{Glosario}
