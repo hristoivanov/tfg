@@ -7,7 +7,7 @@
 	Esta colisión genera muchas partículas secundarias, partículas que salen disparadas del violento choque y que a su vez 
 	se chocan con otras partículas para dar lugar a aún más partículas segundarias. Vemos como una sola partícula proveniente del espacio produce el fenómeno 
 	denominado cascadas atmosféricas. Como es de esperar con cada choque consecutivo se pierde parte de la energía que originalmente llevaba la 
-	partícula extraterrestre, es muy normal que las partículas segundarias lleguen al nivel terrestre con tan solo 5\% de la energía que tenia la 
+	partícula extraterrestre, es muy normal que las partículas segundarias lleguen al nivel terrestre con tan solo 5\% de la energía que tenía la 
 	partícula que originó todo el evento. Como es de esperar si una partícula no posee la energía suficiente la cascada no se propaga hasta la 
 	superficie terrestre. Un monitor de neutrones es una estación terrestre que monitoriza la llegada de partículas extraterrestres de forma 
 	indirecta a partir de las cascadas atmosféricas. Los monitores de neutrones están especialmente diseñados para capturar las partículas 
@@ -43,7 +43,7 @@
 			neutrones de evaporación. Son estas partículas las que finalmente serán medidas por el instrumento, también son las que le dan
 			nombre. Los neutrones producidos tienen menos energía, por lo que son más fáciles de medir. 
 		\item   Moderador. A pesar de que las partículas que tenemos a este nivel tienen tan solo una fracción de la energía original estas
-		        aún siguen siendo demasiado energéticas para ser capturadas. La siguiente capa tiene como objetivo relentizar, disminuir 
+		        aún siguen siendo demasiado energéticas para ser capturadas. La siguiente capa tiene como objetivo ralentizar, disminuir 
 			la energía, de las partículas para así poder capturarlas.
 		\item   Contador. Un contador o tubo contador generalmente está relleno de gas ionizado con propiedades específicas. Cuando una de 
 		  	las partículas ralentizadas por el Moderador choca con una de las partículas del gas es liberada una pequeña cantidad de
@@ -66,14 +66,14 @@
 			de las partículas.
 		\item 	Anisotropía. Tener estaciones en diferentes lugares del globo terráqueo implica estar orientado a diferente dirección del
 		  	espacio. Esto implica el poder hacer estudios sobre la procedencia de eventos.
-		\item 	Redundancia. El tener muchas estaciones implica detectar el mismo eventos en más de una estación. Esto nos permite comparar
+		\item 	Redundancia. El tener muchas estaciones implica detectar el mismo evento en más de una estación. Esto nos permite comparar
 		  	los datos entre estaciones y descartar fluctuaciones grandes, rápidas y asiladas en una sola estación.
 		\item 	Cooperación. Estar en una red implica mejorar la comunicación entre las diferentes estaciones. De esta manera los resultados
 		  	son mejores y el avance más rápido. 
 	\end{itemize}
 	Como ya hemos comentado NMDB es una red mundial, impulsada por la Comisión Europea. Actualmente la red supera las veinte estaciones. La red 
 	proporciona datos en tiempo real con resolución de 1 minuto. Los formatos de los datos están estandarizados entre las diferentes estaciones.
-	Los datos en tiempo real son utilizados para la elaboración de un sistema de alarma GLE\cite{GleAlarm}. Un GLE fuerte podria tener un impacto grande en
+	Los datos en tiempo real son utilizados para la elaboración de un sistema de alarma GLE\cite{GleAlarm}. Un GLE fuerte podría tener un impacto grande en
 	nuestras vidas diarias, un impacto negativo. Es interesante poder detectar GLEs lo antes posible, este es uno de los objetivo de NMDB.
 	Otro de los objetivos es hacer los datos fácilmente disponibles. Esto ha conllevado a que los datos de la red sean usados en otros campos 
 	científicos no necesariamente relacionados con la radiación cósmica. 
@@ -89,7 +89,7 @@
 	el estado de nuestra estación.
 	Desde su puesta en marcha la estación ha registrado 18 Forbush decreases. Desafortunadamente aún no ha habido ningún GLE que detectar, aunque este
 	tendría que ser muy energético para ser detectado en una estación con tan poca latitud. 
-	Procederemos a hablar más a fondo del estado actual de CALMA, hablaremos del sistema de adquisición, base da datos, herramientas y técnicas
+	Procederemos a hablar más a fondo del estado actual de CALMA, hablaremos del sistema de adquisición, base de datos, herramientas y técnicas
 	que son usadas.
 	\subsection{Sistema de adquisición}
 		Actualmente el sistema de adquisición que está implantado en CALMA es producto del propio equipo\cite{Garcia2014}. El sistema consiste en un sistema empotrado
@@ -98,20 +98,20 @@
 		software que se ejecuta en el sistema Linux tiene como tarea comunicarse con la FPGA, recoger las cuentas de cada minuto y finalmente guardar los
 		datos en una base de datos.  
 		\par 
-		El nuevo sistema que se está diseñando a grandes rasgos seria lo mismo, un sistema empotrado Linux con una FPGA. La idea es que el nuevo sistema
+		El nuevo sistema que se está diseñando a grandes rasgos sería lo mismo, un sistema empotrado Linux con una FPGA. La idea es que el nuevo sistema
 		de adquisición sea muy flexible, pueda suportar diferentes tubos, barómetros y otros periféricos. Esta flexibilidad nos permitirá implantar 
 		fácilmente este sistema en otras estaciones. El sistema también está pensado para futuramente ser extendido y poder procesar información 
 		procedente de detectores de muones. Aparte de la flexibilidad el nuevo sistema de adquisición incorporara funcionalidades extra, supervisara
 		variables que afectan al proceso de adquisición y antes no se tenían en cuenta.
 	\subsection{Bases de datos}
-		Actualmente la base de datos que genera CALMA está diseñada de acuerdo con el estandart impuesto por NMDB. Actualmente existen dos replicas
-		de la base de datos. Tenemos una replica de los datos crudos adquiridos en el propio sistema, para gestionar esta replica utilizamos Sqlite3. La
-		segunda replica está en otra maquina conectada por red con el sistema de adquisición de datos. La segunda replica contiene los datos crudos y 
-		también contiene la corrección por presión de estos. Para la segunda replica usamos MySQL. Los datos que mandamos al NMDB son los datos de la 
-		segunda replica.
+		Actualmente la base de datos que genera CALMA está diseñada de acuerdo con el estándar impuesto por NMDB. Actualmente existen dos réplicas
+		de la base de datos. Tenemos una réplica de los datos crudos adquiridos en el propio sistema, para gestionar esta réplica utilizamos Sqlite3. La
+		segunda réplica está en otra máquina conectada por red con el sistema de adquisición de datos. La segunda réplica contiene los datos crudos y 
+		también contiene la corrección por presión de estos. Para la segunda réplica usamos MySQL. Los datos que mandamos al NMDB son los datos de la 
+		segunda réplica.
 	\subsection{Herramientas y técnicas}
 		Actualmente el equipo de CALMA hace uso de herramientas que les ayudan a analizar la información desde el punto de vista científico. Estas 
-		herramientas están muy bien para los científicos, pero actualmente no existe ninguna herramienta que nos de información sobre el estado técnico 
+		herramientas están muy bien para los científicos, pero actualmente no existe ninguna herramienta que nos dé información sobre el estado técnico 
 		de la estación. Nuestra idea es crear una herramienta Web para poder automatizar algunas de las tareas que ahora son realizadas manualmente. 
 
 
@@ -124,7 +124,7 @@
 		es el encargado del correcto funcionamiento de los demás componentes que forman el sistema de adquisición. A grandes rasgos
 		el software deberá cumplir los siguientes objetivos.
 		\begin{itemize}
-			\item 	Coordinal la estación. El objetivo principal es coordinar la estación y todos los módulos que la componen. El software
+			\item 	Coordinar la estación. El objetivo principal es coordinar la estación y todos los módulos que la componen. El software
 			  	debe ser capaz de configurar los demás módulos, pedirles la información que generan y guardar esta en una base de datos. 
 			\item 	Iniciar automáticamente la estación. Una vez configurado adecuadamente, ante la presencia de corriente eléctrica, el
 			  	software debe ser capaz de arrancar automáticamente la estación, esto implica configurar y sincronizar los demás
@@ -136,7 +136,7 @@
 		\end{itemize}
 		Uno de los objetivos de este trabajo es realizar, implantar y mantener este software de adquisición. Los demás módulos son desarrollados
 		por el equipo de CALMA. El autor de este trabajo no ha formado parte en el desarrollo de estos, pero a lo largo de este trabajo se
-		describirán las interfaces de estos dado que es necesario para entender este trabajo. 
+		describirán las interfaces de estos, dado que es necesario para entender este trabajo. 
 	\subsection{Herramienta Web}
 		El segundo objetivo de este trabajo es el desarrollo de una herramienta que facilite la gestión de una estación. La idea de esta
 		herramienta es del equipo de CALMA. Procederemos a detallar las funcionalidades de la herramienta tal y como la concibe el equipo de
@@ -146,7 +146,7 @@
 	         	\item	Spike Tool. Módulo que nos permita la detección de Spikes. Usando los datos proporcionados por el sistema de
 			  	adquisición este módulo debe generar gráficos. Estos gráficos serán interactivos y su propósito será hacer fácil la
 				detección de Spikes. Los Spikes detectados podrán ser marcados como nulos en el conjunto de datos revisados. 
-			\item 	Configuración de la estación. Este módulo nos permitirá cambiar las configuración de la estación en tiempo real. Nos
+			\item 	Configuración de la estación. Este módulo nos permitirá cambiar la configuración de la estación en tiempo real. Nos
 			  	permitirá desconectar tubos contadores, lo que viene muy bien si se detecta algún tubo que está funcionando mal. Este
 				módulo se comunicaría directamente con el software de adquisición. 
 			\item 	Estadísticas Online. Módulo que calculara estadísticas en tiempo real. Esto nos permitirá detectar problemas y en
@@ -154,7 +154,7 @@
 			\item	Alertas. La herramienta debe generar alertas cuando se detectan comportamientos no deseados, por ejemplo la
 			  	herramienta tendría que generar una alerta cada vez que se detecta que no se están generando datos.
 			\item 	Histogramas con la intensidad de los eventos. El nuevo sistema de adquisición proporciona información sobre la energía
-			  	de las partículas incidentes. Este modulo debería generar histogramas con estos datos. Estos histogramas nos
+			  	de las partículas incidentes. Este módulo debería generar histogramas con estos datos. Estos histogramas nos
 				permitirían hacer mejores diagnósticos sobre el funcionamiento de los tubos contadores. 
 		\end{itemize}
 		Podemos ver que la herramienta ofrece un gran abanico de funcionalidades, por desgracia en este trabajo tan solo nos centraremos en el
@@ -168,12 +168,12 @@
 		Procederemos a especificar un diseño preliminar del software de adquisición. El software se ejecutara en un sistema empotrado Linux sobre
 		una BeagleBone Black. La distribución elegida para desarrollar este trabajo es Ångström, la que viene por defecto con la BeagleBone
 		Black. Actualmente nos estamos planteando cambiar la distribución a alguna derivada de Debian, sobre esto hablaremos más a fondo en el
-		capitulo \emph{Conclusiones y Trabajos futuros}. El desarrollo del software se hará en Python. Hemos elegido Python por gustos
+		capítulo \emph{Conclusiones y Trabajos futuros}. El desarrollo del software se hará en Python. Hemos elegido Python por gustos
 		personales, detrás de esta elección no hay algún motivo relevante. Para la gestión de la base de datos hemos elegido Sqlite3,
 		Sqlite3 es una elección popular en sistemas empotrados como el que estamos realizando. 
 		\par
 		En la figura \ref{fig:soft_control_preliminar} podemos ver el diseño preliminar de nuestro software. Al iniciar lo primero que 
-		tiene que hacer es configurar la estación. Esto implica configurar a los demás módulos y también configurarse a si mismo. Si la
+		tiene que hacer es configurar la estación. Esto implica configurar a los demás módulos y también configurarse a sí mismo. Si la
 		configuración no ha sido exitosa procedemos a reintentarlo y si es posible notificar el fallo. Si la configuración ha sido exitosa pasamos al
 		funcionamiento nominal, adquisición de datos. El funcionamiento nominal consiste en registrar los valores medidos cada minuto. Los
 		valores de cada minuto son entonces guardados en una base de datos local.
@@ -216,12 +216,12 @@
 		adaptación genera un pulso cuyo ancho de banda es proporcional a la energía de la señal. 
 		\par
 		Las señales generadas por el circuito de adaptación son dirigidas a la FPGA. La FPGA procesa las señales entrantes, para cada pulso recibido
-		registra un evento y ademas mide el ancho del pulso. La información es entonces transmitida a la BeagleBone Black, a nuestro software de
+		registra un evento y además mide el ancho del pulso. La información es entonces transmitida a la BeagleBone Black, a nuestro software de
 		adquisición. Más adelante en este trabajo explicaremos la interfaz de comunicación entre la BeagleBone y la FPGA, en este punto la vamos a omitir. 
 		\par
 		Como hemos podido ver la información de los eventos termina en manos de nuestro software de adquisición. El software se encarga de recibir
 		correctamente dicha información y de guardarla en una base de datos con resolución de 1 minuto.
-	\subsection{Multiples Tubos}
+	\subsection{Múltiples Tubos}
 		Hasta ahora siempre hemos hablado de tubos contadores, en plural, detrás de esto hay una razón. Normalmente las estaciones se componen de
 		varios tubos contadores, donde 18 tubos contadores es un estándar. Vamos a explicar el motivo de tener muchos tubos contadores. 
 		\par
@@ -231,14 +231,14 @@
 		\begin{itemize}
 			\item Productor. 	Una partícula que llega al productor tiene cierta probabilidad de interactuar con este o no. Si dicha
 			  			interactuación se produce se generaran neutrones que medir.
-			\item Contador. 	Un tubo contador tiene una cierta probabilidad de detectar un neutrón o no hacerlo. Si el neutron se detecta
+			\item Contador. 	Un tubo contador tiene una cierta probabilidad de detectar un neutrón o no hacerlo. Si el neutrón se detecta
 			  			se registraría un evento.
 		\end{itemize}
-		Como vemos detectar una partícula depende de muchos eventos probabilístico, por lo tanto es en si mismo un evento probabilístico. Tener tan
-		solo un tubo no seria práctico, los datos tendrían gran dispersión. La solución de este problema es tener mucho tubos, cuantos más mejor.
+		Como vemos detectar una partícula depende de muchos eventos probabilístico, por lo tanto es en sí mismo un evento probabilístico. Tener tan
+		solo un tubo no sería práctico, los datos tendrían gran dispersión. La solución de este problema es tener mucho tubos, cuantos más mejor.
 	\subsection{Valores globales y correcciones}
 		Tener los datos de muchos tubos es bueno, sin embargo no es muy práctico trabajar con esos datos en crudo. Tener un valor global de toda la
-		estación es más representativo. Es por eso por lo que el sistema de adquisición calcula uno a partir de los datos de todo los tubos. Hay 
+		estación es más representativo. Es por eso por lo que el sistema de adquisición calcula uno a partir de los datos de todos los tubos. Hay 
 		diferentes modos de calcular este valor global y es algo que está en continua discusión. Nosotros también vamos a calcular este valor, 
 		utilizaremos el Median Algorithm\cite{MedianAlgr}.
 		\par
@@ -250,7 +250,7 @@
 		llega a nuestra atmósfera.
 	\subsection{Fuentes de alimentación de alta tensión}
 		Para funcionar los tubos contadores es necesaria una corriente de alta tensión y baja intensidad. La corriente es utilizada por los tubos
-		para ionización del gas dentro del tubo. La ionización del gas afecta al funcionamiento de lo tubos, por lo que cambios en la corriente
+		para ionización del gas dentro del tubo. La ionización del gas afecta al funcionamiento de los tubos, por lo que cambios en la corriente
 		subministrada pueden afectar al sistema de adquisición. Es por esta razón por la que el funcionamiento de las HVPS es supervisado. Es de esperar
 		que la corriente sea constante, por lo que no es necesaria ninguna corrección en función de esta. En caso de variaciones en la corriente los datos
 		generados son considerados no consistentes.
