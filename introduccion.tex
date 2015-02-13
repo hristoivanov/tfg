@@ -117,8 +117,9 @@
 
 \section{Objetivos}
 	El objetivo de este proyecto es desarrollar el software para el nuevo sistema de adquisición de datos y también desarrollar una herramienta
-	que nos permita operar y monitorizar el estado de la estación. 
-	\subsection{Software adquisición de datos}
+	que nos permita operar y monitorizar el estado de la estación.A continuación procederemos a hacer una descripción más detallada de los objetivos
+	de este trabajo.  
+	\subsection{Software de adquisición de datos}
 		Actualmente El equipo de CALMA está desarrollando un nuevo sistema de adquisición de datos para su estación. Como comentamos
 		anteriormente este estará basado en un sistema empotrado Linux. En ese entorno Linux se ejecutara el software de adquisición. El software
 		es el encargado del correcto funcionamiento de los demás componentes que forman el sistema de adquisición. A grandes rasgos
@@ -164,19 +165,21 @@
 		
 
 \section{Diseño preliminar}
+	Procedernos a especificar un diseño preliminar para el software de adquisición y para la herramienta web.
 	\subsection{Software de adquisición}
-		Procederemos a especificar un diseño preliminar del software de adquisición. El software se ejecutara en un sistema empotrado Linux sobre
-		una BeagleBone Black. La distribución elegida para desarrollar este trabajo es Ångström, la que viene por defecto con la BeagleBone
-		Black. Actualmente nos estamos planteando cambiar la distribución a alguna derivada de Debian, sobre esto hablaremos más a fondo en el
-		capítulo \emph{Conclusiones y Trabajos futuros}. El desarrollo del software se hará en Python. Hemos elegido Python por gustos
-		personales, detrás de esta elección no hay algún motivo relevante. Para la gestión de la base de datos hemos elegido Sqlite3,
-		Sqlite3 es una elección popular en sistemas empotrados como el que estamos realizando. 
+		El sistema de adquisición que se está desarrollando es un sistema empotrado donde hardware y software están muy vinculados. En el capítulo 
+		\ref{entornoHW} se describe más a fondo el entrono hardware, en este punto tan solo mencionaremos que el software se ejecutará sobre una BeagleBone Black\cite{Beagle}
+		que está integrada con el resto de componentes hardware. Destacamos que el autor de este trabajo no ha formado parte en el desarrollo
+		hardware. En la BeagleBone tendremos un sistema empotrado Linux, la distribución elegida para desarrollar este trabajo es Ångström. 
+		Actualmente nos estamos planteando cambiar la distribución a alguna derivada de Debian, sobre esto hablaremos más a fondo en el capítulo 
+		\ref{cap_conclusiones}. El desarrollo del software se hará en Python\cite{Python}, lenguaje interpretado de alto nivel. Actualmente Python es muy popular y existen muchas
+		librerías de las que haremos uso. Usar librerías reduce la carga de trabajo y normalmente resulta en software más robusto. Para la gestión
+		de la base de datos hemos elegido Sqlite3\cite{Sqlite}, una elección popular en sistemas empotrados como el que estamos realizando. 
 		\par
-		En la figura \ref{fig:soft_control_preliminar} podemos ver el diseño preliminar de nuestro software. Al iniciar lo primero que 
-		tiene que hacer es configurar la estación. Esto implica configurar a los demás módulos y también configurarse a sí mismo. Si la
-		configuración no ha sido exitosa procedemos a reintentarlo y si es posible notificar el fallo. Si la configuración ha sido exitosa pasamos al
-		funcionamiento nominal, adquisición de datos. El funcionamiento nominal consiste en registrar los valores medidos cada minuto. Los
-		valores de cada minuto son entonces guardados en una base de datos local.
+		En la figura \ref{fig:soft_control_preliminar} podemos ver el diseño preliminar de nuestro software. Ante la presencia de corriente eléctrica el sistema de adquisición se
+		inicia solo. Nuestro software debe configurar la estación de acuerdo con el archivo de configuración proporcionado. Una vez configurada la
+		estación pasamos al funcionamiento nominal. El software debe recoger la información que generan los diferentes módulos que componen el
+		sistema. Cada minuto la información es guardad en una base de datos
 		\begin{figure}[h]
 			\centering
 			\includegraphics[keepaspectratio, width=1\textwidth]{./img/soft_control_preliminar.png}
@@ -203,10 +206,8 @@
 			\label{fig:herramienta_web_preliminar}
 		\end{figure}
 \section{Proceso de adquisición}
-	\subsection{Overview general}
-		Procederemos a explicar más a fondo el proceso de adquisición, haremos hincapié en los aspectos más relevantes para este trabajo. Empezaremos
-		por los tubos contadores y terminaremos por los datos generados y su significado.
-		\par
+	En este punto explicaremos más a fondo el funcionamiento de un monitor de neutrones, dado que es necesario para poder entender este trabajo.
+	\subsection{Adaptación y procesado de las señales}
 		Como ya comentamos, la radiación cósmica termina generando neutrones de baja energía. Son estas partículas las que interaccionan con el gas de
 		los tubos contadores, en el proceso es liberada una pequeña cantidad de energía. Esta pequeña cantidad de energía es capturada en forma de
 		señal eléctrica. Las señales resultantes son muy pequeñas, por lo que estas pasan por un circuito de adaptación. 
@@ -225,17 +226,9 @@
 		Hasta ahora siempre hemos hablado de tubos contadores, en plural, detrás de esto hay una razón. Normalmente las estaciones se componen de
 		varios tubos contadores, donde 18 tubos contadores es un estándar. Vamos a explicar el motivo de tener muchos tubos contadores. 
 		\par
-		Cuando un tubo contador registra un evento, es porque una partícula de alta energía ha impactado con la atmósfera terrestre. La cuestión está
-		en que desde ese primer impacto hasta que se registra un evento en el tubo contador entremedias hay una serie de eventos cada uno con una
-		probabilidad asociada. No hemos hablado mucho de estas probabilidades así que continuación detallaremos algunas, para poder hacernos una idea. 
-		\begin{itemize}
-			\item Productor. 	Una partícula que llega al productor tiene cierta probabilidad de interactuar con este o no. Si dicha
-			  			interactuación se produce se generaran neutrones que medir.
-			\item Contador. 	Un tubo contador tiene una cierta probabilidad de detectar un neutrón o no hacerlo. Si el neutrón se detecta
-			  			se registraría un evento.
-		\end{itemize}
-		Como vemos detectar una partícula depende de muchos eventos probabilístico, por lo tanto es en sí mismo un evento probabilístico. Tener tan
-		solo un tubo no sería práctico, los datos tendrían gran dispersión. La solución de este problema es tener mucho tubos, cuantos más mejor.
+		En el proceso de adquisición están envueltos muchos factores probabilísticos, esto conlleva a que las medidas en un tubo tengan una gran
+		dispersión. Tener tan solo un tubo no sería práctico, los datos tendrían gran dispersión. La solución de este problema es tener mucho tubos,
+		cuantos más mejor.
 	\subsection{Valores globales y correcciones}
 		Tener los datos de muchos tubos es bueno, sin embargo no es muy práctico trabajar con esos datos en crudo. Tener un valor global de toda la
 		estación es más representativo. Es por eso por lo que el sistema de adquisición calcula uno a partir de los datos de todos los tubos. Hay 
@@ -254,3 +247,8 @@
 		subministrada pueden afectar al sistema de adquisición. Es por esta razón por la que el funcionamiento de las HVPS es supervisado. Es de esperar
 		que la corriente sea constante, por lo que no es necesaria ninguna corrección en función de esta. En caso de variaciones en la corriente los datos
 		generados son considerados no consistentes.
+	\subsection{Spike}
+		Un spike es un dato anómalo, un dato anormalmente grande o pequeño. Son datos producidos por malfuncionamientos de la instrumentación, cambios
+		bruscos en el entorno inmediato u otros factores desconocidos. Los spikes están presentes en todas las estaciones. Con la elaboración del nuevo
+		sistema de adquisición se pretende reducir el número spikes generados. La herramienta Web nos permitirá localizar y descartar los spikes de
+		forma fácil.  
