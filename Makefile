@@ -11,7 +11,8 @@ introduccion.tex \
 manuales.tex \
 agradecimientos.tex \
 portada.tex \
-abreviaturas.tex
+abreviaturas.tex \
+entornoHW.tex
 
 USE_PDFLATEX=true
 

@@ -1,0 +1,77 @@
+\chapter{Entrono Hardware}
+\label{entornoHW}
+
+En un sistema empotrado el software y hardware están muy vinculados. Para entender el funcionamiento del software de adquisición es muy importante estar
+familiarizado con el diseño y funcionalidad del hardware. Impulsados por esta razón en este capítulo procederemos a hacer una descripción de
+los aspectos más importantes del hardware que compone nuestro sistema de adquisición. Volvemos a enfatizar que el autor de este trabajo no
+ha formado parte  en la realización de los módulos hardware que serán descritos a continuación.
+\section{BeagleBone Black}
+	La BeagleBone Black\cite{Beagle} es un computador empotrado, open-source y single board. La placa viene con Linux, distribución Angstrom y versión
+	de núcleo 3.8. Lo más característico de la placa son los 2x46 pines de extensión disponibles. Estos pines son los utilizados para
+	integrar este componente con el resto del sistema de adquisición. La mayoría de estos pines son multipropósito, pueden ser
+	configurados para tener funcionalidades diversas y además esta configuración puede ser realizada de forma dinámica\cite{BeagleWiki}.
+	\par
+	La configuración de los pines se realiza mediante el \emph{Device Tree Overlay}, estructura de datos que se utiliza para describir el
+	hardware. Para la realización de este trabajo no tendremos que lidiar con este mecanismo, utilizaremos una librería que nos facilite
+	el trabajo. La librería utilizada es \emph{Adafruit BeagleBone IO Python}\cite{AdaFruitGit}. Esta librería nos ayudara a configurar dinámicamente los pines
+	de extensión, además la librería ofrece métodos para operar sobre estos una vez configurados. En la tabla \ref{tab:BBBPins} podemos
+	ver las funcionalidades que los pines de la BeagleBone Black ofrecen y las que vamos a utilizar para este trabajo.
+	\begin{table}[h]
+		\begin{tabular}{|l|l|}
+			\hline
+			\rowcolor[HTML]{C0C0C0} 
+			{\color[HTML]{000000} \textbf{Disponibles}} & {\color[HTML]{000000} \textbf{Usados}} \\ \hline
+				7 Analog Pins                               & 4 Analog Pins                          \\ \hline
+				65 Digital Pins at 3.3V                     & 1 Digital Pin                          \\ \hline
+				2x I2C                                      & 0x I2C                                 \\ \hline
+				2x SPI                                      & 0x SPI                                 \\ \hline
+				4 Timers                                    & 0 Timers                               \\ \hline
+				4x UART                                     & 2x UART                                \\ \hline
+				8x PWM                                      & 0x PWM                                 \\ \hline
+				A/D Converter                               & Not used                               \\ \hline
+		\end{tabular}
+		\centering
+		\caption{BeagleBone Black Headers.}
+		\label{tab:BBBPins}
+	\end{table}
+\subsection{FPGA}
+	Intro FPGA. La FPGA es el componente que más interactuar con la BeagleBone Black. \ref{tab:FPGAUart1}
+	Intro, Reset, UARTS 
+	\begin{table}[h]
+		\tiny
+		\begin{tabularx}{\textwidth}{|l|c|c|X|c|c|c|c|c|}
+			\hline
+			\rowcolor[HTML]{C0C0C0} 
+			\multicolumn{1}{|r|}{\textbf{Bit}}    	& 7 & 6          & 5 				& 4 	       & 3 	     & 2 	  & 1          & 0 	     \\ \hline
+			\cellcolor[HTML]{C0C0C0}\textbf{Byte 1} & 0 & 1          & 0  				& \multicolumn{5}{c|}{Canal (0-17)}				     \\ \hline
+			\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & Cuenta (6) & Cuenta (5)      		& Cuenta (4)   & Cuenta (3)  & Cuenta (2) & Cuenta (1) & Cuenta (0)  \\ \hline
+			\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & X          & Nivel ('1'->alto, '0'->bajo) & Cuenta (11)  & Cuenta (10) & Cuenta (9) & Cuenta (8) & Cuenta (7)  \\ \hline
+		\end{tabularx}
+		\caption{FPGA. Palabra de ancho de pulso}
+
+		\begin{tabularx}{\textwidth}{|l|c|X|X|X|X|X|X|X|}
+			\hline
+			\rowcolor[HTML]{C0C0C0} 
+			\multicolumn{1}{|r|}{\textbf{Bit}} 	& 7 & 6 		       & 5 		       & 4		       & 3 		       & 2		       & 1          	       & 0			\\ \hline
+			\cellcolor[HTML]{C0C0C0}\textbf{Byte 1} & 0 & 0                        & OverFlow FIFO Tubo 5  & OverFlow FIFO Tubo 4  & OverFlow FIFO Tubo 3  & OverFlow FIFO Tubo 2  & OverFlow FIFO Tubo 1  & OverFlow FIFO Tubo 0	\\ \hline
+			\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & OverFlow FIFO Tubo 12    & OverFlow FIFO Tubo 11 & OverFlow FIFO Tubo 10 & OverFlow FIFO Tubo 9  & OverFlow FIFO Tubo 8  & OverFlow FIFO Tubo 7  & OverFlow FIFO Tubo 6	\\ \hline
+			\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & Almost Full FIFO General & OverFlow FIFO General & OverFlow FIFO Tubo 17 & OverFlow FIFO Tubo 16 & OverFlow FIFO Tubo 15 & OverFlow FIFO Tubo 14 & OverFlow FIFO Tubo 13	\\ \hline
+		\end{tabularx}
+		\caption{FPGA. Palabra de estado}
+
+		\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|c|c|c|}
+			\hline
+			\rowcolor[HTML]{C0C0C0} 
+			\multicolumn{1}{|r|}{\textbf{Bit}}    	& 7 & 6           & 5 		& 4 	      & 3 	    & 2 	 & 1           & 0 	     	\\ \hline
+			\cellcolor[HTML]{C0C0C0}\textbf{Byte 1} & 0 & 1           & 1  		& X	      & X	    & X	  	 & X	       & X	     	\\ \hline
+			\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & Cuenta0(6)  & Cuenta0(5) 	& Cuenta0(4)  & Cuenta0(3)  & Cuenta0(2) & Cuenta0(1)  & Cuenta0(0)  	\\ \hline
+			\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & Cuenta0(13) & Cuenta0(12)	& Cuenta0(11) & Cuenta0(10) & Cuenta0(9) & Cuenta0(8)  & Cuenta0(7)  	\\ \hline
+			\cellcolor[HTML]{C0C0C0}\textbf{Byte 4} & 1 & X		  & X	 	& X	      & X	    & X		 & Cuenta0(15) & Cuenta0(14)	\\ \hline
+		\end{tabularx}
+		\caption{FPGA. Palabra de datos}
+		\label{tab:FPGAUart1}
+	\end{table}
+
+
+	Intro FPGA. La FPGA es el componente que más interactuar con la BeagleBone Black.
+	Intro, Reset, UARTS 
