@@ -116,11 +116,13 @@ ha formado parte  en la realización de los módulos hardware que serán descrit
 			\label{tab:FPGAUartComm}
 		\end{table}
 	\subsection{Multiplexor}
-	Entre la FPGA y la BeagleBone Black hay una segunda UART a la que nos referiremos como UART de extensión. Esta UART tiene como propósito
-	extender el número de UART que podemos conectar a nuestro sistema. La UART de extensión está conectada a un multiplexor implementado en la
-	FPGA. El multiplexor tiene 4 UARTs de entrada. Podemos seleccionar una entrada diferente mandando comandos a la FPGA por la UART de pulsos,
-	de acuerdo a la especificación de la tabla \ref{tab:FPGAUartComm}.
-	\par
-	Esta extensión nos permite conectar más sensores que requieran una UART. Un ejemplo es el barómetro \emph{BM35}\cite{BM35} utilizado en CALMA.
-
+		Entre la FPGA y la BeagleBone Black hay una segunda UART a la que nos referiremos como UART de extensión. Esta UART tiene como propósito
+		extender el número de UART que podemos conectar a nuestro sistema. La UART de extensión está conectada a un multiplexor implementado en la
+		FPGA. El multiplexor tiene como entradas 4 UARTs. Podemos seleccionar una entrada diferente mandando comandos a la FPGA por la UART de pulsos,
+		de acuerdo a la especificación de la tabla \ref{tab:FPGAUartComm}. Esta extensión nos permite conectar más sensores que requieran una UART.
+		Un ejemplo es el barómetro \emph{BM35}\cite{BM35} utilizado en CALMA.
 	\subsection{Reset}
+		La FPGA nos permite realizar un Reset del sistema. Todas las variables son puestas a sus valores iniciales, excepto el multiplexor que mantiene
+		su estado. Existen dos maneras de realizar este Reset. La primera es mediante un comando trasmitido por la UART de  pulsos, de acuerdo a la
+		especificación presentada en la tabla \ref{tab:FPGAUartComm}. La segunda manera de realizar este Reset es mediante una señal digital activa a
+		bajo nivel. La señal mencionada está conectada a la BeagleBone Black por lo que es posible realizar el Reset desde nuestro software de adquisición. 
