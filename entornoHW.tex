@@ -6,72 +6,121 @@ familiarizado con el diseño y funcionalidad del hardware. Impulsados por esta r
 los aspectos más importantes del hardware que compone nuestro sistema de adquisición. Volvemos a enfatizar que el autor de este trabajo no
 ha formado parte  en la realización de los módulos hardware que serán descritos a continuación.
 \section{BeagleBone Black}
-	La BeagleBone Black\cite{Beagle} es un computador empotrado, open-source y single board. La placa viene con Linux, distribución Angstrom y versión
-	de núcleo 3.8. Lo más característico de la placa son los 2x46 pines de extensión disponibles. Estos pines son los utilizados para
-	integrar este componente con el resto del sistema de adquisición. La mayoría de estos pines son multipropósito, pueden ser
-	configurados para tener funcionalidades diversas y además esta configuración puede ser realizada de forma dinámica\cite{BeagleWiki}.
-	\par
-	La configuración de los pines se realiza mediante el \emph{Device Tree Overlay}, estructura de datos que se utiliza para describir el
-	hardware. Para la realización de este trabajo no tendremos que lidiar con este mecanismo, utilizaremos una librería que nos facilite
-	el trabajo. La librería utilizada es \emph{Adafruit BeagleBone IO Python}\cite{AdaFruitGit}. Esta librería nos ayudara a configurar dinámicamente los pines
-	de extensión, además la librería ofrece métodos para operar sobre estos una vez configurados. En la tabla \ref{tab:BBBPins} podemos
-	ver las funcionalidades que los pines de la BeagleBone Black ofrecen y las que vamos a utilizar para este trabajo.
-	\begin{table}[h]
-		\begin{tabular}{|l|l|}
-			\hline
-			\rowcolor[HTML]{C0C0C0} 
-			{\color[HTML]{000000} \textbf{Disponibles}} & {\color[HTML]{000000} \textbf{Usados}} \\ \hline
-				7 Analog Pins                               & 4 Analog Pins                          \\ \hline
-				65 Digital Pins at 3.3V                     & 1 Digital Pin                          \\ \hline
-				2x I2C                                      & 0x I2C                                 \\ \hline
-				2x SPI                                      & 0x SPI                                 \\ \hline
-				4 Timers                                    & 0 Timers                               \\ \hline
-				4x UART                                     & 2x UART                                \\ \hline
-				8x PWM                                      & 0x PWM                                 \\ \hline
-				A/D Converter                               & Not used                               \\ \hline
-		\end{tabular}
+	BeagleBone Black\cite{Beagle}\cite{BeagleWiki} es un computador empotrado, open-source y single board. La placa viene con Linux, distribución Angstrom y versión
+	de núcleo 3.8. En la figura \ref{fig:beaglebone} podemos ver un diagrama de bloques que refleja los componentes hardware que componen la
+	BeagleBone. A continuación vamos a hacer una breve descripción de los módulos que utilizaremos para este trabajo.
+	\begin{itemize}
+	  \item 	ARM CORTEX A8\cite{BeagleCore} y SDRAM. El procesador es suficientemente potente para soportar la distribución Linux y satisfacer
+	    		las necesidades de nuestro software. Los 512MB DDR3 de memoria RAM son suficientes para los propósitos de este trabajo.
+		\item 	Ethernet Connector. El conector RJ-45 nos permitirá conectarnos a Internet. Una vez establecida la conexión podremos transmitir
+		  	los datos al NMDB. La conexión también nos permitirá conectarnos a la placa vía SSH, de esta manera un operador podría realizar
+			operaciones de mantenimiento de forma remota. 
+		\item	eMMC y microSD. Utilizaremos la memoria integrada (eMMC) de 4GB para albergar el sistema operativo y el software de adquisición.
+		  	La microSD la utilizaremos para guardar los datos y logs producidos por el software de adquisición.
+		\item 	Analog Pins. Los 7 pines analógicos nos permiten usar sensores cuyo output en una señal analógica. Ejemplo de estos sensores son
+		  	las fuentes de alimentación analógicas o los sensores de temperatura, en algunas estaciones la temperatura ambiente se monitoriza
+			también. Estos sensores producen señales cuya tensión eléctrica es proporcional al valor de la magnitud medida. 
+		\item 	GPIOs. Las GPIO nos permiten trabajar con señales digitales, tanto de entrada como de salida. Un ejemplo de uso es la señal de
+		  	Reset de la FPGA, señal digital activa a bajo nivel.
+		\item	UARTs. La placa ofrece 4 puertos series de los que utilizaremos 2 para comunicarnos con la FPGA.
+	\end{itemize}
+	\begin{figure}[h]
 		\centering
-		\caption{BeagleBone Black Headers.}
-		\label{tab:BBBPins}
-	\end{table}
-\subsection{FPGA}
-	Intro FPGA. La FPGA es el componente que más interactuar con la BeagleBone Black. \ref{tab:FPGAUart1}
-	Intro, Reset, UARTS 
-	\begin{table}[h]
-		\tiny
-		\begin{tabularx}{\textwidth}{|l|c|c|X|c|c|c|c|c|}
-			\hline
-			\rowcolor[HTML]{C0C0C0} 
-			\multicolumn{1}{|r|}{\textbf{Bit}}    	& 7 & 6          & 5 				& 4 	       & 3 	     & 2 	  & 1          & 0 	     \\ \hline
-			\cellcolor[HTML]{C0C0C0}\textbf{Byte 1} & 0 & 1          & 0  				& \multicolumn{5}{c|}{Canal (0-17)}				     \\ \hline
-			\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & Cuenta (6) & Cuenta (5)      		& Cuenta (4)   & Cuenta (3)  & Cuenta (2) & Cuenta (1) & Cuenta (0)  \\ \hline
-			\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & X          & Nivel ('1'->alto, '0'->bajo) & Cuenta (11)  & Cuenta (10) & Cuenta (9) & Cuenta (8) & Cuenta (7)  \\ \hline
-		\end{tabularx}
-		\caption{FPGA. Palabra de ancho de pulso}
-
-		\begin{tabularx}{\textwidth}{|l|c|X|X|X|X|X|X|X|}
-			\hline
-			\rowcolor[HTML]{C0C0C0} 
-			\multicolumn{1}{|r|}{\textbf{Bit}} 	& 7 & 6 		       & 5 		       & 4		       & 3 		       & 2		       & 1          	       & 0			\\ \hline
-			\cellcolor[HTML]{C0C0C0}\textbf{Byte 1} & 0 & 0                        & OverFlow FIFO Tubo 5  & OverFlow FIFO Tubo 4  & OverFlow FIFO Tubo 3  & OverFlow FIFO Tubo 2  & OverFlow FIFO Tubo 1  & OverFlow FIFO Tubo 0	\\ \hline
-			\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & OverFlow FIFO Tubo 12    & OverFlow FIFO Tubo 11 & OverFlow FIFO Tubo 10 & OverFlow FIFO Tubo 9  & OverFlow FIFO Tubo 8  & OverFlow FIFO Tubo 7  & OverFlow FIFO Tubo 6	\\ \hline
-			\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & Almost Full FIFO General & OverFlow FIFO General & OverFlow FIFO Tubo 17 & OverFlow FIFO Tubo 16 & OverFlow FIFO Tubo 15 & OverFlow FIFO Tubo 14 & OverFlow FIFO Tubo 13	\\ \hline
-		\end{tabularx}
-		\caption{FPGA. Palabra de estado}
-
-		\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|c|c|c|}
-			\hline
-			\rowcolor[HTML]{C0C0C0} 
-			\multicolumn{1}{|r|}{\textbf{Bit}}    	& 7 & 6           & 5 		& 4 	      & 3 	    & 2 	 & 1           & 0 	     	\\ \hline
-			\cellcolor[HTML]{C0C0C0}\textbf{Byte 1} & 0 & 1           & 1  		& X	      & X	    & X	  	 & X	       & X	     	\\ \hline
-			\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & Cuenta0(6)  & Cuenta0(5) 	& Cuenta0(4)  & Cuenta0(3)  & Cuenta0(2) & Cuenta0(1)  & Cuenta0(0)  	\\ \hline
-			\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & Cuenta0(13) & Cuenta0(12)	& Cuenta0(11) & Cuenta0(10) & Cuenta0(9) & Cuenta0(8)  & Cuenta0(7)  	\\ \hline
-			\cellcolor[HTML]{C0C0C0}\textbf{Byte 4} & 1 & X		  & X	 	& X	      & X	    & X		 & Cuenta0(15) & Cuenta0(14)	\\ \hline
-		\end{tabularx}
-		\caption{FPGA. Palabra de datos}
-		\label{tab:FPGAUart1}
-	\end{table}
+		\includegraphics[keepaspectratio, width=1\textwidth]{./img/beaglebone.png}
+		\caption{BeagleBone Black. Diagrama de bloques hardware}
+		\label{fig:beaglebone}
+	\end{figure}
+	Fijándonos en la figura \ref{fig:beaglebone} podemos ver que muchos de los módulos son accesibles mediante los pines de extensión\cite{BeagleWikiExp}.
+	La placa ofrece 2x46 pines de los cuales muchos son multipropósito, pueden ser configurados para tener funcionalidades diversas y además esta
+	configuración puede ser realizada de forma dinámica. La configuración de los pines se realiza mediante el \emph{Device Tree Overlay}, estructura de
+	datos que se utiliza para describir el hardware. Para la realización de este trabajo no tendremos que lidiar con este mecanismo, utilizaremos una
+	librería que nos facilite el trabajo. La librería utilizada es \emph{Adafruit BeagleBone IO Python}\cite{AdaFruitGit}. Esta librería nos ayudara a
+      	configurar dinámicamente los pines de extensión, además la librería ofrece métodos para operar sobre estos una vez configurados.
 
 
-	Intro FPGA. La FPGA es el componente que más interactuar con la BeagleBone Black.
-	Intro, Reset, UARTS 
+\section{FPGA}
+	En esta sección vamos a hacer una descripción de la FPGA. En la figura \ref{fig:fpga} podemos ver un diagrama de bloques que refleja los módulos
+	funcionales y las interfaces que posee la FPGA.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[keepaspectratio, width=1\textwidth]{./img/fpga.png}
+		\caption{FPGA. Diagrama de bloques.}
+		\label{fig:fpga}
+	\end{figure}	
+	\subsection{Procesado de pulsos}
+		Como ya hemos comentado en el capítulo \ref{cap1} la FPGA se encarga de procesar las señales provenientes de los tubos, una vez procesadas
+		las señales, la información es transmitida a la BeagleBone Black. Esta transmisión se realiza mediante una UART a la que nos referiremos
+		como UART de pulsos. En las tablas \ref{tab:FPGAUartPulso}, \ref{tab:FPGAUartOver}, \ref{tab:FPGAUartCont} podemos ver el formato de los
+		datos transmitidos. Vemos que hay tres diferentes mensajes que la FPGA nos puede mandar.
+		\begin{itemize}
+			\item	En la tabla \ref{tab:FPGAUartPulso} podemos ver el formato del primer mensaje que vamos a discutir. Este mensaje se
+			  	constituye de tres bytes que nos dan información sobre el ancho de un pulso. El mensaje nos permite identificar el canal
+				en el que se ha producido el pulso, el nivel (alto/bajo) y la longitud de este. Los pulsos de nivel alto representan la
+				detección de una partícula por los tubos contadores, el ancho del pulso es proporcional a la energía de la partícula
+				detectada. La longitud de los pulsos de nivel bajo también es mediada para poder identificar pulsos con pequeña
+				separación temporal.
+			\item 	En la siguiente tabla \ref{tab:FPGAUartOver} podemos ver el mensaje de estado que la FPGA genera. Dado que la UART usa
+			  	una FIFO de tamaño fijo es posible que la FIFO se llene y se pierdan mensajes. En este caso la FPGA genera un mensaje de
+				estado que es transmitido para indicarle al software que se han producido perdidas de datos.
+			\item	Además de medir el ancho de los pulsos la PFGA lleva la cuenta de pulsos recibidos para cada canal. Esta información
+			  	puede ser solicitada por la BeagleBone Black utilizando el comando apropiado, ver tabla \ref{tab:FPGAUartComm}. En la
+				tabla \ref{tab:FPGAUartCont} podemos ver el formato en el que se transmite la información de las cuentas. Los bytes
+				2, 3, 4 son transmitidos 18 veces, una vez para cada canal. Después de transmitir la información de las cuentas la FPGA
+				reinicia los contadores para cada canal.
+		\end{itemize}
+		\begin{table}[h]
+			\tiny
+			\begin{tabularx}{\textwidth}{|l|c|c|X|c|c|c|c|c|}
+				\hline
+				\rowcolor[HTML]{C0C0C0} 
+				\multicolumn{1}{|r|}{\textbf{Bit}}    	& 7 & 6          & 5 				& 4 	       & 3 	     & 2 	  & 1          & 0 	     \\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 1} & 0 & 1          & 0  				& \multicolumn{5}{c|}{Canal (0-17)}				     \\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & Cuenta (6) & Cuenta (5)      		& Cuenta (4)   & Cuenta (3)  & Cuenta (2) & Cuenta (1) & Cuenta (0)  \\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & X          & Nivel ('1'->alto, '0'->bajo) & Cuenta (11)  & Cuenta (10) & Cuenta (9) & Cuenta (8) & Cuenta (7)  \\ \hline
+			\end{tabularx}
+			\caption{UART pulsos. Palabra de ancho de pulso}
+			\label{tab:FPGAUartPulso}
+			\begin{tabularx}{\textwidth}{|l|c|X|X|X|X|X|X|X|}
+				\hline
+				\rowcolor[HTML]{C0C0C0} 
+				\multicolumn{1}{|r|}{\textbf{Bit}} 	& 7 & 6 		       & 5 		       & 4		       & 3 		       & 2		       & 1          	       & 0			\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 1} & 0 & 0                        & OverFlow FIFO Tubo 5  & OverFlow FIFO Tubo 4  & OverFlow FIFO Tubo 3  & OverFlow FIFO Tubo 2  & OverFlow FIFO Tubo 1  & OverFlow FIFO Tubo 0	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & OverFlow FIFO Tubo 12    & OverFlow FIFO Tubo 11 & OverFlow FIFO Tubo 10 & OverFlow FIFO Tubo 9  & OverFlow FIFO Tubo 8  & OverFlow FIFO Tubo 7  & OverFlow FIFO Tubo 6	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & Almost Full FIFO General & OverFlow FIFO General & OverFlow FIFO Tubo 17 & OverFlow FIFO Tubo 16 & OverFlow FIFO Tubo 15 & OverFlow FIFO Tubo 14 & OverFlow FIFO Tubo 13	\\ \hline
+			\end{tabularx}
+			\caption{UART pulsos. Palabra de estado}
+			\label{tab:FPGAUartOver}
+			\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|c|c|c|}
+				\hline
+				\rowcolor[HTML]{C0C0C0} 
+				\multicolumn{1}{|r|}{\textbf{Bit}}    	& 7 & 6           & 5 		& 4 	      & 3 	    & 2 	 & 1           & 0 	     	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 1} & 0 & 1           & 1  		& X	      & X	    & X	  	 & X	       & X	     	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & Cuenta0(6)  & Cuenta0(5) 	& Cuenta0(4)  & Cuenta0(3)  & Cuenta0(2) & Cuenta0(1)  & Cuenta0(0)  	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & Cuenta0(13) & Cuenta0(12)	& Cuenta0(11) & Cuenta0(10) & Cuenta0(9) & Cuenta0(8)  & Cuenta0(7)  	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 4} & 1 & X		  & X	 	& X	      & X	    & X		 & Cuenta0(15) & Cuenta0(14)	\\ \hline
+			\end{tabularx}
+			\caption{UART pulsos. Palabra de datos}
+			\label{tab:FPGAUartCont}
+			\begin{tabularx}{\hsize}{|c|X|}
+		  		\hline
+				\rowcolor[HTML]{C0C0C0} 
+		  		Commando & Descripción                            \\\hline
+		  		0x00     & Configura multiplexor para aparato 1   \\\hline
+		  		0x01     & Configura multiplexor para aparato 2   \\\hline
+		  		0x02     & Configura multiplexor para aparato 3   \\\hline
+		  		0x03     & Configura multiplexor para aparato 4   \\\hline
+		  		0x10     & Reset general del sistema              \\\hline
+		  		0x11     & Solicita la transmisión de las cuentas \\\hline
+			\end{tabularx}
+			\caption{UART pulsos. Commandos}
+			\label{tab:FPGAUartComm}
+		\end{table}
+	\subsection{Multiplexor}
+	Entre la FPGA y la BeagleBone Black hay una segunda UART a la que nos referiremos como UART de extensión. Esta UART tiene como propósito
+	extender el número de UART que podemos conectar a nuestro sistema. La UART de extensión está conectada a un multiplexor implementado en la
+	FPGA. El multiplexor tiene 4 UARTs de entrada. Podemos seleccionar una entrada diferente mandando comandos a la FPGA por la UART de pulsos,
+	de acuerdo a la especificación de la tabla \ref{tab:FPGAUartComm}.
+	\par
+	Esta extensión nos permite conectar más sensores que requieran una UART. Un ejemplo es el barómetro \emph{BM35}\cite{BM35} utilizado en CALMA.
+
+	\subsection{Reset}
