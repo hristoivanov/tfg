@@ -17,7 +17,7 @@ ha formado parte  en la realización de los módulos hardware que serán descrit
 			operaciones de mantenimiento de forma remota. 
 		\item	eMMC y microSD. Utilizaremos la memoria integrada (eMMC) de 4GB para albergar el sistema operativo y el software de adquisición.
 		  	La microSD la utilizaremos para guardar los datos y logs producidos por el software de adquisición.
-		\item 	Analog Pins. Los 7 pines analógicos nos permiten usar sensores cuyo output en una señal analógica. Ejemplo de estos sensores son
+		\item 	Analog Pins. Los 7 pines analógicos nos permiten usar sensores cuyo output es una señal analógica. Ejemplo de estos sensores son
 		  	las fuentes de alimentación analógicas o los sensores de temperatura, en algunas estaciones la temperatura ambiente se monitoriza
 			también. Estos sensores producen señales cuya tensión eléctrica es proporcional al valor de la magnitud medida. 
 		\item 	GPIOs. Las GPIO nos permiten trabajar con señales digitales, tanto de entrada como de salida. Un ejemplo de uso es la señal de
@@ -51,7 +51,7 @@ ha formado parte  en la realización de los módulos hardware que serán descrit
 		Como ya hemos comentado en el capítulo \ref{cap1} la FPGA se encarga de procesar las señales provenientes de los tubos, una vez procesadas
 		las señales, la información es transmitida a la BeagleBone Black. Esta transmisión se realiza mediante una UART a la que nos referiremos
 		como UART de pulsos. En las tablas \ref{tab:FPGAUartPulso}, \ref{tab:FPGAUartOver}, \ref{tab:FPGAUartCont} podemos ver el formato de los
-		datos transmitidos. Vemos que hay tres diferentes mensajes que la FPGA nos puede mandar.
+		datos transmitidos. Vemos que hay tres diferentes mensajes que la FPGA nos puede transmitir.
 		\begin{itemize}
 			\item	En la tabla \ref{tab:FPGAUartPulso} podemos ver el formato del primer mensaje que vamos a discutir. Este mensaje se
 			  	constituye de tres bytes que nos dan información sobre el ancho de un pulso. El mensaje nos permite identificar el canal
