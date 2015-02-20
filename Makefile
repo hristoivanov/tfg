@@ -1,18 +1,12 @@
 MAC_INCLUDE=/usr/local/share/latex-mk/latex.gmk
 LINUX_INCLUDE=/usr/share/latex-mk/latex.gmk
 NAME=proyecto
-TEXSRCS= ambitoyobjetivos.tex \
-analisisderequisitos.tex \
-conclusiones.tex \
-diseno.tex \
-glosario.tex \
-implementacion.tex \
-introduccion.tex \
-manuales.tex \
+TEXSRCS= introduccion.tex \
 agradecimientos.tex \
 portada.tex \
 abreviaturas.tex \
-entornoHW.tex
+entornoHW.tex \
+softwareControl.tex
 
 USE_PDFLATEX=true
 
