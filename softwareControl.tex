@@ -163,10 +163,10 @@ GPIO.output('P9_42', GPIO.HIGH)
 
 \section{\texttt{FPGASerialReader}}
 	Este módulo software es el encargado de leer y procesar los datos transmitidos por la FPGA. En la figura \ref{fig:soft_adquisición} podemos
-	ver un diagrama de flujo que refleja el funcionamiento de este. La ejecución de Thread empieza comprobando el estado del puerto serie, que
+	ver un diagrama de flujo que refleja el funcionamiento de este. La ejecución del Thread empieza comprobando el estado del puerto serie, que
 	puede estar saturándose. En el caso de que el puerto se esté saturando es generada una estrada en el archivo de Log. A continuación leemos
 	los datos disponibles, en caso de no haber datos disponibles el Thread se queda bloqueado esperando a la llegada de estos. Seguidamente de
-	leer los datos pasamos a procesar los, por procesar nos referimos a interpretar el significado que tienen. Finalmente volvemos a paso inicial.  
+	leer los datos pasamos a procesar los, por procesar nos referimos a interpretar el significado que tienen. Finalmente volvemos al paso inicial.  
 	\par
 	En las tablas del capítulo \ref{entornoHW} podemos ver el formato de los datos que tenemos que procesar. Vemos que hay tres tipos de mensajes
 	que podemos recibir. Los mensajes no siguen un orden concreto, además llegan de forma totalmente asíncrona. Los mensajes son transmitidos en
@@ -193,11 +193,22 @@ GPIO.output('P9_42', GPIO.HIGH)
 	\subsection{Petición de cuentas}
 	\subsection{Petición de datos sensores}
 	\subsection{Guardar datos}
+\section{\texttt{DBUpdater}}
+	Este módulo software es el encargado de actualizar el contenido de la base de datos remota. El funcionamiento de este es muy simple y se puede
+	ver en la figura \ref{fig:soft_adquisición}. Empieza estableciendo la conexión con la base de datos remota. Si esta se establece procede a leer la
+	última entrada en la base de datos remota. Seguidamente el software calcula la diferencia entre las dos bases de datos, para el propósito usa
+	la fecha y hora de la entrada leída de la base de datos remota. Finalmente el software selecciona las diferencias entre las dos bases de datos
+	y las escribe en la remota. Es entonces cuando la ejecución de este Thread termina. 
+	\par
+	Si la conexión con la máquina que alberga a la base de datos remota se pierde por un tiempo, cuando esta vuelva a restablecerse el 
+	\texttt{DBUpdater} sincronizara las dos bases de datos. Eventualmente si las diferencias entre las dos bases de datos son muy grandes la
+	sincronización no ocurrirá de golpe, de esta manera evitamos sobrecargar al sistema. El fallo de la sincronización no es crítico, el Thread
+	volverá a ser lanzado el próximo minuto y volverá intentar sincronizar las dos bases de datos.
+
 
 \section{\texttt{SensorsManager}}
 	\subsection{Pressure}
 	\subsection{HVPS}
-\section{\texttt{DBUpdater}}
 
 \section{testing}
 	Porque son importantes los unit tests.
