@@ -68,6 +68,8 @@ ha formado parte  en la realización de los módulos hardware que serán descrit
 				2, 3, 4 son transmitidos 18 veces, una vez para cada canal. Después de transmitir la información de las cuentas la FPGA
 				reinicia los contadores para cada canal.
 		\end{itemize}
+		En la figura \ref{fig:fpgaWave} podemos ver un posible diagrama de como se generan los mensajes anteriormente descritos.
+
 		\begin{table}[h]
 			\tiny
 			\begin{tabularx}{\textwidth}{|l|c|c|X|c|c|c|c|c|}
@@ -75,8 +77,8 @@ ha formado parte  en la realización de los módulos hardware que serán descrit
 				\rowcolor[HTML]{C0C0C0} 
 				\multicolumn{1}{|r|}{\textbf{Bit}}    	& 7 & 6          & 5 				& 4 	       & 3 	     & 2 	  & 1          & 0 	     \\ \hline
 				\cellcolor[HTML]{C0C0C0}\textbf{Byte 1} & 0 & 1          & 0  				& \multicolumn{5}{c|}{Canal (0-17)}				     \\ \hline
-				\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & Cuenta (6) & Cuenta (5)      		& Cuenta (4)   & Cuenta (3)  & Cuenta (2) & Cuenta (1) & Cuenta (0)  \\ \hline
-				\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & X          & Nivel ('1'->alto, '0'->bajo) & Cuenta (11)  & Cuenta (10) & Cuenta (9) & Cuenta (8) & Cuenta (7)  \\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & Dato (6)	 & Dato (5)      		& Dato (4)     & Dato (3)    & Dato (2)   & Dato (1)   & Dato (0)    \\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & X          & Nivel ('1'->alto, '0'->bajo) & Dato (11)    & Dato (10)   & Dato (9)   & Dato (8)   & Dato (7)    \\ \hline
 			\end{tabularx}
 			\caption{UART pulsos. Palabra de ancho de pulso}
 			\label{tab:FPGAUartPulso}
@@ -93,13 +95,16 @@ ha formado parte  en la realización de los módulos hardware que serán descrit
 			\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|c|c|c|}
 				\hline
 				\rowcolor[HTML]{C0C0C0} 
-				\multicolumn{1}{|r|}{\textbf{Bit}}    	& 7 & 6           & 5 		& 4 	      & 3 	    & 2 	 & 1           & 0 	     	\\ \hline
-				\cellcolor[HTML]{C0C0C0}\textbf{Byte 1} & 0 & 1           & 1  		& X	      & X	    & X	  	 & X	       & X	     	\\ \hline
-				\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & Cuenta0(6)  & Cuenta0(5) 	& Cuenta0(4)  & Cuenta0(3)  & Cuenta0(2) & Cuenta0(1)  & Cuenta0(0)  	\\ \hline
-				\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & Cuenta0(13) & Cuenta0(12)	& Cuenta0(11) & Cuenta0(10) & Cuenta0(9) & Cuenta0(8)  & Cuenta0(7)  	\\ \hline
-				\cellcolor[HTML]{C0C0C0}\textbf{Byte 4} & 1 & X		  & X	 	& X	      & X	    & X		 & Cuenta0(15) & Cuenta0(14)	\\ \hline
+				\multicolumn{1}{|r|}{\textbf{Bit}}    	 & 7 & 6           & 5 		& 4 	      & 3 	    & 2 	 & 1           & 0 	     	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 1}  & 0 & 1           & 1  	& X	      & X	    & X	  	 & X	       & X	     	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 2}  & 1 & Dato0 (6)   & Dato0 (5) 	& Dato0 (4)   & Dato0 (3)   & Dato0 (2)  & Dato0 (1)   & Dato0 (0)  	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 3}  & 1 & Dato0 (13)  & Dato0 (12)	& Dato0 (11)  & Dato0 (10)  & Dato0 (9)  & Dato0 (8)   & Dato0 (7)  	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 4}  & 1 & X	   & X	 	& X	      & X	    & X		 & Dato0 (15)  & Dato0 (14)	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 5}  & 1 & Dato1 (6)   & Dato1 (5) 	& Dato1 (4)   & Dato1 (3)   & Dato1 (2)  & Dato1 (1)   & Dato1 (0)  	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{......}  & . & .........   & ......... 	& .........   & .........   & .........  & .........   & .........  	\\ \hline
+				\cellcolor[HTML]{C0C0C0}\textbf{Byte 55} & 1 & X	   & X	 	& X	      & X	    & X		 & Dato17 (15) & Dato17 (14)	\\ \hline
 			\end{tabularx}
-			\caption{UART pulsos. Palabra de datos}
+			\caption{UART pulsos. Palabra de cuentas}
 			\label{tab:FPGAUartCont}
 			\begin{tabularx}{\hsize}{|c|X|}
 		  		\hline
@@ -115,6 +120,12 @@ ha formado parte  en la realización de los módulos hardware que serán descrit
 			\caption{UART pulsos. Commandos}
 			\label{tab:FPGAUartComm}
 		\end{table}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[keepaspectratio, width=1\textwidth]{./img/fpgawave.png}
+			\caption{FPGA. Diagrama de eventos.}
+			\label{fig:fpgaWave}
+		\end{figure}
 	\subsection{Multiplexor}
 		Entre la FPGA y la BeagleBone Black hay una segunda UART a la que nos referiremos como UART de extensión. Esta UART tiene como propósito
 		extender el número de UART que podemos conectar a nuestro sistema. La UART de extensión está conectada a un multiplexor implementado en la
