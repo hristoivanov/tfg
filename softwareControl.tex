@@ -144,7 +144,13 @@ beta_efficiency=1.0
 		\texttt{argparse}\cite{py_argparse}. Los valores que son especificados con Flags sobrescriben a los valores del archivo de
 		configuración. Los Flags se usan de la siguiente forma.
 		\begin{lstlisting}
-#TODO TODO TODO  Arrancar el programa con el flag -h y copiar lo que imprima 
+usage: NMDA.py 
+   [-h] [-sp SERIAL_PORT_CONTROL] [-db DATABASE]
+   [-sps SERIAL_PORT_SENSORS] [-bm {ap1,bm35}]
+   [-hv {digital,analog}] [-ahvc ANALOG_HVPS_CORR]
+   [-dbU DB_UPDATER_ENABLED] [-ldb LOCAL_DB] [-rh REMOTE_DB_HOST]
+   [-ru REMOTE_DB_USER] [-rp REMOTE_DB_PASS] [-rdb REMOTE_DB_DB]
+   [-apr AVG_PRESSURE]
 		\end{lstlisting}
 	\subsection{Iniciar recursos}
 		Al ser el módulo principal, \texttt{NMDA} es el encargado de iniciar todos los recursos que serán utilizados. Por recursos nos
@@ -170,7 +176,7 @@ GPIO.output('P9_42', GPIO.HIGH)
 		Este es un software que debe ejecutarse indefinidamente. En su uso real no será interrumpido, pero hemos implementado un mecanismo que
 		nos permite pararlo. Este mecanismo nos permite solicitar el fin del programa, que desencadena una serie de acciones. Estas acciones
 		tienen como objetivo asegurar que todos los recursos sean liberados de forma correcta. Liberar los recursos de forma correcta supone
-		no tener ningún problema si seguidamente volvemos a ejecutar el software. Esto en el uso real del software no tiene gran impacto, sin
+		no tener ningún conflicto si seguidamente volvemos a ejecutar el software. Esto en el uso real del software no tiene gran impacto, sin
 		embargo ha sido muy útil en el proceso de desarrollo.
 
 \section{\texttt{FPGASerialReader}}
@@ -220,6 +226,29 @@ GPIO.output('P9_42', GPIO.HIGH)
 		media de cuentas de cada canal. Comparando la desviación relativa sobre la media de cada canal selecciona el mediano, de aquí el
 		nombre del algoritmo. La desviación relativa del canal seleccionado es multiplicada por el sumatorio del vector de cuentas medias.
 		El valor devuelto por la multiplicación es el valor final devuelto por este algoritmo. 
+		\par 
+		Una vez calculado el valor global usando el MiedianAlgorithm procedemos a calcular las correcciones. Calcularemos dos correcciones.
+		La primera es la corrección por presión. Como explicamos en el cápitulo \ref{cap1} la presión atmosférica influye en el proceso de
+		adquisición. Para realizar la corrección por presión hay dos factores que se toman en cuenta. El primero es la desviación de la
+		presión actual respecto al valor medio de presión para la estación. El segundo es el coeficiente de correlación de los tubos
+		respecto a la presión atmosférica. Este coeficiente ha sido calculado por el equipo de CALMA, siendo el método utilizado desconocido
+		para el autor de este trabajo. En la ecuación \ref{eq:pression} podemos ver como se usan estos dos factores, donde $N_0$ es el valor
+		sin corregir, $N$ el valor corregido, $\beta$ el coeficiente de corelación, $P$ la presión actual y $P_0$ la presión media para la
+		estación.
+		\begin{equation}\label{eq:pression}
+		  N=N_0*exp(\beta*(P-P_0))
+		\end{equation}
+		La segunda corrección que realizaremos es la corrección por eficiencia. Esta es una corrección muy simple, consiste en aplicar un
+		factor multiplicativo a la corrección por presión. Esta corrección se puede ver en la formula \ref{eq:efficiencia}, donde $N_0$ es
+		el valor de la corrección por presión, $N$ el valor de la corrección por eficiencia y $\beta$ el factor de corrección. 
+		\begin{equation}\label{eq:efficiencia}
+		  N=N_0*\beta
+		\end{equation}
+		Cambios en el entorno de la estación pueden causar cambios en la cantidad de eventos medidos, por ejemplo la construcción cercana
+		de un nuevo edificio podría reducir la cantidad de partículas que llegan al instrumento. La persona que trabaja con los datos de la
+		estación podría creer que detrás de este decremento existe un motivo científico cuando el motivo es técnico. Es por esto por lo que
+		estos cambios se estudian y corrigen con la siguiente corrección.
+
 	\subsection{Base de datos}
 		Como ya hemos explicado los datos son guardados en una base de datos para cuya gestión utilizamos Sqlite3. En la base de datos tenemos
 		tres tablas que a continuación procedemos a explicar.
