@@ -276,6 +276,22 @@ GPIO.output('P9_42', GPIO.HIGH)
 	Durante la realización de este trabajo realizaremos una serie de test unitarios\cite{UnitTest}. Estos nos ayudaran a comprobar el correcto
 	funcionamiento de pequeñas funciones por separado. En este trabajo no vamos a hacer una explicación de estos, tan solo mencionaremos que los
 	fuentes están en el directorio \texttt{\symbol{92}tests}.
+\section{Proceso de implementación}
+	En esta sección procederemos a exponer algunos de los aspectos más importantes del proceso de implementación del software de adquisición. Para
+	conectarnos a la BeagleBone Black hemos utilizado SSH\cite{ssh}. Una vez conectados para editar archivos hemos utilizado VIM\cite{vim}. Desde
+	el primer momento hemos utilizado control de versiones, hemos elegido GIT\cite{git} manteniendo un repositorio remoto en GitHub\cite{github}.
+	GitHub nos permite visualizar el contenido del repositorio mediante un navegador Web. La URL del repositorio es: 
+	\url{https://github.com/opobla/nmpw}.
 
-\section{Mantenimiento}
-	Dejar el sistema de adquisición de datos funciónando algun tiempo. Hacer analisis de los datos. Describir experiencia.  TODO dejar para el capítuo de Conclusiones.
+\section{Implantación y mantenimiento}
+	Como hemos explicado en el capítulo \ref{cap1} aparte de implementar el software tenemos como objetivo implantar y hacer el mantenimiento de
+	este durante un tiempo. 
+	\par
+	Implantar el software implica implantar el sistema de adquisición entero. En esta labor obtendremos la ayuda del equipo responsable de la
+	estación de CALMA. El sistema tendrá que funcionar conjuntamente al sistema de adquisición ya existente, compartiendo los tubos contadores, el
+	barómetros y el resto de elementos necesarios. Para resolver este problema tendremos que realizar una serie de artimañas tanto hardware como
+	software. El objetivo principal es desplegar el sistema, pero interferir lo menos posible en el funcionamiento del sistema de adquisición ya presente. 
+	\par
+	Una vez puesto en marcha el nuevo sistema de adquisición nuestra labor será vigilar por el correcto funcionamiento de este. Tendremos que
+	localizar y corregir los problemas que se presenten. Finalmente elaboraremos un resumen de esta experiencia. Este resumen será presentado en
+	el capítulo \ref{cap_conclusiones}.
