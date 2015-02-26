@@ -3,6 +3,25 @@
 
 \section{Conclusiones}
 \section{Trabajos futuros}
-	\subsection{Debian}
-	\subsection{Script configuración}
-	\subsection{WatchDog pro version}
+	\subsection{Debian en la BeagleBone Black}
+	Para realizar el software de adquisición hemos utilizado Angstrom, la distribución Linux que venía por defecto con la BeagleBone Black.
+	Angstrom es una distribución muy ligera y adecuada, pero la comunidad existente es muy pequeña. Nos hemos propuesto como trabajo futuro
+	cambiar de la Angstrom a alguna distribución derivada de Debian. Nuestro caso no es algo aislado sino parte de una movimiento mayor, gran
+	parte de los usuarios  de BeagleBone Black instalan Debians en sus placas. El fabricante de las placas también anuncio que en un futuro las
+	placas llevaran Debian por defecto. Como hemos comentado la razón detrás de esta elección es la comunidad de usuarios. Siendo esta mayor es
+	mucho más fácil encontrar información o ayuda. Al hacer este cambio también tendríamos que realizar algunos cambios en nuestro software,
+	adaptarlo para el nuevo entorno.
+	\subsection{Script de configuración para el software de adquisición}
+	Todo el proceso de configuración para implantar el software está reflejado en el archivo \emph{Readme}. Los pasos recogidos en el archivo
+	podrían automatizarse, podríamos crear un script que ejecutara todos los comandos necesarios. De esta manera para implantar el software tan
+	solo haría falta clonar el repositorio remoto y ejecutar el script. Este script se crearía después de realizar el cambio de distribución a
+	Debian.
+	\subsection{Watchdog}
+	Otro aspecto que podríamos mejorar del software de adquisición es el Watchdog. Tal y como se explicó en el capítulo \ref{cap2} el Watchdog que esta
+	implementado actualmente es muy simple. Este tan solo comprueba que el sistema operativo no se quede bloqueado. Si recordamos la función del
+	Watchdog es detectar malfuncionamientos y reiniciar el sistema al detectar uno. Que el sistema operativo se quede bloqueado es un
+	malfuncionamiento, pero existe otro que también queremos evitar. La función del software es que los datos generados por el resto del sistema
+	acaben en una base de datos, que no se generen datos es un malfuncionamiento que queremos evitar. Podremos detectar este problema mirando en
+	la base de datos. Ante la presencia de nuevos datos el software tendría que reiniciar el contador del Watchdog y si no están presentes nuevos
+	datos el software tendría que no reiniciar el contador. De esta forma si no se generan nuevos datos por el sistema, el software sera
+	reiniciado. 
