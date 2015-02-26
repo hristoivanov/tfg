@@ -41,7 +41,7 @@ principales, a continuación haremos una breve descripción de estos.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/boot.png}
-		\caption{Arranque del sistema}   %TODO monospace
+		\caption{Arranque del sistema}   
 		\label{fig:boot}
 	\end{figure}
 	\subsection{Watchdog}
@@ -105,6 +105,8 @@ logging.info('Started')
 serial_port_control  = /dev/ttyO2
 # The local database where data will be saved. If 'shell' is specified as database data will be printed to the shell
 database = /server/data/test.db
+# Channel averages used for the median algorithm\ldots
+Channel_avg = 255, 290, 0, 295, 0, 0, 289, 291, 252, 254, 293, 299, 298, 328, 299, 302, 302, 272
 
 [Sensors]
 # The serial RS232_FPGA1
@@ -113,7 +115,7 @@ serial_port_sensors= None
 barometer_type = None
 # The type of hvps that will be used. 'None', 'analog', 'digital'
 hvps_type = None
-#Correction coefficient for the analog hvps, 1.0 ==> No correction
+#Correction coefficient for the analog hvps, 1.0 &=& > No correction
 analog_hvps_corr = 1.0
 
 [dbUpdater]
@@ -127,7 +129,17 @@ remote_db_user= hristo
 remote_db_pass= 123qwe
 # The database will be created if not exists along with all the tables
 remote_db_db= nmdadb2
-		\end{lstlisting}
+
+[Pressure]
+# Average pressure for the station.
+avg_pressure=932
+# N=N0*exp(Beta*(P-P0))
+beta_pressure=0.0067
+
+[Efficiency]
+# corr_efficcincy = Beta * corr_pressure
+beta_efficiency=1.0
+\end{lstlisting}
 		Los valores de las variables exportadas son también accesibles mediante el uso de Flags. En este caso hemos utilizado la librería 
 		\texttt{argparse}\cite{py_argparse}. Los valores que son especificados con Flags sobrescriben a los valores del archivo de
 		configuración. Los Flags se usan de la siguiente forma.
@@ -183,16 +195,48 @@ GPIO.output('P9_42', GPIO.HIGH)
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/reader.png}
-		\caption{Máquina de Moore. \texttt{FPGASerialReader}.}   %TODO monospace
+		\caption{Máquina de Moore. \texttt{FPGASerialReader}.}   
 		\label{fig:reader}
 	\end{figure}
 
 \section{\texttt{CountsManager}}
-	Intro funcionamineto.
-	\subsection{Deriva local}
-	\subsection{Petición de cuentas}
-	\subsection{Petición de datos sensores}
-	\subsection{Guardar datos}
+	Este es el módulo software encargado de recolectar la información de los demás módulos y guardarla en una base de datos. En la figura 
+	\ref{fig:soft_adquisición} podemos ver el diagrama que describe el funcionamiento de este. La mayoría de los datos que este módulo maneja son
+	generados por los otros módulos software como el \texttt{FPGASerialReader} o el \texttt{SensorsManager}, este tan solo calcula el valor global
+	y las correcciones de este. Finalmente este se encarga de guardar los datos. 
+	\subsection{Solicitar cuentas a la FPGA}
+		Como vimos en el capítulo \ref{entornoHW} la FPGA tan solo transmite los datos de las cuentas cuando estas son solicitadas con el
+		comando apropiado. Este módulo es el encargado de mandar el comando al principio de cada minuto. La información transmitida por la
+		FPGA es procesada por el \texttt{FPGASerialReader} y almacenada en variables compartidas accesibles por el \texttt{CountsManager}.
+		Después de mandar el comando apropiado para solicitar las cuentas este Thread se queda esperando hasta que el \texttt{FPGASerialReader}
+		le notifique de que las cuentas han sido enviadas y procesadas. Al ser notificado este módulo procede a leer de las variables
+		compartidas donde está almacenada la información de las cuentas.
+	\subsection{Median Algorithm y Correcciones}
+		Como hemos comentado al principio de esta sección este módulo calcula el valor global y una serie de correcciones sobre este. El valor
+		global es una representación de las mediciones de todos los tubos, algo como una media. En el capítulo \ref{cap1} explicamos la
+		necesidad de este valor, en este vamos a explicar el algoritmo que es utilizado para calcular este valor.
+	  	\par 
+		El MedianAlgorithm\cite{MedianAlgr} tiene dos entradas, un vector con las cuentas actuales de cada canal y un segundo vector con la
+		media de cuentas de cada canal. Comparando la desviación relativa sobre la media de cada canal selecciona el mediano, de aquí el
+		nombre del algoritmo. La desviación relativa del canal seleccionado es multiplicada por el sumatorio del vector de cuentas medias.
+		El valor devuelto por la multiplicación es el valor final devuelto por este algoritmo. 
+	\subsection{Base de datos}
+		Como ya hemos explicado los datos son guardados en una base de datos para cuya gestión utilizamos Sqlite3. En la base de datos tenemos
+		tres tablas que a continuación procedemos a explicar.
+	    	\par
+	    	La primera que describiremos tiene el nombre de \texttt{binTable}, nombre que hemos heredado del NMDB. En la binTable guardamos la
+		información de las cuentas de cada minuto. Junto a las cuentas guardamos la fecha y hora actuales, la lectura del barómetro y la
+		lectura de las fuentes de alta tensión.
+	    	\par 
+	    	En la segunda tabla llamada CALM\_ori, nombre también heredado por el NMDB, guardamos el valor global y correcciones. Junto a estos
+		valores también guardamos el valor de la fecha y hora actuales, y en este caso tan solo guardamos el valor de la presión atmosférica.
+	    	\par
+	    	En la última tabla guardamos los valores de los anchos de pulsos. Dado al gran número de pulsos que son procesados guardar la
+		información de cada uno por separado no es práctico. Para ilustrar el problema pondremos de ejemplo la estación de CALMA donde son
+		procesados unos 4500 pulsos cada minuto, siendo esta una de las estaciones con menos eventos por minuto. Para sobrevenir este problema
+		construimos un histograma que guardamos en la base de datos en forma de cadenas JSON\cite{JSON}. Los histogramas son construidos con
+		los datos de diez minutos, intervalo que marca la resolución de los datos de esta tabla.
+
 \section{\texttt{DBUpdater}}
 	Este módulo software es el encargado de actualizar el contenido de la base de datos remota. El funcionamiento de este es muy simple y se puede
 	ver en la figura \ref{fig:soft_adquisición}. Empieza estableciendo la conexión con la base de datos remota. Si esta se establece procede a leer la
@@ -205,15 +249,33 @@ GPIO.output('P9_42', GPIO.HIGH)
 	sincronización no ocurrirá de golpe, de esta manera evitamos sobrecargar al sistema. El fallo de la sincronización no es crítico, el Thread
 	volverá a ser lanzado el próximo minuto y volverá intentar sincronizar las dos bases de datos.
 
-
 \section{\texttt{SensorsManager}}
-	\subsection{Pressure}
-	\subsection{HVPS}
+	Este es el módulo software encargado de manejar los sensores, por sensores nos referimos al barómetro, las fuentes de alta tensión o los
+	termómetros si están presentes. A este módulo le es pasada la información referente a los sensores del archivo de configuración. De acuerdo
+	con esta configuración este módulo realiza las funciones de configuración necesarias. Una vez realizada esta configuración inicial podemos
+	empezar a leer la información de los sensores, para este propósito este módulo exporta tres funciones. A continuación explicaremos estas tres
+	funciones.
+	\subsection{Presión atmosférica}
+		Para leer el valor actual de la presión atmosférica este módulo nos ofrece la función \texttt{read\_pressure}. Si en el archivo de
+		configuración hemos especificado que no tenemos barómetro esta función devolverá un \emph{-1}, valor que devolverá en caso de algún
+		error. Actualmente son soportados dos tipos de barómetros, el BM35\cite{} y el AP1\cite{}. La lógica para manejar estos dos barómetros
+		se encuentra los archivos \texttt{BM53Driver} y \texttt{AP1Driver} respectivamente. No explicaremos muy a fondo el funcionamiento de
+		estos dos, tan solo destacaremos que el BM35 se comunica mediante un puerto serie y el AP1 mediante dos señales digitales, una de
+		reloj y otra de datos.
+	\subsection{Fuentes de alta tensión}
+		En el caso de las fuentes de alta tensión las tenemos de dos tipos, analógicas y digitales. Las digitales transmiten su información
+		mediante un puerto serie. Las analógicas mediante una señal analógica entre 0V y 5V, siendo la amplitud de esta señal proporcional a
+		la amplitud de la corriente generada por la fuente de alta tensión. La  lógica para operar con las fuentes analógicas está en el
+		archivo \texttt{HVPSDriver}, la lógica para las fuentes digitales no está implementada porque no hemos podido trabajar con estas.
+		Eventualmente si se produce algún error es devuelto el valor de \emph{-1}.
+	\subsection{Temperatura}
+		Como hemos comentado en muchas estaciones la temperatura ambiente es monitorizada también. Este no es el caso de CALMA, razón por la que
+		no hemos escrito ningunos drivers. Sin embargo el código está pensado para poder ser fácilmente ampliado en caso de necesidad. 
 
-\section{testing}
-	Porque son importantes los unit tests.
-	\subsection{moking}
-	\subsection{Coverage}
+\section{Pruebas unitarias}
+	Durante la realización de este trabajo realizaremos una serie de test unitarios\cite{UnitTest}. Estos nos ayudaran a comprobar el correcto
+	funcionamiento de pequeñas funciones por separado. En este trabajo no vamos a hacer una explicación de estos, tan solo mencionaremos que los
+	fuentes están en el directorio \texttt{\symbol{92}tests}.
 
 \section{Mantenimiento}
 	Dejar el sistema de adquisición de datos funciónando algun tiempo. Hacer analisis de los datos. Describir experiencia.  TODO dejar para el capítuo de Conclusiones.
