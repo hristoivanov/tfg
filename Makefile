@@ -6,7 +6,8 @@ agradecimientos.tex \
 portada.tex \
 abreviaturas.tex \
 entornoHW.tex \
-softwareControl.tex
+softwareControl.tex \
+backend.tex
 
 USE_PDFLATEX=true
 
