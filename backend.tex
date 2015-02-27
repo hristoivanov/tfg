@@ -1,2 +1,23 @@
 \chapter{Herramienta Web. Back End}
 \label{backend}
+
+Fijándonos en el diseño preliminar de la figura \ref{fig:herramienta_web_preliminar} podemos ver que nuestra aplicación Web está dividida en
+\emph{front-end} y \emph{back-end}. Esta separación entre módulos es una técnica popular en diseño software. El \emph{front-end} es el encargado de
+la capa de presentación, sobre este hablaremos más en el próximo capítulo. En este capítulo nos centraremos en explicar el \emph{back-end}. Este es el
+encargado de procesar las peticiones provenientes del \emph{front-end} y devolver le a este la información solicitada. 
+\par
+El \emph{back-end} será implementado en PHP\cite{PHP}. Este es un lenguaje diseñado para desarrollo web y además es una elección muy popular. 
+Utilizaremos ZendFramework\cite{ZF}, este es un framework orientado al desarrollo de aplicaciones web. Junto al framework utilizaremos 
+Apigility\cite{Apigility}, herramienta que simplifica la creación y mantenimiento de APIs.
+\par
+Hemos elegido basarnos en la técnica de arquitectura software REST\cite{Rest}, serie de directrices y métodos para crear aplicaciones Web. Los
+aspectos básicos de REST a los que más nos ceñiremos son:
+\begin{itemize}
+	\item	Cliente Servidor. La aplicación debe seguir el modelo Cliente-Servidor. En nuestro caso estas dos identidades son representadas por el
+	  	\emph{back-end} y el \emph{front-end}.
+	\item	Sin estado. La comunicación entre Cliente y Servidor no mantiene ningún tipo de sesión. La respuesta del Servidor tan solo depende de
+	  	la estimulación proporcionada por el Cliente y no es influenciada por los eventos de comunicación anteriores.
+	\item	Conjunto bien definido de recursos y operaciones aplicables a esos recursos. En REST por recurso entendemos elementos de información.
+	  	Estos recursos serán los solicitados en las peticiones del Cliente. Estos recursos tienen asociada una URL exclusiva que se usa para
+		identificarlos.
+\end{itemize}
