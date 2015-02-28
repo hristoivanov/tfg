@@ -21,3 +21,24 @@ aspectos básicos de REST a los que más nos ceñiremos son:
 	  	Estos recursos serán los solicitados en las peticiones del Cliente. Estos recursos tienen asociada una URL exclusiva que se usa para
 		identificarlos.
 \end{itemize}
+Si nos volvemos a fijar en la figura \ref{fig:herramienta_web_preliminar} podemos ver que en el \emph{back-end} existe la separación entre
+\emph{Modelo} y \emph{Controlador}. Esta separación sigue el patrón de diseño MVC\cite{MVCWiki}. Podemos ver que el componente de \emph{Vista} no
+existe, en este caso el \emph{front-end} será nuestro componente de \emph{Vista}.
+\par
+Volviendo a los recursos REST, cada petición recibida por el \emph{back-end} apuntara a un recurso y especificara una operación sobre este. Con el fin
+de responder a las peticiones cada recurso tendrá su parte de \emph{Controlador} y \emph{Modelo}. En este capítulo procederemos a explicar los
+servicios REST, pero primero explicaremos algunos aspectos técnicos como la base de datos o el ZendFramework.
+\section{Protocolo de comunicación}
+  	Hemos hablado que entre el \emph{back-end} y \emph{front-end} existe una comunicación. Siendo esta una herramienta web como es de esperar el
+	protocolo de comunicación es HTTP\cite{HTTP}. El \emph{back-end} recibirara \emph{HTTP request} y responderá con \emph{HTTP response}. Las
+	peticiones especifican su recurso mediante el URL, al que son anexados los parámetros necesitados. El protocolo ofrece una serie de
+	métodos, los más utilizados en este trabajo son \emph{GET} y \emph{POST}. 
+	\par
+	El método \emph{GET} pide una respuesta del recurso especificado. En función de los parámetros anexados al URL la respuesta cambia.
+	\par
+	El método \emph{POST} no suele tener parámetros, sin embargo tiene un campo especial. En este cambo se encuentran una serie de datos que serán
+	procesados por el \emph{back-end}. Estos datos acabaran creando o actualizando entradas en la base de datos. 
+	\par
+	Haciendo una pequeña abstracción podemos ver los métodos \emph{GET} y \emph{POST} como \emph{leer y escribir} el recurso especificado.
+
+
