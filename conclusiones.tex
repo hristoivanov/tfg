@@ -25,3 +25,13 @@
 	la base de datos. Ante la presencia de nuevos datos el software tendría que reiniciar el contador del Watchdog y si no están presentes nuevos
 	datos el software tendría que no reiniciar el contador. De esta forma si no se generan nuevos datos por el sistema, el software sera
 	reiniciado. 
+	\subsection{Servicios RPC para el \emph{back-end}}
+	Tal y como explicamos en el capítulo dedicado al \emph{back-end} de nuestra herramienta, hemos dado un enfoque REST\cite{Rest} a este.  A lo
+	largo de la implementación el autor de este trabajo se ha dado cuenta de que REST no es el mejor enfoque que hayamos podido utilizar. En su
+	mayoría nuestros recursos tan solo permitían un solo método. Es aquí donde rompemos con los que establece REST, tener una serie de recursos
+	sobre los que podemos aplicar diferentes métodos. 
+	\par
+	Existe otra técnica llamada RPC que se ajusta mejor a nuestro problema. A diferencia que REST no tenemos recursos con sus métodos, tenemos tan
+	solo métodos. Al igual que los recursos estos métodos tienen una URL asociada para identificarlos. Los métodos nos permiten realizar
+	operaciones  muy específicas como pueden ser el leer un registro, actualizarlo o borrarlo.
+
