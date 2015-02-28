@@ -6,8 +6,8 @@ Fijándonos en el diseño preliminar de la figura \ref{fig:herramienta_web_preli
 la capa de presentación, sobre este hablaremos más en el próximo capítulo. En este capítulo nos centraremos en explicar el \emph{back-end}. Este es el
 encargado de procesar las peticiones provenientes del \emph{front-end} y devolver le a este la información solicitada. 
 \par
-El \emph{back-end} será implementado en PHP\cite{PHP}. Este es un lenguaje diseñado para desarrollo web y además es una elección muy popular. 
-Utilizaremos ZendFramework\cite{ZF}, este es un framework orientado al desarrollo de aplicaciones web. Junto al framework utilizaremos 
+El \emph{back-end} será implementado en PHP\cite{PHP}. Este es un lenguaje diseñado para desarrollo Web y además es una elección muy popular. 
+Utilizaremos ZendFramework\cite{ZF}, este es un framework orientado al desarrollo de aplicaciones Web. Junto al framework utilizaremos 
 Apigility\cite{Apigility}, herramienta que simplifica la creación y mantenimiento de APIs.
 \par
 Hemos elegido basarnos en la técnica de arquitectura software REST\cite{Rest}, serie de directrices y métodos para crear aplicaciones Web. Los
@@ -29,7 +29,7 @@ Volviendo a los recursos REST, cada petición recibida por el \emph{back-end} ap
 de responder a las peticiones cada recurso tendrá su parte de \emph{Controlador} y \emph{Modelo}. En este capítulo procederemos a explicar los
 servicios REST, pero primero explicaremos algunos aspectos técnicos como la base de datos o el ZendFramework.
 \section{Protocolo de comunicación}
-  	Hemos hablado que entre el \emph{back-end} y \emph{front-end} existe una comunicación. Siendo esta una herramienta web como es de esperar el
+  	Hemos hablado que entre el \emph{back-end} y \emph{front-end} existe una comunicación. Siendo esta una herramienta Web como es de esperar el
 	protocolo de comunicación es HTTP\cite{HTTP}. El \emph{back-end} recibirara \emph{HTTP request} y responderá con \emph{HTTP response}. Las
 	peticiones especifican su recurso mediante el URL, al que son anexados los parámetros necesitados. El protocolo ofrece una serie de
 	métodos, los más utilizados en este trabajo son \emph{GET} y \emph{POST}. 
@@ -40,5 +40,17 @@ servicios REST, pero primero explicaremos algunos aspectos técnicos como la bas
 	procesados por el \emph{back-end}. Estos datos acabaran creando o actualizando entradas en la base de datos. 
 	\par
 	Haciendo una pequeña abstracción podemos ver los métodos \emph{GET} y \emph{POST} como \emph{leer y escribir} el recurso especificado.
-
-
+\subsection{ZendFramework y Apigylity}
+	Para la realización de este trabajo utilizaremos ZendFramework, este es un framework orientado al desarrollo de aplicaciones y servicios Web.
+	Basado en PHP 5.3+ el framework sigue un diseño orientado a objetos. Esta enfocado para crear aplicaciones siguiendo el patrón MVC. Ofrece
+	abstracciones para las bases de datos, autenticación y validación de parámetros. El framework también disfruta de una amplia comunidad de 
+	usuarios. Todas estas ventajas nombradas anteriormente son la razón para elegir este framework en nuestro trabajo.
+	\par
+ 	Para  los principiantes el framework ofrece la aplicación esqueleto. Esta aplicación consiste del código mínimo necesario para construir una
+	aplicación usando ZendFramework, no tiene ninguna funcionalidad y esta pensada para ser extendida. En este trabajo hemos empezado con esta
+	aplicación esqueleto.
+  	\par 
+  	Apigility es una herramienta creada por el equipo responsable de ZendFramework. La herramienta puede utilizarse sin necesidad del framework,
+	sin embargo esta se integra muy bien con este. La herramienta facilita la creación y mantenimiento de aplicaciones Web. En nuestro caso la
+	herramienta nos ayudara crear los recursos y métodos de nuestra aplicación REST. La aplicación ofrece un entorno gráfico accesible desde un
+	navegador Web. El uso de la aplicación es muy fácil e intuitivo.
