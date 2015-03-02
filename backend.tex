@@ -40,7 +40,7 @@ servicios REST, pero primero explicaremos algunos aspectos técnicos como la bas
 	procesados por el \emph{back-end}. Estos datos acabaran creando o actualizando entradas en la base de datos. 
 	\par
 	Haciendo una pequeña abstracción podemos ver los métodos \emph{GET} y \emph{POST} como \emph{leer y escribir} el recurso especificado.
-\subsection{ZendFramework y Apigility}
+\section{ZendFramework y Apigility}
 	Para la realización de este trabajo utilizaremos ZendFramework, este es un framework orientado al desarrollo de aplicaciones y servicios Web.
 	Basado en PHP 5.3+ el framework sigue un diseño orientado a objetos. Esta enfocado para crear aplicaciones siguiendo el patrón MVC. Ofrece
 	abstracciones para las bases de datos, autenticación y validación de parámetros. El framework también disfruta de una amplia comunidad de 
@@ -53,4 +53,30 @@ servicios REST, pero primero explicaremos algunos aspectos técnicos como la bas
   	Apigility es una herramienta creada por el equipo responsable de ZendFramework. La herramienta puede utilizarse sin necesidad del framework,
 	sin embargo esta se integra muy bien con este. La herramienta facilita la creación y mantenimiento de aplicaciones Web. En nuestro caso la
 	herramienta nos ayudara crear los recursos y métodos de nuestra aplicación REST. La aplicación ofrece un entorno gráfico accesible desde un
-	navegador Web. El uso de la aplicación es muy fácil e intuitivo.
+	navegador Web. El uso de la herramienta es muy fácil e intuitivo.
+\section{Bases de datos}
+	Tal y como hemos explicado al principio del capítulo la función del \emph{back-end} es  procesar las peticiones del \emph{front-end} y
+	responderle con la información solicitada. Esta información es guardada en dos bases de datos. Para la gestión de las bases de datos
+	utilizamos MySql\cite{MySql}. ZendFramework ofrece abstracciones para las bases de datos, esto facilita el trabajo con estas. En la
+	figura \ref{fig:tablas} podemos ver el esquema de las tablas con las que vamos a trabajar.
+	\par
+	En la tabla \texttt{binTable} guardamos la información de las cuentas de cada canal. Junto a esa información guardamos las lecturas del
+	barómetro, las fuentes de alta tensión y la fecha y hora actuales. La resolución de los datos es de un minuto.
+	\par
+	En la tabla \texttt{CALM\_ori} guardamos el valor global y  las correcciones sobre este. La lectura de presión atmosférica también es guardada.
+	La resolución de estos datos es también de un minuto.
+	\par
+	En la tabla \texttt{CALM\_rev} guardamos la revisión de los datos de \texttt{CALM\_ori}. Vemos que la tabla tiene el mismo esquema con dos
+	campos adicionales. En estos dos campos se guardan la fecha de última modificación y la versión. Los datos en esta tabla son introducidas por
+	un operario. Cuando este encuentra un dato corrupto en los datos originales, puede crear una entrada en esta base de datos para señalarlo.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[keepaspectratio, width=1\textwidth]{./img/tablas.png}
+		\caption{Esquema de las tablas.}
+		\label{fig:tablas}
+	\end{figure}
+\section{Servicios REST}
+  	Es esta sección procederemos a explicar uno a uno los servicios REST que nuestro \emph{back-end} ofrece. Cada servicio REST tiene su parte de
+	\emph{Modelo} y \emph{Controlador}. La parte del \emph{Modelo} es la encargada de extraer la información necesaria de la base de datos. El
+	\emph{Controlador} es el encargado de procesar las solicitudes, pedirle los datos al controlador y enviar la respuesta al \emph{front-end}.
+
