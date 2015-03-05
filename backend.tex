@@ -62,11 +62,15 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 	En la tabla \texttt{CALM\_rev} guardamos la revisión de los datos de \texttt{CALM\_ori}. Vemos que la tabla tiene el mismo esquema con dos
 	campos adicionales. En estos dos campos se guardan la fecha de última modificación y la versión. Los datos en esta tabla son introducidos por
 	un operario. Cuando este encuentra un dato corrupto en los datos originales, puede crear una entrada en esta base de datos para señalarlo.
+	\par
+	La tabla \texttt{binTable} es contenida en una base de datos con el nombre \texttt{nmdadb}. Las tablas \texttt{CALM\_ori} y \texttt{CALM\_rev}
+	son contenidas en otra base de datos con el nombre \texttt{nmdb}. Esta separación es algo que hemos heredado del NMDB, detrás no hay un motivo
+	justificado. En este documento hablaremos a nivel de tablas, muchas veces sin tener en cuenta la separación en diferentes bases de datos. En
+	este punto destacamos esta separación para no crear confusión al lector a la hora de contrastar el código fuente con este documento. 
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/tablas.png}
 		\caption{Esquema de las tablas.}
 		\label{fig:tablas}
 	\end{figure}
-\section{Servicios REST}
-
+\section{Servicios RPC}
