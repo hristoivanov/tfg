@@ -33,6 +33,10 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 	aplicación el \emph{front-end} enviara mensajes de petición al \emph{back-end}. Los mensajes de petición especifican un campo URL, este campo
 	es muy importante porque especifica el servicio RPC que se desea invocar. A la URL también son anexados los parámetros necesarios para el
 	procedimiento especificado. Los mensajes de respuesta serán discutidos en el capítulo dedicado el \emph{front-end}.
+	\par
+	Los mensajes de petición también especifican un método. Todos los servicios RPC implementados por el \emph{back-end} son servicios de
+	consulta, a excepción de \texttt{nmdbMarkNull}. Los servicios de consulta aceptan un método \texttt{GET} mientras que el servicio
+	nombrado anteriormente acepta un método \texttt{POST}.
 \section{ZendFramework y Apigility}
 	Para la realización de este trabajo hemos utilizado ZendFramework, este es un framework orientado al desarrollo de aplicaciones y servicios Web.
 	Basado en PHP 5.3+ el framework sigue un diseño orientado a objetos. Esta enfocado para crear aplicaciones siguiendo el patrón MVC. Ofrece
@@ -148,3 +152,46 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		\texttt{nmdbOriginalGroup} y \texttt{nmdbRevisedRaw}. Primero realiza un \texttt{LEFT JOIN} entre las tablas \texttt{CALM\_ori} 
 		y \texttt{CALM\_rev} para obtener el conjunto de datos revisados. Seguidamente agrupa los datos de este conjunto y para cada grupo
 		calcula los valores máximo, mínimo, \emph{open} y \emph{close}. Estos datos son utilizados para construir un gráfico \emph{Candlestick}.
+	\subsection{\texttt{nmdbMarkNull}}
+		Este servicio es el más peculiar de todos, los demás servicios son de consulta, mientras que este es de escritura. Uno de los
+		propósitos de nuestra aplicación Web es permitirnos visualizar los datos de la estación y al visualizar un dato corrupto poder
+		marcarlo. Para satisfacer este requisito nuestro \emph{back-end} implementa este servicio que nos permite marcar como nulo un dato en
+		el conjunto de datos revisados. De esta manera podemos descartar todos los datos no deseados.
+		\par
+		A continuación podemos ver la URL utilizada para identificar este servicio.
+			\begin{center} \texttt{/nmdb/marknull}  \end{center}
+		Como podemos ver este servicio no necesita parámetros. Este servicio acepta un método \texttt{POST}. Los  mensajes con método
+		\texttt{POST} siempre van acompañados de un campo de datos. Este campo de datos contiene la información del dato que queremos marcar
+		como nulo. Eventualmente este campo puede contener un array, de esta forma podemos marcar más de un dato con solo una llamada al servicio.
+		\par 
+		La query SQL utilizada por este servicio es muy simple, esta realiza un \texttt{INSERT} en la tabla \texttt{CALM\_rev}. Si el dato ya
+		esta presente tan solo incrementamos la versión actual y modificamos la fecha de última modificación. A continuación podemos ver la
+		query que estamos discutiendo.
+			\begin{center} \texttt{\textquotedbl INSERT INTO CALM\_rev 
+			  		\\	(start\_date\_time, revised\_uncorrected, revised\_corr\_for\_efficiency, revised\_corr\_for\_pressure, revised\_pressure\_mbar, version, last\_change )
+				      	\\	VALUES (\cc".\$start\_date\_time."\cc,null,null,null,null,1,now()) 
+				      	\\	on DUPLICATE KEY UPDATE version=version+1, last\_change=now()"}
+			\end{center} 
+	\subsection{\texttt{nmdadbRawData}}
+		Este servicio tiene como propósito devolver lo datos crudos de la tabla \texttt{binTable}. La URL utilizada para identificar este
+		servicio tiene el siguiente formato. Los parámetros \texttt{start} y \texttt{finish} delimitan el intervalo de datos.
+	  		\begin{center} \texttt{/nmdadb/rawdata[/:start][/:finish]}  \end{center} 
+		Para recolectar los datos crudos de la tabla \texttt{binTable} este servicio usa una query muy simple, razón por la que no vamos a
+		discutir esta. A continuación podemos ver dicha query.
+	  		\begin{center} \texttt{"SELECT * FROM binTable 
+			  		\\	WHERE start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc"}
+			\end{center} 
+	\subsection{\texttt{nmdadbChannelStats}}
+		Este servicio tiene como propósito devolver estadísticas descriptivas para cada canal de la estación. Para este propósito usa los
+		datos de la tabla \texttt{binTable}. Para cada canal son calculados el valor medio, desviación típica, mínimo y máximo. A
+		continuación podemos ver la URL utilizada para identificar este recurso.
+	  		\begin{center} \texttt{/nmdb/channel/stats[/:start][/:finish]}  \end{center} 
+		Los parámetros \texttt{start} y \texttt{finish} delimitan el intervalo de datos. Eventualmente estos dos parámetros pueden tener el
+		valor \texttt{default}, en este caso el intervalo es el último mes con datos. 
+		\par
+		A continuación podemos ver parte de la query utilizada para recolectar los datos devueltos por este servicio.
+	  		\begin{center} \texttt{"select 'ch01' as n1, ch01, avg(ch01) as avg\_ch01, std(ch01) as std\_ch01, max(ch01) as max\_ch01, min(ch01) as min\_ch01
+			  		\\	from(select * from  binTable where start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc order by start\_date\_time desc)as t1"}
+			\end{center} 
+		Los datos generados por este servicio serán utilizados para crear un gráfico \emph{Candlestick} y también serán presentados en una
+		cuadricula.
