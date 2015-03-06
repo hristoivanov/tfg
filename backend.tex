@@ -88,7 +88,9 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		\par
 		A continuación podemos ver la query SQL utilizada para obtener los datos, dado a la simplicidad de esta no procederemos a discutirla
 		mas a fondo.
-	  		\begin{center} \texttt{\C SELECT * FROM CALM\_ori WHERE start\_date\_time BETWEEN \cc\C.\$start.\C\cc AND \cc\C.\$finish\C\cc\C}  \end{center} 
+	  		\begin{center} \texttt{"SELECT * FROM CALM\_ori 
+			  		\\	WHERE start\_date\_time BETWEEN \cc".\$start."\cc AND \cc".\$finish"\cc"}
+			\end{center} 
 		Los datos devueltos por este servicio RPC son utilizados para construir un gráfico lineal.
 	\subsection{\texttt{nmdbOriginalGroup}}
 		Este servicio RPC es similar al anteriormente descrito, devuelve los datos de la tabla \texttt{CALM\_ori} en un intervalo determinado.
@@ -101,7 +103,10 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		servicio estos dos parámetros pueden tener el valor \texttt{all}, de ser así son utilizados todos los datos presentes en la base de
 		datos. El parámetro \texttt{points} especifica en número de grupo en los que serán agrupados nuestros datos.
 		Seguidamente podemos ver parte de la query SQL utilizada en este servicio. Esta parte es la encargada de agrupar nuestros datos.
-			\begin{center} \texttt{\C(SELECT CALM\_ori.*, (UNIX\_TIMESTAMP(start\_date\_time) DIV (\C.\$interval.\C)) AS timekey  FROM CALM\_ori WHERE start\_date\_time BETWEEN \cc\C.\$start.\C\cc AND \cc\C.\$finish.\C\cc)AS t1  GROUP BY timekey\C}  \end{center} 
+			\begin{center} \texttt{"(SELECT CALM\_ori.*,
+			  		\\	(UNIX\_TIMESTAMP(start\_date\_time) DIV (".\$interval.")) AS timekey  
+				      	\\	FROM CALM\_ori WHERE start\_date\_time BETWEEN \cc".\$start."\cc AND \cc".\$finish."\cc)AS t1  GROUP BY timekey"}
+			\end{center} 
 		Como podemos ver son seleccionados los datos presentes en el intervalo definido por \texttt{\$start} y \texttt{\$finish}. Junto a los datos
 		presentes en la tabla \texttt{CALM\_ori} es calculado el campo \texttt{timekey}, este campo es el utilizado para formar los grupos. El 
 		\texttt{timekey} es calculado utilizando el valor de la variable \texttt{\$interval}, variable que define el intervalo de los grupos
@@ -112,3 +117,34 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		valor global, la corrección por presión y la corrección por eficiencia. Para la presión atmosférica tan solo es calculado el valor
 		medio. Estos datos son utilizados para construir un gráfico \emph{Candlestick}, sobre este tipo de gráfico hablaremos en el
 		siguiente capítulo dedicado al \emph{front-end}.
+	\subsection{\texttt{nmdbRevisedRaw}}
+		Este servicio es muy similar al \texttt{nmdbOriginalRaw}, la diferencia esta en que este devuelve los datos revisados. Para este
+		propósito son utilizados los datos de las tablas \texttt{CALM\_ori} y \texttt{CALM\_rev}. La URL utilizada para identificar este
+		servicio tiene el siguiente formato.
+	  		\begin{center} \texttt{/nmdb/revised/raw[/:start][/:finish]}  \end{center} 
+		Los dos parámetros aceptados delimitan el intervalo de datos.
+		\par
+		En la tabla \texttt{CALM\_rev} son guardados los datos revisados, pero no son guardados todos, tan solo las entradas que han sido modificadas.
+		Por esta razón este servicio también hace uso de \texttt{CALM\_ori} para devolvernos la información completa. A continuación podemos
+		ver parte de la query SQL utilizada para obtener los datos revisados.
+			\begin{center} \texttt{"SELECT ori.start\_date\_time,
+			  		\\	CASE WHEN rev.start\_date\_time IS NULL THEN ori.measured\_uncorrected ELSE rev.revised\_uncorrected END AS uncorrected 
+					\\	FROM CALM\_ori ori LEFT JOIN CALM\_rev rev ON ori.start\_date\_time = rev.start\_date\_time"}
+			\end{center} 
+		La query empieza haciendo un \texttt{LEFT JOIN} entre las tablas \texttt{CALM\_ori} y \texttt{CALM\_rev} sobre los campos de
+		\texttt{start\_date\_time}. El \texttt{LEFT JOIN} devuelve todas las entradas de \texttt{CALM\_ori}, con las entradas coincidentes de
+		\texttt{CALM\_rev}. La parte correspondiente al \texttt{CALM\_rev} es dejada a \texttt{NULL} si no existe coincidencia. A partir de la
+		tabla temporal creada por el \texttt{LEFT JOIN} seleccionamos los datos del \texttt{CALM\_rev} si estos están presentes, sino nos
+		quedamos con lo datos del \texttt{CALM\_ori}. Los datos devueltos por este servicio serán utilizados para crear un gráfico lineal.
+	\subsection{\texttt{nmdbRevisedGroup}}
+		Este servicio es muy similar al {\texttt{nmdbOriginalGroup}, pero este hace uso de los datos revisados. La URL que identifica este
+		servicio tiene el siguiente formato.
+			\begin{center} \texttt{/nmdb/revised/group[/:start][/:finish][/:points]}  \end{center}
+		Lo parámetros \texttt{start} y \texttt{finish} delimitan el intervalo de datos. Eventualmente estos dos parámetros pueden tener el
+		valor de \texttt{all}, de esta manera son usados todos los datos presentes en la base de datos. El tercer parámetro, \texttt{points},
+		especifica el número de grupos en los que queremos agrupar nuestros datos.
+		\par
+		Para recolectar los datos necesarios la query utilizada es una combinación de las queries utilizadas en los servicios
+		\texttt{nmdbOriginalGroup} y \texttt{nmdbRevisedRaw}. Primero realiza un \texttt{LEFT JOIN} entre las tablas \texttt{CALM\_ori} 
+		y \texttt{CALM\_rev} para obtener el conjunto de datos revisados. Seguidamente agrupa los datos de este conjunto y para cada grupo
+		calcula los valores máximo, mínimo, \emph{open} y \emph{close}. Estos datos son utilizados para construir un gráfico \emph{Candlestick}.
