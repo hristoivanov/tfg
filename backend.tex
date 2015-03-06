@@ -74,3 +74,41 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		\label{fig:tablas}
 	\end{figure}
 \section{Servicios RPC}
+	Es esta sección procederemos a explicar uno a uno los servicios RPC que nuestro \emph{back-end} ofrece. Para cada servicio RPC explicaremos la
+	funcionalidad, la URL que le identifica, los parámetros aceptados, la query SQL utilizada y el propósito de este.
+	\subsection{\texttt{nmdbOriginalRaw}}
+		Este servicio RPC devuelve los datos de la tabla \texttt{CALM\_ori} en un intervalo determinado. Tal y como explicamos en esta
+		tabla son guardados los datos globales de la estación, las dos correcciones de estos y los valores de presión atmosférica. Este servicio
+		devuelve los datos tal y como están en la base de datos. 
+	  	\par
+	  	La URL que identifica a este servicio tiene el siguiente formato.
+	  		\begin{center} \texttt{/nmdb/original/raw[/:start][/:finish]}  \end{center} 
+		Como vemos el servicio acepta dos parámetros, \texttt{start} y \texttt{finish}. Los parámetros delimitan el intervalo de datos
+		devueltos.
+		\par
+		A continuación podemos ver la query SQL utilizada para obtener los datos, dado a la simplicidad de esta no procederemos a discutirla
+		mas a fondo.
+	  		\begin{center} \texttt{\C SELECT * FROM CALM\_ori WHERE start\_date\_time BETWEEN \cc\C.\$start.\C\cc AND \cc\C.\$finish\C\cc\C}  \end{center} 
+		Los datos devueltos por este servicio RPC son utilizados para construir un gráfico lineal.
+	\subsection{\texttt{nmdbOriginalGroup}}
+		Este servicio RPC es similar al anteriormente descrito, devuelve los datos de la tabla \texttt{CALM\_ori} en un intervalo determinado.
+		La diferencia de este servicio es que no devuelve los datos en crudo. Este junta los datos en grupos y devuelve los valores para
+		cada grupo. 
+		\par
+		A continuación podemos ver el formato de la URL que identifica a este servicio.
+			\begin{center} \texttt{/nmdb/original/group[/:start][/:finish][/:points]}  \end{center} 
+		Los dos parámetros \texttt{start} y \texttt{finish} al igual que en el servicio anterior delimitan el intervalo de datos. En este
+		servicio estos dos parámetros pueden tener el valor \texttt{all}, de ser así son utilizados todos los datos presentes en la base de
+		datos. El parámetro \texttt{points} especifica en número de grupo en los que serán agrupados nuestros datos.
+		Seguidamente podemos ver parte de la query SQL utilizada en este servicio. Esta parte es la encargada de agrupar nuestros datos.
+			\begin{center} \texttt{\C(SELECT CALM\_ori.*, (UNIX\_TIMESTAMP(start\_date\_time) DIV (\C.\$interval.\C)) AS timekey  FROM CALM\_ori WHERE start\_date\_time BETWEEN \cc\C.\$start.\C\cc AND \cc\C.\$finish.\C\cc)AS t1  GROUP BY timekey\C}  \end{center} 
+		Como podemos ver son seleccionados los datos presentes en el intervalo definido por \texttt{\$start} y \texttt{\$finish}. Junto a los datos
+		presentes en la tabla \texttt{CALM\_ori} es calculado el campo \texttt{timekey}, este campo es el utilizado para formar los grupos. El 
+		\texttt{timekey} es calculado utilizando el valor de la variable \texttt{\$interval}, variable que define el intervalo de los grupos
+		y es calculada de la siguiente forma.
+			\begin{center} \texttt{\$interval =round((\$finish-\$start)/(\$points));}  \end{center} 
+		Una vez formados los grupos para cada campo es calculado el máximo, mínimo, \emph{open} y \emph{close}. El \emph{open} y \emph{close}
+		son la media más la desviación típica y la media menos la desviación típica respectivamente. Estos cuatro valores son calculados para el
+		valor global, la corrección por presión y la corrección por eficiencia. Para la presión atmosférica tan solo es calculado el valor
+		medio. Estos datos son utilizados para construir un gráfico \emph{Candlestick}, sobre este tipo de gráfico hablaremos en el
+		siguiente capítulo dedicado al \emph{front-end}.
