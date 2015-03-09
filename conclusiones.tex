@@ -2,7 +2,7 @@
 \label{cap_conclusiones}
 
 \section{Conclusiones}
-\section{Trabajos futuros}
+\section{Trabajos futuros. Software de adquisición}
 	\subsection{Debian en la BeagleBone Black}
 	Para realizar el software de adquisición hemos utilizado Angstrom, la distribución Linux que venía por defecto con la BeagleBone Black.
 	Angstrom es una distribución muy ligera y adecuada, pero la comunidad existente es muy pequeña. Nos hemos propuesto como trabajo futuro
@@ -24,14 +24,9 @@
 	acaben en una base de datos, que no se generen datos es un malfuncionamiento que queremos evitar. Podremos detectar este problema mirando en
 	la base de datos. Ante la presencia de nuevos datos el software tendría que reiniciar el contador del Watchdog y si no están presentes nuevos
 	datos el software tendría que no reiniciar el contador. De esta forma si no se generan nuevos datos por el sistema, el software sera
-	reiniciado. 
-	\subsection{Servicios RPC para el \emph{back-end}}
-	Tal y como explicamos en el capítulo dedicado al \emph{back-end} de nuestra herramienta, hemos dado un enfoque REST\cite{Rest} a este.  A lo
-	largo de la implementación el autor de este trabajo se ha dado cuenta de que REST no es el mejor enfoque que hayamos podido utilizar. En su
-	mayoría nuestros recursos tan solo permitían un solo método. Es aquí donde rompemos con los que establece REST, tener una serie de recursos
-	sobre los que podemos aplicar diferentes métodos. 
-	\par
-	Existe otra técnica llamada RPC que se ajusta mejor a nuestro problema. A diferencia que REST no tenemos recursos con sus métodos, tenemos tan
-	solo métodos. Al igual que los recursos estos métodos tienen una URL asociada para identificarlos. Los métodos nos permiten realizar
-	operaciones  muy específicas como pueden ser el leer un registro, actualizarlo o borrarlo.
-
+	reiniciado.
+\section{Trabajos futuros. Herramienta Web}
+	\subsection{Autenticación y autorización}
+	Actualmente la herramienta web no implementa ningún sistema para autenticar y autorizar a los usuarios. Los servicios de consulta no necesitan
+	ningún tipo de control, estos pueden ser accesibles por cualquiera. Sin embargo los servicios de acción futuros y presentes tendrían que estar
+	controlados. Es por esta razón por la que surge la necesidad de implementar un sistema para gestionar el acceso de los usuarios. 
