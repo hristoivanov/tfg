@@ -77,6 +77,9 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		\caption{Esquema de las tablas.}
 		\label{fig:tablas}
 	\end{figure}
+	\par 
+	Es interesante destacar que en las tres tablas existe índice. En los tres casos el elemento indexado es el campo \texttt{start\_date\_time}.
+	Este índice nos es muy útil, es utilizado en la mayoría de queries que realizamos sobre la base de datos. 
 \section{Servicios RPC}
 	Es esta sección procederemos a explicar uno a uno los servicios RPC que nuestro \emph{back-end} ofrece. Para cada servicio RPC explicaremos la
 	funcionalidad, la URL que le identifica, los parámetros aceptados, la query SQL utilizada y el propósito de este.
@@ -194,4 +197,20 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 			  		\\	from(select * from  binTable where start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc order by start\_date\_time desc)as t1"}
 			\end{center} 
 		Los datos generados por este servicio serán utilizados para crear un gráfico \emph{Candlestick} y también serán presentados en una
-		cuadricula.
+		tabla.
+	\subsection{\texttt{nmdadbChannelHistogram}}
+		Este servicio devuelve un histograma de la distribución de cuentas para los 18 canales, para cumplir con dicho propósito este servicio
+		utiliza los datos de la tabla \texttt{binTable}. A continuación podemos ver la URL utilizada para identificar este recurso.
+	  		\begin{center} \texttt{/nmdb/channel/histogram[/:start][/:finish]}  \end{center} 
+		Al igual que en los otros servicio los parámetros \texttt{start} y \texttt{finish} delimitan el intervalo de datos usados para
+		construir el histograma. Eventualmente estos dos parámetros pueden tener el valor de \texttt{default}, en este caso son utilizados los
+		datos del último mes.
+		\par
+		Seguidamente podemos ver la query utilizada para construir el histograma devuelto por este servicio.
+	  		\begin{center} \texttt{"select chh as num, count(chh) as val from (select ch div 5 as chh  from 
+				      	\\	(select ".\$channel." s  as ch from binTable where start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc) as t1) as t2 group by chh order by num"}
+			\end{center} 
+		La query calcula el histograma para un solo canal, especificado por la variable \texttt{\$channel}. Para construir el histograma de
+		los 18 canales esta query es invocada múltiples veces. Las tablas están indexadas por el campo \texttt{start\_date\_time}, razón por
+		la que las demás queries son efectivas. En esta query tenemos que agrupar por el número de cuentas, campo que no esta indexado. Por
+		esta razón no es deseable invocar a este servicio con un intervalo superior a un mes.
