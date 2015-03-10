@@ -24,4 +24,43 @@ Como podemos ver en la figura \ref{fig:frontend} nuestro \emph{front-end} esta b
 	\caption{\emph{Front-end}. Patrón MVC.}   
 	\label{fig:frontend}
 \end{figure}
-
+\section{\emph{Modelo}}
+	El \emph{modelo} es el encargado de manejar los datos de una aplicación. En el caso del \emph{front-end} los datos de la aplicación deben ser
+	servidos por el \emph{back-end}. El \emph{modelo} es el encargado de realizar la comunicación con el \emph{back-end}. 
+	\par
+	Tal y como especificamos en el  capítulo anterior el protocolo para la comunicación entre los dos módulos es \emph{HTTP}. Nuestro
+	\emph{front-end} es el que empieza la comunicación enviando un mensaje de petición y el \emph{back-end} responde a esa peticion con un mensaje
+	de respuesta. El \emph{modelo} es el encargado de construir y enviar los mensajes de petición y después interpretar los mensajes de respuesta.
+	\par
+	Para dotar el \emph{modelo} de la funcionalidad necesaria vamos a ayudarnos de las facilidades que nos ofrece ExtJs, concretamente vamos a
+	utilizar el singletone \texttt{Ext.Ajax}. Ajax\cite{AjaxWiki} es una técnica de desarrollo Web donde cliente y servidor mantienen una
+	comunicación asíncrona en segundo plano. \texttt{Ext.Ajax} es un singletone de la clase \texttt{Ext.data.Connection}, clase que encapsula la
+	lógica necesaria para realizar una comunicación Ajax. 
+	\par
+	Concretamente vamos a hacer uso de la función \texttt{Ext.data.Connection.request}. Esta función envía una petición \emph{HTTP} a un servidor
+	remoto. La función acepta un solo parámetro que es un objeto cuyas propiedades definen el comportamiento de la función. Las propiedades de las
+	que nosotros haremos uso están detalladas a continuación. 
+	\begin{itemize}
+  		\item	\texttt{url}. 	La URL a la que enviaremos la petición. En nuestro caso \emph{back-end} y \emph{front-end} estarán albergados en
+		  	el mismo \emph{host}. Esto nos permite no especificar el \emph{host}, la petición se hará al \emph{host} utilizado para cargar
+			la aplicación. En la URL tan solo tendremos que especificar el servicio deseado y los parámetros que acompañan a este.
+			Seguidamente presentamos un ejemplo del valor que puede tomar el campo \texttt{url}.
+    				\begin{center} \texttt{url: \cc/nmdadb/cannel/stats/default/default\cc}  \end{center}
+		\item	\texttt{method}. El método que especifica nuestro mensaje de petición. Los mensajes \emph{HTTP} de petición pueden especificar
+		  	un método. Si este campo es dejado vacío el método utilizado será \texttt{GET}. La mayoría de los servicios ofrecidos por el
+			\emph{back-end} aceptan un método \texttt{GET}, pero el servicio \texttt{nmdbMarkNull} acepta un método \texttt{POST}.
+		\item	\texttt{success}. La función a ser llamada al completar exitosamente la petición. Esta función a su vez acepta como parámetro
+		  	\texttt{response}. Este parámetro contiene los datos del mensaje de respuesta.
+		\item	\texttt{failure}. La función a ser llamada al completar sin éxito la petición. Esta función también acepta el parámetro
+		  	\texttt{response} que podemos utilizar para identificar la causa del fallo.
+		\item	\texttt{timeout}. El numero de milisegundos en los que el \emph{back-end} debe responder. Si el tiempo expira la solicitud se
+		  	considera como fallida. 
+	\end{itemize}
+	Más allá de \emph{Ext.data.Connection} el framework ofrece abstracciones de un nivel superior. La clase \emph{Ext.data.Model} es una
+	representación de un objeto utilizado por nuestra aplicación. Estos modelos son usados por la clase \emph{Ext.data.Store}, que encapsula
+	instancias de un modelo. La clase \emph{Ext.data.Store} también hace uso del \emph{Ext.data.proxy.Proxy}, abstracción que permite cargar y
+	guardad datos de un modelo. 
+	\par
+	Estas abstracciones son muy útiles, pero algo complejas. Al no estar acostumbrado a trabajar con ellas el autor de este trabajo ha preferido
+	utilizarlas lo menos posible. Por esta razón la mayoría de los datos se manejan usando el \texttt{Ext.data.Connection}, hemos utilizado el
+	\texttt{Ext.data.Store} en casos muy específicos.
