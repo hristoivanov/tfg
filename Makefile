@@ -7,7 +7,8 @@ portada.tex \
 abreviaturas.tex \
 entornoHW.tex \
 softwareControl.tex \
-backend.tex
+backend.tex \
+frontend.tex
 
 USE_PDFLATEX=true
 
