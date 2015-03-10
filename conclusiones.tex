@@ -25,6 +25,11 @@
 	la base de datos. Ante la presencia de nuevos datos el software tendría que reiniciar el contador del Watchdog y si no están presentes nuevos
 	datos el software tendría que no reiniciar el contador. De esta forma si no se generan nuevos datos por el sistema, el software sera
 	reiniciado.
+	\subsection{Adaptación para otras estaciones}
+	El sistema de adquisición esta concebido para poder ser implantado en cualquier estación de monitores de neutrones. Sin embargo es muy
+	probable que este tenga que sufrir cambios a la hora de ser implantado en estas nuevas estaciones. El software de adquisición que hemos
+	desarrollado en este trabajo deberá poder adaptarse a nuevas estaciones fácilmente. Para cumplir con este propósito tendríamos que
+	identificar todas las variables entre estaciones y manejar las oportunamente.
 \section{Trabajos futuros. Herramienta Web}
 	\subsection{Extender funcionalidad}
 	Tal y como explicamos en el capítulo de introducción la idea de la herramienta Web ha sido del equipo de CALMA. Este concibe una herramienta
@@ -40,3 +45,8 @@
 	Actualmente la herramienta web no implementa ningún sistema para autenticar y autorizar a los usuarios. Los servicios de consulta no necesitan
 	ningún tipo de control, estos pueden ser accesibles por cualquiera. Sin embargo los servicios de acción futuros y presentes tendrían que estar
 	controlados. Es por esta razón por la que surge la necesidad de implementar un sistema para gestionar el acceso de los usuarios. 
+	\subsection{Adaptación para otras estaciones}
+	Al igual que el software de control la herramienta Web esta desarrollada en el entorno de CALMA. Existen muchas variables que actualmente no
+	son manejadas debidamente, están \emph{Hard coded} en nuestro código. Como trabajo futuro se propone identificar todas estas variables y
+	manejarlas debidamente.
+
