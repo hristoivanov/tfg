@@ -75,6 +75,27 @@ Ext.application({
 	especifica la forma en la que se posicionaran y ajustaran los \emph{componetes} hijos. En este caso el \texttt{layout} especificado es 
 	\texttt{\cc fit\cc} en el que un solo hijo ocupa todo el espacio del padre. 
 
+\section{ExtJs Layouts}
+	El propósito de esta sección es explicar los layouts utilizados en este trabajo. Tan solo explicaremos la funcionalidad de estos sin
+	centrarnos en el uso que les hemos dado, este será explicado en las secciones venideras cuando proceda. En la figura \ref{fig:layouts} podemos
+	ver una representación de los layouts que describiremos a continuación.
+	\subsection{\texttt{Absolute}}
+		Los \emph{componentes} hijo son posicionados mediante el uso de coordenadas \texttt{X,Y}. Las dimensiones de estos también se definen
+		de forma estática mediante el uso de dos atributos, \texttt{height} and \texttt{width}. La posición y tamaño de los componentes se
+		puede cambiar mediante el uso de las funciones \texttt{setPosition()} y \texttt{setSize()}.
+	\subsection{\texttt{Accordion}}
+		Este layout se asemeja a un acordeón. Los \emph{componentes} hijo pueden ser expandidos y colapsados, teniendo tan solo uno expandido
+		a la vez. Los \emph{componentes} son ordenados en vertical ocupando todo el espacio disponible. Las funciones \texttt{expand} y
+		\texttt{collapse} nos permiten expandir y colapsar los paneles hijo. También están presentes multitud de manejadores de eventos que
+		podemos sobrescribir, en nuestro caso haremos uso del \texttt{beforeExpand} que se dispara antes de expandir un \emph{componente}. 
+	\subsection{\texttt{Border}}
+		Este layout nos permite tener hasta cinco \emph{componentes} dispuestos de la manera que podemos ver en la figura \ref{fig:layouts}.
+		Los componentes hijos deben especificar al attribiuto \texttt{region} que determina el posicionamiento de estos. El campo puede tomar
+		los siguientes valores \texttt{[north, east, south, west, center]}. No es necesario que estén presentes los cinco hijos, podemos
+		omitir los no deseados. Esto hace que este layout sea muy flexible e interesante.
+%<The layout figure.>
+
+
 \section{\emph{Modelo}}
 	El \emph{modelo} es el encargado de manejar los datos de una aplicación. En el caso del \emph{front-end} los datos de la aplicación deben ser
 	servidos por el \emph{back-end}. El \emph{modelo} es el encargado de realizar la comunicación con el \emph{back-end}. 
