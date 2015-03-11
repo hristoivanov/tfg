@@ -28,14 +28,26 @@ Como podemos ver en la figura \ref{fig:frontend} nuestro \emph{front-end} esta b
 	El propósito de esta sección es explicar alguno de los aspectos básicos del framework. Empezaremos explicando como crear una aplicación básica
 	basándonos en ExtJs. En la mayoría de los casos existe un solo documento HTML\cite{HTML} que contiene toda la aplicación. En este documento
 	tenemos que cargar dos \emph{scripts} de la siguiente forma.
- 	%<Script1>
- 	%<Script2>
+    		\begin{center} \texttt{<script type="text/javascript" src=\textquotedbl extjs/ext-all-debug.js\textquotedbl ></script>}  \end{center}
+    		\begin{center} \texttt{<script type="text/javascript" src=\textquotedbl app.js\textquotedbl ></script>}  \end{center}
  	El primer \emph{script} contiene el framework que queremos utilizar. Es conveniente destacar que esta es una versión concebida para el proceso
 	de desarrollo. Para la versión final es conveniente usar el \texttt{ext-all.js}.
  	\par
  	El segundo \emph{script} es el que contiene la lógica de nuestra aplicación. A continuación podemos ver el código mínimo para crear una
 	aplicación. El código presentado será explicado a fondo.
- 	%<Código>
+	\begin{lstlisting}
+Ext.application({
+   name: 'HelloExt',
+   launch: function() {
+      Ext.create('Ext.container.Viewport', {
+         layout: 'fit',
+            items: [{
+               title: 'Hello Ext',
+               html : 'Hello! Welcome to Ext JS.'}] 
+      }); 
+   } 
+});
+	\end{lstlisting}
  	En la primera línea hacemos uso del singletone \texttt{Ext}. Este es un objeto que encapsula todas las clases, métodos y singletones
 	proporcionados por el framework. La función utilizado \texttt{Ext.application} carga e inicializa una instancia de la clase
 	\texttt{Ext.app.Application}. Esta clase representa una aplicación ExtJs single page. La llamada a esta función crea la variable global
@@ -47,8 +59,13 @@ Como podemos ver en la figura \ref{fig:frontend} nuestro \emph{front-end} esta b
 	aplicación. 
  	\par
  	La interfaz de usuario en una aplicación ExtJs es compuesta por \emph{componentes}. Un \emph{contenedor} es un \emph{componente} especial que
-	contiene otros \emph{componentes}. En la figura \ref{fds} podemos ver un ejemplo que ilustra esta jerarquía.
- 	%<The figure that must be done.>
+	contiene otros \emph{componentes}. En la figura \ref{fig:comps} podemos ver un ejemplo que ilustra esta jerarquía.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[keepaspectratio, width=1\textwidth]{./img/comps.png}
+		\caption{Sencha ExtJs. Jerarquía de componentes.}   
+		\label{fig:comps}
+	\end{figure}
  	\par
  	El \texttt{Viewport} es el \emph{contenedor} que contiene todos los demás \emph{componentes} de nuestra aplicación. Los \emph{compenentes} de
 	un \emph{contenedor} se especifican en el campo \texttt{items} que es una lista. En el ejemplo presentado tan solo tenemos un 

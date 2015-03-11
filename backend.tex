@@ -208,7 +208,7 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		\par
 		Seguidamente podemos ver la query utilizada para construir el histograma devuelto por este servicio.
 	  		\begin{center} \texttt{"select chh as num, count(chh) as val from (select ch div 5 as chh  from 
-				      	\\	(select ".\$channel." s  as ch from binTable where start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc) as t1) as t2 group by chh order by num"}
+				      	\\	(select ".\$channel.\textquotedbl  as ch from binTable where start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc) as t1) as t2 group by chh order by num"}
 			\end{center} 
 		La query calcula el histograma para un solo canal, especificado por la variable \texttt{\$channel}. Para construir el histograma de
 		los 18 canales esta query es invocada múltiples veces. Las tablas están indexadas por el campo \texttt{start\_date\_time}, razón por
