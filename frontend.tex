@@ -49,12 +49,12 @@ Ext.application({
 });
 	\end{lstlisting}
  	En la primera línea hacemos uso del singletone \texttt{Ext}. Este es un objeto que encapsula todas las clases, métodos y singletones
-	proporcionados por el framework. La función utilizado \texttt{Ext.application} carga e inicializa una instancia de la clase
+	proporcionados por el framework. La función utilizada \texttt{Ext.application} carga e inicializa una instancia de la clase
 	\texttt{Ext.app.Application}. Esta clase representa una aplicación ExtJs single page. La llamada a esta función crea la variable global
 	\texttt{MyApp}, que debe contener todas las clases e instancias de nuestra aplicación.
  	\par
  	En la segunda línea declaramos el nombre de nuestra aplicación. Seguidamente definimos la función \texttt{launch}. Esta es la función que debe
-	lanzar  nuestra aplicación. La primera función invocada es \texttt{Ext.create} que crear una instancia de la clase proporcionada, en este caso
+	lanzar  nuestra aplicación. La primera función invocada es \texttt{Ext.create} que crea una instancia de la clase proporcionada, en este caso
 	\texttt{Ext.container.Viewport}. \texttt{Viewport} es un \emph{contenedor} que representa el área de aplicación y puede haber tan solo uno por
 	aplicación. 
  	\par
@@ -71,7 +71,7 @@ Ext.application({
 	un \emph{contenedor} se especifican en el campo \texttt{items} que es una lista. En el ejemplo presentado tan solo tenemos un 
 	\emph{conponente}, pero pueden ser añadidos más.
  	\par
- 	Fijándonos en el código de ejemplo podemos ver antes de definir el campo \texttt{items} definimos el campo \texttt{layout}. El \texttt{layout}
+ 	Fijándonos en el código de ejemplo podemos ver que antes de definir el campo \texttt{items} definimos el campo \texttt{layout}. El \texttt{layout}
 	especifica la forma en la que se posicionaran y ajustaran los \emph{componetes} hijos. En este caso el \texttt{layout} especificado es 
 	\texttt{\cc fit\cc} en el que un solo hijo ocupa todo el espacio del padre. 
 
