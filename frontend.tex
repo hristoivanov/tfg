@@ -90,9 +90,26 @@ Ext.application({
 		podemos sobrescribir, en nuestro caso haremos uso del \texttt{beforeExpand} que se dispara antes de expandir un \emph{componente}. 
 	\subsection{\texttt{Border}}
 		Este layout nos permite tener hasta cinco \emph{componentes} dispuestos de la manera que podemos ver en la figura \ref{fig:layouts}.
-		Los componentes hijos deben especificar al attribiuto \texttt{region} que determina el posicionamiento de estos. El campo puede tomar
+		Los componentes hijos deben especificar al atribiuto \texttt{region} que determina el posicionamiento de estos. El campo puede tomar
 		los siguientes valores \texttt{[north, east, south, west, center]}. No es necesario que estén presentes los cinco hijos, podemos
 		omitir los no deseados. Esto hace que este layout sea muy flexible e interesante.
+	\subsection{\texttt{Card}}
+		Este layout maneja multiples \emph{componentes} hijo. Los hijos ocupan todo el espacio disponible, por lo que se solapan uno a otro.
+		Esto hace que solo uno pueda ser visible a la vez. El layout asemeja una baraja de cartas donde solo una carta puede estar en la parte
+		superior. La función que nos permite hacer visible un hijo es \texttt{setActiveItem()}. Esta función acepta el \emph{componente}, el
+		\texttt{itemId} del \emph{componente} o el índice del \emph{componente}.
+	\subsection{\texttt{Fit}}
+		\texttt{Fit} es un layout muy simple, este tan solo acepta un hijo que ocupa todo el espacio que el padre ofrece. El \emph{componente}
+		hijo se expandirá automáticamente para ajustarse al tamaño del padre.
+	\subsection{\texttt{HBox y VBox}}
+		Estos son dos layouts diferentes, pero muy parecidos, razón por la que serán explicados en la misma subsección. El \texttt{HBox}
+		organiza sus elementos hijos de forma horizontal a lo largo del \emph{componente} padre. El \texttt{VBox} hace lo mismo, pero la
+		organización es de forma vertical. Los componentes hijos pueden especificar el atributo \texttt{flex}, este atributo determina como
+		será repartido el espacio disponible entre los diferentes hijos. Para ilustrar el funcionamiento del \texttt{flex} expondremos un
+		ejemplo. Teniendo dos \emph{componentes} hijo con \texttt{1} y \texttt{2} de \texttt{flex} respectivamente, el primero ocupara 1/3 y el
+		segundo 2/3 del espacio total.
+
+
 
 \begin{figure}[h]
 	\centering
