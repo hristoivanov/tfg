@@ -74,8 +74,33 @@ Ext.application({
  	Fijándonos en el código de ejemplo podemos ver que antes de definir el campo \texttt{items} definimos el campo \texttt{layout}. El \texttt{layout}
 	especifica la forma en la que se posicionaran y ajustaran los \emph{componetes} hijos. En este caso el \texttt{layout} especificado es 
 	\texttt{\cc fit\cc} en el que un solo hijo ocupa todo el espacio del padre. 
+\section{Sencha ExtJs Component Manager}
+	ExtJs ofrece el singletone \texttt{Ext.ComponentManager} que provee un registro con todos los componentes. Esto facilita la referencia a
+	elementos desde cualquier punto del código. El propósito de esta sección es explicar como hacer uso de esta facilidad.
+	\par
+	Empezaremos especificando un requisito que  los componentes deben cumplir, estos deben definir un atributo \texttt{itemId}. Este atributo es
+	el identificador del componente. El ámbito que tiene este identificador es local al contenedor que contiene el componente. Esto hace que los
+	identificadores no tengan que ser únicos. 
+	\par
+	Es el singletone \texttt{Ext.ComponentQuery} el que nos permite realizar búsquedas de componentes en función del texttt{itemId}. Concretamente
+	es \texttt{Ext.ComponentQuery.query()} el método que nos permite realizar las búsquedas. Este método acepta dos parámetros. El primer
+	parámetro, \texttt{selector}, es un String y especifica el \texttt{itemId} que queremos buscar. El segundo parámetro, \texttt{root} es
+	opcional y especifica el contenedor dentro de cual queremos hacer la búsqueda. Si el segundo parámetro es omitido la búsqueda se realizara
+	entre todos los componentes. La función devuelve un array con todos los componentes que reúnen las condiciones, pudiendo ser este un array
+	vacío. Eventualmente podemos hacer búsquedas más complejas, podemos buscar por tipo, atributos y mucho más. En este trabajo tan solo hemos
+	utilizado queries simples, razón por la que no explicamos como se realizan estas queries avanzadas.
+	\par
+	La clase \texttt{Ext.container.Container} implementa las funciones \texttt{down()} y \texttt{query()}. Estas dos realizar una llamada a
+	\texttt{Ext.ComponentQuery.query()} teniéndose a si mismo como parámetro \texttt{root}. Esto les permite hacer una búsqueda entre sus hijos.
+	\par
+	También existe el método \texttt{up()} implementado por \texttt{Ext.Component}. Este permite hacer una búsqueda similar a las anteriormente
+	descritas. En este caso se navega hacia arriba en la jerarquía de componentes y se busca por componentes que reúnen los criterios. Esta
+	función puede ser invocada sin ningún parámetro, caso en el que devuelve el padre inmediato del componente.
+	\par
+	Es conveniente también citar el parámetro \texttt{id} y la función \texttt{Ext.getCmp()}. Estos dos ofrecen una funcionalidad parecida a la
+	anteriormente explicada, pero no deben ser usados con ese propósito. Estan considerados como obsoletos y pueden dar lugar a colisiones. 
 
-\section{ExtJs Layouts}
+\section{Sencha ExtJs Layouts}
 	El propósito de esta sección es explicar los layouts utilizados en este trabajo. Tan solo explicaremos la funcionalidad de estos sin
 	centrarnos en el uso que les hemos dado, este será explicado en las secciones venideras cuando proceda. En la figura \ref{fig:layouts} podemos
 	ver una representación de los layouts que describiremos a continuación.
