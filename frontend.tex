@@ -180,7 +180,41 @@ Ext.define('MyApp.PressMeButton', {
    xtype: 'pressmebutton',
    text: 'Press Me'});
 	\end{lstlisting}
-	%<thecode>
+
+\section{Sencha ExtJs Events}
+	Las clases y componentes de ExtJs disparan multitud de eventos a lo largo de su ciclo de vida. Los eventos se disparan cuando algo interesante
+	le ocurre a nuestro componente. Un ejemplo es el evento \texttt{afterrender} que se dispara después de mostrar en pantalla el componente.
+	\par
+	La parte interesante de los eventos es que podemos definir funciones, \texttt{listeners}, que se ejecuten cuando se produzca un evento
+	determinado. De esta manera somos capaces de responder a dichos eventos. A continuación presentamos un ejemplo en el que podemos ver como
+	manejar dichos eventos. En el ejemplo trataremos el evento \texttt{click}, evento que se dispara al hacer \emph{click} sobre un componente. 
+	\begin{lstlisting}
+Ext.create('Ext.Button',{
+   text: 'Click Me',
+   renderTo: Ext.getBody(),
+   listeners:{
+      click: function(){
+         Ext.Msg.alert('I was clicked!');}
+   }
+});
+	\end{lstlisting}
+	\par
+	ExtJs también nos permite configurar eventos propios. Estos eventos se declaran como si fuesen eventos normales. La peculiaridad esta en que
+	somos nosotros los que tenemos que disparar esos eventos. Para disparar un evento tenemos que hacer uso de la función \texttt{fireEvent} que
+	acepta como parámetros el evento que queremos disparar y todos los parámetros que la función encargada del evento necesite. A continuación
+	podemos ver un pequeño ejemplo de como declarar y disparar un evento propio, que tiene como nombre \texttt{myEvent}.
+	\begin{lstlisting}
+var button = Ext.create('Ext.Button',{
+   text: 'Custom Event',
+   renderTo: Ext.getBody(),
+   listeners:{
+      myEvent: function(number){
+         Ext.Msg.alert('Custom event fired, number: '+number);}
+   }
+});
+
+button.fireEvent('myEvent', 42);
+	\end{lstlisting}
 
 \section{\emph{Modelo}}
 	El \emph{modelo} es el encargado de manejar los datos de una aplicación. En el caso del \emph{front-end} los datos de la aplicación deben ser
