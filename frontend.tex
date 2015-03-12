@@ -216,6 +216,45 @@ var button = Ext.create('Ext.Button',{
 button.fireEvent('myEvent', 42);
 	\end{lstlisting}
 
+\section{ExtJs History stack}
+	La aplicación Web que estamos desarrollando es una aplicación \emph{single page}. Este modelo rompe con el patrón tradicional de navegación
+	por el historial usando los botones \emph{Forward/Back}. Esto presenta un problema de usabilidad cuando el usuario utiliza el botón de
+	navegación hacia atrás, este espera volver al estado anterior de la aplicación, sin embargo sera cargada la página anterior del historial y
+	nuestra aplicación \emph{single page} será descargada.
+	\par
+	La solución que la mayoría de aplicaciones \emph{single page} han adoptado se basa en el \emph{Fragment Identifier}  o \emph{hash}, nombre que
+	recibe porque va precedido del símbolo \textbf{\#}. El \emph{hash} es una parte opcional de la URL que históricamente se utilizaba para navegar
+	por documentos largos, un cambio en el \emph{hash} hace que se muestres diferentes partes del documento.
+	\par
+	Actualmente el \emph{hash} es usado por aplicaciones \emph{single page} para manipular la pila de historial. El hash es cambiado acuerdo al
+	estado de la aplicación. Esto hace que los cambios en la aplicación sean registrados en la pila de historial.
+	\par
+	Al pulsar el botón de navegación hacia atrás el \emph{hash} de la URL cambia a su estado anterior. Nuestra aplicación debe ser capaz de
+	detectar los cambios en el \emph{hash} y actual acuerdo a estos. De esta manera podemos preservar la funcionalidad de los botones de
+	navegación \emph{Forward/Back}. 
+	\par
+	Para implementar la funcionalidad anteriormente descrita ExtJs nos ofrece el singletone \texttt{Ext.util.History}. Para inicializar este módulo
+	tenemos que invocar la función \texttt{Ext.History.init()}. Una vez inicializado este módulo podemos hacer cambios en el \emph{hash} invocando
+	la función \texttt{Ext.History.add()}. Esta función acepta como parámetro el valor del \emph{hash}. 
+	\par
+	Para detectar y actual acorde a los cambios del \emph{hash} tenemos que inicializar un \texttt{listener}. El evento que vamos a capturar es
+	\texttt{change}. A continuación podemos ver un pequeño código de como inicializar el \texttt{listener}.
+	\begin{lstlisting}
+Ext.History.on('change', function(hash){
+   switch(hash){
+      case: 'Foo':
+         //Actuar acuerdo al hash Foo
+         break;
+      case: 'Bar'
+         //Actuar acuerdo al hash Bar
+         break;
+   };
+});
+	\end{lstlisting}
+	\par
+	El propósito de esta sección ha sido explicar el problema que surge con el historial de navegación y como prevenir lo haciendo uso del
+	\texttt{Ext.History}. Del uso concreto que hemos hecho de este módulo hablaremos en secciones futuras de este capítulo.
+
 \section{\emph{Modelo}}
 	El \emph{modelo} es el encargado de manejar los datos de una aplicación. En el caso del \emph{front-end} los datos de la aplicación deben ser
 	servidos por el \emph{back-end}. El \emph{modelo} es el encargado de realizar la comunicación con el \emph{back-end}. 
