@@ -133,17 +133,43 @@ Ext.application({
 		será repartido el espacio disponible entre los diferentes hijos. Para ilustrar el funcionamiento del \texttt{flex} expondremos un
 		ejemplo. Teniendo dos \emph{componentes} hijo con \texttt{1} y \texttt{2} de \texttt{flex} respectivamente, el primero ocupara 1/3 y el
 		segundo 2/3 del espacio total.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[keepaspectratio, width=1\textwidth]{./img/layouts.png}
+		\caption{Sencha ExtJs. Layouts.}   
+		\label{fig:layouts}
+	\end{figure}
 
-
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[keepaspectratio, width=1\textwidth]{./img/layouts.png}
-	\caption{Sencha ExtJs. Layouts.}   
-	\label{fig:layouts}
-\end{figure}
-
-
+\section{Sencha ExtJs Lazy instantiation}
+	La inicialización perezosa es una técnica que consiste en retrasar la creación de recursos hasta el momento en el que sean necesarios. Como
+	hemos visto en la sección dedicada a los layouts en muchos casos los componentes no son visibles. Tener que crear todos los componentes al
+	inicializar la aplicación no es muy eficiente, dado que tan solo unos pocos son visibles. Crear tan solo los componentes visibles y después ir
+	creando los componentes según se vayan necesitando supone un incremento en el rendimiento. En páginas pequeñas con pocos componentes el
+	aumento no es apreciable, sin embargo en páginas que manejan multitud de componentes el incremento puede ser drástico. 
+	\par
+	Para implementar esta inicialización perezosa ExtJs se basa en la jerarquía de componentes previamente explicada. Cuando un componente es
+	creado también se crean todos los componentes hijos que deben ser visibles en ese momento. Tal y como explicamos los componentes hijos se
+	definen en el campo \texttt{items}. A continuación podemos ver un pequeño ejemplo. 
+	\begin{lstlisting}
+items:[
+   Ext.create('Ext.form.field.Text',{
+      fieldLabel:'Foo'}),
+   Ext.create('Ext.form.field.Text', {
+      fieldLabel: 'Bar'})]
+	\end{lstlisting}
+	El ejemplo presentado anteriormente no habilita la inicialización perezosa. Para este propósito tenemos que evitar el uso de la función
+	\texttt{Ext.create()}. Tenemos que especificar los componentes hijos como objetos de configuración. A continuación se presenta un ejemplo.
+	\begin{lstlisting}
+items: [{
+   xtype: 'textfield',
+   fieldLabel: 'Foo'},
+{
+   xtype: 'textfield',
+   fieldLabel: 'Bar'}]
+	\end{lstlisting}
+	La diferencia que podemos apreciar entre los dos ejemplos es el atributo \texttt{xtype}. Este especifica la clase que tendrá el componente.
+	Como podemos ver no se especifica el nombre completo de la clase. \texttt{xtype} acepta una serie atajos para referenciar a las clases. En
+	nuestro caso la clase \texttt{Ext.form.field.Text} es referenciada por el \texttt{xtype:\cc textfield\cc}.
 \section{\emph{Modelo}}
 	El \emph{modelo} es el encargado de manejar los datos de una aplicación. En el caso del \emph{front-end} los datos de la aplicación deben ser
 	servidos por el \emph{back-end}. El \emph{modelo} es el encargado de realizar la comunicación con el \emph{back-end}. 
