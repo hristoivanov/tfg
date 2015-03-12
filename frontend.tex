@@ -170,6 +170,18 @@ items: [{
 	La diferencia que podemos apreciar entre los dos ejemplos es el atributo \texttt{xtype}. Este especifica la clase que tendrá el componente.
 	Como podemos ver no se especifica el nombre completo de la clase. \texttt{xtype} acepta una serie atajos para referenciar a las clases. En
 	nuestro caso la clase \texttt{Ext.form.field.Text} es referenciada por el \texttt{xtype:\cc textfield\cc}.
+	\par
+	La lista completa de \texttt{xtypes} aceptados podemos ver en la documentación de ExtJs\cite{ExtJsDoc}. Eventualmente podemos extender esta
+	lista declarando nuestros propios \texttt{xtypes}. Esto se hace especificando el campo \texttt{xtype} a la hora de definir nuestra clase. A
+	continuación presentamos un pequeño ejemplo.
+	\begin{lstlisting}
+Ext.define('MyApp.PressMeButton', {
+   extend: 'Ext.button.Button',
+   xtype: 'pressmebutton',
+   text: 'Press Me'});
+	\end{lstlisting}
+	%<thecode>
+
 \section{\emph{Modelo}}
 	El \emph{modelo} es el encargado de manejar los datos de una aplicación. En el caso del \emph{front-end} los datos de la aplicación deben ser
 	servidos por el \emph{back-end}. El \emph{modelo} es el encargado de realizar la comunicación con el \emph{back-end}. 
