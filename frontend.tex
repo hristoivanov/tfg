@@ -1,7 +1,7 @@
 \chapter{Herramienta Web. \emph{Front-End}}
 \label{frontend}
 Nuestra aplicación Web esta dividida en \emph{back-end} y \emph{front-end}. En el capítulo anterior se describió el \emph{back-end}. El propósito de
-este capítulo es describir el \emph{front-end}. El \emph{front-end} es el encargado de la capa de presentación.
+este capítulo es describir el \emph{front-end}, que es el encargado de la capa de presentación.
 \par
 El \emph{front-end} es implementado en JavaScript\cite{JavaScript}. Este es un lenguaje de programación soportado por la mayoría de navegadores Web,
 nos permite dotar de funcionalidad extendida a nuestras páginas Web. Actualmente el uso de este lenguaje esta tan extendido y avanzado que permite
@@ -72,17 +72,17 @@ Ext.application({
 	\emph{conponente}, pero pueden ser añadidos más.
  	\par
  	Fijándonos en el código de ejemplo podemos ver que antes de definir el campo \texttt{items} definimos el campo \texttt{layout}. El \texttt{layout}
-	especifica la forma en la que se posicionaran y ajustaran los \emph{componetes} hijos. En este caso el \texttt{layout} especificado es 
-	\texttt{\cc fit\cc} en el que un solo hijo ocupa todo el espacio del padre. 
+	especifica la forma en la que se posicionan y ajustan los \emph{componetes} hijos dentro del padre. En este caso el \texttt{layout} especificado es 
+	\texttt{\cc fit\cc}, donde un solo hijo ocupa todo el espacio del padre.
 \section{Sencha ExtJs Component Manager}
 	ExtJs ofrece el singletone \texttt{Ext.ComponentManager} que provee un registro con todos los componentes. Esto facilita la referencia a
 	elementos desde cualquier punto del código. El propósito de esta sección es explicar como hacer uso de esta facilidad.
 	\par
-	Empezaremos especificando un requisito que  los componentes deben cumplir, estos deben definir un atributo \texttt{itemId}. Este atributo es
+	Empezaremos especificando un requisito que  los componentes deben cumplir, estos deben definir el atributo \texttt{itemId}. Este atributo es
 	el identificador del componente. El ámbito que tiene este identificador es local al contenedor que contiene el componente. Esto hace que los
 	identificadores no tengan que ser únicos. 
 	\par
-	Es el singletone \texttt{Ext.ComponentQuery} el que nos permite realizar búsquedas de componentes en función del texttt{itemId}. Concretamente
+	Es el singletone \texttt{Ext.ComponentQuery} el que nos permite realizar búsquedas de componentes en función del \texttt{itemId}. Concretamente
 	es \texttt{Ext.ComponentQuery.query()} el método que nos permite realizar las búsquedas. Este método acepta dos parámetros. El primer
 	parámetro, \texttt{selector}, es un String y especifica el \texttt{itemId} que queremos buscar. El segundo parámetro, \texttt{root} es
 	opcional y especifica el contenedor dentro de cual queremos hacer la búsqueda. Si el segundo parámetro es omitido la búsqueda se realizara
@@ -97,7 +97,7 @@ Ext.application({
 	descritas. En este caso se navega hacia arriba en la jerarquía de componentes y se busca por componentes que reúnen los criterios. Esta
 	función puede ser invocada sin ningún parámetro, caso en el que devuelve el padre inmediato del componente.
 	\par
-	Es conveniente también citar el parámetro \texttt{id} y la función \texttt{Ext.getCmp()}. Estos dos ofrecen una funcionalidad parecida a la
+	Es conveniente citar el parámetro \texttt{id} y la función \texttt{Ext.getCmp()}. Estos dos ofrecen una funcionalidad parecida a la
 	anteriormente explicada, pero no deben ser usados con ese propósito. Estan considerados como obsoletos y pueden dar lugar a colisiones. 
 
 \section{Sencha ExtJs Layouts}
@@ -115,7 +115,7 @@ Ext.application({
 		podemos sobrescribir, en nuestro caso haremos uso del \texttt{beforeExpand} que se dispara antes de expandir un \emph{componente}. 
 	\subsection{\texttt{Border}}
 		Este layout nos permite tener hasta cinco \emph{componentes} dispuestos de la manera que podemos ver en la figura \ref{fig:layouts}.
-		Los componentes hijos deben especificar al atribiuto \texttt{region} que determina el posicionamiento de estos. El campo puede tomar
+		Los componentes hijos deben especificar al atributo \texttt{region} que determina el posicionamiento de estos. El atributo puede tomar
 		los siguientes valores \texttt{[north, east, south, west, center]}. No es necesario que estén presentes los cinco hijos, podemos
 		omitir los no deseados. Esto hace que este layout sea muy flexible e interesante.
 	\subsection{\texttt{Card}}
@@ -168,7 +168,7 @@ items: [{
    fieldLabel: 'Bar'}]
 	\end{lstlisting}
 	La diferencia que podemos apreciar entre los dos ejemplos es el atributo \texttt{xtype}. Este especifica la clase que tendrá el componente.
-	Como podemos ver no se especifica el nombre completo de la clase. \texttt{xtype} acepta una serie atajos para referenciar a las clases. En
+	Como podemos ver no se especifica el nombre completo de la clase. \texttt{xtype} acepta una serie de atajos para referenciar a las clases. En
 	nuestro caso la clase \texttt{Ext.form.field.Text} es referenciada por el \texttt{xtype:\cc textfield\cc}.
 	\par
 	La lista completa de \texttt{xtypes} aceptados podemos ver en la documentación de ExtJs\cite{ExtJsDoc}. Eventualmente podemos extender esta
@@ -230,7 +230,7 @@ button.fireEvent('myEvent', 42);
 	estado de la aplicación. Esto hace que los cambios en la aplicación sean registrados en la pila de historial.
 	\par
 	Al pulsar el botón de navegación hacia atrás el \emph{hash} de la URL cambia a su estado anterior. Nuestra aplicación debe ser capaz de
-	detectar los cambios en el \emph{hash} y actual acuerdo a estos. De esta manera podemos preservar la funcionalidad de los botones de
+	detectar los cambios en el \emph{hash} y actuar acuerdo a estos. De esta manera podemos preservar la funcionalidad de los botones de
 	navegación \emph{Forward/Back}. 
 	\par
 	Para implementar la funcionalidad anteriormente descrita ExtJs nos ofrece el singletone \texttt{Ext.util.History}. Para inicializar este módulo
