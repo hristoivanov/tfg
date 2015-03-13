@@ -216,6 +216,40 @@ var button = Ext.create('Ext.Button',{
 button.fireEvent('myEvent', 42);
 	\end{lstlisting}
 
+%Muy mal. %Si sobra contenido esta sección tiene que ser eliminada.
+\section{Sencha ExtJs Components}
+	ExtJs ofrece multitud de componentes, todos son subclases del \texttt{Ext.Component}, cada uno con un propósito diferente. El objetivo de esta
+	sección es describir los componentes usados en este trabajo. Nos centraremos en los aspectos técnicos sin especificar el uso concreto que les
+	hemos dado, este será explicado en secciones futuras cuando proceda. 
+	\subsection{\texttt{Ext.button.Button xtype:button}}
+		Este componente nos permite crear un botón. El propósito de un botón es ofrecer un medio fácil al usuario para interactuar con la
+		aplicación. Los botones que ExtJs ofrece son altamente configurables, tanto funcionalmente como estéticamente. Podemos tener botones
+		normales, botones \emph{toggle}, botones que despliegan menús y mucho más. Para dar funcionalidad a estos botones tenemos que escuchar
+		por los eventos que estos disparan. Los eventos más comunes son \texttt{click}, \texttt{toggle}, \texttt{mouseover} y \texttt{mouseout}.
+	\subsection{\texttt{Ext.form.field.Date xtype:datefield}}
+		Este componente proporciona un campo de entrada de fecha. Es posible especificar el formato deseado en el que introducir la fecha. Si
+		este formato no es respetado el campo es subrayado en color rojo indicando al usuario la inconsistencia. Eventualmente este campo
+		puede desplegar un selector de fechas que facilita el proceso de introducir la fecha deseada. Al igual que los demás componentes este
+		dispara multitud de eventos que podemos manejar.
+	\subsection{\texttt{Ext.form.field.Time xtype:timefield}}
+		Este componente es muy similar al anteriormente descrito. Este proporciona un campo de entrada de tiempo. También acepta una
+		configuración del formato deseado y advierte  al usuario cuando este no es respetado. El componente puede desplegar un selector de
+		tiempo que facilita la tarea de introducir el valor deseado.
+	\subsection{\texttt{Ext.form.Label xtype:label}}
+		Este componente nos permite generar una etiqueta de texto. Este componente es muy similar al tag HTML <label>. Este componente nos
+		permite configurar múltiples aspectos y manejar múltiples eventos.
+	\subsection{\texttt{Ext.panel.Panel xtype:panel}}
+		Este componente es una parte fundamental en la creación de aplicaciones con ExtJs. Esta pensado para ser utilizado como un contenedor,
+		contener otros componentes. Este componente es altamente configurable pero el aspecto más importante es el \texttt{layout} que
+		determina como se posicionan los componentes hijos. 
+	\subsection{\texttt{Ext.tab.Panel xtype:tabpanel}}
+		Este componente es una extensión del componente anterior. Este ofrece múltiples pestañas en la que organizar los componentes hijos.
+		Esto permite incluir una cantidad mayor de contenido en el mismo espacio. La barra de pestañas que el componente ofrece es altamente
+		configurable. 
+	\subsection{\texttt{Ext.grid.Panel xtype:gridpanel}}
+		Este componente es un contenedor capaz de presentar una tabla. Las tablas son altamente interactivas, estas permiten al usuario
+		ordenar los datos, hacer búsquedas, eliminar datos, añadir datos y mucho más.
+
 \section{ExtJs History stack}
 	La aplicación Web que estamos desarrollando es una aplicación \emph{single page}. Este modelo rompe con el patrón tradicional de navegación
 	por el historial usando los botones \emph{Forward/Back}. Esto presenta un problema de usabilidad cuando el usuario utiliza el botón de
