@@ -250,7 +250,7 @@ button.fireEvent('myEvent', 42);
 		Este componente es un contenedor capaz de presentar una tabla. Las tablas son altamente interactivas, estas permiten al usuario
 		ordenar los datos, hacer búsquedas, eliminar datos, añadir datos y mucho más.
 
-\section{ExtJs History stack}
+\section{Sencha ExtJs History stack}
 	La aplicación Web que estamos desarrollando es una aplicación \emph{single page}. Este modelo rompe con el patrón tradicional de navegación
 	por el historial usando los botones \emph{Forward/Back}. Esto presenta un problema de usabilidad cuando el usuario utiliza el botón de
 	navegación hacia atrás, este espera volver al estado anterior de la aplicación, sin embargo sera cargada la página anterior del historial y
@@ -329,3 +329,43 @@ Ext.History.on('change', function(hash){
 	Estas abstracciones son muy útiles, pero algo complejas. Al no estar acostumbrado a trabajar con ellas el autor de este trabajo ha preferido
 	utilizarlas lo menos posible. Por esta razón la mayoría de los datos se manejan usando el \texttt{Ext.data.Connection}, hemos utilizado el
 	\texttt{Ext.data.Store} en casos muy específicos.
+	%TODO Explicar Modelo, Store y Proxy.
+
+\section{HighStock}
+	El propósito de esta sección es explicar alguno de los aspectos básicos del Framework. Actualmente existen dos frameworks desarrollados por la
+	misma organización, HighCharts y HighStock. Los dos framework son muy parecidos y es conveniente explicar las diferencias que existen entre
+	estos. El primero tiene un propósito más general, la variedad de gráficos que permite crear es mucho más extensa. El segundo tiene un
+	propósito más general, este está enfocado a la representación gráfica de valores que evolucionan respecto al tiempo. Este enfoque es muy
+	adecuado para nuestro caso. A continuación presentaremos el código mínimo necesario para crear un gráfico con HighStock. Basándose en ese
+	código explicaremos los aspectos técnicos del software.
+	\begin{lstlisting}
+myChart = new Highcharts.StockChart({
+   chart: {
+      renderTo: container}, //HTML element reference
+   series: [{
+      name: 'My First Series',
+      data: myData // predefined JavaScript array
+   }]
+});
+	\end{lstlisting}
+	Como podemos ver para crear un gráfico invocamos la función \texttt{HighCharts.StockChart()}. Esta función acepta como parámetro un objeto que
+	define la configuración del gráfico. El formato de este objeto puede verse en la documentación del framework\cite{HighStockDoc}. En nuestro
+	caso tan solo especificaremos dos atributos, la mayoría de los atributos tiene un valor por defecto por lo que no es necesario especificarlos
+	explícitamente. 
+	\par
+	El primer atributo que especificamos es \texttt{chart}. Este atributo es un objeto que a su vez especifica  aspectos básicos del gráfico. El
+	atributo que especificamos es \texttt{renderTo}, el elemento HTLM en el que nuestro gráfico será presentado.
+	\par
+	El segundo atributo que especificamos es \texttt{series}. Este es un array de objetos que especifican las series de nuestro gráfico. En este
+	ejemplo tenemos tan solo un objeto, por lo que nuestro gráfico tendrá tan solo una serie.  Definiendo el atributo \texttt{name} le damos un
+	nombre a nuestra serie y especificando el atributo \texttt{data} le damos datos a nuestra serie. El atributo \texttt{data} tiene que ser un
+	array que contenga los datos, este array puede tener múltiples formatos que no explicaremos dado que están muy bien explicado en la
+	documentación proporcionada\cite{HighStockDoc}.
+	\par
+	En este punto volveremos al \texttt{renderTo} a fin de explicar la integración entre HighStock y Sencha ExtJs. En secciones anteriores
+	explicamos que la interfaz de usuario de una aplicación ExtJs se constituye de componentes. Estos componentes son abstracciones con
+	funcionalidades muy extendidas pero en el fondo son un elemento HTML. Este elemento será asignado al atributo \texttt{renderTo} a fin de
+	mostrar un gráfico HighStock en un componente de una Aplicación ExtJs. El elemento HTML de un componente es accesible de la siguiente forma.
+    		\begin{center} \texttt{Ext.Component.detEl().dom}  \end{center}
+
+
