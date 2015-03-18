@@ -379,6 +379,12 @@ myChart = new Highcharts.StockChart({
 	Para dar solución a este problema hemos recurrido a agrupar los datos. El fin es crear un número de grupos que no exceda el ancho de pixeles
 	de nuestra pantalla. Para cada grupo tenemos que calcular un valor representativo. Una técnica común es calcular el valor medio de los grupos.
 	Esto tiene el inconveniente de aplanar los Spikes, algo que queremos resaltar.
+	\begin{wrapfigure}{R}{0.42\textwidth}
+		\centering
+	        \includegraphics[keepaspectratio, width=0.40\textwidth]{./img/candlestick.png}
+		\caption{Gráfico Candlestick.}
+		\label{fig:candlestick}
+	\end{wrapfigure}
 	\par
 	Para evitar aplanar los Spike para cada grupo calcularemos valores más representativos que la media. En concreto calcularemos cuatro valores,
 	máximo, mínimo, \emph{open} y \emph{close}. El \emph{open} y \emph{close} son la media más la desviación típica y la media menos la desviación
