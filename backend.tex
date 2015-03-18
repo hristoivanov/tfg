@@ -119,7 +119,7 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		\texttt{timekey} es calculado utilizando el valor de la variable \texttt{\$interval}, variable que define el intervalo de los grupos
 		y es calculada de la siguiente forma.
 			\begin{center} \texttt{\$interval =round((\$finish-\$start)/(\$points));}  \end{center} 
-		Una vez formados los grupos para cada campo es calculado el máximo, mínimo, \emph{open} y \emph{close}. El \emph{open} y \emph{close}
+		Una vez formados los grupos para cada grupo es calculado el máximo, mínimo, \emph{open} y \emph{close}. El \emph{open} y \emph{close}
 		son la media más la desviación típica y la media menos la desviación típica respectivamente. Estos cuatro valores son calculados para el
 		valor global, la corrección por presión y la corrección por eficiencia. Para la presión atmosférica tan solo es calculado el valor
 		medio. Estos datos son utilizados para construir un gráfico \emph{Candlestick}, sobre este tipo de gráfico hablaremos en el

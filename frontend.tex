@@ -368,4 +368,38 @@ myChart = new Highcharts.StockChart({
 	mostrar un gráfico HighStock en un componente de una Aplicación ExtJs. El elemento HTML de un componente es accesible de la siguiente forma.
     		\begin{center} \texttt{Ext.Component.detEl().dom}  \end{center}
 
+\section{HighStock Agrupación de datos y \emph{Candlestick}} 
+	El objetivo de esta sección es explicar el gráfico \emph{Candlestick} o gráfico de velas. Hemos utilizado este gráfico para dar solución a un
+	problema que explicaremos a continuación. Seguidamente explicaremos como interpretar este gráfico.
+	\par
+	El problema radica en la gran cantidad de datos que tienen que ser representados en nuestro gráfico. El sistema de adquisición genera una
+	entrada de datos cada minuto, 1440 datos al día o 43200 datos al mes. Estas cantidades de datos son excesivas comparadas con las resoluciones
+	de pantalla actuales. Consideremos una pantalla estándar con 1280 pixeles de ancho, es imposible representar 43200 datos.
+	\par
+	Para dar solución a este problema hemos recurrido a agrupar los datos. El fin es crear un número de grupos que no exceda el ancho de pixeles
+	de nuestra pantalla. Para cada grupo tenemos que calcular un valor representativo. Una técnica común es calcular el valor medio de los grupos.
+	Esto tiene el inconveniente de aplanar los Spikes, algo que queremos resaltar.
+	\par
+	Para evitar aplanar los Spike para cada grupo calcularemos valores más representativos que la media. En concreto calcularemos cuatro valores,
+	máximo, mínimo, \emph{open} y \emph{close}. El \emph{open} y \emph{close} son la media más la desviación típica y la media menos la desviación
+	típica respectivamente.
+	\par
+	El agrupamiento de datos y cálculo de estos cuatro valores por cada grupo esta implementado en el \emph{back-end}. Los servicios RPC que nos
+	permiten acceder a estos datos son \texttt{nmdbOriginalGroup} y \texttt{nmdbRevisedGroup}. Estos servicios fueron explicados en el capítulo
+	dedicado al \emph{back-end}, en este punto tan solo nos interesa destacar el argumento \texttt{points} que estos dos servicios aceptan. Este
+	argumento especifica el número de grupos en los que serán agrupados los datos, este será proporcional al número de pixeles que tenemos
+	disponibles para representar nuestro gráfico. 
+	\par
+	Con los valores máximo, mínimo, \emph{open} y \emph{close} de cada grupo crearemos un gráfico Candlestick. Este es un gráfico usado en
+	análisis técnico bursátil donde tiene su significado propio. En este trabajo tiene su significado propio que podemos ver en la figura
+	\ref{fig:candlestick}. Como podemos ver el \emph{open} y \emph{close} son utilizados para construir el cuerpo de las velas. El cuerpo de las
+	velas representa los datos que se encuentran dentro de la desviación típica. La línea que cruza el cuerpo de la vela representa el valor
+	máximo y mínimo para cada grupo.
+	\par
+	Las velas con cuerpos alargados indican grupos en los que la desviación típica es muy grande, por contrario velas con cuerpos contraídos
+	indican grupos con una desviación típica pequeña. Los dos extremos, datos que fluctúan mucho o datos que no fluctúan, pueden ser indicativo de
+	un mal funcionamiento. Los valores máximo o mínimo que se alejan mucho del cuerpo de la vela nos indican un Spike en dicho grupo. 
+
+
+
 
