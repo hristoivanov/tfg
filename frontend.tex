@@ -404,7 +404,87 @@ myChart = new Highcharts.StockChart({
 	\par
 	Las velas con cuerpos alargados indican grupos en los que la desviación típica es muy grande, por contrario velas con cuerpos contraídos
 	indican grupos con una desviación típica pequeña. Los dos extremos, datos que fluctúan mucho o datos que no fluctúan, pueden ser indicativo de
-	un mal funcionamiento. Los valores máximo o mínimo que se alejan mucho del cuerpo de la vela nos indican un Spike en dicho grupo. 
+	un mal funcionamiento. Los valores máximo o mínimo que se alejan mucho del cuerpo de la vela nos indican la presencia de un Spike en dicho
+	grupo. 
+
+\section{Ampliando HighStock}
+	HighStock es construido de forma modular para facilitar la ampliación por parte de los usuarios. En este trabajo hemos ampliado el framework
+	con dos funcionalidades adicionales. El propósito de esta sección es describir estas dos funcionalidades, pero primero explicaremos el proceso
+	para ampliar el framework.
+	\par
+	La primera consideración que tenemos que tener es el ámbito o \emph{scope}, nombre que utilizaremos a lo largo de este trabajo. Debemos tener
+	cuidado de no contaminar el \emph{scope} global con variables. Para este propósito debemos utilizar una función \emph{self-invoking}. En
+	JavaScript esta es una función que se ejecuta inmediatamente y crear su propio \emph{scope}, de esta manera evitamos contaminar el
+	\emph{scope} global. A continuación presentamos un ejemplo de como declarar una de estas funciones.
+	\begin{lstlisting}
+(function (H) {
+   var localVar,	// Variable local
+   Series = H.Series;
+   doSomething();
+}(Highcharts));
+	\end{lstlisting}
+	\par
+	El framework nos ofrece la función \texttt{wrap} que nos permite añadir código en una función existente. Podemos añadir dicho código antes o
+	después del código inicial de la función. La función acepta tres argumentos, el objeto padre como primer argumento, el nombre de la función
+	como segundo argumento y la función de sustitución como tercer argumento. La función original es pasada como el primer argumento de la función
+	de sustitución. Es conveniente fijarnos en el ejemplo de código a continuación presentado para entender mejor el uso de la función
+	\texttt{wrap}.
+	\begin{lstlisting}
+H.wrap(H.Series.prototype, 'drawGraph', function (proceed) {
+// Antes de la funcion original.
+console.log("We are about to draw the graph: ", this.graph);
+// Invocar la funcion original usando todos los argumentos menos el primero.
+proceed.apply(this, Array.prototype.slice.call(arguments, 1));
+// Despues de la funcion original.
+console.log("We just finished drawing the graph: ", this.graph);
+});
+	\end{lstlisting}
+	\par  
+	A continuación explicaremos las dos ampliaciones que hemos realizado sobre el framework, la primera nos permite realizar zoom Out y la segunda
+	nos permite resaltar las series de un gráfico para poder inspeccionarlas mejor.
+	\subsection{Ampliación. Zoom Out}
+		Tal y como explicamos los gráficos creados con el framework son altamente interactivos. Entre las diferentes funcionalidades están las
+		que nos permiten navegar por el conjunto de datos. Con navegar nos referimos a mostrar diferentes fragmentos de los datos. Un ejemplo
+		de estas funcionalidades es el zoom In, que nos permite ampliar una sección de datos. Haciendo \emph{click} y arrastrando podemos
+		seleccionar un intervalo para realizar el zoom In. Poder hacer zoom In es muy útil para inspeccionar los datos, el problema es que el
+		framework no nos ofrece la posibilidad de realizar un zoom Out.
+		\par
+		En este trabajo hemos extendido el framework para incorporar dicha funcionalidad. Para este propósito modificaremos el zoom In,
+		usaremos la dirección de arrastre para diferenciar entre zoom In y zoom Out. Un arrastre de izquierda a derecha realizar un zoom In,
+		mientras que un arrastre de derecha a izquierda realizar un zoom Out. 
+		\par
+		Para poder registrar la dirección de arrastre hemos hecho uso de dos eventos, \texttt{mousedown} y \texttt{mouseup}. En cada evento
+		registramos la posición de este y usamos la diferencia entre las posiciones para determinar la dirección de arrastre. A continuación
+		presentamos el código. Es la variable \emph{selectDirection} la que nos indica la dirección de arrastre.
+		\begin{lstlisting}
+H.addEvent(container, 'mousedown', function (e) {
+   selectFrom = chart.pointer.normalize(e).chartX;
+});
+
+H.addEvent(container, 'mouseup', function (e) {
+   selectTo = chart.pointer.normalize(e).chartX;
+   selectDirection = selectTo - selectFrom;													            
+});
+		\end{lstlisting}
+		\par
+		El evento que se dispara al realizar una selección en \texttt{selection}, por lo que tenemos que registrar un manejador para el
+		evento. La primera acción es comprobar el estado del \emph{selectDirection}, la variable que nos indica la dirección de arrastre. En
+		el caso de que la variable tenga un valor positivo no tomamos acción, dejamos que se realice el zoom In por defecto. Si por contrario
+		la variable tiene un valor negativo tenemos que realizar un zoom Out. La primera acción que tomamos es prevenir la acción por defecto.
+		Seguidamente calculamos los valores que definen el nuevo intervalo temporal y para terminar aplicamos el nuevo intervalo al gráfico. A
+		continuación se puede ver el código que implementa la funcionalidad previamente descrita.
+		\begin{lstlisting}
+H.addEvent(chart, 'selection', function (e) {
+   if (selectDirection < 0) {
+      e.preventDefault();
+      //Calcular newMin y newMax
+      xAxis.setExtremes(newMin, newMax);
+   }
+});
+		\end{lstlisting}
+
+		
+
 
 
 
