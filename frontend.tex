@@ -483,9 +483,26 @@ H.addEvent(chart, 'selection', function (e) {
 });
 		\end{lstlisting}
 
-		
-
-
-
-
+	\subsection{Ampliación. Resaltar series}
+		En la mayoría de casos las estaciones de neutrones de monitores se componen por 18 tubos contadores. Los gráficos que representan la
+		información de los tubos por separado se vuelven un poco confusos debido al gran número de series. Este problema crea la necesidad de
+		tener un mecanismo que permita resaltar una serie del gráfico para poder inspeccionarla mejor. Para crear dicho mecanismo utilizaremos
+		la leyenda del gráfico.
+		\par
+		HighStock permite añadir una leyenda a los gráficos, elemento gráfico que facilita el identificar e interpretar las diferentes series
+		del gráfico. La leyenda al igual que los gráficos es altamente interactiva. Haciendo \emph{click} sobre los elementos de una leyenda
+		podemos mostrar u ocultar la serie correspondiente. En este trabajo preservaremos esta funcionalidad y añadiremos la funcionalidad de
+		resaltar una serie. Para este propósito utilizaremos los eventos \texttt{mouseover} y \texttt{mouseout}, la serie será resaltada al
+		posicionar el puntero sobre el elemento correspondiente de la leyenda. 
+		\par
+		El proceso de resaltar una serie para poder visualizarla mejor consiste en bajar la opacidad de todas las demás series, de esta manera
+		la serie que queremos resaltar es más visible. En la figura \ref{fig:resalto} podemos ver el resultado que obtenemos. A la izquierda
+		podemos ver el gráfico antes de resaltar una serie, vemos que las mediciones de los 18 canales se solapan y es difícil examinarlas. A
+		la derecha podemos ver el canal 13, \emph{ch13}, resaltado. Vemos como este mecanismo facilita el proceso de inspeccionar los datos.
+		\begin{figure}[h]
+			\centering
+			\includegraphics[keepaspectratio, width=1\textwidth]{./img/resalto.png}
+			\caption{Ampliando HighStock. Resaltar series.}   
+			\label{fig:resalto}
+		\end{figure}
 
