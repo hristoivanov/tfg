@@ -12,18 +12,26 @@ Sencha ExtJs es un framework orientado a la creación de aplicaciones Web intera
 presenta, podemos decir que este es de propósito general. Este ofrece abstracciones para gestionar nuestros datos, arquitectura MVC, componentes
 gráficos de control y otros.
 \par
-HighStock es un framewrok con un propósito específico. Este está orientado a facilitar la creación de gráficos. El framework es muy eficiente, esto
+HighStock es un framework con un propósito específico. Este está orientado a facilitar la creación de gráficos. El framework es muy eficiente, esto
 reduce la carga computacional de nuestra aplicación. Los gráficos generados por este son altamente interactivos, permiten ocultar series, navegar,
-realizar zoom y mucho más
+realizar zoom y mucho más.
 \par
-Como podemos ver en la figura \ref{fig:frontend} nuestro \emph{front-end} esta basado en el patrón de diseño 
-\emph{modelo-vista-controlador}\cite{MVCWiki}.
+Empezaremos este capitulo aclarando los aspectos técnicos relacionados con estos dos frameworks. Explicaremos como usarlos, que funcionalidad nos
+proporcionan, consideraciones que debemos tener en cuenta y mucho más.
+\par
+Como podemos ver en la figura \ref{frontend} nuestro \emph{front-end} esta basado en el patrón de diseño
+\emph{modelo-vista-controlador}\cite{MVCWiki}. En la segunda parte de este capitulo hablaremos más a fondo sobre la división impuesta por este patrón
+de diseño.
 \begin{figure}[h]
 	\centering
 	\includegraphics[keepaspectratio, width=1\textwidth]{./img/frontend.png}
 	\caption{\emph{Front-end}. Patrón MVC.}   
 	\label{fig:frontend}
 \end{figure}
+\par
+En nuestra aplicación también hacemos una división funcional, diferenciamos entre tres módulos funcionales que son \texttt{Spike},
+\texttt{SpikeCorrected} y \texttt{ChannelStats}. En las secciones finales de este capitulo hablaremos sobre estos módulos funcionales. 
+
 \section{Sencha ExtJs}
 	El propósito de esta sección es explicar alguno de los aspectos básicos del framework. Empezaremos explicando como crear una aplicación básica
 	basándonos en ExtJs. En la mayoría de los casos existe un solo documento HTML\cite{HTML} que contiene toda la aplicación. En este documento
@@ -369,6 +377,12 @@ myChart = new Highcharts.StockChart({
     		\begin{center} \texttt{Ext.Component.detEl().dom}  \end{center}
 
 \section{HighStock Agrupación de datos y \emph{Candlestick}} 
+	\begin{wrapfigure}{R}{0.42\textwidth}
+		\centering
+	        \includegraphics[keepaspectratio, width=0.40\textwidth]{./img/candlestick.png}
+		\caption{Gráfico Candlestick.}
+		\label{fig:candlestick}
+	\end{wrapfigure}
 	El objetivo de esta sección es explicar el gráfico \emph{Candlestick} o gráfico de velas. Hemos utilizado este gráfico para dar solución a un
 	problema que explicaremos a continuación. Seguidamente explicaremos como interpretar este gráfico.
 	\par
@@ -379,12 +393,6 @@ myChart = new Highcharts.StockChart({
 	Para dar solución a este problema hemos recurrido a agrupar los datos. El fin es crear un número de grupos que no exceda el ancho de pixeles
 	de nuestra pantalla. Para cada grupo tenemos que calcular un valor representativo. Una técnica común es calcular el valor medio de los grupos.
 	Esto tiene el inconveniente de aplanar los Spikes, algo que queremos resaltar.
-	\begin{wrapfigure}{R}{0.42\textwidth}
-		\centering
-	        \includegraphics[keepaspectratio, width=0.40\textwidth]{./img/candlestick.png}
-		\caption{Gráfico Candlestick.}
-		\label{fig:candlestick}
-	\end{wrapfigure}
 	\par
 	Para evitar aplanar los Spike para cada grupo calcularemos valores más representativos que la media. En concreto calcularemos cuatro valores,
 	máximo, mínimo, \emph{open} y \emph{close}. El \emph{open} y \emph{close} son la media más la desviación típica y la media menos la desviación
