@@ -567,17 +567,17 @@ Ext.define('MyApp.controller.Users', {
 		\subsubsection{\texttt{Launch()}}
 			Inicializa el módulo funcional \texttt{Spike}. Es conveniente destacar que esta función no es \texttt{onLauch}, esta no es
 			invocada automáticamente al inicio de la aplicación, somos nosotros los que la invocamos. Esta función inicializa el objeto
-			\texttt{MyApp.app.spike}, objeto que debe contener todas las variables usadas en este módulo. La mayoría de las demás
-			funciones aceptan el parámetro \texttt{module}, este parámetro debe ser el objeto mencionado anteriormente. Después de
-			inicializar este objeto es invocada la función \texttt{loadInitialData()}.
-		\subsubsection{\texttt{loadInitialData(module)}}
+			\texttt{app}, objeto que debe contener todas las variables usadas en este módulo. La mayoría de las demás funciones usaran
+			este objeto para acceder a estas variables. Después de inicializar este objeto es invocada la función
+			\texttt{loadInitialData()}.
+		\subsubsection{\texttt{loadInitialData()}}
 			Esta función carga los datos necesarios para construir el módulo. Los datos son cargados realizando una petición Ajax al
 			\emph{back-end}. El servicio RPC que invocamos es \texttt{nmdbOriginalGroup}. Al cargar los datos con éxito son invocadas las
 			funciones \texttt{initCandleChart()} y \texttt{initChannelChart()}. 
-		\subsubsection{\texttt{initCandleChart(module)}}
+		\subsubsection{\texttt{initCandleChart()}}
 			Esta función es la encargada de crear el gráfico \emph{Candlestick} con los datos de la estación. Hablaremos más a fondo sobre
 			este gráfico en las secciones futuras donde discutiremos la herramienta desde un enfoque funcional.
-		\subsubsection{\texttt{initChannelChart(module)}}
+		\subsubsection{\texttt{initChannelChart()}}
 			Esta función es la encargada de crear el gráfico que representara los datos de los tubos contadores por separado. Igual que en
 			el caso anterior hablaremos más sobre este gráfico en secciones futuras.
 		\subsubsection{\texttt{LineOrOhcl(start, finish, N\_points)}}
@@ -586,26 +586,26 @@ Ext.define('MyApp.controller.Users', {
 			gráfico de línea o bien uno \emph{Candlestick}. La cantidad de datos esta definida por los parámetros \texttt{start} y
 			\texttt{finish}, el parámetro \texttt{N\_points} representa el número de pixeles que tenemos a disposición para representar
 			los datos.
-		\subsubsection{\texttt{updateMode(start, finish, module)}}
+		\subsubsection{\texttt{updateMode(start, finish)}}
 			Esta función es invocada cuando ocurre algún cambio en el gráfico \emph{Candlestick} y calcula el modo en que deben ser
-			representados los datos. Esta función hace un uso intensivo de la función \texttt{LineOrOhcl}, pero tiene en cuenta más cosas
+			representados los datos. Esta función hace un uso intensivo de la función \texttt{LineOrOhcl()}, pero tiene en cuenta más cosas
 			como la serie actual.
-		\subsubsection{\texttt{changeSeries(series, module)}}
+		\subsubsection{\texttt{changeSeries(series)}}
 			Esta función cambia la serie que es presentada en el gráfico \emph{Candlestick}. El parámetro \texttt{series} es un entero que
 			puede tomar los siguientes valores \texttt{[1, 2, 3]}, donde estos representan uncorrected, corrected for pressure y
 			corrected for efficiency.
-		\subsubsection{\texttt{updateSeries(module)}}
+		\subsubsection{\texttt{updateSeries()}}
 			Esta función simplemente refresca los datos de las series del gráfico \emph{CandleStick}. Es invocada cada vez que ocurre
 			algún cambio en este para refrescar los datos.
-		\subsubsection{\texttt{updateCandleData(start, finish, module)}}
+		\subsubsection{\texttt{updateCandleData(start, finish)}}
 			Esta función carga los datos para el gráfico \emph{Candlestick} en función de la petición realizada por el usuario. Para
 			cargar los datos la función realiza una petición Ajax al \emph{back-end}. La función invoca el servicio RPC
 			\texttt{nmdbOriginalGroup} o \texttt{nmdbOriginalRaw} en función del valor devuelto por la función \texttt{LineOrOhcl()}. El
 			intervalo de datos que será solicitado es definido por los parámetros \texttt{start} y \texttt{finish}. 
-		\subsubsection{\texttt{updateChannelData(module)}}
+		\subsubsection{\texttt{updateChannelData()}}
 			Esta función carga los datos para el gráfico que representara los datos de los tubos contadores por separado. Los datos son
 			cargado del \emph{back-end} mediante una petición Ajax que invoca el servicio RPC \texttt{nmdadbRawData}.
-		\subsubsection{\texttt{searchInterval(start, finish, module)}}
+		\subsubsection{\texttt{searchInterval(start, finish)}}
 			Esta función nos permite hacer una búsqueda por intervalos temporales. El intervalo es definido por los parámetros
 			\texttt{start} y \texttt{finish}.
 		\subsubsection{\texttt{getTimestamp(str)}}
