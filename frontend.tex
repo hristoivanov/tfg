@@ -30,7 +30,7 @@ de diseño.
 \end{figure}
 \par
 En nuestra aplicación también hacemos una división funcional, diferenciamos entre tres módulos funcionales que son \texttt{Spike},
-\texttt{SpikeCorrected} y \texttt{ChannelStats}. En las secciones finales de este capitulo hablaremos sobre estos módulos funcionales. 
+\texttt{SpikeRevised} y \texttt{ChannelStats}. En las secciones finales de este capitulo hablaremos sobre estos módulos funcionales. 
 
 \section{Sencha ExtJs}
 	El propósito de esta sección es explicar alguno de los aspectos básicos del framework. Empezaremos explicando como crear una aplicación básica
@@ -550,7 +550,7 @@ Ext.define('MyApp.controller.Users', {
 		El controlador  define la función \texttt{onLaunch}, función que es invocada una vez creada la Vista y el Modelo de la aplicación.
 		Empieza invocando la función \texttt{Ext.History.init()}, función esencial para inicializar este módulo. Seguidamente define la
 		función encargada de manejar el evento \texttt{change}, evento que se dispara al cambiar el \emph{hash} de la URL. Esta función
-		soporta tres valores diferentes como \emph{hash} que son \texttt{[Spike, SpikeCorrected, ChannelStats]}. Estos tres valores
+		soporta tres valores diferentes como \emph{hash} que son \texttt{[Spike, SpikeRevised, ChannelStats]}. Estos tres valores
 		representan los tres módulos funcionales entre los que hacemos distinción.  Cambiando el \emph{hash} cambiamos el módulo funcional
 		mostrado en pantalla.
 		\par
