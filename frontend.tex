@@ -514,4 +514,107 @@ H.addEvent(chart, 'selection', function (e) {
 	utilizarlas lo menos posible. Por esta razón la mayoría de los datos se manejan usando el \texttt{Ext.data.Connection}, hemos utilizado el
 	\texttt{Ext.data.Store} en casos muy específicos.
 	%TODO Explicar Modelo, Store y Proxy.
+\section{\emph{Controlador}}
+	El Controlador en una aplicación \emph{modelo-vista-controlador}\cite{MVCWiki} es el que responde a eventos, normalmente estos eventos son
+	peticiones del usuario. Las respuestas consisten en peticiones al Modelo para cargar datos o bien en comandos dirigidos a la Vista para
+	realizar un cambio en la forma de mostrar los datos. Podemos decir que este modulo es el encargado de intermediar entre la Vista y el Modelo.
+	El propósito de esta sección es explicar este módulo en profundidad.
+	\par
+	Sencha ExtJs nos ofrece la clase \texttt{Ext.app.Controller}, abstracción que representa un Controlador. Esta clase contiene la funcionalidad
+	mínima necesaria, esta pensada para ser extendida y dotada de funcionalidad por el usuario. A continuación podemos ver un pequeño ejemplo de
+	como declarar un Controlador básico en Sencha ExtJs.
+	\begin{lstlisting}
+Ext.define('MyApp.controller.Users', {
+   extend: 'Ext.app.Controller',
+   onLaunch: function() {
+      console.log('Podemos empezar..');}
+});
+	\end{lstlisting}
+	La función \texttt{onLaunch} es una función especial que es invocada después de inicializar la aplicación. La Vista y Modelo ya están
+	inicializados, por lo que es un buen punto para empezar a actuar sobre estos elementos.
+	\par
+	Antes de empezar a discutir los Controladores que hemos implementado en este trabajo es conveniente destacar que el framework ofrece una
+	facilidad similar al \texttt{Ext.ComponentQuery}, pero para los Controladores. Podemos hacer queries para acceder a los Controladores desde
+	cualquier punto del código. A continuación podemos ver como hacer uso de esta facilidad.
+    		\begin{center} \texttt{MyApp.app.getController("Nombre\_del\_Controlador")}  \end{center}
+	\par
+	En nuestra aplicación hemos definido cinco Controladores. En las subsecciones venideras discutiremos estos cinco Controladores que hemos
+	definido.
+	\subsection{\texttt{HighStockExtend}}
+		El propósito de este Controlador es inicializar las dos extensiones de HighStock que discutimos previamente en este capitulo. Este controlador es
+		invocado antes de empezar a construir los gráficos de la aplicación para que las extensiones este listas y sean aplicadas a estos.
+	\subsection{\texttt{Navigation}}
+		Este Controlador es el encargado de inicializar el \texttt{Ext.History}, mecanismo que solventa el problema de navegación por el
+		historial en aplicaciones \emph{single page}. El problema y el mecanismo fueron descritos en secciones anteriores de este capitulo.
+		\par
+		El controlador  define la función \texttt{onLaunch}, función que es invocada una vez creada la Vista y el Modelo de la aplicación.
+		Empieza invocando la función \texttt{Ext.History.init()}, función esencial para inicializar este módulo. Seguidamente define la
+		función encargada de manejar el evento \texttt{change}, evento que se dispara al cambiar el \emph{hash} de la URL. Esta función
+		soporta tres valores diferentes como \emph{hash} que son \texttt{[Spike, SpikeCorrected, ChannelStats]}. Estos tres valores
+		representan los tres módulos funcionales entre los que hacemos distinción.  Cambiando el \emph{hash} cambiamos el módulo funcional
+		mostrado en pantalla.
+		\par
+		Podemos ver que el soporte de navegación por el historial es pobre en funcionalidad, por esta razón hemos propuesto como trabajo
+		futuro extender y ampliar la funcionalidad de este.
+		\par
+		También debemos tener en cuenta que al inicializarse la aplicación puede haber un \emph{hash} especificado. Una vez especificado el
+		comportamiento ante un evento \texttt{change} procedemos a evaluar el \emph{hash} actual. Este puede no estar presente, caso en el que
+		cargamos el módulo funcional \texttt{Spike}. En el caso de la presencia de un \emph{hash} actuamos conforme a este.
+	\subsection{\texttt{Spike}}
+		Este controlador es directamente relacionado al módulo funcional con el mismo nombre, \texttt{Spike}. Este Controlador es algo más
+		complicado que los anteriormente discutidos, este es compuesto por múltiples funciones. A continuación procedemos a explicar estas
+		funciones.
+		\subsubsection{\texttt{Launch()}}
+			Inicializa el módulo funcional \texttt{Spike}. Es conveniente destacar que esta función no es \texttt{onLauch}, esta no es
+			invocada automáticamente al inicio de la aplicación, somos nosotros los que la invocamos. Esta función inicializa el objeto
+			\texttt{MyApp.app.spike}, objeto que debe contener todas las variables usadas en este módulo. La mayoría de las demás
+			funciones aceptan el parámetro \texttt{module}, este parámetro debe ser el objeto mencionado anteriormente. Después de
+			inicializar este objeto es invocada la función \texttt{loadInitialData()}.
+		\subsubsection{\texttt{loadInitialData(module)}}
+			Esta función carga los datos necesarios para construir el módulo. Los datos son cargados realizando una petición Ajax al
+			\emph{back-end}. El servicio RPC que invocamos es \texttt{nmdbOriginalGroup}. Al cargar los datos con éxito son invocadas las
+			funciones \texttt{initCandleChart()} y \texttt{initChannelChart()}. 
+		\subsubsection{\texttt{initCandleChart(module)}}
+			Esta función es la encargada de crear el gráfico \emph{Candlestick} con los datos de la estación. Hablaremos más a fondo sobre
+			este gráfico en las secciones futuras donde discutiremos la herramienta desde un enfoque funcional.
+		\subsubsection{\texttt{initChannelChart(module)}}
+			Esta función es la encargada de crear el gráfico que representara los datos de los tubos contadores por separado. Igual que en
+			el caso anterior hablaremos más sobre este gráfico en secciones futuras.
+		\subsubsection{\texttt{LineOrOhcl(start, finish, N\_points)}}
+			Anteriormente en este capitulo discutimos el problema que surge al intentar representar un gran número de datos en un gráfico
+			convencional y que el gráfico \emph{Candlestick} daba solución a este problema. Esta función determina si debemos utilizar un
+			gráfico de línea o bien uno \emph{Candlestick}. La cantidad de datos esta definida por los parámetros \texttt{start} y
+			\texttt{finish}, el parámetro \texttt{N\_points} representa el número de pixeles que tenemos a disposición para representar
+			los datos.
+		\subsubsection{\texttt{updateMode(start, finish, module)}}
+			Esta función es invocada cuando ocurre algún cambio en el gráfico \emph{Candlestick} y calcula el modo en que deben ser
+			representados los datos. Esta función hace un uso intensivo de la función \texttt{LineOrOhcl}, pero tiene en cuenta más cosas
+			como la serie actual.
+		\subsubsection{\texttt{changeSeries(series, module)}}
+			Esta función cambia la serie que es presentada en el gráfico \emph{Candlestick}. El parámetro \texttt{series} es un entero que
+			puede tomar los siguientes valores \texttt{[1, 2, 3]}, donde estos representan uncorrected, corrected for pressure y
+			corrected for efficiency.
+		\subsubsection{\texttt{updateSeries(module)}}
+			Esta función simplemente refresca los datos de las series del gráfico \emph{CandleStick}. Es invocada cada vez que ocurre
+			algún cambio en este para refrescar los datos.
+		\subsubsection{\texttt{updateCandleData(start, finish, module)}}
+			Esta función carga los datos para el gráfico \emph{Candlestick} en función de la petición realizada por el usuario. Para
+			cargar los datos la función realiza una petición Ajax al \emph{back-end}. La función invoca el servicio RPC
+			\texttt{nmdbOriginalGroup} o \texttt{nmdbOriginalRaw} en función del valor devuelto por la función \texttt{LineOrOhcl()}. El
+			intervalo de datos que será solicitado es definido por los parámetros \texttt{start} y \texttt{finish}. 
+		\subsubsection{\texttt{updateChannelData(module)}}
+			Esta función carga los datos para el gráfico que representara los datos de los tubos contadores por separado. Los datos son
+			cargado del \emph{back-end} mediante una petición Ajax que invoca el servicio RPC \texttt{nmdadbRawData}.
+		\subsubsection{\texttt{searchInterval(start, finish, module)}}
+			Esta función nos permite hacer una búsqueda por intervalos temporales. El intervalo es definido por los parámetros
+			\texttt{start} y \texttt{finish}.
+		\subsubsection{\texttt{getTimestamp(str)}}
+			Esta función acepta una cadena de texto que debe seguir un formato determinado y devuelve un objeto de la clase \texttt{Date}. 
+		\subsubsection{\texttt{showCandle()}}
+			Esta función muestra el gráfico \texttt{Candlestick} creado por este Controlador. Junto al gráfico también se asegura de
+			mostrar los controles vinculados a este. Si es la primera vez que intentamos mostrar este gráfico el módulo entero no estará
+			creado, esta función invoca la función \texttt{Launch()} en tal caso.
+		\subsubsection{\texttt{showChannel()}}
+			Esta función muestra el gráfico de los tubos contadores por separado. Junto al gráfico también se asegura de mostrar los
+			controles vinculados a este
 
