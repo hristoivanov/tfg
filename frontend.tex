@@ -530,7 +530,7 @@ Ext.define('MyApp.controller.Users', {
       console.log('Podemos empezar..');}
 });
 	\end{lstlisting}
-	La función \texttt{onLaunch} es una función especial que es invocada después de inicializar la aplicación. La Vista y Modelo ya están
+	La función \texttt{onLaunch()} es una función especial que es invocada después de inicializar la aplicación. La Vista y Modelo ya están
 	inicializados, por lo que es un buen punto para empezar a actuar sobre estos elementos.
 	\par
 	Antes de empezar a discutir los Controladores que hemos implementado en este trabajo es conveniente destacar que el framework ofrece una
@@ -547,7 +547,7 @@ Ext.define('MyApp.controller.Users', {
 		Este Controlador es el encargado de inicializar el \texttt{Ext.History}, mecanismo que solventa el problema de navegación por el
 		historial en aplicaciones \emph{single page}. El problema y el mecanismo fueron descritos en secciones anteriores de este capitulo.
 		\par
-		El controlador  define la función \texttt{onLaunch}, función que es invocada una vez creada la Vista y el Modelo de la aplicación.
+		El controlador  define la función \texttt{onLaunch()}, función que es invocada una vez creada la Vista y el Modelo de la aplicación.
 		Empieza invocando la función \texttt{Ext.History.init()}, función esencial para inicializar este módulo. Seguidamente define la
 		función encargada de manejar el evento \texttt{change}, evento que se dispara al cambiar el \emph{hash} de la URL. Esta función
 		soporta tres valores diferentes como \emph{hash} que son \texttt{[Spike, SpikeRevised, ChannelStats]}. Estos tres valores
@@ -616,5 +616,62 @@ Ext.define('MyApp.controller.Users', {
 			creado, esta función invoca la función \texttt{Launch()} en tal caso.
 		\subsubsection{\texttt{showChannel()}}
 			Esta función muestra el gráfico de los tubos contadores por separado. Junto al gráfico también se asegura de mostrar los
-			controles vinculados a este
+			controles vinculados a este.
 
+	\subsection{\texttt{SpikeRevised}}
+		Este Controlador es muy similar al anteriormente descrito, \texttt{Spike}. Las diferencias como indica el nombre radican en que este
+		utiliza los datos revisados, no los originales. Además de utilizar un conjunto de datos distinto este Controlador también ofrece
+		funcionalidad extendida, permite marcar datos como inválidos. Los datos marcados como inválidos serán considerados nulos en el
+		conjunto de datos revisados.
+		\par
+		A continuación procederemos a explicar las funciones que este Controlador define.
+		\subsubsection{\texttt{Launch()}}
+			Inicializa el módulo funcional \texttt{SpikeRevised}. Esta función inicializa el objeto \texttt{app} que debe contener todas
+			las variables asociadas a este módulo. La estructura de este objeto es idéntica al objeto creado en la función
+			\texttt{Launch()} del Controlador \texttt{Spike} a excepción de una serie de atributos extra. 
+			\par
+			Seguidamente son importadas todas las funciones que podemos reutilizar del Controlador \texttt{Spike}, de esta forma se evita
+			duplicar código idéntico. Las funciones importadas son listadas a continuación.
+				\begin{center} \texttt{	initCandleChart, initChannelChart, changeSeries, searchInterval, updateChannelData,
+				  			LineOrOhcl, updateMode, updateSeries, getTimestamp}
+				\end{center}
+			%<Lista de funciones>
+			Finalmente es invocada la función \texttt{loadInitialData()}.
+		\subsubsection{\texttt{loadInitialData()}}
+			Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función carga los datos
+			necesarios para construir el módulo. La diferencia radica en el servicio RCP utilizado. Esta función utiliza el servicio
+			nmdbRevisedGroup, tal y como explicamos este módulo utiliza los datos revisados.
+			\par
+			Al cargar los datos con éxito son invocadas las funciones \texttt{initCandleChart} y \texttt{initChannelChart} que crean los
+			dos gráficos, estas son función importadas del Controlador \texttt{Spike}. Finalmente es invocada la función
+			\texttt{extendChandleChart} que será explicada a continuación.
+		\subsubsection{\texttt{extendCandleChart()}}
+			Volvemos a recordar que este módulo es muy similar al \texttt{Spike}, pero ofrece alguna funcionalidad extra. Esta función es
+			la encargada de extender la funcionalidad del gráfico \emph{Candlestick}. La función define el comportamiento de las series
+			del gráfico ante el evento \texttt{click}. Este comportamiento consiste en marcar el dato con un flag y añadirlo a una tabla.
+			Posteriormente los datos en la tabla podrán ser clasificados como inválidos. 
+		\subsubsection{\texttt{updateCandleData(start, finish)}}
+			Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función carga los datos para
+			el gráfico Candlestick en función de la petición realizada por el usuario. La diferencia radica en los servicios RPC
+			utilizados. Esta función utiliza lo servicios \texttt{nmdbRevisedGroup} o \texttt{nmdbRevisedRaw} en función del valor
+			devuelto por la función \texttt{LineOrOhcl()}.El intervalo de datos que es solicitado es definido por los parámetros
+			\texttt{start} y \texttt{finish}.
+		\subsubsection{\texttt{removeFromGrid(rowIndex)}}
+			Los datos marcados son guardados en una tabla. Esta función nos permite eliminar un dato de esta tabla. El parámetro que esta
+			función acepta especifica el dato que será eliminado de la tabla. 
+		\subsubsection{\texttt{submitGrid()}}
+			Esta función nos permite clasificar como inválidos los datos en la tabla. La función invoca el servicio \texttt{nmdbMarkNull}
+			del \emph{back-end} a fin de cumplir con su propósito. Una vez anulados correctamente los datos, la tabla es vaciada.
+		\subsubsection{\texttt{showHideGrid()}}
+			Esta función nos permite mostrar u ocultar la tabla que contiene los datos marcados, de esta manera nos permite inspeccionar
+			el contenido de la tabla.
+		\subsubsection{\texttt{clearGrid()}}
+			Esta función nos permite vaciar la tabla que contiene los datos marcados, de esta manera estos son descartados y no es tomada
+			ninguna acción.
+		\subsubsection{\texttt{showCandle()}}
+			Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función muestra el gráfico
+			\emph{Candlestick} y todos los controles vinculados a este. La función \texttt{Launch()} es invocada en el caso de que el módulo
+			no este creado.
+		\subsubsection{\texttt{showChannel()}}
+			Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función muestra el gráfico de
+			los tubos contadores por separado. Junto al gráfico también se asegura de mostrar los controles vinculados a este.		
