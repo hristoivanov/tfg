@@ -541,18 +541,18 @@ Ext.define('MyApp.controller.Users', {
 	En nuestra aplicación hemos definido cinco Controladores. En las subsecciones venideras discutiremos estos cinco Controladores que hemos
 	definido.
 	\subsection{\texttt{HighStockExtend}}
-		El propósito de este Controlador es inicializar las dos extensiones de HighStock que discutimos previamente en este capitulo. Este controlador es
+		El propósito de este Controlador es inicializar las dos extensiones de HighStock que discutimos previamente en este capitulo. Este Controlador es
 		invocado antes de empezar a construir los gráficos de la aplicación para que las extensiones este listas y sean aplicadas a estos.
 	\subsection{\texttt{Navigation}}
 		Este Controlador es el encargado de inicializar el \texttt{Ext.History}, mecanismo que solventa el problema de navegación por el
 		historial en aplicaciones \emph{single page}. El problema y el mecanismo fueron descritos en secciones anteriores de este capitulo.
 		\par
-		El controlador  define la función \texttt{onLaunch()}, función que es invocada una vez creada la Vista y el Modelo de la aplicación.
+		El Controlador define la función \texttt{onLaunch()}, función que es invocada una vez creada la Vista y el Modelo de la aplicación.
 		Empieza invocando la función \texttt{Ext.History.init()}, función esencial para inicializar este módulo. Seguidamente define la
 		función encargada de manejar el evento \texttt{change}, evento que se dispara al cambiar el \emph{hash} de la URL. Esta función
-		soporta tres valores diferentes como \emph{hash} que son \texttt{[Spike, SpikeRevised, ChannelStats]}. Estos tres valores
-		representan los tres módulos funcionales entre los que hacemos distinción.  Cambiando el \emph{hash} cambiamos el módulo funcional
-		mostrado en pantalla.
+		soporta tres valores diferentes como \emph{hash} que son \texttt{[Spike, SpikeRevised, ChannelStats]}. Estos tres valores representan
+		los tres módulos funcionales entre los que hacemos distinción.  Cambiando el \emph{hash} cambiamos el módulo funcional mostrado en
+		pantalla.
 		\par
 		Podemos ver que el soporte de navegación por el historial es pobre en funcionalidad, por esta razón hemos propuesto como trabajo
 		futuro extender y ampliar la funcionalidad de este.
@@ -561,7 +561,7 @@ Ext.define('MyApp.controller.Users', {
 		comportamiento ante un evento \texttt{change} procedemos a evaluar el \emph{hash} actual. Este puede no estar presente, caso en el que
 		cargamos el módulo funcional \texttt{Spike}. En el caso de la presencia de un \emph{hash} actuamos conforme a este.
 	\subsection{\texttt{Spike}}
-		Este controlador es directamente relacionado al módulo funcional con el mismo nombre, \texttt{Spike}. Este Controlador es algo más
+		Este Controlador es directamente relacionado al módulo funcional con el mismo nombre, \texttt{Spike}. Este Controlador es algo más
 		complicado que los anteriormente discutidos, este es compuesto por múltiples funciones. A continuación procedemos a explicar estas
 		funciones.
 		\subsubsection{\texttt{Launch()}}
@@ -635,7 +635,6 @@ Ext.define('MyApp.controller.Users', {
 				\begin{center} \texttt{	initCandleChart, initChannelChart, changeSeries, searchInterval, updateChannelData,
 				  			LineOrOhcl, updateMode, updateSeries, getTimestamp}
 				\end{center}
-			%<Lista de funciones>
 			Finalmente es invocada la función \texttt{loadInitialData()}.
 		\subsubsection{\texttt{loadInitialData()}}
 			Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función carga los datos
@@ -675,3 +674,33 @@ Ext.define('MyApp.controller.Users', {
 		\subsubsection{\texttt{showChannel()}}
 			Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función muestra el gráfico de
 			los tubos contadores por separado. Junto al gráfico también se asegura de mostrar los controles vinculados a este.		
+	\subsection{\texttt{ChannelStats}}
+		Este Controlador es directamente relacionado con el módulo funcional con el mismo nombre, \texttt{ChannelStats}. Este controlador es
+		compuesto por varias funciones que discutiremos a continuación.
+		\subsubsection{\texttt{Launch()}}
+			Inicializa el módulo funcional \texttt{ChannelStats}. Esta función inicializa el objeto \texttt{app}, objeto que debe contener
+			todas las variable usadas en este módulo. Después de iniciar este objeto es invocada la función \texttt{loadInitialData()}.
+		\subsubsection{\texttt{loadInitialData()}}
+			Esta función carga los datos necesarios para construir el módulo. Los datos son cargados realizando una petición Ajax al
+			\emph{back-end}. Son invocados dos servicios RPC, \texttt{nmdadbChannelStats} y \texttt{nmdadbChannelHistogram}. El primero
+			carga una serie de estadísticas descriptivas de los canales, estos datos son representados en un gráfico y también listados en
+			una tabla. El segundo carga los datos necesarios para construir un histograma de la distribución de cuentas de los 18 canales.
+			\par
+			Al cargar los datos con éxito son invocadas las funciones \texttt{initStatsChart()} y \texttt{initHistogramChart()} que  crean
+			los dos gráficos, el gráfico con las estadísticas y el histograma. Los datos de la tabla son actualizados automáticamente, por
+			lo que no tenemos que tomar ninguna acción.
+		\subsubsection{\texttt{initStatsChart()}}
+			Esta función es la encargada de crear el gráfico a partir de los datos devueltos por el serviocio RPC
+			\texttt{nmdadbChannelStats}. 
+		\subsubsection{\texttt{initChannelHistogram()}}
+			Esta función es la encargada de crear el histograma que representa la distribución de cuentas para los 18 canales de la
+			estación.
+		\subsubsection{\texttt{searchInterval()}}
+			La función que carga los datos iniciales carga los datos del último mes, esta función nos permite solicitar otro intervalo
+			temporal. Este intervalo es definido por los dos parámetros que esta función acepta, \texttt{start} y \texttt{finish}. La
+			función invoca los servicios RPC \texttt{nmdadbChannelStats} y \texttt{nmdadbChannelHistogram} para solicitar los datos al
+			\emph{back-end}.
+		\subsubsection{\texttt{showModule()}}
+			Esta función muestra en pantalla este módulo funcional. En el caso de que este módulo no este creado es invocada la función
+			\texttt{Launch()}.
+
