@@ -38,10 +38,10 @@ En nuestra aplicación también hacemos una división funcional, diferenciamos e
 	tenemos que cargar dos \emph{scripts} de la siguiente forma.
     		\begin{center} \texttt{<script type="text/javascript" src=\textquotedbl extjs/ext-all-debug.js\textquotedbl ></script>}  \end{center}
     		\begin{center} \texttt{<script type="text/javascript" src=\textquotedbl app.js\textquotedbl ></script>}  \end{center}
- 	El primer \emph{script} contiene el framework que queremos utilizar. Es conveniente destacar que esta es una versión concebida para el proceso
+	El primer \emph{script} contiene el framework que queremos utilizar. Es conveniente destacar que esta es una versión concebida para el proceso
 	de desarrollo. Para la versión final es conveniente usar el \texttt{ext-all.js}.
  	\par
- 	El segundo \emph{script} es el que contiene la lógica de nuestra aplicación. A continuación podemos ver el código mínimo para crear una
+	El segundo \emph{script} es el que contiene la lógica de nuestra aplicación. A continuación podemos ver el código mínimo para crear una
 	aplicación. El código presentado será explicado a fondo.
 	\begin{lstlisting}
 Ext.application({
@@ -56,17 +56,17 @@ Ext.application({
    } 
 });
 	\end{lstlisting}
- 	En la primera línea hacemos uso del singletone \texttt{Ext}. Este es un objeto que encapsula todas las clases, métodos y singletones
+	En la primera línea hacemos uso del singletone \texttt{Ext}. Este es un objeto que encapsula todas las clases, métodos y singletones
 	proporcionados por el framework. La función utilizada \texttt{Ext.application} carga e inicializa una instancia de la clase
 	\texttt{Ext.app.Application}. Esta clase representa una aplicación ExtJs single page. La llamada a esta función crea la variable global
 	\texttt{MyApp}, que debe contener todas las clases e instancias de nuestra aplicación.
  	\par
- 	En la segunda línea declaramos el nombre de nuestra aplicación. Seguidamente definimos la función \texttt{launch}. Esta es la función que debe
+	En la segunda línea declaramos el nombre de nuestra aplicación. Seguidamente definimos la función \texttt{launch}. Esta es la función que debe
 	lanzar  nuestra aplicación. La primera función invocada es \texttt{Ext.create} que crea una instancia de la clase proporcionada, en este caso
 	\texttt{Ext.container.Viewport}. \texttt{Viewport} es un \emph{contenedor} que representa el área de aplicación y puede haber tan solo uno por
 	aplicación. 
  	\par
- 	La interfaz de usuario en una aplicación ExtJs es compuesta por \emph{componentes}. Un \emph{contenedor} es un \emph{componente} especial que
+	La interfaz de usuario en una aplicación ExtJs es compuesta por \emph{componentes}. Un \emph{contenedor} es un \emph{componente} especial que
 	contiene otros \emph{componentes}. En la figura \ref{fig:comps} podemos ver un ejemplo que ilustra esta jerarquía.
 	\begin{figure}[h]
 		\centering
@@ -75,128 +75,135 @@ Ext.application({
 		\label{fig:comps}
 	\end{figure}
  	\par
- 	El \texttt{Viewport} es el \emph{contenedor} que contiene todos los demás \emph{componentes} de nuestra aplicación. Los \emph{compenentes} de
-	un \emph{contenedor} se especifican en el campo \texttt{items} que es una lista. En el ejemplo presentado tan solo tenemos un 
+	El \texttt{Viewport} es el \emph{contenedor} que contiene todos los demás \emph{componentes} de nuestra aplicación. Los \emph{compenentes} de
+	un \emph{contenedor} se especifican en el campo \texttt{items} que es una lista. En el ejemplo presentado tan solo tenemos un
 	\emph{conponente}, pero pueden ser añadidos más.
  	\par
- 	Fijándonos en el código de ejemplo podemos ver que antes de definir el campo \texttt{items} definimos el campo \texttt{layout}. El \texttt{layout}
-	especifica la forma en la que se posicionan y ajustan los \emph{componetes} hijos dentro del padre. En este caso el \texttt{layout} especificado es 
-	\texttt{\cc fit\cc}, donde un solo hijo ocupa todo el espacio del padre.
-\section{Sencha ExtJs Component Manager}
-	ExtJs ofrece el singletone \texttt{Ext.ComponentManager} que provee un registro con todos los componentes. Esto facilita la referencia a
-	elementos desde cualquier punto del código. El propósito de esta sección es explicar como hacer uso de esta facilidad.
-	\par
-	Empezaremos especificando un requisito que  los componentes deben cumplir, estos deben definir el atributo \texttt{itemId}. Este atributo es
-	el identificador del componente. El ámbito que tiene este identificador es local al contenedor que contiene el componente. Esto hace que los
-	identificadores no tengan que ser únicos. 
-	\par
-	Es el singletone \texttt{Ext.ComponentQuery} el que nos permite realizar búsquedas de componentes en función del \texttt{itemId}. Concretamente
-	es \texttt{Ext.ComponentQuery.query()} el método que nos permite realizar las búsquedas. Este método acepta dos parámetros. El primer
-	parámetro, \texttt{selector}, es un String y especifica el \texttt{itemId} que queremos buscar. El segundo parámetro, \texttt{root} es
-	opcional y especifica el contenedor dentro de cual queremos hacer la búsqueda. Si el segundo parámetro es omitido la búsqueda se realizara
-	entre todos los componentes. La función devuelve un array con todos los componentes que reúnen las condiciones, pudiendo ser este un array
-	vacío. Eventualmente podemos hacer búsquedas más complejas, podemos buscar por tipo, atributos y mucho más. En este trabajo tan solo hemos
-	utilizado queries simples, razón por la que no explicamos como se realizan estas queries avanzadas.
-	\par
-	La clase \texttt{Ext.container.Container} implementa las funciones \texttt{down()} y \texttt{query()}. Estas dos realizar una llamada a
-	\texttt{Ext.ComponentQuery.query()} teniéndose a si mismo como parámetro \texttt{root}. Esto les permite hacer una búsqueda entre sus hijos.
-	\par
-	También existe el método \texttt{up()} implementado por \texttt{Ext.Component}. Este permite hacer una búsqueda similar a las anteriormente
-	descritas. En este caso se navega hacia arriba en la jerarquía de componentes y se busca por componentes que reúnen los criterios. Esta
-	función puede ser invocada sin ningún parámetro, caso en el que devuelve el padre inmediato del componente.
-	\par
-	Es conveniente citar el parámetro \texttt{id} y la función \texttt{Ext.getCmp()}. Estos dos ofrecen una funcionalidad parecida a la
-	anteriormente explicada, pero no deben ser usados con ese propósito. Estan considerados como obsoletos y pueden dar lugar a colisiones. 
+	Fijándonos en el código de ejemplo podemos ver que antes de definir el campo \texttt{items} definimos el campo \texttt{layout}. El
+	\texttt{layout} especifica la forma en la que se posicionan y ajustan los \emph{componetes} hijos dentro del padre. En este caso el
+	\texttt{layout} especificado es \texttt{\cc fit\cc}, donde un solo hijo ocupa todo el espacio del padre.
+	\subsection{Component Manager}
+		ExtJs ofrece el singletone \texttt{Ext.ComponentManager} que provee un registro con todos los componentes. Esto facilita la referencia
+		a elementos desde cualquier punto del código. El propósito de esta sección es explicar como hacer uso de esta facilidad.
+		\par
+		Empezaremos especificando un requisito que  los componentes deben cumplir, estos deben definir el atributo \texttt{itemId}. Este
+		atributo es el identificador del componente. El ámbito que tiene este identificador es local al contenedor que contiene el componente.
+		Esto hace que los identificadores no tengan que ser únicos. 
+		\par
+		Es el singletone \texttt{Ext.ComponentQuery} el que nos permite realizar búsquedas de componentes en función del \texttt{itemId}.
+		Concretamente es \texttt{Ext.ComponentQuery.query()} el método que nos permite realizar las búsquedas. Este método acepta dos
+		parámetros. El primer parámetro, \texttt{selector}, es un String y especifica el \texttt{itemId} que queremos buscar. El segundo
+		parámetro, \texttt{root} es opcional y especifica el contenedor dentro de cual queremos hacer la búsqueda. Si el segundo parámetro es
+		omitido la búsqueda se realizara entre todos los componentes. La función devuelve un array con todos los componentes que reúnen las
+		condiciones, pudiendo ser este un array vacío. Eventualmente podemos hacer búsquedas más complejas, podemos buscar por tipo, atributos
+		y mucho más. En este trabajo tan solo hemos utilizado queries simples, razón por la que no explicamos como se realizan estas queries
+		avanzadas.
+		\par
+		La clase \texttt{Ext.container.Container} implementa las funciones \texttt{down()} y \texttt{query()}. Estas dos realizar una llamada
+		a \texttt{Ext.ComponentQuery.query()} teniéndose a si mismo como parámetro \texttt{root}. Esto les permite hacer una búsqueda entre
+		sus hijos.
+		\par
+		También existe el método \texttt{up()} implementado por \texttt{Ext.Component}. Este permite hacer una búsqueda similar a las
+		anteriormente descritas. En este caso se navega hacia arriba en la jerarquía de componentes y se busca por componentes que reúnen los
+		criterios. Esta función puede ser invocada sin ningún parámetro, caso en el que devuelve el padre inmediato del componente.
+		\par
+		Es conveniente citar el parámetro \texttt{id} y la función \texttt{Ext.getCmp()}. Estos dos ofrecen una funcionalidad parecida a la
+		anteriormente explicada, pero no deben ser usados con ese propósito. Estan considerados como obsoletos y pueden dar lugar a
+		colisiones. 
+	\subsection{Layouts}
+		El propósito de esta sección es explicar los layouts utilizados en este trabajo. Tan solo explicaremos la funcionalidad de estos sin
+		centrarnos en el uso que les hemos dado, este será explicado en las secciones venideras cuando proceda. En la figura \ref{fig:layouts}
+		podemos ver una representación de los layouts que describiremos a continuación.
+		\begin{description} 
+			\item[\texttt{Absolute}] Los \emph{componentes} hijo son posicionados mediante el uso de coordenadas \texttt{X,Y}. Las
+			  dimensiones de estos también se definen de forma estática mediante el uso de dos atributos, \texttt{height} and
+			  \texttt{width}. La posición y tamaño de los componentes se puede cambiar mediante el uso de las funciones
+			  \texttt{setPosition()} y \texttt{setSize()}.
+			\item[\texttt{Accordion}] Este layout se asemeja a un acordeón. Los \emph{componentes} hijo pueden ser expandidos y
+			  colapsados, teniendo tan solo uno expandido a la vez. Los \emph{componentes} son ordenados en vertical ocupando todo el
+			  espacio disponible. Las funciones \texttt{expand} y \texttt{collapse} nos permiten expandir y colapsar los paneles hijo.
+			  También están presentes multitud de manejadores de eventos que podemos sobrescribir, en nuestro caso haremos uso del
+			  \texttt{beforeExpand} que se dispara antes de expandir un \emph{componente}. 
+			\item[\texttt{Border}] Este layout nos permite tener hasta cinco \emph{componentes} dispuestos de la manera que podemos ver en
+			  la figura \ref{fig:layouts}.  Los componentes hijos deben especificar al atributo \texttt{region} que determina el
+			  posicionamiento de estos. El atributo puede tomar los siguientes valores \texttt{[north, east, south, west, center]}. No es
+			  necesario que estén presentes los cinco hijos, podemos omitir los no deseados. Esto hace que este layout sea muy flexible e
+			  interesante.
+			\item[\texttt{Card}] Este layout maneja multiples \emph{componentes} hijo. Los hijos ocupan todo el espacio disponible, por lo
+			  que se solapan uno a otro.  Esto hace que solo uno pueda ser visible a la vez. El layout asemeja una baraja de cartas donde
+			  solo una carta puede estar en la parte superior. La función que nos permite hacer visible un hijo es
+			  \texttt{setActiveItem()}. Esta función acepta el \emph{componente}, el \texttt{itemId} del \emph{componente} o el índice del
+			  \emph{componente}.
+			\item[\texttt{Fit}] \texttt{Fit} es un layout muy simple, este tan solo acepta un hijo que ocupa todo el espacio que el padre
+			  ofrece. El \emph{componente} hijo se expandirá automáticamente para ajustarse al tamaño del padre.
+			\item[\texttt{HBox y VBox}] Estos son dos layouts diferentes, pero muy parecidos, razón por la que serán explicados en la
+			  misma subsección. El \texttt{HBox} organiza sus elementos hijos de forma horizontal a lo largo del \emph{componente} padre.
+			  El \texttt{VBox} hace lo mismo, pero la organización es de forma vertical. Los componentes hijos pueden especificar el
+			  atributo \texttt{flex}, este atributo determina como será repartido el espacio disponible entre los diferentes hijos. Para
+			  ilustrar el funcionamiento del \texttt{flex} expondremos un ejemplo. Teniendo dos \emph{componentes} hijo con \texttt{1} y
+			  \texttt{2} de \texttt{flex} respectivamente, el primero ocupara 1/3 y el segundo 2/3 del espacio total.
+		\end{description}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[keepaspectratio, width=1\textwidth]{./img/layouts.png}
+			\caption{Sencha ExtJs. Layouts.}   
+			\label{fig:layouts}
+		\end{figure}
 
-\section{Sencha ExtJs Layouts}
-	El propósito de esta sección es explicar los layouts utilizados en este trabajo. Tan solo explicaremos la funcionalidad de estos sin
-	centrarnos en el uso que les hemos dado, este será explicado en las secciones venideras cuando proceda. En la figura \ref{fig:layouts} podemos
-	ver una representación de los layouts que describiremos a continuación.
-	\subsection{\texttt{Absolute}}
-		Los \emph{componentes} hijo son posicionados mediante el uso de coordenadas \texttt{X,Y}. Las dimensiones de estos también se definen
-		de forma estática mediante el uso de dos atributos, \texttt{height} and \texttt{width}. La posición y tamaño de los componentes se
-		puede cambiar mediante el uso de las funciones \texttt{setPosition()} y \texttt{setSize()}.
-	\subsection{\texttt{Accordion}}
-		Este layout se asemeja a un acordeón. Los \emph{componentes} hijo pueden ser expandidos y colapsados, teniendo tan solo uno expandido
-		a la vez. Los \emph{componentes} son ordenados en vertical ocupando todo el espacio disponible. Las funciones \texttt{expand} y
-		\texttt{collapse} nos permiten expandir y colapsar los paneles hijo. También están presentes multitud de manejadores de eventos que
-		podemos sobrescribir, en nuestro caso haremos uso del \texttt{beforeExpand} que se dispara antes de expandir un \emph{componente}. 
-	\subsection{\texttt{Border}}
-		Este layout nos permite tener hasta cinco \emph{componentes} dispuestos de la manera que podemos ver en la figura \ref{fig:layouts}.
-		Los componentes hijos deben especificar al atributo \texttt{region} que determina el posicionamiento de estos. El atributo puede tomar
-		los siguientes valores \texttt{[north, east, south, west, center]}. No es necesario que estén presentes los cinco hijos, podemos
-		omitir los no deseados. Esto hace que este layout sea muy flexible e interesante.
-	\subsection{\texttt{Card}}
-		Este layout maneja multiples \emph{componentes} hijo. Los hijos ocupan todo el espacio disponible, por lo que se solapan uno a otro.
-		Esto hace que solo uno pueda ser visible a la vez. El layout asemeja una baraja de cartas donde solo una carta puede estar en la parte
-		superior. La función que nos permite hacer visible un hijo es \texttt{setActiveItem()}. Esta función acepta el \emph{componente}, el
-		\texttt{itemId} del \emph{componente} o el índice del \emph{componente}.
-	\subsection{\texttt{Fit}}
-		\texttt{Fit} es un layout muy simple, este tan solo acepta un hijo que ocupa todo el espacio que el padre ofrece. El \emph{componente}
-		hijo se expandirá automáticamente para ajustarse al tamaño del padre.
-	\subsection{\texttt{HBox y VBox}}
-		Estos son dos layouts diferentes, pero muy parecidos, razón por la que serán explicados en la misma subsección. El \texttt{HBox}
-		organiza sus elementos hijos de forma horizontal a lo largo del \emph{componente} padre. El \texttt{VBox} hace lo mismo, pero la
-		organización es de forma vertical. Los componentes hijos pueden especificar el atributo \texttt{flex}, este atributo determina como
-		será repartido el espacio disponible entre los diferentes hijos. Para ilustrar el funcionamiento del \texttt{flex} expondremos un
-		ejemplo. Teniendo dos \emph{componentes} hijo con \texttt{1} y \texttt{2} de \texttt{flex} respectivamente, el primero ocupara 1/3 y el
-		segundo 2/3 del espacio total.
-	\begin{figure}[h]
-		\centering
-		\includegraphics[keepaspectratio, width=1\textwidth]{./img/layouts.png}
-		\caption{Sencha ExtJs. Layouts.}   
-		\label{fig:layouts}
-	\end{figure}
-
-\section{Sencha ExtJs Lazy instantiation}
-	La inicialización perezosa es una técnica que consiste en retrasar la creación de recursos hasta el momento en el que sean necesarios. Como
-	hemos visto en la sección dedicada a los layouts en muchos casos los componentes no son visibles. Tener que crear todos los componentes al
-	inicializar la aplicación no es muy eficiente, dado que tan solo unos pocos son visibles. Crear tan solo los componentes visibles y después ir
-	creando los componentes según se vayan necesitando supone un incremento en el rendimiento. En páginas pequeñas con pocos componentes el
-	aumento no es apreciable, sin embargo en páginas que manejan multitud de componentes el incremento puede ser drástico. 
-	\par
-	Para implementar esta inicialización perezosa ExtJs se basa en la jerarquía de componentes previamente explicada. Cuando un componente es
-	creado también se crean todos los componentes hijos que deben ser visibles en ese momento. Tal y como explicamos los componentes hijos se
-	definen en el campo \texttt{items}. A continuación podemos ver un pequeño ejemplo. 
-	\begin{lstlisting}
+	\subsection{Lazy instantiation}
+		La inicialización perezosa es una técnica que consiste en retrasar la creación de recursos hasta el momento en el que sean necesarios.
+		Como hemos visto en la sección dedicada a los layouts en muchos casos los componentes no son visibles. Tener que crear todos los
+		componentes al inicializar la aplicación no es muy eficiente, dado que tan solo unos pocos son visibles. Crear tan solo los
+		componentes visibles y después ir creando los componentes según se vayan necesitando supone un incremento en el rendimiento. En
+		páginas pequeñas con pocos componentes el aumento no es apreciable, sin embargo en páginas que manejan multitud de componentes el
+		incremento puede ser drástico. 
+		\par
+		Para implementar esta inicialización perezosa ExtJs se basa en la jerarquía de componentes previamente explicada. Cuando un componente
+		es creado también se crean todos los componentes hijos que deben ser visibles en ese momento. Tal y como explicamos los componentes
+		hijos se definen en el campo \texttt{items}. A continuación podemos ver un pequeño ejemplo. 
+		\begin{lstlisting}
 items:[
    Ext.create('Ext.form.field.Text',{
       fieldLabel:'Foo'}),
    Ext.create('Ext.form.field.Text', {
       fieldLabel: 'Bar'})]
-	\end{lstlisting}
-	El ejemplo presentado anteriormente no habilita la inicialización perezosa. Para este propósito tenemos que evitar el uso de la función
-	\texttt{Ext.create()}. Tenemos que especificar los componentes hijos como objetos de configuración. A continuación se presenta un ejemplo.
-	\begin{lstlisting}
+		\end{lstlisting}
+		El ejemplo presentado anteriormente no habilita la inicialización perezosa. Para este propósito tenemos que evitar el uso de la
+		función \texttt{Ext.create()}. Tenemos que especificar los componentes hijos como objetos de configuración. A continuación se presenta
+		un ejemplo.
+		\begin{lstlisting}
 items: [{
    xtype: 'textfield',
    fieldLabel: 'Foo'},
 {
    xtype: 'textfield',
    fieldLabel: 'Bar'}]
-	\end{lstlisting}
-	La diferencia que podemos apreciar entre los dos ejemplos es el atributo \texttt{xtype}. Este especifica la clase que tendrá el componente.
-	Como podemos ver no se especifica el nombre completo de la clase. \texttt{xtype} acepta una serie de atajos para referenciar a las clases. En
-	nuestro caso la clase \texttt{Ext.form.field.Text} es referenciada por el \texttt{xtype:\cc textfield\cc}.
-	\par
-	La lista completa de \texttt{xtypes} aceptados podemos ver en la documentación de ExtJs\cite{ExtJsDoc}. Eventualmente podemos extender esta
-	lista declarando nuestros propios \texttt{xtypes}. Esto se hace especificando el campo \texttt{xtype} a la hora de definir nuestra clase. A
-	continuación presentamos un pequeño ejemplo.
-	\begin{lstlisting}
+		\end{lstlisting}
+		La diferencia que podemos apreciar entre los dos ejemplos es el atributo \texttt{xtype}. Este especifica la clase que tendrá el
+		componente.  Como podemos ver no se especifica el nombre completo de la clase. \texttt{xtype} acepta una serie de atajos para
+		referenciar a las clases. En nuestro caso la clase \texttt{Ext.form.field.Text} es referenciada por el \texttt{xtype:\cc
+		textfield\cc}.
+		\par
+		La lista completa de \texttt{xtypes} aceptados podemos ver en la documentación de ExtJs\cite{ExtJsDoc}. Eventualmente podemos extender
+		esta lista declarando nuestros propios \texttt{xtypes}. Esto se hace especificando el campo \texttt{xtype} a la hora de definir
+		nuestra clase. A continuación presentamos un pequeño ejemplo.
+		\begin{lstlisting}
 Ext.define('MyApp.PressMeButton', {
    extend: 'Ext.button.Button',
    xtype: 'pressmebutton',
    text: 'Press Me'});
-	\end{lstlisting}
+		\end{lstlisting}
 
-\section{Sencha ExtJs Events}
-	Las clases y componentes de ExtJs disparan multitud de eventos a lo largo de su ciclo de vida. Los eventos se disparan cuando algo interesante
-	le ocurre a nuestro componente. Un ejemplo es el evento \texttt{afterrender} que se dispara después de mostrar en pantalla el componente.
-	\par
-	La parte interesante de los eventos es que podemos definir funciones, \texttt{listeners}, que se ejecuten cuando se produzca un evento
-	determinado. De esta manera somos capaces de responder a dichos eventos. A continuación presentamos un ejemplo en el que podemos ver como
-	manejar dichos eventos. En el ejemplo trataremos el evento \texttt{click}, evento que se dispara al hacer \emph{click} sobre un componente. 
-	\begin{lstlisting}
+	\subsection{Events}
+		Las clases y componentes de ExtJs disparan multitud de eventos a lo largo de su ciclo de vida. Los eventos se disparan cuando algo
+		interesante le ocurre a nuestro componente. Un ejemplo es el evento \texttt{afterrender} que se dispara después de mostrar en pantalla
+		el componente.
+		\par
+		La parte interesante de los eventos es que podemos definir funciones, \texttt{listeners}, que se ejecuten cuando se produzca un evento
+		determinado. De esta manera somos capaces de responder a dichos eventos. A continuación presentamos un ejemplo en el que podemos ver
+		como manejar dichos eventos. En el ejemplo trataremos el evento \texttt{click}, evento que se dispara al hacer \emph{click} sobre un
+		componente. 
+		\begin{lstlisting}
 Ext.create('Ext.Button',{
    text: 'Click Me',
    renderTo: Ext.getBody(),
@@ -205,13 +212,14 @@ Ext.create('Ext.Button',{
          Ext.Msg.alert('I was clicked!');}
    }
 });
-	\end{lstlisting}
-	\par
-	ExtJs también nos permite configurar eventos propios. Estos eventos se declaran como si fuesen eventos normales. La peculiaridad esta en que
-	somos nosotros los que tenemos que disparar esos eventos. Para disparar un evento tenemos que hacer uso de la función \texttt{fireEvent} que
-	acepta como parámetros el evento que queremos disparar y todos los parámetros que la función encargada del evento necesite. A continuación
-	podemos ver un pequeño ejemplo de como declarar y disparar un evento propio, que tiene como nombre \texttt{myEvent}.
-	\begin{lstlisting}
+		\end{lstlisting}
+		\par
+		ExtJs también nos permite configurar eventos propios. Estos eventos se declaran como si fuesen eventos normales. La peculiaridad esta
+		en que somos nosotros los que tenemos que disparar esos eventos. Para disparar un evento tenemos que hacer uso de la función
+		\texttt{fireEvent} que acepta como parámetros el evento que queremos disparar y todos los parámetros que la función encargada del
+		evento necesite. A continuación podemos ver un pequeño ejemplo de como declarar y disparar un evento propio, que tiene como nombre
+		\texttt{myEvent}.
+		\begin{lstlisting}
 var button = Ext.create('Ext.Button',{
    text: 'Custom Event',
    renderTo: Ext.getBody(),
@@ -222,66 +230,61 @@ var button = Ext.create('Ext.Button',{
 });
 
 button.fireEvent('myEvent', 42);
-	\end{lstlisting}
-
-%Muy mal. %Si sobra contenido esta sección tiene que ser eliminada.
-\section{Sencha ExtJs Components}
-	ExtJs ofrece multitud de componentes, todos son subclases del \texttt{Ext.Component}, cada uno con un propósito diferente. El objetivo de esta
-	sección es describir los componentes usados en este trabajo. Nos centraremos en los aspectos técnicos sin especificar el uso concreto que les
-	hemos dado, este será explicado en secciones futuras cuando proceda. 
-	\subsection{\texttt{Ext.button.Button xtype:button}}
-		Este componente nos permite crear un botón. El propósito de un botón es ofrecer un medio fácil al usuario para interactuar con la
-		aplicación. Los botones que ExtJs ofrece son altamente configurables, tanto funcionalmente como estéticamente. Podemos tener botones
-		normales, botones \emph{toggle}, botones que despliegan menús y mucho más. Para dar funcionalidad a estos botones tenemos que escuchar
-		por los eventos que estos disparan. Los eventos más comunes son \texttt{click}, \texttt{toggle}, \texttt{mouseover} y \texttt{mouseout}.
-	\subsection{\texttt{Ext.form.field.Date xtype:datefield}}
-		Este componente proporciona un campo de entrada de fecha. Es posible especificar el formato deseado en el que introducir la fecha. Si
-		este formato no es respetado el campo es subrayado en color rojo indicando al usuario la inconsistencia. Eventualmente este campo
-		puede desplegar un selector de fechas que facilita el proceso de introducir la fecha deseada. Al igual que los demás componentes este
-		dispara multitud de eventos que podemos manejar.
-	\subsection{\texttt{Ext.form.field.Time xtype:timefield}}
-		Este componente es muy similar al anteriormente descrito. Este proporciona un campo de entrada de tiempo. También acepta una
-		configuración del formato deseado y advierte  al usuario cuando este no es respetado. El componente puede desplegar un selector de
-		tiempo que facilita la tarea de introducir el valor deseado.
-	\subsection{\texttt{Ext.form.Label xtype:label}}
-		Este componente nos permite generar una etiqueta de texto. Este componente es muy similar al tag HTML <label>. Este componente nos
-		permite configurar múltiples aspectos y manejar múltiples eventos.
-	\subsection{\texttt{Ext.panel.Panel xtype:panel}}
-		Este componente es una parte fundamental en la creación de aplicaciones con ExtJs. Esta pensado para ser utilizado como un contenedor,
-		contener otros componentes. Este componente es altamente configurable pero el aspecto más importante es el \texttt{layout} que
-		determina como se posicionan los componentes hijos. 
-	\subsection{\texttt{Ext.tab.Panel xtype:tabpanel}}
-		Este componente es una extensión del componente anterior. Este ofrece múltiples pestañas en la que organizar los componentes hijos.
-		Esto permite incluir una cantidad mayor de contenido en el mismo espacio. La barra de pestañas que el componente ofrece es altamente
-		configurable. 
-	\subsection{\texttt{Ext.grid.Panel xtype:gridpanel}}
-		Este componente es un contenedor capaz de presentar una tabla. Las tablas son altamente interactivas, estas permiten al usuario
-		ordenar los datos, hacer búsquedas, eliminar datos, añadir datos y mucho más.
-
-\section{Sencha ExtJs History stack}
-	La aplicación Web que estamos desarrollando es una aplicación \emph{single page}. Este modelo rompe con el patrón tradicional de navegación
-	por el historial usando los botones \emph{Forward/Back}. Esto presenta un problema de usabilidad cuando el usuario utiliza el botón de
-	navegación hacia atrás, este espera volver al estado anterior de la aplicación, sin embargo sera cargada la página anterior del historial y
-	nuestra aplicación \emph{single page} será descargada.
-	\par
-	La solución que la mayoría de aplicaciones \emph{single page} han adoptado se basa en el \emph{Fragment Identifier}  o \emph{hash}, nombre que
-	recibe porque va precedido del símbolo \textbf{\#}. El \emph{hash} es una parte opcional de la URL que históricamente se utilizaba para navegar
-	por documentos largos, un cambio en el \emph{hash} hace que se muestres diferentes partes del documento.
-	\par
-	Actualmente el \emph{hash} es usado por aplicaciones \emph{single page} para manipular la pila de historial. El hash es cambiado acuerdo al
-	estado de la aplicación. Esto hace que los cambios en la aplicación sean registrados en la pila de historial.
-	\par
-	Al pulsar el botón de navegación hacia atrás el \emph{hash} de la URL cambia a su estado anterior. Nuestra aplicación debe ser capaz de
-	detectar los cambios en el \emph{hash} y actuar acuerdo a estos. De esta manera podemos preservar la funcionalidad de los botones de
-	navegación \emph{Forward/Back}. 
-	\par
-	Para implementar la funcionalidad anteriormente descrita ExtJs nos ofrece el singletone \texttt{Ext.util.History}. Para inicializar este módulo
-	tenemos que invocar la función \texttt{Ext.History.init()}. Una vez inicializado este módulo podemos hacer cambios en el \emph{hash} invocando
-	la función \texttt{Ext.History.add()}. Esta función acepta como parámetro el valor del \emph{hash}. 
-	\par
-	Para detectar y actual acorde a los cambios del \emph{hash} tenemos que inicializar un \texttt{listener}. El evento que vamos a capturar es
-	\texttt{change}. A continuación podemos ver un pequeño código de como inicializar el \texttt{listener}.
-	\begin{lstlisting}
+		\end{lstlisting}
+	\subsection{Componentes}  %Muy mal. %Si sobra contenido esta sección tiene que ser eliminada.
+		ExtJs ofrece multitud de componentes, todos son subclases del \texttt{Ext.Component}, cada uno con un propósito diferente. El objetivo
+		de esta sección es describir los componentes usados en este trabajo. Nos centraremos en los aspectos técnicos sin especificar el uso
+		concreto que les hemos dado, este será explicado en secciones futuras cuando proceda. 
+		\begin{description}
+			\item[\texttt{Ext.button.Button xtype:button}] Este componente nos permite crear un botón. El propósito de un botón es ofrecer
+			  un medio fácil al usuario para interactuar con la aplicación. Los botones que ExtJs ofrece son altamente configurables,
+			  tanto funcionalmente como estéticamente. Podemos tener botones normales, botones \emph{toggle}, botones que despliegan menús
+			  y mucho más. Para dar funcionalidad a estos botones tenemos que escuchar por los eventos que estos disparan. Los eventos más
+			  comunes son \texttt{click}, \texttt{toggle}, \texttt{mouseover} y \texttt{mouseout}.
+			\item[\texttt{Ext.form.field.Date xtype:datefield}] Este componente proporciona un campo de entrada de fecha. Es posible
+			  especificar el formato deseado en el que introducir la fecha. Si este formato no es respetado el campo es subrayado en color
+			  rojo indicando al usuario la inconsistencia. Eventualmente este campo puede desplegar un selector de fechas que facilita el
+			  proceso de introducir la fecha deseada. Al igual que los demás componentes este dispara multitud de eventos que podemos
+			  manejar.
+			\item[\texttt{Ext.form.field.Time xtype:timefield}] Este componente es muy similar al anteriormente descrito. Este proporciona
+			  un campo de entrada de tiempo. También acepta una configuración del formato deseado y advierte  al usuario cuando este no es
+			  respetado. El componente puede desplegar un selector de tiempo que facilita la tarea de introducir el valor deseado.
+			\item[\texttt{Ext.form.Label xtype:label}] Este componente nos permite generar una etiqueta de texto. Este componente es muy
+			  similar al tag HTML <label>. Este componente nos permite configurar múltiples aspectos y manejar múltiples eventos.
+			\item[\texttt{Ext.panel.Panel xtype:panel}] Este componente es una parte fundamental en la creación de aplicaciones con ExtJs.
+			  Esta pensado para ser utilizado como un contenedor, contener otros componentes. Este componente es altamente configurable
+			  pero el aspecto más importante es el \texttt{layout} que determina como se posicionan los componentes hijos. 
+			\item[\texttt{Ext.tab.Panel xtype:tabpanel}] Este componente es una extensión del componente anterior. Este ofrece múltiples
+			  pestañas en la que organizar los componentes hijos.  Esto permite incluir una cantidad mayor de contenido en el mismo
+			  espacio. La barra de pestañas que el componente ofrece es altamente configurable. 
+			\item[\texttt{Ext.grid.Panel xtype:gridpanel}] Este componente es un contenedor capaz de presentar una tabla. Las tablas son
+			  altamente interactivas, estas permiten al usuario ordenar los datos, hacer búsquedas, eliminar datos, añadir datos y mucho
+			  más.
+		\end{description}
+	\subsection{History stack}
+		La aplicación Web que estamos desarrollando es una aplicación \emph{single page}. Este modelo rompe con el patrón tradicional de
+		navegación por el historial usando los botones \emph{Forward/Back}. Esto presenta un problema de usabilidad cuando el usuario utiliza
+		el botón de navegación hacia atrás, este espera volver al estado anterior de la aplicación, sin embargo sera cargada la página
+		anterior del historial y nuestra aplicación \emph{single page} será descargada.
+		\par
+		La solución que la mayoría de aplicaciones \emph{single page} han adoptado se basa en el \emph{Fragment Identifier}  o \emph{hash},
+		nombre que recibe porque va precedido del símbolo \textbf{\#}. El \emph{hash} es una parte opcional de la URL que históricamente se
+		utilizaba para navegar por documentos largos, un cambio en el \emph{hash} hace que se muestres diferentes partes del documento.
+		\par
+		Actualmente el \emph{hash} es usado por aplicaciones \emph{single page} para manipular la pila de historial. El hash es cambiado
+		acuerdo al estado de la aplicación. Esto hace que los cambios en la aplicación sean registrados en la pila de historial.
+		\par
+		Al pulsar el botón de navegación hacia atrás el \emph{hash} de la URL cambia a su estado anterior. Nuestra aplicación debe ser capaz
+		de detectar los cambios en el \emph{hash} y actuar acuerdo a estos. De esta manera podemos preservar la funcionalidad de los botones
+		de navegación \emph{Forward/Back}. 
+		\par
+		Para implementar la funcionalidad anteriormente descrita ExtJs nos ofrece el singletone \texttt{Ext.util.History}. Para inicializar
+		este módulo tenemos que invocar la función \texttt{Ext.History.init()}. Una vez inicializado este módulo podemos hacer cambios en el
+		\emph{hash} invocando la función \texttt{Ext.History.add()}. Esta función acepta como parámetro el valor del \emph{hash}. 
+		\par
+		Para detectar y actual acorde a los cambios del \emph{hash} tenemos que inicializar un \texttt{listener}. El evento que vamos a
+		capturar es \texttt{change}. A continuación podemos ver un pequeño código de como inicializar el \texttt{listener}.
+		\begin{lstlisting}
 Ext.History.on('change', function(hash){
    switch(hash){
       case: 'Foo':
@@ -292,11 +295,10 @@ Ext.History.on('change', function(hash){
          break;
    };
 });
-	\end{lstlisting}
-	\par
-	El propósito de esta sección ha sido explicar el problema que surge con el historial de navegación y como prevenir lo haciendo uso del
-	\texttt{Ext.History}. Del uso concreto que hemos hecho de este módulo hablaremos en secciones futuras de este capítulo.
-
+		\end{lstlisting}
+		\par
+		El propósito de esta sección ha sido explicar el problema que surge con el historial de navegación y como prevenir lo haciendo uso del
+		\texttt{Ext.History}. Del uso concreto que hemos hecho de este módulo hablaremos en secciones futuras de este capítulo.
 
 \section{HighStock}
 	El propósito de esta sección es explicar alguno de los aspectos básicos del Framework. Actualmente existen dos frameworks desarrollados por la
@@ -334,69 +336,67 @@ myChart = new Highcharts.StockChart({
 	funcionalidades muy extendidas pero en el fondo son un elemento HTML. Este elemento será asignado al atributo \texttt{renderTo} a fin de
 	mostrar un gráfico HighStock en un componente de una Aplicación ExtJs. El elemento HTML de un componente es accesible de la siguiente forma.
     		\begin{center} \texttt{Ext.Component.detEl().dom}  \end{center}
-
-\section{HighStock Agrupación de datos y \emph{Candlestick}} 
-	\begin{wrapfigure}{R}{0.42\textwidth}
-		\centering
-	        \includegraphics[keepaspectratio, width=0.40\textwidth]{./img/candlestick.png}
-		\caption{Gráfico Candlestick.}
-		\label{fig:candlestick}
-	\end{wrapfigure}
-	El objetivo de esta sección es explicar el gráfico \emph{Candlestick} o gráfico de velas. Hemos utilizado este gráfico para dar solución a un
-	problema que explicaremos a continuación. Seguidamente explicaremos como interpretar este gráfico.
-	\par
-	El problema radica en la gran cantidad de datos que tienen que ser representados en nuestro gráfico. El sistema de adquisición genera una
-	entrada de datos cada minuto, 1440 datos al día o 43200 datos al mes. Estas cantidades de datos son excesivas comparadas con las resoluciones
-	de pantalla actuales. Consideremos una pantalla estándar con 1280 pixeles de ancho, es imposible representar 43200 datos.
-	\par
-	Para dar solución a este problema hemos recurrido a agrupar los datos. El fin es crear un número de grupos que no exceda el ancho de pixeles
-	de nuestra pantalla. Para cada grupo tenemos que calcular un valor representativo. Una técnica común es calcular el valor medio de los grupos.
-	Esto tiene el inconveniente de aplanar los Spikes, algo que queremos resaltar.
-	\par
-	Para evitar aplanar los Spike para cada grupo calcularemos valores más representativos que la media. En concreto calcularemos cuatro valores,
-	máximo, mínimo, \emph{open} y \emph{close}. El \emph{open} y \emph{close} son la media más la desviación típica y la media menos la desviación
-	típica respectivamente.
-	\par
-	El agrupamiento de datos y cálculo de estos cuatro valores por cada grupo esta implementado en el \emph{back-end}. Los servicios RPC que nos
-	permiten acceder a estos datos son \texttt{nmdbOriginalGroup} y \texttt{nmdbRevisedGroup}. Estos servicios fueron explicados en el capítulo
-	dedicado al \emph{back-end}, en este punto tan solo nos interesa destacar el argumento \texttt{points} que estos dos servicios aceptan. Este
-	argumento especifica el número de grupos en los que serán agrupados los datos, este será proporcional al número de pixeles que tenemos
-	disponibles para representar nuestro gráfico. 
-	\par
-	Con los valores máximo, mínimo, \emph{open} y \emph{close} de cada grupo crearemos un gráfico Candlestick. Este es un gráfico usado en
-	análisis técnico bursátil donde tiene su significado propio. En este trabajo tiene su significado propio que podemos ver en la figura
-	\ref{fig:candlestick}. Como podemos ver el \emph{open} y \emph{close} son utilizados para construir el cuerpo de las velas. El cuerpo de las
-	velas representa los datos que se encuentran dentro de la desviación típica. La línea que cruza el cuerpo de la vela representa el valor
-	máximo y mínimo para cada grupo.
-	\par
-	Las velas con cuerpos alargados indican grupos en los que la desviación típica es muy grande, por contrario velas con cuerpos contraídos
-	indican grupos con una desviación típica pequeña. Los dos extremos, datos que fluctúan mucho o datos que no fluctúan, pueden ser indicativo de
-	un mal funcionamiento. Los valores máximo o mínimo que se alejan mucho del cuerpo de la vela nos indican la presencia de un Spike en dicho
-	grupo. 
-
-\section{Ampliando HighStock}
-	HighStock es construido de forma modular para facilitar la ampliación por parte de los usuarios. En este trabajo hemos ampliado el framework
-	con dos funcionalidades adicionales. El propósito de esta sección es describir estas dos funcionalidades, pero primero explicaremos el proceso
-	para ampliar el framework.
-	\par
-	La primera consideración que tenemos que tener es el ámbito o \emph{scope}, nombre que utilizaremos a lo largo de este trabajo. Debemos tener
-	cuidado de no contaminar el \emph{scope} global con variables. Para este propósito debemos utilizar una función \emph{self-invoking}. En
-	JavaScript esta es una función que se ejecuta inmediatamente y crear su propio \emph{scope}, de esta manera evitamos contaminar el
-	\emph{scope} global. A continuación presentamos un ejemplo de como declarar una de estas funciones.
-	\begin{lstlisting}
+	\subsection{Agrupación de datos y \emph{Candlestick}} 
+		\begin{wrapfigure}{R}{0.42\textwidth}
+			\centering
+	        	\includegraphics[keepaspectratio, width=0.40\textwidth]{./img/candlestick.png}
+			\caption{Gráfico Candlestick.}
+			\label{fig:candlestick}
+		\end{wrapfigure}
+		El objetivo de esta sección es explicar el gráfico \emph{Candlestick} o gráfico de velas. Hemos utilizado este gráfico para dar
+		solución a un problema que explicaremos a continuación. Seguidamente explicaremos como interpretar este gráfico.
+		\par
+		El problema radica en la gran cantidad de datos que tienen que ser representados en nuestro gráfico. El sistema de adquisición genera
+		una entrada de datos cada minuto, 1440 datos al día o 43200 datos al mes. Estas cantidades de datos son excesivas comparadas con las
+		resoluciones de pantalla actuales. Consideremos una pantalla estándar con 1280 pixeles de ancho, es imposible representar 43200 datos.
+		\par
+		Para dar solución a este problema hemos recurrido a agrupar los datos. El fin es crear un número de grupos que no exceda el ancho de
+		pixeles de nuestra pantalla. Para cada grupo tenemos que calcular un valor representativo. Una técnica común es calcular el valor
+		medio de los grupos.  Esto tiene el inconveniente de aplanar los Spikes, algo que queremos resaltar.
+		\par
+		Para evitar aplanar los Spike para cada grupo calcularemos valores más representativos que la media. En concreto calcularemos cuatro
+		valores, máximo, mínimo, \emph{open} y \emph{close}. El \emph{open} y \emph{close} son la media más la desviación típica y la media
+		menos la desviación típica respectivamente.
+		\par
+		El agrupamiento de datos y cálculo de estos cuatro valores por cada grupo esta implementado en el \emph{back-end}. Los servicios RPC
+		que nos permiten acceder a estos datos son \texttt{nmdbOriginalGroup} y \texttt{nmdbRevisedGroup}. Estos servicios fueron explicados
+		en el capítulo dedicado al \emph{back-end}, en este punto tan solo nos interesa destacar el argumento \texttt{points} que estos dos
+		servicios aceptan. Este argumento especifica el número de grupos en los que serán agrupados los datos, este será proporcional al
+		número de pixeles que tenemos disponibles para representar nuestro gráfico. 
+		\par
+		Con los valores máximo, mínimo, \emph{open} y \emph{close} de cada grupo crearemos un gráfico Candlestick. Este es un gráfico usado en
+		análisis técnico bursátil donde tiene su significado propio. En este trabajo tiene su significado propio que podemos ver en la figura
+		\ref{fig:candlestick}. Como podemos ver el \emph{open} y \emph{close} son utilizados para construir el cuerpo de las velas. El cuerpo
+		de las velas representa los datos que se encuentran dentro de la desviación típica. La línea que cruza el cuerpo de la vela representa
+		el valor máximo y mínimo para cada grupo.
+		\par
+		Las velas con cuerpos alargados indican grupos en los que la desviación típica es muy grande, por contrario velas con cuerpos
+		contraídos indican grupos con una desviación típica pequeña. Los dos extremos, datos que fluctúan mucho o datos que no fluctúan,
+		pueden ser indicativo de un mal funcionamiento. Los valores máximo o mínimo que se alejan mucho del cuerpo de la vela nos indican la
+		presencia de un Spike en dicho grupo. 	
+	\subsection{Ampliando HighStock}
+		HighStock es construido de forma modular para facilitar la ampliación por parte de los usuarios. En este trabajo hemos ampliado el
+		framework con dos funcionalidades adicionales. El propósito de esta sección es describir estas dos funcionalidades, pero primero
+		explicaremos el proceso para ampliar el framework.
+		\par
+		La primera consideración que tenemos que tener es el ámbito o \emph{scope}, nombre que utilizaremos a lo largo de este trabajo.
+		Debemos tener cuidado de no contaminar el \emph{scope} global con variables. Para este propósito debemos utilizar una función
+		\emph{self-invoking}. En JavaScript esta es una función que se ejecuta inmediatamente y crear su propio \emph{scope}, de esta manera
+		evitamos contaminar el \emph{scope} global. A continuación presentamos un ejemplo de como declarar una de estas funciones.
+		\begin{lstlisting}
 (function (H) {
    var localVar,	// Variable local
    Series = H.Series;
    doSomething();
 }(Highcharts));
-	\end{lstlisting}
-	\par
-	El framework nos ofrece la función \texttt{wrap} que nos permite añadir código en una función existente. Podemos añadir dicho código antes o
-	después del código inicial de la función. La función acepta tres argumentos, el objeto padre como primer argumento, el nombre de la función
-	como segundo argumento y la función de sustitución como tercer argumento. La función original es pasada como el primer argumento de la función
-	de sustitución. Es conveniente fijarnos en el ejemplo de código a continuación presentado para entender mejor el uso de la función
-	\texttt{wrap}.
-	\begin{lstlisting}
+		\end{lstlisting}
+		\par
+		El framework nos ofrece la función \texttt{wrap} que nos permite añadir código en una función existente. Podemos añadir dicho código
+		antes o después del código inicial de la función. La función acepta tres argumentos, el objeto padre como primer argumento, el nombre
+		de la función como segundo argumento y la función de sustitución como tercer argumento. La función original es pasada como el primer
+		argumento de la función de sustitución. Es conveniente fijarnos en el ejemplo de código a continuación presentado para entender mejor
+		el uso de la función \texttt{wrap}.
+		\begin{lstlisting}
 H.wrap(H.Series.prototype, 'drawGraph', function (proceed) {
 // Antes de la funcion original.
 console.log("We are about to draw the graph: ", this.graph);
@@ -405,25 +405,25 @@ proceed.apply(this, Array.prototype.slice.call(arguments, 1));
 // Despues de la funcion original.
 console.log("We just finished drawing the graph: ", this.graph);
 });
-	\end{lstlisting}
-	\par  
-	A continuación explicaremos las dos ampliaciones que hemos realizado sobre el framework, la primera nos permite realizar zoom Out y la segunda
-	nos permite resaltar las series de un gráfico para poder inspeccionarlas mejor.
-	\subsection{Ampliación. Zoom Out}
-		Tal y como explicamos los gráficos creados con el framework son altamente interactivos. Entre las diferentes funcionalidades están las
-		que nos permiten navegar por el conjunto de datos. Con navegar nos referimos a mostrar diferentes fragmentos de los datos. Un ejemplo
-		de estas funcionalidades es el zoom In, que nos permite ampliar una sección de datos. Haciendo \emph{click} y arrastrando podemos
-		seleccionar un intervalo para realizar el zoom In. Poder hacer zoom In es muy útil para inspeccionar los datos, el problema es que el
-		framework no nos ofrece la posibilidad de realizar un zoom Out.
-		\par
-		En este trabajo hemos extendido el framework para incorporar dicha funcionalidad. Para este propósito modificaremos el zoom In,
-		usaremos la dirección de arrastre para diferenciar entre zoom In y zoom Out. Un arrastre de izquierda a derecha realizar un zoom In,
-		mientras que un arrastre de derecha a izquierda realizar un zoom Out. 
-		\par
-		Para poder registrar la dirección de arrastre hemos hecho uso de dos eventos, \texttt{mousedown} y \texttt{mouseup}. En cada evento
-		registramos la posición de este y usamos la diferencia entre las posiciones para determinar la dirección de arrastre. A continuación
-		presentamos el código. Es la variable \emph{selectDirection} la que nos indica la dirección de arrastre.
-		\begin{lstlisting}
+		\end{lstlisting}
+		\par  
+		A continuación explicaremos las dos ampliaciones que hemos realizado sobre el framework, la primera nos permite realizar zoom Out y la
+		segunda nos permite resaltar las series de un gráfico para poder inspeccionarlas mejor.
+		\subsubsection{Zoom Out}
+			Tal y como explicamos los gráficos creados con el framework son altamente interactivos. Entre las diferentes funcionalidades
+			están las que nos permiten navegar por el conjunto de datos. Con navegar nos referimos a mostrar diferentes fragmentos de los
+			datos. Un ejemplo de estas funcionalidades es el zoom In, que nos permite ampliar una sección de datos. Haciendo \emph{click}
+			y arrastrando podemos seleccionar un intervalo para realizar el zoom In. Poder hacer zoom In es muy útil para inspeccionar los
+			datos, el problema es que el framework no nos ofrece la posibilidad de realizar un zoom Out.
+			\par
+			En este trabajo hemos extendido el framework para incorporar dicha funcionalidad. Para este propósito modificaremos el zoom
+			In, usaremos la dirección de arrastre para diferenciar entre zoom In y zoom Out. Un arrastre de izquierda a derecha realizar
+			un zoom In, mientras que un arrastre de derecha a izquierda realizar un zoom Out. 
+			\par
+			Para poder registrar la dirección de arrastre hemos hecho uso de dos eventos, \texttt{mousedown} y \texttt{mouseup}. En cada
+			evento registramos la posición de este y usamos la diferencia entre las posiciones para determinar la dirección de arrastre. A
+			continuación presentamos el código. Es la variable \emph{selectDirection} la que nos indica la dirección de arrastre.
+			\begin{lstlisting}
 H.addEvent(container, 'mousedown', function (e) {
    selectFrom = chart.pointer.normalize(e).chartX;
 });
@@ -432,15 +432,16 @@ H.addEvent(container, 'mouseup', function (e) {
    selectTo = chart.pointer.normalize(e).chartX;
    selectDirection = selectTo - selectFrom;													            
 });
-		\end{lstlisting}
-		\par
-		El evento que se dispara al realizar una selección en \texttt{selection}, por lo que tenemos que registrar un manejador para el
-		evento. La primera acción es comprobar el estado del \emph{selectDirection}, la variable que nos indica la dirección de arrastre. En
-		el caso de que la variable tenga un valor positivo no tomamos acción, dejamos que se realice el zoom In por defecto. Si por contrario
-		la variable tiene un valor negativo tenemos que realizar un zoom Out. La primera acción que tomamos es prevenir la acción por defecto.
-		Seguidamente calculamos los valores que definen el nuevo intervalo temporal y para terminar aplicamos el nuevo intervalo al gráfico. A
-		continuación se puede ver el código que implementa la funcionalidad previamente descrita.
-		\begin{lstlisting}
+			\end{lstlisting}
+			\par
+			El evento que se dispara al realizar una selección en \texttt{selection}, por lo que tenemos que registrar un manejador para
+			el evento. La primera acción es comprobar el estado del \emph{selectDirection}, la variable que nos indica la dirección de
+			arrastre. En el caso de que la variable tenga un valor positivo no tomamos acción, dejamos que se realice el zoom In por
+			defecto. Si por contrario la variable tiene un valor negativo tenemos que realizar un zoom Out. La primera acción que tomamos
+			es prevenir la acción por defecto.  Seguidamente calculamos los valores que definen el nuevo intervalo temporal y para
+			terminar aplicamos el nuevo intervalo al gráfico. A continuación se puede ver el código que implementa la funcionalidad
+			previamente descrita.
+			\begin{lstlisting}
 H.addEvent(chart, 'selection', function (e) {
    if (selectDirection < 0) {
       e.preventDefault();
@@ -448,31 +449,31 @@ H.addEvent(chart, 'selection', function (e) {
       xAxis.setExtremes(newMin, newMax);
    }
 });
-		\end{lstlisting}
-
-	\subsection{Ampliación. Resaltar series}
-		En la mayoría de casos las estaciones de neutrones de monitores se componen por 18 tubos contadores. Los gráficos que representan la
-		información de los tubos por separado se vuelven un poco confusos debido al gran número de series. Este problema crea la necesidad de
-		tener un mecanismo que permita resaltar una serie del gráfico para poder inspeccionarla mejor. Para crear dicho mecanismo utilizaremos
-		la leyenda del gráfico.
-		\par
-		HighStock permite añadir una leyenda a los gráficos, elemento gráfico que facilita el identificar e interpretar las diferentes series
-		del gráfico. La leyenda al igual que los gráficos es altamente interactiva. Haciendo \emph{click} sobre los elementos de una leyenda
-		podemos mostrar u ocultar la serie correspondiente. En este trabajo preservaremos esta funcionalidad y añadiremos la funcionalidad de
-		resaltar una serie. Para este propósito utilizaremos los eventos \texttt{mouseover} y \texttt{mouseout}, la serie será resaltada al
-		posicionar el puntero sobre el elemento correspondiente de la leyenda. 
-		\par
-		El proceso de resaltar una serie para poder visualizarla mejor consiste en bajar la opacidad de todas las demás series, de esta manera
-		la serie que queremos resaltar es más visible. En la figura \ref{fig:resalto} podemos ver el resultado que obtenemos. A la izquierda
-		podemos ver el gráfico antes de resaltar una serie, vemos que las mediciones de los 18 canales se solapan y es difícil examinarlas. A
-		la derecha podemos ver el canal 13, \emph{ch13}, resaltado. Vemos como este mecanismo facilita el proceso de inspeccionar los datos.
-		\begin{figure}[h]
-			\centering
-			\includegraphics[keepaspectratio, width=1\textwidth]{./img/resalto.png}
-			\caption{Ampliando HighStock. Resaltar series.}   
-			\label{fig:resalto}
-		\end{figure}
-
+			\end{lstlisting}
+		\subsubsection{Resaltar series}
+			En la mayoría de casos las estaciones de neutrones de monitores se componen por 18 tubos contadores. Los gráficos que
+			representan la información de los tubos por separado se vuelven un poco confusos debido al gran número de series. Este
+			problema crea la necesidad de tener un mecanismo que permita resaltar una serie del gráfico para poder inspeccionarla mejor.
+			Para crear dicho mecanismo utilizaremos la leyenda del gráfico.
+			\par
+			HighStock permite añadir una leyenda a los gráficos, elemento gráfico que facilita el identificar e interpretar las diferentes
+			series del gráfico. La leyenda al igual que los gráficos es altamente interactiva. Haciendo \emph{click} sobre los elementos
+			de una leyenda podemos mostrar u ocultar la serie correspondiente. En este trabajo preservaremos esta funcionalidad y
+			añadiremos la funcionalidad de resaltar una serie. Para este propósito utilizaremos los eventos \texttt{mouseover} y
+			\texttt{mouseout}, la serie será resaltada al posicionar el puntero sobre el elemento correspondiente de la leyenda. 
+			\par
+			El proceso de resaltar una serie para poder visualizarla mejor consiste en bajar la opacidad de todas las demás series, de
+			esta manera la serie que queremos resaltar es más visible. En la figura \ref{fig:resalto} podemos ver el resultado que
+			obtenemos. A la izquierda podemos ver el gráfico antes de resaltar una serie, vemos que las mediciones de los 18 canales se
+			solapan y es difícil examinarlas. A la derecha podemos ver el canal 13, \emph{ch13}, resaltado. Vemos como este mecanismo
+			facilita el proceso de inspeccionar los datos.
+			\begin{figure}[h]
+				\centering
+				\includegraphics[keepaspectratio, width=1\textwidth]{./img/resalto.png}
+				\caption{Ampliando HighStock. Resaltar series.}   
+				\label{fig:resalto}
+			\end{figure}
+	
 \section{\emph{Modelo}}
 	El \emph{modelo} es el encargado de manejar los datos de una aplicación. En el caso del \emph{front-end} los datos de la aplicación deben ser
 	servidos por el \emph{back-end}. El \emph{modelo} es el encargado de realizar la comunicación con el \emph{back-end}. 
@@ -564,60 +565,51 @@ Ext.define('MyApp.controller.Users', {
 		Este Controlador es directamente relacionado al módulo funcional con el mismo nombre, \texttt{Spike}. Este Controlador es algo más
 		complicado que los anteriormente discutidos, este es compuesto por múltiples funciones. A continuación procedemos a explicar estas
 		funciones.
-		\subsubsection{\texttt{Launch()}}
-			Inicializa el módulo funcional \texttt{Spike}. Es conveniente destacar que esta función no es \texttt{onLauch}, esta no es
-			invocada automáticamente al inicio de la aplicación, somos nosotros los que la invocamos. Esta función inicializa el objeto
-			\texttt{app}, objeto que debe contener todas las variables usadas en este módulo. La mayoría de las demás funciones usaran
-			este objeto para acceder a estas variables. Después de inicializar este objeto es invocada la función
-			\texttt{loadInitialData()}.
-		\subsubsection{\texttt{loadInitialData()}}
-			Esta función carga los datos necesarios para construir el módulo. Los datos son cargados realizando una petición Ajax al
-			\emph{back-end}. El servicio RPC que invocamos es \texttt{nmdbOriginalGroup}. Al cargar los datos con éxito son invocadas las
-			funciones \texttt{initCandleChart()} y \texttt{initChannelChart()}. 
-		\subsubsection{\texttt{initCandleChart()}}
-			Esta función es la encargada de crear el gráfico \emph{Candlestick} con los datos de la estación. Hablaremos más a fondo sobre
-			este gráfico en las secciones futuras donde discutiremos la herramienta desde un enfoque funcional.
-		\subsubsection{\texttt{initChannelChart()}}
-			Esta función es la encargada de crear el gráfico que representara los datos de los tubos contadores por separado. Igual que en
-			el caso anterior hablaremos más sobre este gráfico en secciones futuras.
-		\subsubsection{\texttt{LineOrOhcl(start, finish, N\_points)}}
-			Anteriormente en este capitulo discutimos el problema que surge al intentar representar un gran número de datos en un gráfico
-			convencional y que el gráfico \emph{Candlestick} daba solución a este problema. Esta función determina si debemos utilizar un
-			gráfico de línea o bien uno \emph{Candlestick}. La cantidad de datos esta definida por los parámetros \texttt{start} y
-			\texttt{finish}, el parámetro \texttt{N\_points} representa el número de pixeles que tenemos a disposición para representar
-			los datos.
-		\subsubsection{\texttt{updateMode(start, finish)}}
-			Esta función es invocada cuando ocurre algún cambio en el gráfico \emph{Candlestick} y calcula el modo en que deben ser
-			representados los datos. Esta función hace un uso intensivo de la función \texttt{LineOrOhcl()}, pero tiene en cuenta más cosas
-			como la serie actual.
-		\subsubsection{\texttt{changeSeries(series)}}
-			Esta función cambia la serie que es presentada en el gráfico \emph{Candlestick}. El parámetro \texttt{series} es un entero que
-			puede tomar los siguientes valores \texttt{[1, 2, 3]}, donde estos representan uncorrected, corrected for pressure y
-			corrected for efficiency.
-		\subsubsection{\texttt{updateSeries()}}
-			Esta función simplemente refresca los datos de las series del gráfico \emph{CandleStick}. Es invocada cada vez que ocurre
-			algún cambio en este para refrescar los datos.
-		\subsubsection{\texttt{updateCandleData(start, finish)}}
-			Esta función carga los datos para el gráfico \emph{Candlestick} en función de la petición realizada por el usuario. Para
-			cargar los datos la función realiza una petición Ajax al \emph{back-end}. La función invoca el servicio RPC
-			\texttt{nmdbOriginalGroup} o \texttt{nmdbOriginalRaw} en función del valor devuelto por la función \texttt{LineOrOhcl()}. El
-			intervalo de datos que será solicitado es definido por los parámetros \texttt{start} y \texttt{finish}. 
-		\subsubsection{\texttt{updateChannelData()}}
-			Esta función carga los datos para el gráfico que representara los datos de los tubos contadores por separado. Los datos son
-			cargado del \emph{back-end} mediante una petición Ajax que invoca el servicio RPC \texttt{nmdadbRawData}.
-		\subsubsection{\texttt{searchInterval(start, finish)}}
-			Esta función nos permite hacer una búsqueda por intervalos temporales. El intervalo es definido por los parámetros
-			\texttt{start} y \texttt{finish}.
-		\subsubsection{\texttt{getTimestamp(str)}}
-			Esta función acepta una cadena de texto que debe seguir un formato determinado y devuelve un objeto de la clase \texttt{Date}. 
-		\subsubsection{\texttt{showCandle()}}
-			Esta función muestra el gráfico \texttt{Candlestick} creado por este Controlador. Junto al gráfico también se asegura de
-			mostrar los controles vinculados a este. Si es la primera vez que intentamos mostrar este gráfico el módulo entero no estará
-			creado, esta función invoca la función \texttt{Launch()} en tal caso.
-		\subsubsection{\texttt{showChannel()}}
-			Esta función muestra el gráfico de los tubos contadores por separado. Junto al gráfico también se asegura de mostrar los
-			controles vinculados a este.
-
+		\begin{description}
+			\item[\texttt{Launch()}] Inicializa el módulo funcional \texttt{Spike}. Es conveniente destacar que esta función no es
+			  \texttt{onLauch}, esta no es invocada automáticamente al inicio de la aplicación, somos nosotros los que la invocamos. Esta
+			  función inicializa el objeto \texttt{app}, objeto que debe contener todas las variables usadas en este módulo. La mayoría de
+			  las demás funciones usaran este objeto para acceder a estas variables. Después de inicializar este objeto es invocada la
+			  función \texttt{loadInitialData()}.
+			\item[\texttt{loadInitialData()}] Esta función carga los datos necesarios para construir el módulo. Los datos son cargados
+			  realizando una petición Ajax al \emph{back-end}. El servicio RPC que invocamos es \texttt{nmdbOriginalGroup}. Al cargar los
+			  datos con éxito son invocadas las funciones \texttt{initCandleChart()} y \texttt{initChannelChart()}. 
+			\item[\texttt{initCandleChart()}] Esta función es la encargada de crear el gráfico \emph{Candlestick} con los datos de la
+			  estación. Hablaremos más a fondo sobre este gráfico en las secciones futuras donde discutiremos la herramienta desde un
+			  enfoque funcional.
+			\item[\texttt{initChannelChart()}] Esta función es la encargada de crear el gráfico que representara los datos de los tubos
+			  contadores por separado. Igual que en el caso anterior hablaremos más sobre este gráfico en secciones futuras.
+			\item[\texttt{LineOrOhcl(start, finish, N\_points)}] Anteriormente en este capitulo discutimos el problema que surge al
+			  intentar representar un gran número de datos en un gráfico convencional y que el gráfico \emph{Candlestick} daba solución a
+			  este problema. Esta función determina si debemos utilizar un gráfico de línea o bien uno \emph{Candlestick}. La cantidad de
+			  datos esta definida por los parámetros \texttt{start} y \texttt{finish}, el parámetro \texttt{N\_points} representa el
+			  número de pixeles que tenemos a disposición para representar los datos.
+			\item[\texttt{updateMode(start, finish)}] Esta función es invocada cuando ocurre algún cambio en el gráfico \emph{Candlestick}
+			  y calcula el modo en que deben ser representados los datos. Esta función hace un uso intensivo de la función
+			  \texttt{LineOrOhcl()}, pero tiene en cuenta más cosas como la serie actual.
+			\item[\texttt{changeSeries(series)}] Esta función cambia la serie que es presentada en el gráfico \emph{Candlestick}. El
+			  parámetro \texttt{series} es un entero que puede tomar los siguientes valores \texttt{[1, 2, 3]}, donde estos representan
+			  uncorrected, corrected for pressure y corrected for efficiency.
+			\item[\texttt{updateSeries()}] Esta función simplemente refresca los datos de las series del gráfico \emph{CandleStick}. Es
+			  invocada cada vez que ocurre algún cambio en este para refrescar los datos.
+			\item[\texttt{updateCandleData(start, finish)}] Esta función carga los datos para el gráfico \emph{Candlestick} en función de
+			  la petición realizada por el usuario. Para cargar los datos la función realiza una petición Ajax al \emph{back-end}. La
+			  función invoca el servicio RPC \texttt{nmdbOriginalGroup} o \texttt{nmdbOriginalRaw} en función del valor devuelto por la
+			  función \texttt{LineOrOhcl()}. El intervalo de datos que será solicitado es definido por los parámetros \texttt{start} y
+			  \texttt{finish}. 
+			\item[\texttt{updateChannelData()}] Esta función carga los datos para el gráfico que representara los datos de los tubos
+			  contadores por separado. Los datos son cargado del \emph{back-end} mediante una petición Ajax que invoca el servicio RPC
+			  \texttt{nmdadbRawData}.
+			\item[\texttt{searchInterval(start, finish)}] Esta función nos permite hacer una búsqueda por intervalos temporales. El
+			  intervalo es definido por los parámetros \texttt{start} y \texttt{finish}.
+			\item[\texttt{getTimestamp(str)}] Esta función acepta una cadena de texto que debe seguir un formato determinado y devuelve un
+			  objeto de la clase \texttt{Date}. 
+			\item[\texttt{showCandle()}] Esta función muestra el gráfico \texttt{Candlestick} creado por este Controlador. Junto al
+			  gráfico también se asegura de mostrar los controles vinculados a este. Si es la primera vez que intentamos mostrar este
+			  gráfico el módulo entero no estará creado, esta función invoca la función \texttt{Launch()} en tal caso.
+			\item[\texttt{showChannel()}] Esta función muestra el gráfico de los tubos contadores por separado. Junto al gráfico también
+			  se asegura de mostrar los controles vinculados a este.
+		\end{description}
 	\subsection{\texttt{SpikeRevised}}
 		Este Controlador es muy similar al anteriormente descrito, \texttt{Spike}. Las diferencias como indica el nombre radican en que este
 		utiliza los datos revisados, no los originales. Además de utilizar un conjunto de datos distinto este Controlador también ofrece
@@ -625,82 +617,90 @@ Ext.define('MyApp.controller.Users', {
 		conjunto de datos revisados.
 		\par
 		A continuación procederemos a explicar las funciones que este Controlador define.
-		\subsubsection{\texttt{Launch()}}
-			Inicializa el módulo funcional \texttt{SpikeRevised}. Esta función inicializa el objeto \texttt{app} que debe contener todas
-			las variables asociadas a este módulo. La estructura de este objeto es idéntica al objeto creado en la función
-			\texttt{Launch()} del Controlador \texttt{Spike} a excepción de una serie de atributos extra. 
-			\par
-			Seguidamente son importadas todas las funciones que podemos reutilizar del Controlador \texttt{Spike}, de esta forma se evita
-			duplicar código idéntico. Las funciones importadas son listadas a continuación.
-				\begin{center} \texttt{	initCandleChart, initChannelChart, changeSeries, searchInterval, updateChannelData,
-				  			LineOrOhcl, updateMode, updateSeries, getTimestamp}
-				\end{center}
-			Finalmente es invocada la función \texttt{loadInitialData()}.
-		\subsubsection{\texttt{loadInitialData()}}
-			Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función carga los datos
-			necesarios para construir el módulo. La diferencia radica en el servicio RCP utilizado. Esta función utiliza el servicio
-			nmdbRevisedGroup, tal y como explicamos este módulo utiliza los datos revisados.
-			\par
-			Al cargar los datos con éxito son invocadas las funciones \texttt{initCandleChart} y \texttt{initChannelChart} que crean los
-			dos gráficos, estas son función importadas del Controlador \texttt{Spike}. Finalmente es invocada la función
-			\texttt{extendChandleChart} que será explicada a continuación.
-		\subsubsection{\texttt{extendCandleChart()}}
-			Volvemos a recordar que este módulo es muy similar al \texttt{Spike}, pero ofrece alguna funcionalidad extra. Esta función es
-			la encargada de extender la funcionalidad del gráfico \emph{Candlestick}. La función define el comportamiento de las series
-			del gráfico ante el evento \texttt{click}. Este comportamiento consiste en marcar el dato con un flag y añadirlo a una tabla.
-			Posteriormente los datos en la tabla podrán ser clasificados como inválidos. 
-		\subsubsection{\texttt{updateCandleData(start, finish)}}
-			Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función carga los datos para
-			el gráfico Candlestick en función de la petición realizada por el usuario. La diferencia radica en los servicios RPC
-			utilizados. Esta función utiliza lo servicios \texttt{nmdbRevisedGroup} o \texttt{nmdbRevisedRaw} en función del valor
-			devuelto por la función \texttt{LineOrOhcl()}.El intervalo de datos que es solicitado es definido por los parámetros
-			\texttt{start} y \texttt{finish}.
-		\subsubsection{\texttt{removeFromGrid(rowIndex)}}
-			Los datos marcados son guardados en una tabla. Esta función nos permite eliminar un dato de esta tabla. El parámetro que esta
-			función acepta especifica el dato que será eliminado de la tabla. 
-		\subsubsection{\texttt{submitGrid()}}
-			Esta función nos permite clasificar como inválidos los datos en la tabla. La función invoca el servicio \texttt{nmdbMarkNull}
-			del \emph{back-end} a fin de cumplir con su propósito. Una vez anulados correctamente los datos, la tabla es vaciada.
-		\subsubsection{\texttt{showHideGrid()}}
-			Esta función nos permite mostrar u ocultar la tabla que contiene los datos marcados, de esta manera nos permite inspeccionar
-			el contenido de la tabla.
-		\subsubsection{\texttt{clearGrid()}}
-			Esta función nos permite vaciar la tabla que contiene los datos marcados, de esta manera estos son descartados y no es tomada
-			ninguna acción.
-		\subsubsection{\texttt{showCandle()}}
-			Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función muestra el gráfico
-			\emph{Candlestick} y todos los controles vinculados a este. La función \texttt{Launch()} es invocada en el caso de que el módulo
-			no este creado.
-		\subsubsection{\texttt{showChannel()}}
-			Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función muestra el gráfico de
-			los tubos contadores por separado. Junto al gráfico también se asegura de mostrar los controles vinculados a este.		
+		\begin{description}
+			\item[\texttt{Launch()}]
+				Inicializa el módulo funcional \texttt{SpikeRevised}. Esta función inicializa el objeto \texttt{app} que debe contener
+				todas las variables asociadas a este módulo. La estructura de este objeto es idéntica al objeto creado en la función
+				\texttt{Launch()} del Controlador \texttt{Spike} a excepción de una serie de atributos extra. 
+				\par
+				Seguidamente son importadas todas las funciones que podemos reutilizar del Controlador \texttt{Spike}, de esta forma
+				se evita duplicar código idéntico. Las funciones importadas son listadas a continuación.
+					\begin{center} \texttt{	initCandleChart, initChannelChart, changeSeries, searchInterval, updateChannelData,
+					  			LineOrOhcl, updateMode, updateSeries, getTimestamp}
+					\end{center}
+				Finalmente es invocada la función \texttt{loadInitialData()}.
+		    	\item[\texttt{loadInitialData()}]
+				Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función carga los
+				datos necesarios para construir el módulo. La diferencia radica en el servicio RCP utilizado. Esta función utiliza el
+				servicio nmdbRevisedGroup, tal y como explicamos este módulo utiliza los datos revisados.
+				\par
+				Al cargar los datos con éxito son invocadas las funciones \texttt{initCandleChart} y \texttt{initChannelChart} que
+				crean los dos gráficos, estas son función importadas del Controlador \texttt{Spike}. Finalmente es invocada la función
+				\texttt{extendChandleChart} que será explicada a continuación.
+			\item[\texttt{extendCandleChart()}]
+				Volvemos a recordar que este módulo es muy similar al \texttt{Spike}, pero ofrece alguna funcionalidad extra. Esta
+				función es la encargada de extender la funcionalidad del gráfico \emph{Candlestick}. La función define el
+				comportamiento de las series del gráfico ante el evento \texttt{click}. Este comportamiento consiste en marcar el dato
+				con un flag y añadirlo a una tabla.  Posteriormente los datos en la tabla podrán ser clasificados como inválidos. 
+			\item[\texttt{updateCandleData(start, finish)}]
+				Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función carga los
+				datos para el gráfico Candlestick en función de la petición realizada por el usuario. La diferencia radica en los
+				servicios RPC utilizados. Esta función utiliza lo servicios \texttt{nmdbRevisedGroup} o \texttt{nmdbRevisedRaw} en
+				función del valor devuelto por la función \texttt{LineOrOhcl()}.El intervalo de datos que es solicitado es definido
+				por los parámetros \texttt{start} y \texttt{finish}.
+			\item[\texttt{removeFromGrid(rowIndex)}]
+				Los datos marcados son guardados en una tabla. Esta función nos permite eliminar un dato de esta tabla. El parámetro
+				que esta función acepta especifica el dato que será eliminado de la tabla. 
+			\item[\texttt{submitGrid()}]
+				Esta función nos permite clasificar como inválidos los datos en la tabla. La función invoca el servicio
+				\texttt{nmdbMarkNull} del \emph{back-end} a fin de cumplir con su propósito. Una vez anulados correctamente los datos,
+				la tabla es vaciada.
+			\item[\texttt{showHideGrid()}]
+				Esta función nos permite mostrar u ocultar la tabla que contiene los datos marcados, de esta manera nos permite
+				inspeccionar el contenido de la tabla.
+			\item[\texttt{clearGrid()}]
+				Esta función nos permite vaciar la tabla que contiene los datos marcados, de esta manera estos son descartados y no es
+				tomada ninguna acción.
+			\item[\texttt{showCandle()}]
+				Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función muestra el
+				gráfico \emph{Candlestick} y todos los controles vinculados a este. La función \texttt{Launch()} es invocada en el
+				caso de que el módulo no este creado.
+			\item[\texttt{showChannel()}]
+				Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función muestra el
+				gráfico de los tubos contadores por separado. Junto al gráfico también se asegura de mostrar los controles vinculados
+				a este.		
+		\end{description}
 	\subsection{\texttt{ChannelStats}}
 		Este Controlador es directamente relacionado con el módulo funcional con el mismo nombre, \texttt{ChannelStats}. Este controlador es
 		compuesto por varias funciones que discutiremos a continuación.
-		\subsubsection{\texttt{Launch()}}
-			Inicializa el módulo funcional \texttt{ChannelStats}. Esta función inicializa el objeto \texttt{app}, objeto que debe contener
-			todas las variable usadas en este módulo. Después de iniciar este objeto es invocada la función \texttt{loadInitialData()}.
-		\subsubsection{\texttt{loadInitialData()}}
-			Esta función carga los datos necesarios para construir el módulo. Los datos son cargados realizando una petición Ajax al
-			\emph{back-end}. Son invocados dos servicios RPC, \texttt{nmdadbChannelStats} y \texttt{nmdadbChannelHistogram}. El primero
-			carga una serie de estadísticas descriptivas de los canales, estos datos son representados en un gráfico y también listados en
-			una tabla. El segundo carga los datos necesarios para construir un histograma de la distribución de cuentas de los 18 canales.
-			\par
-			Al cargar los datos con éxito son invocadas las funciones \texttt{initStatsChart()} y \texttt{initHistogramChart()} que  crean
-			los dos gráficos, el gráfico con las estadísticas y el histograma. Los datos de la tabla son actualizados automáticamente, por
-			lo que no tenemos que tomar ninguna acción.
-		\subsubsection{\texttt{initStatsChart()}}
-			Esta función es la encargada de crear el gráfico a partir de los datos devueltos por el serviocio RPC
-			\texttt{nmdadbChannelStats}. 
-		\subsubsection{\texttt{initChannelHistogram()}}
-			Esta función es la encargada de crear el histograma que representa la distribución de cuentas para los 18 canales de la
-			estación.
-		\subsubsection{\texttt{searchInterval()}}
-			La función que carga los datos iniciales carga los datos del último mes, esta función nos permite solicitar otro intervalo
-			temporal. Este intervalo es definido por los dos parámetros que esta función acepta, \texttt{start} y \texttt{finish}. La
-			función invoca los servicios RPC \texttt{nmdadbChannelStats} y \texttt{nmdadbChannelHistogram} para solicitar los datos al
-			\emph{back-end}.
-		\subsubsection{\texttt{showModule()}}
-			Esta función muestra en pantalla este módulo funcional. En el caso de que este módulo no este creado es invocada la función
-			\texttt{Launch()}.
+		\begin{description}
+			\item[\texttt{Launch()}]
+				Inicializa el módulo funcional \texttt{ChannelStats}. Esta función inicializa el objeto \texttt{app}, objeto que debe
+				contener todas las variable usadas en este módulo. Después de iniciar este objeto es invocada la función
+				\texttt{loadInitialData()}.
+			\item[\texttt{loadInitialData()}]
+				Esta función carga los datos necesarios para construir el módulo. Los datos son cargados realizando una petición Ajax
+				al \emph{back-end}. Son invocados dos servicios RPC, \texttt{nmdadbChannelStats} y \texttt{nmdadbChannelHistogram}. El
+				primero carga una serie de estadísticas descriptivas de los canales, estos datos son representados en un gráfico y
+				también listados en una tabla. El segundo carga los datos necesarios para construir un histograma de la distribución
+				de cuentas de los 18 canales.
+				\par
+				Al cargar los datos con éxito son invocadas las funciones \texttt{initStatsChart()} y \texttt{initHistogramChart()}
+				que  crean los dos gráficos, el gráfico con las estadísticas y el histograma. Los datos de la tabla son actualizados
+				automáticamente, por lo que no tenemos que tomar ninguna acción.
+			\item[\texttt{initStatsChart()}]
+				Esta función es la encargada de crear el gráfico a partir de los datos devueltos por el serviocio RPC
+				\texttt{nmdadbChannelStats}. 
+			\item[\texttt{initChannelHistogram()}]
+				Esta función es la encargada de crear el histograma que representa la distribución de cuentas para los 18 canales de
+				la estación.
+			\item[\texttt{searchInterval()}]
+				La función que carga los datos iniciales carga los datos del último mes, esta función nos permite solicitar otro
+				intervalo temporal. Este intervalo es definido por los dos parámetros que esta función acepta, \texttt{start} y
+				\texttt{finish}. La función invoca los servicios RPC \texttt{nmdadbChannelStats} y \texttt{nmdadbChannelHistogram}
+				para solicitar los datos al \emph{back-end}.
+			\item[\texttt{showModule()}]
+				Esta función muestra en pantalla este módulo funcional. En el caso de que este módulo no este creado es invocada la
+				función \texttt{Launch()}.
+		\end{description}
 
