@@ -716,3 +716,38 @@ Ext.define('MyApp.controller.Users', {
 			\caption{Visión general de los Controladores.}   
 			\label{fig:controllers}
 		\end{figure}
+\section{\emph{Vista}}
+	El componente de Vista en una aplicación \emph{modelo-vista-controlados}\cite{MVCWiki} es el responsable de presentar la información de la implicación
+	junto a todos los componentes que componen la interfaz de usuario.  El propósito de esta sección es describir los aspectos básicos de este componente.
+	\par
+	La Vista en una aplicación ExtJs es compuesta por una jerarquía de \emph{componentes}. En nuestro caso en lo mas alto de esta jerarquía tenemos un
+	\texttt{ViewPort} al que hemos asignado el nombre \texttt{MyViewPort}. Este es un \emph{componente} que se ajusta al área de aplicación disponible. El
+	layout que determina como se posicionan los hijos de este \emph{componente} es \texttt{border}. Los componentes hijos deben especificar el atributo
+	\texttt{region} que determina su posicionamiento.
+	\par
+	El primer hijo con \texttt{region:north} es un \texttt{Ext.container.Container}, clase que especifica un \emph{contenedor} base. Actualmente este
+	\emph{contenedor} no tiene ninguna funcionalidad, en un futuro se plantea visualizar mensajes de alerta.
+	\par
+	El segundo hijo del \texttt{MyViewPort} con \texttt{region:west} es también una instancia de la clase \texttt{Ext.container.Container}. El
+	\texttt{itemId} definido es \texttt{Controls}. Este \emph{contenedor} tiene tres hijos que son instancias de la misma clase. Estos tres hijos
+	contienen los controles vinculados a los tres módulos funcionales. Los \texttt{itemId} que estos tres hijos especifican son:
+    		\begin{center} \texttt{[SpikeControls, SpikeRevisedControls, ChannelStatsControls]}  \end{center}
+	\texttt{Controls} usa el layout \texttt{accordion}, donde tan solo uno de los hijos puede estar expandido y los demás están
+	colapsados, de esta manera no pueden ser visibles lo controles de dos módulos funcionales a la vez. Cada vez que son expandidos los
+	controles de un módulo funcional el evento \texttt{Ext.panel,Panel.beforeexpand} es disparado. El handler asociado a este evento
+	invoca la función apropiada de los Controladores para mostrar el módulo funcional al que pertenecen los controles que acaban de ser
+	expandidos.
+	\par
+	La tercer hijo del \texttt{MyViewPort} con \texttt{region:center} es también una instancia de la clase
+	\texttt{Ext.container.Container}. El \texttt{ítemId} que identifica a este componente es \texttt{NavigationPanel}. El layout utilizado
+	es \texttt{card} donde los hijos se solapan unos a otros y tan solo uno puede ser visible a la vez. Los \emph{componentes} hijos
+	contienen todos los gráficos y tablas que nuestra aplicación ofrece, estos son mostrados en función del estado de los controles.
+	\par
+	\begin{figure}[h]
+		\centering
+		\includegraphics[keepaspectratio, width=1\textwidth]{./img/vista.png}
+		\caption{Vista.}   
+		\label{fig:vista}
+	\end{figure}
+	En la figura \ref{fig:vista} podemos ver como se organizan los componentes de la Vista que acabamos de explicar.
+
