@@ -114,7 +114,7 @@ Ext.application({
 		El propósito de esta sección es explicar los layouts utilizados en este trabajo. Tan solo explicaremos la funcionalidad de estos sin
 		centrarnos en el uso que les hemos dado, este será explicado en las secciones venideras cuando proceda. En la figura \ref{fig:layouts}
 		podemos ver una representación de los layouts que describiremos a continuación.
-		\begin{description} 
+		\begin{description}[style=unboxed,leftmargin=0cm,labelwidth=1cm]
 			\item[\texttt{Absolute}] Los \emph{componentes} hijo son posicionados mediante el uso de coordenadas \texttt{X,Y}. Las
 			  dimensiones de estos también se definen de forma estática mediante el uso de dos atributos, \texttt{height} and
 			  \texttt{width}. La posición y tamaño de los componentes se puede cambiar mediante el uso de las funciones
@@ -235,7 +235,7 @@ button.fireEvent('myEvent', 42);
 		ExtJs ofrece multitud de componentes, todos son subclases del \texttt{Ext.Component}, cada uno con un propósito diferente. El objetivo
 		de esta sección es describir los componentes usados en este trabajo. Nos centraremos en los aspectos técnicos sin especificar el uso
 		concreto que les hemos dado, este será explicado en secciones futuras cuando proceda. 
-		\begin{description}
+		\begin{description}[style=unboxed,leftmargin=0cm]
 			\item[\texttt{Ext.button.Button xtype:button}] Este componente nos permite crear un botón. El propósito de un botón es ofrecer
 			  un medio fácil al usuario para interactuar con la aplicación. Los botones que ExtJs ofrece son altamente configurables,
 			  tanto funcionalmente como estéticamente. Podemos tener botones normales, botones \emph{toggle}, botones que despliegan menús
@@ -565,7 +565,7 @@ Ext.define('MyApp.controller.Users', {
 		Este Controlador es directamente relacionado al módulo funcional con el mismo nombre, \texttt{Spike}. Este Controlador es algo más
 		complicado que los anteriormente discutidos, este es compuesto por múltiples funciones. A continuación procedemos a explicar estas
 		funciones.
-		\begin{description}
+		\begin{description}[style=unboxed,leftmargin=0cm]
 			\item[\texttt{Launch()}] Inicializa el módulo funcional \texttt{Spike}. Es conveniente destacar que esta función no es
 			  \texttt{onLauch}, esta no es invocada automáticamente al inicio de la aplicación, somos nosotros los que la invocamos. Esta
 			  función inicializa el objeto \texttt{app}, objeto que debe contener todas las variables usadas en este módulo. La mayoría de
@@ -617,7 +617,7 @@ Ext.define('MyApp.controller.Users', {
 		conjunto de datos revisados.
 		\par
 		A continuación procederemos a explicar las funciones que este Controlador define.
-		\begin{description}
+		\begin{description}[style=unboxed,leftmargin=0cm]
 			\item[\texttt{Launch()}]
 				Inicializa el módulo funcional \texttt{SpikeRevised}. Esta función inicializa el objeto \texttt{app} que debe contener
 				todas las variables asociadas a este módulo. La estructura de este objeto es idéntica al objeto creado en la función
@@ -673,7 +673,7 @@ Ext.define('MyApp.controller.Users', {
 	\subsection{\texttt{ChannelStats}}
 		Este Controlador es directamente relacionado con el módulo funcional con el mismo nombre, \texttt{ChannelStats}. Este controlador es
 		compuesto por varias funciones que discutiremos a continuación.
-		\begin{description}
+		\begin{description}[style=unboxed,leftmargin=0cm]
 			\item[\texttt{Launch()}]
 				Inicializa el módulo funcional \texttt{ChannelStats}. Esta función inicializa el objeto \texttt{app}, objeto que debe
 				contener todas las variable usadas en este módulo. Después de iniciar este objeto es invocada la función
@@ -703,4 +703,16 @@ Ext.define('MyApp.controller.Users', {
 				Esta función muestra en pantalla este módulo funcional. En el caso de que este módulo no este creado es invocada la
 				función \texttt{Launch()}.
 		\end{description}
-
+	\subsection{Visión general}
+		En la figura \ref{fig:controllers} podemos ver un diagrama que representa los Controladores que acabamos de explicar. En color azul
+		podemos ver las funciones, gris en caso de que sean funciones importadas desde otro Controlador. Las flecha azules que unen las
+		funciones nos muestras como estas se invocan unas a otras. Algunas funciones son invocadas al producirse un cierto evento, estos
+		pueden verse en verde dentro de las funciones. Todos los eventos son producidos por los elementos que forman la Vista de la
+		aplicación, a excepción del evento \texttt{Ext.History.change} que es disparado al realizar un cambio en la pila de historial de
+		navegación.
+		\begin{figure}[h]
+			\centering
+			\includegraphics[keepaspectratio, width=1\textwidth]{./img/controllers.png}
+			\caption{Visión general de los Controladores.}   
+			\label{fig:controllers}
+		\end{figure}
