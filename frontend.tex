@@ -506,9 +506,9 @@ H.addEvent(chart, 'selection', function (e) {
 		\item	\texttt{timeout}. El numero de milisegundos en los que el \emph{back-end} debe responder. Si el tiempo expira la solicitud se
 		  	considera como fallida. 
 	\end{itemize}
-	Más allá de \emph{Ext.data.Connection} el framework ofrece abstracciones de un nivel superior. La clase \emph{Ext.data.Model} es una
-	representación de un objeto utilizado por nuestra aplicación. Estos modelos son usados por la clase \emph{Ext.data.Store}, que encapsula
-	instancias de un modelo. La clase \emph{Ext.data.Store} también hace uso del \emph{Ext.data.proxy.Proxy}, abstracción que permite cargar y
+	Más allá de \texttt{Ext.data.Connection} el framework ofrece abstracciones de un nivel superior. La clase \texttt{Ext.data.Model} es una
+	representación de un objeto utilizado por nuestra aplicación. Estos modelos son usados por la clase \texttt{Ext.data.Store}, que encapsula
+	instancias de un modelo. La clase \texttt{Ext.data.Store} también hace uso del \texttt{Ext.data.proxy.Proxy}, abstracción que permite cargar y
 	guardad datos de un modelo. 
 	\par
 	Estas abstracciones son muy útiles, pero algo complejas. Al no estar acostumbrado a trabajar con ellas el autor de este trabajo ha preferido
@@ -608,7 +608,8 @@ Ext.define('MyApp.controller.Users', {
 			  gráfico también se asegura de mostrar los controles vinculados a este. Si es la primera vez que intentamos mostrar este
 			  gráfico el módulo entero no estará creado, esta función invoca la función \texttt{Launch()} en tal caso.
 			\item[\texttt{showChannel()}] Esta función muestra el gráfico de los tubos contadores por separado. Junto al gráfico también
-			  se asegura de mostrar los controles vinculados a este.
+			  se asegura de mostrar los controles vinculados a este. Es invocada la función \texttt{updateChannelData()} para asegurar que
+			  son mostrados los datos correctos.
 		\end{description}
 	\subsection{\texttt{SpikeRevised}}
 		Este Controlador es muy similar al anteriormente descrito, \texttt{Spike}. Las diferencias como indica el nombre radican en que este
@@ -641,7 +642,7 @@ Ext.define('MyApp.controller.Users', {
 				Volvemos a recordar que este módulo es muy similar al \texttt{Spike}, pero ofrece alguna funcionalidad extra. Esta
 				función es la encargada de extender la funcionalidad del gráfico \emph{Candlestick}. La función define el
 				comportamiento de las series del gráfico ante el evento \texttt{click}. Este comportamiento consiste en marcar el dato
-				con un flag y añadirlo a una tabla.  Posteriormente los datos en la tabla podrán ser clasificados como inválidos. 
+				con un flag y añadirlo a una tabla. Posteriormente los datos en la tabla podrán ser clasificados como inválidos. 
 			\item[\texttt{updateCandleData(start, finish)}]
 				Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función carga los
 				datos para el gráfico Candlestick en función de la petición realizada por el usuario. La diferencia radica en los
@@ -668,7 +669,7 @@ Ext.define('MyApp.controller.Users', {
 			\item[\texttt{showChannel()}]
 				Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función muestra el
 				gráfico de los tubos contadores por separado. Junto al gráfico también se asegura de mostrar los controles vinculados
-				a este.		
+				a este. Es invocada la función \texttt{updateChannelData()} para asegurar que son mostrados los datos correctos.
 		\end{description}
 	\subsection{\texttt{ChannelStats}}
 		Este Controlador es directamente relacionado con el módulo funcional con el mismo nombre, \texttt{ChannelStats}. Este controlador es
@@ -743,11 +744,69 @@ Ext.define('MyApp.controller.Users', {
 	es \texttt{card} donde los hijos se solapan unos a otros y tan solo uno puede ser visible a la vez. Los \emph{componentes} hijos
 	contienen todos los gráficos y tablas que nuestra aplicación ofrece, estos son mostrados en función del estado de los controles.
 	\par
+	En la figura \ref{fig:vista} podemos ver como se organizan los componentes de la Vista que acabamos de explicar.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/vista.png}
 		\caption{Vista.}   
 		\label{fig:vista}
 	\end{figure}
-	En la figura \ref{fig:vista} podemos ver como se organizan los componentes de la Vista que acabamos de explicar.
-
+\section{Descripción funcional}
+	El propósito de esta sección es hacer una descripción funcional de la herramienta. Diferenciamos entre tres módulos funcionales que son
+	\texttt{Spike}, \texttt{SpikeRevised} y \texttt{ChannelStats}.
+	\subsection{\texttt{Spike}}
+		El propósito de este módulo es ofrecer un gráfico interactivo que nos permita localizar los \emph{spikes} de forma fácil. Recordamos
+		que estos son datos anormalmente grandes o pequeños. La figura \ref{fig:spikeRevised} presenta el módulo funcional
+		\texttt{SpikeRevised}, dado que los dos módulos son muy similares podemos fijarnos en esta figura.
+		\par
+		Inicialmente el módulo tiene que representar todos los datos de la estación, razón por la que es utilizado el gráfico
+		\emph{Candlestick}.  En este gráfico los valores máximo y mínimo para cada grupo son fáciles de distinguir. Eventualmente cuando es
+		solicitado un intervalo temporal para el que no es necesario agrupar los datos, el gráfico automáticamente cambia a un gráfico de
+		línea. Por contrario si se vuelve a solicitar un intervalo que requiera agrupar los datos, el gráfico cambia a \emph{Candlestick}.
+		\par
+		Para solicitar un intervalo diferente de datos tenemos varias facilidades. La primera es el zoom interactivo que podemos realizar
+		haciendo \emph{click} y arrastrando sobre un intervalo del gráfico. Dependiendo de la dirección de arrastre este será un zoom In u
+		Out. La segunda alternativa es utilizar los campos de entrada disponibles en los controles para realizar una búsqueda por intervalo.
+		En estos campos podemos especificar el inicio y fin del intervalo y la búsqueda será realizada al accionar el botón de búsqueda. La
+		tercera opción es utilizar el navegador que podemos encontrar en la parte inferior del gráfico. Finalmente podemos utilizar los
+		botones en la parte superior izquierda, \texttt{1m} y \texttt{All} del gráfico que nos permiten fijar un intervalo de un mes o volver
+		a mostrar todos los datos.
+		\par
+		Inicialmente son mostrados los datos sin corregir, utilizando el botón \texttt{Choise a Series} podemos mostrar los datos corregidos
+		por presión o los corregidos por eficiencia. En la parte superior de gráfico son representados los valores de la presión atmosférica,
+		esto nos permiten correlacionar los datos respecto a esta magnitud.
+		\par
+		Cuando no es necesario agrupar los datos el botón \texttt{CandleChart} es habilitado.  Este botón muestra un gráfico segundario con
+		los valores de los tubos contadores por separado. El intervalo de datos es marcado por el intervalo del gráfico principal. Este
+		gráfico nos permite observar el comportamiento de los diferentes tubos.
+	\subsection{\texttt{SpikeRevised}}
+		Este módulo funcional incorpora toda la funcionalidad del módulo anterior, la diferencia radica en que este utiliza un conjunto de
+		datos diferente y además ofrece alguna funcionalidad extra. \texttt{Spike} utiliza los datos originales, mientras que este este módulo
+		utiliza los datos revisados. La funcionalidad extra que este módulo ofrece permite añadir datos al conjunto de datos revisados.
+		\par
+		Para satisfacer dicha funcionalidad este módulo ofrece una tabla. Esta tabla es mostrada en una ventana separa que puede ser mostrada
+		u ocultada utilizando el botón \texttt{Selected Points}. Los datos de esta tabla pueden ser enviados al conjunto de datos revisados
+		utilizando el botón \texttt{Submit} que esta presente en la misma ventana. Los datos añadidos a este conjunto serán considerados como
+		nulos en el futuro. Este botón además de enviar los datos actualiza el gráfico para reflejar los cambios que acaban de producir se.
+		\par
+		Cuando los datos son representados en modo línea podemos hacer \emph{click} sobre un dato para añadir este a la tabla anteriormente
+		descrita. En el gráfico será añadida un \emph{flag}, la letra que aparece en dicho \emph{flag} se corresponde con el campo
+		\texttt{Label} de la tabla.
+		\begin{figure}[h]
+			\centering
+			\includegraphics[keepaspectratio, width=1\textwidth]{./img/spikeRevised.png}
+			\caption{Descripción funcional. SpikeRevised}   
+			\label{fig:spikeRevised}
+		\end{figure}
+	\subsection{\texttt{ChannelStats}}
+		El propósito de este módulo funcional es ofrecer información de los diferentes canales por separado, de esta manera seremos capaces de
+		identificar malfuncionamientos en canales aislados. El módulo ofrece una tabla en la que podemos inspeccionar la media, desviación
+		típica, máximo, mínimo y último valor para cada canal. Estos datos también son representados en un gráfico \emph{Candlestick}.
+		\par
+		Junto a estos datos el módulo ofrece un histograma con la distribución de cuentas para los diferentes canales. Dicho histograma puede
+		ser visto en una pestaña separada.
+		\par
+		En los controles están los campos de entrada que nos permiten solicitar un intervalo de tiempo determinado. Para este intervalo serán
+		calculados todos los datos y el histograma que acabamos de explicar. Inicialmente los datos y el histograma son calculados para el
+		último mes. La búsqueda por intervalo esta limitada a un mes dado a que las queries necesarias para obtener estos datos son
+		computacionalmente intensas.
