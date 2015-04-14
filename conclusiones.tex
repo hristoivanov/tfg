@@ -1,52 +1,57 @@
 \chapter{Conclusiones y trabajos futuros}
 \label{cap_conclusiones}
 
-\section{Conclusiones}
-\section{Trabajos futuros. Software de adquisición}
-	\subsection{Debian en la BeagleBone Black}
-	Para realizar el software de adquisición hemos utilizado Angstrom, la distribución Linux que venía por defecto con la BeagleBone Black.
-	Angstrom es una distribución muy ligera y adecuada, pero la comunidad existente es muy pequeña. Nos hemos propuesto como trabajo futuro
-	cambiar de la Angstrom a alguna distribución derivada de Debian. Nuestro caso no es algo aislado sino parte de una movimiento mayor, gran
-	parte de los usuarios  de BeagleBone Black instalan Debians en sus placas. El fabricante de las placas también anuncio que en un futuro las
-	placas llevaran Debian por defecto. Como hemos comentado la razón detrás de esta elección es la comunidad de usuarios. Siendo esta mayor es
-	mucho más fácil encontrar información o ayuda. Al hacer este cambio también tendríamos que realizar algunos cambios en nuestro software,
-	adaptarlo para el nuevo entorno.
-	\subsection{Script de configuración para el software de adquisición}
-	Todo el proceso de configuración para implantar el software está reflejado en el archivo \emph{Readme}. Los pasos recogidos en el archivo
-	podrían automatizarse, podríamos crear un script que ejecutara todos los comandos necesarios. De esta manera para implantar el software tan
-	solo haría falta clonar el repositorio remoto y ejecutar el script. Este script se crearía después de realizar el cambio de distribución a
-	Debian.
-	\subsection{Watchdog}
-	Otro aspecto que podríamos mejorar del software de adquisición es el Watchdog. Tal y como se explicó en el capítulo \ref{cap2} el Watchdog que esta
-	implementado actualmente es muy simple. Este tan solo comprueba que el sistema operativo no se quede bloqueado. Si recordamos la función del
-	Watchdog es detectar malfuncionamientos y reiniciar el sistema al detectar uno. Que el sistema operativo se quede bloqueado es un
-	malfuncionamiento, pero existe otro que también queremos evitar. La función del software es que los datos generados por el resto del sistema
-	acaben en una base de datos, que no se generen datos es un malfuncionamiento que queremos evitar. Podremos detectar este problema mirando en
-	la base de datos. Ante la presencia de nuevos datos el software tendría que reiniciar el contador del Watchdog y si no están presentes nuevos
-	datos el software tendría que no reiniciar el contador. De esta forma si no se generan nuevos datos por el sistema, el software sera
-	reiniciado.
-	\subsection{Adaptación para otras estaciones}
-	El sistema de adquisición esta concebido para poder ser implantado en cualquier estación de monitores de neutrones. Sin embargo es muy
-	probable que este tenga que sufrir cambios a la hora de ser implantado en estas nuevas estaciones. El software de adquisición que hemos
-	desarrollado en este trabajo deberá poder adaptarse a nuevas estaciones fácilmente. Para cumplir con este propósito tendríamos que
-	identificar todas las variables entre estaciones y manejar las oportunamente.
-\section{Trabajos futuros. Herramienta Web}
-	\subsection{Extender funcionalidad}
-	Tal y como explicamos en el capítulo de introducción la idea de la herramienta Web ha sido del equipo de CALMA. Este concibe una herramienta
-	muy compleja con múltiples funcionalidades que describimos en el capítulo de introducción. En este trabajo tan solo nos hemos centrado en una
-	pequeña parte. Como trabajo futuro se propone extender la funcionalidad de la herramienta.
-	\par
-	El avance de la herramienta tendrá que ser acompañado con el avance del sistema de adquisición. La herramienta nos permitirá cambiar la
-	configuración de la estación en tiempo real, para esta meta el software de adquisición tendrá que ofrecer una interfaz que lo permita.
-	\subsection{Implantación y mantenimiento}
-	En el capítulo de introducción también especificamos que en este trabajo tan solo nos centraremos en el proceso de implementación. Como
-	trabajo futuro se propone implantar y mantener el software.
-	\subsection{Autenticación y autorización}
-	Actualmente la herramienta web no implementa ningún sistema para autenticar y autorizar a los usuarios. Los servicios de consulta no necesitan
-	ningún tipo de control, estos pueden ser accesibles por cualquiera. Sin embargo los servicios de acción futuros y presentes tendrían que estar
-	controlados. Es por esta razón por la que surge la necesidad de implementar un sistema para gestionar el acceso de los usuarios. 
-	\subsection{Adaptación para otras estaciones}
-	Al igual que el software de control la herramienta Web esta desarrollada en el entorno de CALMA. Existen muchas variables que actualmente no
-	son manejadas debidamente, están \emph{Hard coded} en nuestro código. Como trabajo futuro se propone identificar todas estas variables y
-	manejarlas debidamente.
 
+\section{Conclusiones}
+%TODO
+
+\section{Trabajos futuros}
+	A pesar de estar satisfecho con los resultados conseguidos en este proyecto, este podría desarrollarse más.
+	\subsection{Software de adquisición}
+		A continuación son detallados una serie de mejoras y cambios que el software de adquisición podría experimentar a fin de mejorar.
+		\begin{description}[style=unboxed,leftmargin=0cm,labelwidth=1cm]
+			\item[Debian]
+				Para la realización del software de adquisición hemos utilizado Angstrom, la distribución que viene por defecto con la
+				BeagleBone Black. Esta es una distribución muy ligera y adecuada, pero la comunidad de usuarios es muy pequeña.
+				Proponemos como trabajo futuro cambial la Angstrom a alguna distribución derivada de Debian. Actualmente existen
+				distribuciones basadas en Debian que son compatibles con las placas, gran parte de los usuarios instalan estas
+				distribuciones en sus placas. El fabricante también ha anunciado que en un futuro las placas serán distribuidas con un
+				Debian por defecto. El inconveniente que este cambio presenta, razón por la que no ha sido realizado en este trabajo,
+				es que el software existente tendría que sufrir gran cantidad de cambios a fin de adaptarse al nuevo entorno.
+			\item[Script de configuración]
+				Todo el proceso de configuración necesario para implantar el software esta reflejado en el archivo \texttt{README.me}.
+				Proponemos como trabajo futuro realizar un script que de forma automática realice todo el trabajo. Este script
+				reduciría la cantidad de trabajo necesario para implantar el sistema de adquisición. Con el cambio de distribución
+				todo el proceso de configuración se vería alterado, razón por la que primero debe llevarse a cabo el cambio y después
+				realizar el script.
+			\item[Adaptación para otras estaciones]
+				Este software es desarrollado en el entorno de CALMA. El software funciona para esta estación, pero es muy probable
+				que en otras estaciones surjan problemas. Proponemos como trabajo estudiar que cambios tendría que sufrir el software
+				o el sistema de adquisición entero para adaptarse a estas estaciones. Además de realizar el estudio sería conveniente
+				llevar a cabo dichos cambios e incluso implantar el sistema de adquisición en esas estaciones.   
+		\end{description}
+	\subsection{Herramienta Web}
+		A continuación son detallados una serie de mejoras y cambios que herramienta Web podría experimentar a fin de mejorar.
+		\begin{description}[style=unboxed,leftmargin=0cm,labelwidth=1cm]
+			\item[Extender funcionalidad]
+				Tal y como explicamos en el capítulo de introducción la idea de la herramienta Web ha sido del equipo de CALMA. Este
+				concibe una herramienta muy compleja con múltiples funcionalidades que describimos en el capítulo de introducción. En
+				este trabajo tan solo nos hemos centrado en una pequeña parte. Como trabajo futuro se propone extender la
+				funcionalidad de la herramienta.
+				\par
+				El avance de la herramienta tendrá que ser acompañado con el avance del sistema de adquisición. La herramienta nos
+				permitirá cambiar la configuración de la estación en tiempo real, para esta meta el software de adquisición tendrá que
+				ofrecer una interfaz que lo permita.
+			\item[Implantación y mantenimiento]
+				En el capítulo de introducción también especificamos que en este trabajo tan solo nos centraremos en el proceso de
+				implementación. Como trabajo futuro se propone implantar y mantener el software.
+			\item[Autenticación y autorización]
+				Actualmente la herramienta web no implementa ningún sistema para autenticar y autorizar a los usuarios. Los servicios
+				de consulta no necesitan ningún tipo de control, estos pueden ser accesibles por cualquiera. Sin embargo los servicios
+				de acción futuros y presentes tendrían que estar controlados. Es por esta razón por la que surge la necesidad de
+				implementar un sistema para gestionar el acceso de los usuarios. 
+			\item[Adaptación para otras estaciones]
+				Al igual que el software de control la herramienta Web esta desarrollada en el entorno de CALMA. Existen muchas
+				variables que actualmente no son manejadas debidamente, están \emph{Hard coded} en nuestro código. Como trabajo futuro
+				se propone identificar todas estas variables y manejarlas debidamente.
+		\end{description}
