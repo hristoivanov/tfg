@@ -4,9 +4,9 @@ Nuestra aplicación Web esta dividida en \emph{back-end} y \emph{front-end}. En 
 este capítulo es describir el \emph{front-end}, que es el encargado de la capa de presentación.
 \par
 El \emph{front-end} es implementado en JavaScript\cite{JavaScript}. Este es un lenguaje de programación soportado por la mayoría de navegadores Web,
-nos permite dotar de funcionalidad extendida a nuestras páginas Web. Actualmente el uso de este lenguaje esta tan extendido y avanzado que permite
-crear aplicaciones enteras para navegadores Web. Existen múltiples frameworks escritos en JavaScript que facilitan la creación de aplicaciones Web. En
-este trabajo vamos a utilizar dos, Sencha ExtJs\cite{ExtJs} y HighStock\cite{HighStock}.
+permite dotar de funcionalidad extendida a las páginas Web. Actualmente el uso de este lenguaje esta tan extendido y avanzado que permite crear
+aplicaciones enteras para navegadores Web. Existen múltiples frameworks escritos en JavaScript que facilitan la creación de aplicaciones Web. En este
+trabajo utilizamos dos, Sencha ExtJs\cite{ExtJs} y HighStock\cite{HighStock}.
 \par
 Sencha ExtJs es un framework orientado a la creación de aplicaciones Web interactivas. Debido al gran abanico de funcionalidades que este framework
 presenta, podemos decir que este es de propósito general. Este ofrece abstracciones para gestionar nuestros datos, arquitectura MVC, componentes
@@ -88,7 +88,7 @@ Ext.application({
 		\par
 		Empezaremos especificando un requisito que  los componentes deben cumplir, estos deben definir el atributo \texttt{itemId}. Este
 		atributo es el identificador del componente. El ámbito que tiene este identificador es local al contenedor que contiene el componente.
-		Esto hace que los identificadores no tengan que ser únicos. 
+		Esto hace que los identificadores no tengan que ser únicos para toda la aplicación. 
 		\par
 		Es el singletone \texttt{Ext.ComponentQuery} el que nos permite realizar búsquedas de componentes en función del \texttt{itemId}.
 		Concretamente es \texttt{Ext.ComponentQuery.query()} el método que nos permite realizar las búsquedas. Este método acepta dos
@@ -134,14 +134,14 @@ Ext.application({
 			  solo una carta puede estar en la parte superior. La función que nos permite hacer visible un hijo es
 			  \texttt{setActiveItem()}. Esta función acepta el \emph{componente}, el \texttt{itemId} del \emph{componente} o el índice del
 			  \emph{componente}.
-			\item[\texttt{Fit}] \texttt{Fit} es un layout muy simple, este tan solo acepta un hijo que ocupa todo el espacio que el padre
+			\item[\texttt{Fit}] Este es un layout muy simple, este tan solo acepta un hijo que ocupa todo el espacio que el padre
 			  ofrece. El \emph{componente} hijo se expandirá automáticamente para ajustarse al tamaño del padre.
 			\item[\texttt{HBox y VBox}] Estos son dos layouts diferentes, pero muy parecidos, razón por la que serán explicados en la
-			  misma subsección. El \texttt{HBox} organiza sus elementos hijos de forma horizontal a lo largo del \emph{componente} padre.
-			  El \texttt{VBox} hace lo mismo, pero la organización es de forma vertical. Los componentes hijos pueden especificar el
-			  atributo \texttt{flex}, este atributo determina como será repartido el espacio disponible entre los diferentes hijos. Para
-			  ilustrar el funcionamiento del \texttt{flex} expondremos un ejemplo. Teniendo dos \emph{componentes} hijo con \texttt{1} y
-			  \texttt{2} de \texttt{flex} respectivamente, el primero ocupara 1/3 y el segundo 2/3 del espacio total.
+			  misma subsección. \texttt{HBox} organiza sus elementos hijos de forma horizontal a lo largo del \emph{componente} padre.
+			  \texttt{VBox} hace lo mismo, pero la organización es de forma vertical. Los componentes hijos pueden especificar el atributo
+			  \texttt{flex}, este atributo determina como será repartido el espacio disponible entre los diferentes hijos. Para ilustrar
+			  el funcionamiento del \texttt{flex} expondremos un ejemplo. Teniendo dos \emph{componentes} hijo con \texttt{1} y \texttt{2}
+			  de \texttt{flex} respectivamente, el primero ocupara 1/3 y el segundo 2/3 del espacio total.
 		\end{description}
 		\begin{figure}[h]
 			\centering
@@ -335,7 +335,7 @@ myChart = new Highcharts.StockChart({
 	explicamos que la interfaz de usuario de una aplicación ExtJs se constituye de componentes. Estos componentes son abstracciones con
 	funcionalidades muy extendidas pero en el fondo son un elemento HTML. Este elemento será asignado al atributo \texttt{renderTo} a fin de
 	mostrar un gráfico HighStock en un componente de una Aplicación ExtJs. El elemento HTML de un componente es accesible de la siguiente forma.
-    		\begin{center} \texttt{Ext.Component.detEl().dom}  \end{center}
+    		\begin{center} \texttt{Ext.Component.getEl().dom}  \end{center}
 	\subsection{Agrupación de datos y \emph{Candlestick}} 
 		\begin{wrapfigure}{R}{0.42\textwidth}
 			\centering
@@ -358,17 +358,17 @@ myChart = new Highcharts.StockChart({
 		valores, máximo, mínimo, \emph{open} y \emph{close}. El \emph{open} y \emph{close} son la media más la desviación típica y la media
 		menos la desviación típica respectivamente.
 		\par
-		El agrupamiento de datos y cálculo de estos cuatro valores por cada grupo esta implementado en el \emph{back-end}. Los servicios RPC
+		El agrupamiento de datos y cálculo de estos cuatro valores para cada grupo esta implementado en el \emph{back-end}. Los servicios RPC
 		que nos permiten acceder a estos datos son \texttt{nmdbOriginalGroup} y \texttt{nmdbRevisedGroup}. Estos servicios fueron explicados
 		en el capítulo dedicado al \emph{back-end}, en este punto tan solo nos interesa destacar el argumento \texttt{points} que estos dos
 		servicios aceptan. Este argumento especifica el número de grupos en los que serán agrupados los datos, este será proporcional al
 		número de pixeles que tenemos disponibles para representar nuestro gráfico. 
 		\par
-		Con los valores máximo, mínimo, \emph{open} y \emph{close} de cada grupo crearemos un gráfico Candlestick. Este es un gráfico usado en
-		análisis técnico bursátil donde tiene su significado propio. En este trabajo tiene su significado propio que podemos ver en la figura
-		\ref{fig:candlestick}. Como podemos ver el \emph{open} y \emph{close} son utilizados para construir el cuerpo de las velas. El cuerpo
-		de las velas representa los datos que se encuentran dentro de la desviación típica. La línea que cruza el cuerpo de la vela representa
-		el valor máximo y mínimo para cada grupo.
+		En análisis técnico bursátil los valores \emph{open} y \emph{close} tienen su significado propio, en este trabajo representan la media
+		más la desviación típica y la media menos la desviación típica respectivamente. Como podemos ver en la figura \ref{fig:candlestick} el
+		\emph{open} y \emph{close} son utilizados para construir el cuerpo de las velas. El cuerpo de las velas representa los datos que se
+		encuentran dentro de la desviación típica. La línea que cruza el cuerpo de la vela representa el valor máximo y mínimo para cada
+		grupo.
 		\par
 		Las velas con cuerpos alargados indican grupos en los que la desviación típica es muy grande, por contrario velas con cuerpos
 		contraídos indican grupos con una desviación típica pequeña. Los dos extremos, datos que fluctúan mucho o datos que no fluctúan,
@@ -381,7 +381,7 @@ myChart = new Highcharts.StockChart({
 		\par
 		La primera consideración que tenemos que tener es el ámbito o \emph{scope}, nombre que utilizaremos a lo largo de este trabajo.
 		Debemos tener cuidado de no contaminar el \emph{scope} global con variables. Para este propósito debemos utilizar una función
-		\emph{self-invoking}. En JavaScript esta es una función que se ejecuta inmediatamente y crear su propio \emph{scope}, de esta manera
+		\emph{self-invoking}. En JavaScript esta es una función que se ejecuta inmediatamente y crea su propio \emph{scope}, de esta manera
 		evitamos contaminar el \emph{scope} global. A continuación presentamos un ejemplo de como declarar una de estas funciones.
 		\begin{lstlisting}
 (function (H) {
@@ -495,7 +495,7 @@ H.addEvent(chart, 'selection', function (e) {
 		  	el mismo \emph{host}. Esto nos permite no especificar el \emph{host}, la petición se hará al \emph{host} utilizado para cargar
 			la aplicación. En la URL tan solo tendremos que especificar el servicio deseado y los parámetros que acompañan a este.
 			Seguidamente presentamos un ejemplo del valor que puede tomar el campo \texttt{url}.
-    				\begin{center} \texttt{url: \cc/nmdadb/cannel/stats/default/default\cc}  \end{center}
+    				\begin{center} \texttt{url: \cc/nmdadb/channel/stats/default/default\cc}  \end{center}
 		\item	\texttt{method}. El método que especifica nuestro mensaje de petición. Los mensajes \emph{HTTP} de petición pueden especificar
 		  	un método. Si este campo es dejado vacío el método utilizado será \texttt{GET}. La mayoría de los servicios ofrecidos por el
 			\emph{back-end} aceptan un método \texttt{GET}, pero el servicio \texttt{nmdbMarkNull} acepta un método \texttt{POST}.
@@ -548,7 +548,7 @@ Ext.define('MyApp.controller.Users', {
 		Este Controlador es el encargado de inicializar el \texttt{Ext.History}, mecanismo que solventa el problema de navegación por el
 		historial en aplicaciones \emph{single page}. El problema y el mecanismo fueron descritos en secciones anteriores de este capitulo.
 		\par
-		El Controlador define la función \texttt{onLaunch()}, función que es invocada una vez creada la Vista y el Modelo de la aplicación.
+		El Controlador define la función \texttt{onLaunch()}, función que es invocada una vez creados la Vista y el Modelo de la aplicación.
 		Empieza invocando la función \texttt{Ext.History.init()}, función esencial para inicializar este módulo. Seguidamente define la
 		función encargada de manejar el evento \texttt{change}, evento que se dispara al cambiar el \emph{hash} de la URL. Esta función
 		soporta tres valores diferentes como \emph{hash} que son \texttt{[Spike, SpikeRevised, ChannelStats]}. Estos tres valores representan
@@ -633,7 +633,7 @@ Ext.define('MyApp.controller.Users', {
 		    	\item[\texttt{loadInitialData()}]
 				Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función carga los
 				datos necesarios para construir el módulo. La diferencia radica en el servicio RCP utilizado. Esta función utiliza el
-				servicio nmdbRevisedGroup, tal y como explicamos este módulo utiliza los datos revisados.
+				servicio \texttt{nmdbRevisedGroup}, tal y como explicamos este módulo utiliza los datos revisados.
 				\par
 				Al cargar los datos con éxito son invocadas las funciones \texttt{initCandleChart} y \texttt{initChannelChart} que
 				crean los dos gráficos, estas son función importadas del Controlador \texttt{Spike}. Finalmente es invocada la función
@@ -720,6 +720,12 @@ Ext.define('MyApp.controller.Users', {
 \section{\emph{Vista}}
 	El componente de Vista en una aplicación \emph{modelo-vista-controlados}\cite{MVCWiki} es el responsable de presentar la información de la implicación
 	junto a todos los componentes que componen la interfaz de usuario.  El propósito de esta sección es describir los aspectos básicos de este componente.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[keepaspectratio, width=1\textwidth]{./img/vista.png}
+		\caption{\emph{Front-end}. Vista.}   
+		\label{fig:vista}
+	\end{figure}
 	\par
 	La Vista en una aplicación ExtJs es compuesta por una jerarquía de \emph{componentes}. En nuestro caso en lo mas alto de esta jerarquía tenemos un
 	\texttt{ViewPort} al que hemos asignado el nombre \texttt{MyViewPort}. Este es un \emph{componente} que se ajusta al área de aplicación disponible. El
@@ -745,12 +751,6 @@ Ext.define('MyApp.controller.Users', {
 	contienen todos los gráficos y tablas que nuestra aplicación ofrece, estos son mostrados en función del estado de los controles.
 	\par
 	En la figura \ref{fig:vista} podemos ver como se organizan los componentes de la Vista que acabamos de explicar.
-	\begin{figure}[h]
-		\centering
-		\includegraphics[keepaspectratio, width=1\textwidth]{./img/vista.png}
-		\caption{Vista.}   
-		\label{fig:vista}
-	\end{figure}
 \section{Descripción funcional}
 	El propósito de esta sección es hacer una descripción funcional de la herramienta. Diferenciamos entre tres módulos funcionales que son
 	\texttt{Spike}, \texttt{SpikeRevised} y \texttt{ChannelStats}.
@@ -776,9 +776,10 @@ Ext.define('MyApp.controller.Users', {
 		por presión o los corregidos por eficiencia. En la parte superior de gráfico son representados los valores de la presión atmosférica,
 		esto nos permiten correlacionar los datos respecto a esta magnitud.
 		\par
-		Cuando no es necesario agrupar los datos el botón \texttt{CandleChart} es habilitado.  Este botón muestra un gráfico segundario con
+		Cuando no es necesario agrupar los datos el botón \texttt{Channel Chart} es habilitado. Este botón muestra un gráfico segundario con
 		los valores de los tubos contadores por separado. El intervalo de datos es marcado por el intervalo del gráfico principal. Este
-		gráfico nos permite observar el comportamiento de los diferentes tubos.
+		gráfico nos permite observar el comportamiento de los diferentes tubos. El botón \texttt{Candle Chart} nos permite volver al gŕafico
+		principal.
 	\subsection{\texttt{SpikeRevised}}
 		Este módulo funcional incorpora toda la funcionalidad del módulo anterior, la diferencia radica en que este utiliza un conjunto de
 		datos diferente y además ofrece alguna funcionalidad extra. \texttt{Spike} utiliza los datos originales, mientras que este este módulo
@@ -790,7 +791,7 @@ Ext.define('MyApp.controller.Users', {
 		nulos en el futuro. Este botón además de enviar los datos actualiza el gráfico para reflejar los cambios que acaban de producir se.
 		\par
 		Cuando los datos son representados en modo línea podemos hacer \emph{click} sobre un dato para añadir este a la tabla anteriormente
-		descrita. En el gráfico será añadida un \emph{flag}, la letra que aparece en dicho \emph{flag} se corresponde con el campo
+		descrita. En el gráfico será añadido un \emph{flag}, la letra que aparece en dicho \emph{flag} se corresponde con el campo
 		\texttt{Label} de la tabla.
 		\begin{figure}[h]
 			\centering
