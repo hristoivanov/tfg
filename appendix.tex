@@ -1,0 +1,140 @@
+\appendix
+
+\chapter{Despliegue Software de adquisición}
+	El propósito de este punto es detallar el proceso que debe seguirse para desplegar el software de adquisición. Siendo este un software para un
+	sistema empotrado el estado del hardware tiene una gran influencia, en este punto suponemos que ya esta configurado correctamente. También
+	suponemos que la BeagleBone Black esta esta tal y como la distribuye el fabricante.
+	\section{Instalación de software} 
+		El primer paso es instalar el software y librerías que son necesarias. Antes de nada debemos actualizar la lista de paquetes
+		disponibles. 
+		\begin{lstlisting}[style=myBash]
+$ opkg update
+		\end{lstlisting}
+		\par
+		El primer paquete que debemos instalar es \texttt{ntp}, paquete que implementa el protocolo \emph{NTP}. Este paquete nos permite
+		sincronizar la fecha y hora del sistema.  Una vez instalado este paquete debemos actualizar la fecha y hora del sistema, esto evitará
+		posibles errores.
+		\begin{lstlisting}[style=myBash]
+$ opkg install ntp
+$ ntpdate -b -s -u pool.ntp.org
+		\end{lstlisting}
+		\par
+		Nuestro software esta escrito en Python, debemos asegurarnos que la versión \texttt{2.7.x} esta instalada. En caso de no estar
+		presente debemos instalarla.
+		\begin{lstlisting}[style=myBash]
+$ python --version
+$ opkg install python
+		\end{lstlisting}
+		Seguidamente debemos instalar \texttt{pip}, herramienta que facilita el proceso de instalación de librerías Python.  Utilizando
+		\texttt{pip} debemos instalar las librerías necesarias. El uso que hemos hecho de estas librerías esta descrito en el capitulo
+		dedicado al software de adquisición.
+		\begin{lstlisting}[style=myBash]
+$ opkg install python-pip python-setuptools python-smbus
+$ pip install pyserial
+$ pip install db-sqlite3
+$ pip install MySQL-python
+$ pip install Adafruit\_BBIO
+		\end{lstlisting}
+		\par
+		Finalmente debemos instalar Git, si este no esta presente.
+		\begin{lstlisting}[style=myBash]
+$ opkg install git
+		\end{lstlisting}
+	\section{Clonar repositorio}
+		El software de adquisición ha sido desarrollado utilizando Git para llevar un control de versiones. Hemos utilizado GitHub para
+		mantener un repositorio remoto. La manera más fácil de acceder al software de adquisición es clonar el repositorio remoto. Antes de
+		clonar el repositorio tenemos que crear un árbol de carpetas similar a este.
+		\begin{lstlisting}[style=myBash]
+--/server
+   --/server/nmda
+   --/server/data
+   --/server/logs
+		\end{lstlisting}
+		A continuación procedemos a clonar el repositorio remoto. Una vez clonado el repositorio podemos utilizar el comando Git \texttt{pull}
+		para actualizar el software. Para utilizar los dos comandos que a continuación presentamos tenemos que estar en la carpeta
+		\texttt{/server/nmda}.
+		\begin{lstlisting}[style=myBash]
+$ git clone git@github.com:opobla/nmpw.git .
+$ git pull
+		\end{lstlisting}
+		En el capitulo dedicado al software de adquisición se explica como este lee una serie de variables desde un archivo de configuración,
+		este archivo debe seguir un formato que también se explica en ese mismo capitulo. Este archivo debe tener el nombre
+		\texttt{/server/nmda/.NMDA.conf}. Podemos crear el archivo desde cero o podemos utilizar el archivo de ejemplo que hemos clonado desde
+		el repositorio remoto. Este archivo de ejemplo especifica una configuración mínima que nos permite correr el software. Basta con
+		copiar el archivo de ejemplo para utilizarlo.
+		\begin{lstlisting}[style=myBash]
+$ cp /server/nmda/NMDA.conf.exmaple /server/nmda/.NMDA.conf
+		\end{lstlisting}
+	\section{\emph{System Services}}
+		En el capitulo dedicado al software de adquisición se explica como el sistema de adquisición debe inicializarse automáticamente ante
+		la presencia de corriente. La BeagleBone Black por defecto está configurada para arrancar automáticamente. Nos queda configurar el
+		sistema operativo arrancar nuestro software de forma automática. Para este propósito vamos a utilizar las \emph{System Services}. 
+		\par
+		Los servicios de sistema se crean mediante archivos con extensión \texttt{.service} que deben ser guardados en la carpeta
+		\texttt{/lib/systemd/system}. A continuación listamos los archivos que definen los servicios que necesitamos.
+		\begin{lstlisting}[style=myFile]
+# /lib/systemd/system/ntpdate.service
+[Unit]
+Description=Network Time Service (one-shot ntpdate mode)
+Before=ntpd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/ntpd -q -g -x
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+		\end{lstlisting}
+		\begin{lstlisting}[style=myFile]
+# /lib/systemd/system/ntpd.service
+[Unit]
+Description=Network Time Service
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/run/ntpd.pid
+ExecStart=/usr/bin/ntpd -p /run/ntpd.pid
+
+[Install]
+WantedBy=multi-user.target
+		\end{lstlisting}
+		\begin{lstlisting}[style=myFile]
+# /lib/systemd/system/nmda.service
+[Unit]
+Description=Neutron Monitor Data Acquisition Service
+After=ntpdate.service
+
+[Service]
+ExecStart=/usr/bin/python /server/nmda/NMDA.py
+
+[Install]
+WantedBy=multi-user.target
+		\end{lstlisting}
+		\begin{lstlisting}[style=myFile]
+# /lib/systemd/system/myWatchDog.service         
+[Unit]
+Description=WatchDog
+
+[Service]
+ExecStart=/usr/bin/python /server/nmda/WatchDog.py
+
+[Install]
+WantedBy=multi-user.target
+		\end{lstlisting}
+		Para habilitar los servicios de sistema que acabamos de declarar tenemos que usar el comando \texttt{systemctl}.
+		\begin{lstlisting}[style=myBash]
+$ systemctl enable ntpdate.service
+$ systemctl enable ntpd.service
+$ systemctl enable nmda
+$ systemctl enable myWatchDog
+		\end{lstlisting}
+		Vemos que dos servicios utilizan \texttt{ntpd}. Para asegurar el correcto funcionamiento de este programa tenemos que editar el
+		archivo de configuración tal y como exponemos a continuación.
+		\begin{lstlisting}[style=myFile]
+# /etc/ntp.conf
+driftfile /etc/ntp.drift
+server pool.ntp.org
+restrict default
+		\end{lstlisting}

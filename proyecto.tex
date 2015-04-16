@@ -22,6 +22,7 @@
 \usepackage[stretch=90,shrink=10]{microtype}
 \usepackage{wrapfig}
 \usepackage{enumitem}
+\usepackage[toc,page]{appendix}
 
 
 
@@ -129,15 +130,12 @@
 	frame 		= lines,
 	basicstyle	= \small\ttfamily,
 	keywordstyle	= \color{pythonKey},
+	deletekeywords	= {enable},
 	commentstyle	= \small\em \color{pythonComment},
 	stringstyle	= \color{pythonString},
 	showstringspaces=false,
 	upquote		=true,
 %
-	numbers=left,
-	numbersep=15pt,
-	numberstyle=\tiny,
-	numberfirstline = false,
 	breaklines=true
 }
 
@@ -243,6 +241,7 @@ moredelim={**[il][\rlap{\textcolor{azure2}{\rule[-4pt]{\linewidth}{\baselineskip
 \include{backend}
 \include{frontend}
 \include{conclusiones}
+\include{appendix}
 
 
 %Incluyo la bibliografía

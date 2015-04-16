@@ -8,7 +8,8 @@ abreviaturas.tex \
 entornoHW.tex \
 softwareControl.tex \
 backend.tex \
-frontend.tex
+frontend.tex \
+appendix.tex
 
 USE_PDFLATEX=true
 
