@@ -50,25 +50,41 @@ principales, a continuación haremos una breve descripción de estos.
 		Es nuestro software el que debe reiniciar este contador para que no expire. Los Watchdogs pueden ser software o hardware, el que
 		utilizamos nosotros esta implementado en la BeagleBone Black y es hardware.
 		\par
-		El código que activa y resetea el Watchdog está en el archivo \texttt{WatchDog.py}. Consite en un proceso que periódicamente reinicia
-		el timer. Actualmente no tiene gran funcionalidad mas que asegurarse de que el sistema operativo sigue funcionando. Si el sistema
-		operativo se queda bloqueado el timer no será reiniciado, por lo que el Watchdog procederá a reiniciar todo el sistema. A continuación
-		podemos ver el código fuente del \texttt{Watchdog.py}.
-		\begin{lstlisting}
-import time
-import os
-# Damos gran prioridad a este proceso
-os.nice(20)
-# Abriendo el siguiente archivo ponemos en marcha el Watchdog hardware
-wd = open(''/dev/watchdog'', ''w+'')
-while 1:
-	# Escribiendo en el archivo reiniciamos el timer del Watchdog
-	wd.write(''\n'')
-	wd.flush() 
-	time.sleep(20)
+		El Watchdog es accesible mediante el archivo \texttt{/dev/watchdog}. Para activar el mecanismo escribimos en el archivo, cualquier
+		valor es aceptado. El contador es puesto en marcha, si este llega a expirar es reiniciada la placa. El valor inicial del contador es
+		de 60 segundos, valor que adquiere cada vez que es reiniciado. El contador es reiniciado al escribir en el archivo. Al cerrar dicho
+		archivo el mecanismo es deshabilitado. A continuación presentamos una parte del código fuente responsable de controlar el WatchDog.
+		\begin{lstlisting}[language=Python]
+args		= NMDA.create_parser().parse_args()
+conn_local      = sqlite3.connect(args.database)
+last_data       = get_last()
+cont            = 0
+
+wd = open("/dev/watchdog", "w+")
+while True:
+    time.sleep(20)
+    wd.write("\n")
+    wd.flush()
+    cont+=1
+
+    if cont >= 15:            #15*20secs=5mins
+        cont            = 0
+        curr_last       = get_last()
+        if curr_last == last_data:
+            time.sleep(120)   #Este sleep reinicia la placa
+        last_data       = curr_last
 		\end{lstlisting}
-		Actualmente estamos planteándonos realizar una versión más avanzada del Watchdog, sobre esto hablaremos más a fondo en el capítulo 
-		\ref{cap_conclusiones}.
+		Primero se establece la conexión con la base de datos local. La base de datos es utilizada para comprobar si el sistema de adquisición
+		genera correctamente datos, si no son generados datos la placa debe ser reiniciada. Una vez establecida la conexión procedemos a
+		invocar la función \texttt{get\_last()}, que devuelve el último valor presente en la base de datos. Seguidamente procedemos a abrir el
+		archivo  que nos permite manejar el WatchDog. Una vez abierto el archivo entramos en un bucle \texttt{while} sin condición de salida.
+		En cada iteración de este bucle escribimos un salto de línea que reinicia el contador del WatchDog. Dentro del bucle también tenemos
+		una llamada a la función \texttt{time.sleep(20)}, las iteraciones del bucle están espaciadas 20 segundos. Cada 15 iteraciones o
+		aproximadamente 5 minutos volvemos a invocar la función \texttt{get\_last()}. El valor devuelto es comparado con el valor anterior. Si
+		estos dos valores son iguales invocamos la función \texttt{time.sleep(120)}, intervalo suficiente para que el contador del WatchDog
+		expire. Los valores son iguales si en los últimos 5 minutos el sistema de adquisición no ha generado ningún dato. Por contrario si se
+		han generado datos durante los últimos 5 minutos estos dos valores son diferentes, en tal caso se sigue con la ejecución del bucle
+		\emph{while}. 
 	\subsection{Sincronización UTC}
 		La BeagleBone Black no implementa ningún mecanismo hardware para calcular la fecha y hora actuales, por lo que en cada reinicio la
 		fecha y hora se pierden. Es nuestra responsabilidad realizar un mecanismo software que nos sincronice con el resto del mundo\cite{ntpd}.
