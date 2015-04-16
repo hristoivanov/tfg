@@ -107,12 +107,12 @@
 \lstdefinestyle{myPython}{
 	language	= Python,
 	frame 		= lines,
-	basicstyle	= \ttfamily,
+	basicstyle	= \small\ttfamily,
 	keywordstyle	= \color{pythonKey},
 	otherkeywords	= {self, True, False},
 	keywords	= [2]{True, False},
 	keywordstyle	= [2]\color{pythonKey2},
-	commentstyle	= \em \color{pythonComment},
+	commentstyle	= \small\em \color{pythonComment},
 	stringstyle	= \color{pythonString},
 %
 	numbers=left,
@@ -125,9 +125,9 @@
 \lstdefinestyle{myBash}{
 	language	= bash,
 	frame 		= lines,
-	basicstyle	= \ttfamily,
+	basicstyle	= \small\ttfamily,
 	keywordstyle	= \color{pythonKey},
-	commentstyle	= \em \color{pythonComment},
+	commentstyle	= \small\em \color{pythonComment},
 	stringstyle	= \color{pythonString},
 %
 	numbers=left,
@@ -137,7 +137,22 @@
 	breaklines=true
 }
 
-
+\lstdefinestyle{myFile}{
+	language	= bash,
+	frame 		= lines,
+	basicstyle	= \small\ttfamily,
+	keywordstyle	= \color{pythonKey},
+	morecomment=[s][\color{pythonKey2}\small\ttfamily]{[}{]}, 
+	deletekeywords	= {test},
+	commentstyle	= \small\em \color{pythonComment},
+	stringstyle	= \color{pythonString},
+%
+	numbers=left,
+	numbersep=15pt,
+	numberstyle=\tiny,
+	numberfirstline = false,
+	breaklines=true
+}
 
  
 % minimizar fragmentado de listados

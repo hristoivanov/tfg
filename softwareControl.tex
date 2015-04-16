@@ -84,7 +84,7 @@ while True:
 		estos dos valores son iguales invocamos la función \texttt{time.sleep(120)}, intervalo suficiente para que el contador del WatchDog
 		expire. Los valores son iguales si en los últimos 5 minutos el sistema de adquisición no ha generado ningún dato. Por contrario si se
 		han generado datos durante los últimos 5 minutos estos dos valores son diferentes, en tal caso se sigue con la ejecución del bucle
-		\emph{while}. 
+		\texttt{while}. 
 	\subsection{Sincronización UTC}
 		La BeagleBone Black no implementa ningún mecanismo hardware para calcular la fecha y hora actuales, por lo que en cada reinicio la
 		fecha y hora se pierden. Es nuestra responsabilidad realizar un mecanismo software que nos sincronice con el resto del mundo\cite{ntpd}.
@@ -107,7 +107,7 @@ $ /usr/bin/ntpd -p /run/ntpd.pid
 		que automáticamente se guarde la hora y fecha de cada mensaje. A continuación se muestra como se configura y usa este mecanismo.
 		\begin{lstlisting}[style=myPython]
 import logging
-logging.basicConfig(filename='/server/logs/NMDA.log', level=logging.DEBUG, format=''%(asctime)s   %(message)s'')
+logging.basicConfig(filename='/server/logs/NMDA.log', level=logging.DEBUG, format=''%(asctime)s %(message)s'')
 logging.info('Started')
 		\end{lstlisting}
 	\subsection{Archivo de configuración y Flags}
@@ -115,7 +115,7 @@ logging.info('Started')
 		tener los valores de estas variables en el código. Este problema nos ha llevado a exportar estas variables a un archivo de configuración.
 		Para leer este archivo utilizamos la librería \texttt{ConfigParser}\cite{py_ConfigParser}. A continuación mostramos un ejemplo de este
 		archivo que nos ayudara a entender mejor su estructura.
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myFile]
 [Basics]
 # The serial RS232_FPGA1C
 serial_port_control  = /dev/ttyO2
@@ -131,7 +131,7 @@ serial_port_sensors= None
 barometer_type = None
 # The type of hvps that will be used. 'None', 'analog', 'digital'
 hvps_type = None
-#Correction coefficient for the analog hvps, 1.0 &=& > No correction
+#Correction coefficient for the analog hvps, 1.0 => No correction
 analog_hvps_corr = 1.0
 
 [dbUpdater]
@@ -159,7 +159,8 @@ beta_efficiency=1.0
 		Los valores de las variables exportadas son también accesibles mediante el uso de Flags. En este caso hemos utilizado la librería 
 		\texttt{argparse}\cite{py_argparse}. Los valores que son especificados con Flags sobrescriben a los valores del archivo de
 		configuración. Los Flags se usan de la siguiente forma.
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myBash]
+$ python NMDA.py -h
 usage: NMDA.py 
    [-h] [-sp SERIAL_PORT_CONTROL] [-db DATABASE]
    [-sps SERIAL_PORT_SENSORS] [-bm {ap1,bm35}]
@@ -178,7 +179,7 @@ usage: NMDA.py
 		empezar con la adquisición de datos. Este Reset nos asegura que la FPGA estará en un correcto estado. Para realizar el Reset de la
 		FPGA utilizaremos la entrada digital que está conectada al pin \emph{P9\_42} de la BeagleBone Black. Volvemos a recordar que la señal
 		digital es activa a nivel bajo. Para controlarla utilizaremos la librería de \emph{AdaFruit}\cite{AdaFruitGit} de la siguiente manera.
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myPython]
 import Adafruit_BBIO.GPIO as GPIO
 GPIO.setup('P9_42', GPIO.OUT)
 GPIO.output('P9_42', GPIO.LOW)
