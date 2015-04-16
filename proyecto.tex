@@ -114,6 +114,8 @@
 	keywordstyle	= [2]\color{pythonKey2},
 	commentstyle	= \small\em \color{pythonComment},
 	stringstyle	= \color{pythonString},
+	showstringspaces=false,
+	upquote		=true,
 %
 	numbers=left,
 	numbersep=15pt,
@@ -129,6 +131,8 @@
 	keywordstyle	= \color{pythonKey},
 	commentstyle	= \small\em \color{pythonComment},
 	stringstyle	= \color{pythonString},
+	showstringspaces=false,
+	upquote		=true,
 %
 	numbers=left,
 	numbersep=15pt,
@@ -146,6 +150,38 @@
 	deletekeywords	= {test},
 	commentstyle	= \small\em \color{pythonComment},
 	stringstyle	= \color{pythonString},
+	showstringspaces=false,
+	upquote		=true,
+%
+	numbers=left,
+	numbersep=15pt,
+	numberstyle=\tiny,
+	numberfirstline = false,
+	breaklines=true
+}
+
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+\lstdefinelanguage{JavaScript}{
+	keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]',
+	morestring=[b]"
+}
+
+\lstdefinestyle{myJs}{
+	language	= JavaScript,
+	frame 		= lines,
+	basicstyle	= \small\ttfamily,
+	keywordstyle	= \color{pythonKey},
+	commentstyle	= \small\em \color{pythonComment},
+	stringstyle	= \color{pythonString},
+	showstringspaces=false,
+	upquote		=true,
 %
 	numbers=left,
 	numbersep=15pt,

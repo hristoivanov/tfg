@@ -43,7 +43,7 @@ En nuestra aplicación también hacemos una división funcional, diferenciamos e
  	\par
 	El segundo \emph{script} es el que contiene la lógica de nuestra aplicación. A continuación podemos ver el código mínimo para crear una
 	aplicación. El código presentado será explicado a fondo.
-	\begin{lstlisting}
+	\begin{lstlisting}[style=myJs]
 Ext.application({
    name: 'HelloExt',
    launch: function() {
@@ -161,7 +161,7 @@ Ext.application({
 		Para implementar esta inicialización perezosa ExtJs se basa en la jerarquía de componentes previamente explicada. Cuando un componente
 		es creado también se crean todos los componentes hijos que deben ser visibles en ese momento. Tal y como explicamos los componentes
 		hijos se definen en el campo \texttt{items}. A continuación podemos ver un pequeño ejemplo. 
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myJs]
 items:[
    Ext.create('Ext.form.field.Text',{
       fieldLabel:'Foo'}),
@@ -171,7 +171,7 @@ items:[
 		El ejemplo presentado anteriormente no habilita la inicialización perezosa. Para este propósito tenemos que evitar el uso de la
 		función \texttt{Ext.create()}. Tenemos que especificar los componentes hijos como objetos de configuración. A continuación se presenta
 		un ejemplo.
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myJs]
 items: [{
    xtype: 'textfield',
    fieldLabel: 'Foo'},
@@ -187,7 +187,7 @@ items: [{
 		La lista completa de \texttt{xtypes} aceptados podemos ver en la documentación de ExtJs\cite{ExtJsDoc}. Eventualmente podemos extender
 		esta lista declarando nuestros propios \texttt{xtypes}. Esto se hace especificando el campo \texttt{xtype} a la hora de definir
 		nuestra clase. A continuación presentamos un pequeño ejemplo.
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myJs]
 Ext.define('MyApp.PressMeButton', {
    extend: 'Ext.button.Button',
    xtype: 'pressmebutton',
@@ -203,7 +203,7 @@ Ext.define('MyApp.PressMeButton', {
 		determinado. De esta manera somos capaces de responder a dichos eventos. A continuación presentamos un ejemplo en el que podemos ver
 		como manejar dichos eventos. En el ejemplo trataremos el evento \texttt{click}, evento que se dispara al hacer \emph{click} sobre un
 		componente. 
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myJs]
 Ext.create('Ext.Button',{
    text: 'Click Me',
    renderTo: Ext.getBody(),
@@ -219,7 +219,7 @@ Ext.create('Ext.Button',{
 		\texttt{fireEvent} que acepta como parámetros el evento que queremos disparar y todos los parámetros que la función encargada del
 		evento necesite. A continuación podemos ver un pequeño ejemplo de como declarar y disparar un evento propio, que tiene como nombre
 		\texttt{myEvent}.
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myJs]
 var button = Ext.create('Ext.Button',{
    text: 'Custom Event',
    renderTo: Ext.getBody(),
@@ -228,7 +228,6 @@ var button = Ext.create('Ext.Button',{
          Ext.Msg.alert('Custom event fired, number: '+number);}
    }
 });
-
 button.fireEvent('myEvent', 42);
 		\end{lstlisting}
 	\subsection{Componentes}  %Muy mal. %Si sobra contenido esta sección tiene que ser eliminada.
@@ -284,7 +283,7 @@ button.fireEvent('myEvent', 42);
 		\par
 		Para detectar y actual acorde a los cambios del \emph{hash} tenemos que inicializar un \texttt{listener}. El evento que vamos a
 		capturar es \texttt{change}. A continuación podemos ver un pequeño código de como inicializar el \texttt{listener}.
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myJs]
 Ext.History.on('change', function(hash){
    switch(hash){
       case: 'Foo':
@@ -307,7 +306,7 @@ Ext.History.on('change', function(hash){
 	propósito más general, este está enfocado a la representación gráfica de valores que evolucionan respecto al tiempo. Este enfoque es muy
 	adecuado para nuestro caso. A continuación presentaremos el código mínimo necesario para crear un gráfico con HighStock. Basándose en ese
 	código explicaremos los aspectos técnicos del software.
-	\begin{lstlisting}
+	\begin{lstlisting}[style=myJs]
 myChart = new Highcharts.StockChart({
    chart: {
       renderTo: container}, //HTML element reference
@@ -383,7 +382,7 @@ myChart = new Highcharts.StockChart({
 		Debemos tener cuidado de no contaminar el \emph{scope} global con variables. Para este propósito debemos utilizar una función
 		\emph{self-invoking}. En JavaScript esta es una función que se ejecuta inmediatamente y crea su propio \emph{scope}, de esta manera
 		evitamos contaminar el \emph{scope} global. A continuación presentamos un ejemplo de como declarar una de estas funciones.
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myJs]
 (function (H) {
    var localVar,	// Variable local
    Series = H.Series;
@@ -396,7 +395,7 @@ myChart = new Highcharts.StockChart({
 		de la función como segundo argumento y la función de sustitución como tercer argumento. La función original es pasada como el primer
 		argumento de la función de sustitución. Es conveniente fijarnos en el ejemplo de código a continuación presentado para entender mejor
 		el uso de la función \texttt{wrap}.
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myJs]
 H.wrap(H.Series.prototype, 'drawGraph', function (proceed) {
 // Antes de la funcion original.
 console.log("We are about to draw the graph: ", this.graph);
@@ -423,7 +422,7 @@ console.log("We just finished drawing the graph: ", this.graph);
 			Para poder registrar la dirección de arrastre hemos hecho uso de dos eventos, \texttt{mousedown} y \texttt{mouseup}. En cada
 			evento registramos la posición de este y usamos la diferencia entre las posiciones para determinar la dirección de arrastre. A
 			continuación presentamos el código. Es la variable \emph{selectDirection} la que nos indica la dirección de arrastre.
-			\begin{lstlisting}
+			\begin{lstlisting}[style=myJs]
 H.addEvent(container, 'mousedown', function (e) {
    selectFrom = chart.pointer.normalize(e).chartX;
 });
@@ -441,7 +440,7 @@ H.addEvent(container, 'mouseup', function (e) {
 			es prevenir la acción por defecto.  Seguidamente calculamos los valores que definen el nuevo intervalo temporal y para
 			terminar aplicamos el nuevo intervalo al gráfico. A continuación se puede ver el código que implementa la funcionalidad
 			previamente descrita.
-			\begin{lstlisting}
+			\begin{lstlisting}[style=myJs]
 H.addEvent(chart, 'selection', function (e) {
    if (selectDirection < 0) {
       e.preventDefault();
@@ -524,7 +523,7 @@ H.addEvent(chart, 'selection', function (e) {
 	Sencha ExtJs nos ofrece la clase \texttt{Ext.app.Controller}, abstracción que representa un Controlador. Esta clase contiene la funcionalidad
 	mínima necesaria, esta pensada para ser extendida y dotada de funcionalidad por el usuario. A continuación podemos ver un pequeño ejemplo de
 	como declarar un Controlador básico en Sencha ExtJs.
-	\begin{lstlisting}
+	\begin{lstlisting}[style=myJs]
 Ext.define('MyApp.controller.Users', {
    extend: 'Ext.app.Controller',
    onLaunch: function() {
