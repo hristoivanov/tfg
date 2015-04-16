@@ -108,11 +108,25 @@
 	language	= Python,
 	frame 		= lines,
 	basicstyle	= \ttfamily,
-	otherkeywords	= {self},             
 	keywordstyle	= \color{pythonKey},
-	otherkeywords	= {True, False},
+	otherkeywords	= {self, True, False},
 	keywords	= [2]{True, False},
 	keywordstyle	= [2]\color{pythonKey2},
+	commentstyle	= \em \color{pythonComment},
+	stringstyle	= \color{pythonString},
+%
+	numbers=left,
+	numbersep=15pt,
+	numberstyle=\tiny,
+	numberfirstline = false,
+	breaklines=true
+}
+
+\lstdefinestyle{myBash}{
+	language	= bash,
+	frame 		= lines,
+	basicstyle	= \ttfamily,
+	keywordstyle	= \color{pythonKey},
 	commentstyle	= \em \color{pythonComment},
 	stringstyle	= \color{pythonString},
 %

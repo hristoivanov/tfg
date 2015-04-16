@@ -90,11 +90,11 @@ while True:
 		fecha y hora se pierden. Es nuestra responsabilidad realizar un mecanismo software que nos sincronice con el resto del mundo\cite{ntpd}.
 		Utilizaremos el programa \texttt{ntpd} para este propósito. \texttt{ntpd} es un programa que hace uso del 
 		\emph{Network Time Protocol}\cite{ntpWiki} para mantener el tiempo del sistema. Haremos dos llamadas a este programa.
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myBash]
 # Actualiza la fecha y hora.
-/usr/bin/ntpd -q -g -x
+$ /usr/bin/ntpd -q -g -x
 # Lanza un demonio que corrige las derivas que puedan presentarse
-/usr/bin/ntpd -p /run/ntpd.pid
+$ /usr/bin/ntpd -p /run/ntpd.pid
 		\end{lstlisting}
 
 
@@ -105,7 +105,7 @@ while True:
 		Haciendo uso de la librería \texttt{logging}\cite{py_logging} configuramos un archivo de Log. En este archivo iremos registrando eventos importantes
 		que sucedan. Ejemplo de eventos que registramos son las pérdidas de datos o el inicio del sistema. El mecanismo está configurado para
 		que automáticamente se guarde la hora y fecha de cada mensaje. A continuación se muestra como se configura y usa este mecanismo.
-		\begin{lstlisting}
+		\begin{lstlisting}[style=myPython]
 import logging
 logging.basicConfig(filename='/server/logs/NMDA.log', level=logging.DEBUG, format=''%(asctime)s   %(message)s'')
 logging.info('Started')
