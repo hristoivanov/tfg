@@ -54,7 +54,7 @@ principales, a continuación haremos una breve descripción de estos.
 		valor es aceptado. El contador es puesto en marcha, si este llega a expirar es reiniciada la placa. El valor inicial del contador es
 		de 60 segundos, valor que adquiere cada vez que es reiniciado. El contador es reiniciado al escribir en el archivo. Al cerrar dicho
 		archivo el mecanismo es deshabilitado. A continuación presentamos una parte del código fuente responsable de controlar el WatchDog.
-		\begin{lstlisting}[language=Python]
+		\begin{lstlisting}[style=myPython]
 args		= NMDA.create_parser().parse_args()
 conn_local      = sqlite3.connect(args.database)
 last_data       = get_last()

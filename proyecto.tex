@@ -99,30 +99,32 @@
 
 
 %Definiciónes para la representación de consola, ficheros y código
+\definecolor{pythonComment}{rgb}{.5,.2,.0}
+\definecolor{pythonKey}{rgb}{0,0,.5}
+\definecolor{pythonKey2}{rgb}{0,.5,.2}
+\definecolor{pythonString}{rgb}{.5,0,0}
 \usepackage{listings}
-\lstset{ frame=Ltb,
-     framerule=.2pt,
-     aboveskip=0.5cm,
-     framextopmargin=3pt,
-     framexbottommargin=3pt,
-     framexleftmargin=0.4cm,
-     framesep=0pt,
-     rulesep=.4pt,
- %    backgroundcolor=\color{gray97},
- %    rulesepcolor=\color{black},
-     %
-     stringstyle=\ttfamily,
-     showstringspaces = false,
-     basicstyle=\small\ttfamily,
-     commentstyle=\color{gray45},
-     keywordstyle=\bfseries,
-     %
-     numbers=left,
-     numbersep=15pt,
-     numberstyle=\tiny,
-     numberfirstline = false,
-     breaklines=true
-   }
+\lstdefinestyle{myPython}{
+	language	= Python,
+	frame 		= lines,
+	basicstyle	= \ttfamily,
+	otherkeywords	= {self},             
+	keywordstyle	= \color{pythonKey},
+	otherkeywords	= {True, False},
+	keywords	= [2]{True, False},
+	keywordstyle	= [2]\color{pythonKey2},
+	commentstyle	= \em \color{pythonComment},
+	stringstyle	= \color{pythonString},
+%
+	numbers=left,
+	numbersep=15pt,
+	numberstyle=\tiny,
+	numberfirstline = false,
+	breaklines=true
+}
+
+
+
  
 % minimizar fragmentado de listados
 \lstnewenvironment{listing}[1][]
