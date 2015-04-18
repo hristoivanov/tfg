@@ -3,7 +3,7 @@
 \chapter{Despliegue Software de adquisición}
 	El propósito de este punto es detallar el proceso que debe seguirse para desplegar el software de adquisición. Siendo este un software para un
 	sistema empotrado el estado del hardware tiene una gran influencia, en este punto suponemos que ya esta configurado correctamente. También
-	suponemos que la BeagleBone Black esta esta tal y como la distribuye el fabricante.
+	suponemos que la BeagleBone Black esta tal y como la distribuye el fabricante.
 	\section{Instalación de software} 
 		El primer paso es instalar el software y librerías que son necesarias. Antes de nada debemos actualizar la lista de paquetes
 		disponibles. 
@@ -32,8 +32,8 @@ $ opkg install python
 $ opkg install python-pip python-setuptools python-smbus
 $ pip install pyserial
 $ pip install db-sqlite3
-$ pip install MySQL-python
-$ pip install Adafruit\_BBIO
+$ pip install MySQL_python
+$ pip install Adafruit_BBIO
 		\end{lstlisting}
 		\par
 		Finalmente debemos instalar Git, si este no esta presente.
@@ -54,7 +54,7 @@ $ opkg install git
 		para actualizar el software. Para utilizar los dos comandos que a continuación presentamos tenemos que estar en la carpeta
 		\texttt{/server/nmda}.
 		\begin{lstlisting}[style=myBash]
-$ git clone git@github.com:opobla/nmpw.git .
+$ git clone https://github.com/opobla/nmpw.git .
 $ git pull
 		\end{lstlisting}
 		En el capitulo dedicado al software de adquisición se explica como este lee una serie de variables desde un archivo de configuración,
@@ -138,3 +138,94 @@ driftfile /etc/ntp.drift
 server pool.ntp.org
 restrict default
 		\end{lstlisting}
+	\section{Tarjeta microSD}
+		Tal y como explicamos en el capitulo dedicado al entorno hardware la BeagleBone Black dispone de una memoria integrada (eMMC) de 4GB.
+		En esta memoria tenemos el sistema operativo y todo el software necesario para el sistema de adquisición. Esto hace que el porcentaje
+		de ocupación de esta memoria sea muy alto. Es conveniente hacer uso de la ranura microSD (uSD) para extender  la capacidad de
+		almacenamiento. A continuación se detallan los pasos a seguir.
+		\par
+		El primer paso es arrancar la BeagleBone Black sin la tarjeta uSD. Después debemos hacer uso del comando \texttt{fdisk}, programa que
+		nos permite manipular las particiones de dispositivos de almacenamiento.
+		\begin{lstlisting}[style=myBash]
+# Listar las particiones de los dispositivos presentes.
+$ fdisk -l
+Disk /dev/mmcbk0: 3867 MB, 3867148288 bytes #eMMC
+
+	Device Boot Start     End  Blocks Id System
+/dev/mmcblk0p1    *  2048  198655   98304  e W95 FAT16 (LBA)
+/dev/mmcblk0p2     198656 7553023 3677184 83 Linux
+		\end{lstlisting}
+		Seguidamente debemos insertar la tarjeta uSD y volver a usar el mismo comando.
+		\begin{lstlisting}[style=myBash]
+# Listar las particiones de los dispositivos presentes.
+$ fdisk -l
+Disk /dev/mmcbk0: 3867 MB, 3867148288 bytes #eMMC
+	Device Boot Start     End  Blocks Id System
+/dev/mmcblk0p1    *  2048  198655   98304  e W95 FAT16 (LBA)
+/dev/mmcblk0p2     198656 7553023 3677184 83 Linux
+
+# Puede variar dependiendo de como tengamos particionada la uSD.
+# No importa porque vamos a borrar las particiones existentes.
+Disk /dev/mmcblk1: 7948 MB, 7948206080 bytes #uSD
+	Device Boot Start      End  Blocks Id System
+/dev/mmcblk1p1       2048 15523839   98304  c W95 FAT32 (LBA)
+		\end{lstlisting}
+		Usando \texttt{fdisk} debemos borrar todas las particiones de la uSD y después crear dos nuevas. El estado final de la uSD esta
+		presentado a continuación.
+		\begin{lstlisting}[style=myBash]
+$ fdisk -l
+Disk /dev/mmcblk1: 7948 MB, 7948206080 bytes #uSD
+        Device Boot  Start      End  Blocks Id  System
+/dev/mmcblk1p1        2048   198655   98304  e  W95 FAT16 (LBA)
+/dev/mmcblk1p2      198656 15523839 7662592 83  Linux
+		\end{lstlisting}
+		Una vez creadas las particiones estas debes ser formateada. A continuación presentamos las instrucciones necesarias utilizando
+		\texttt{mkfs}.
+		\begin{lstlisting}[style=myBash]
+$ mkfs -t vfat /dev/mmcblk1p1
+$ mkfs -t ext3 /dev/mmcblk1p2
+		\end{lstlisting}
+		Antes de seguir es conveniente explicar algunos aspectos del proceso de arranque en la BeagleBone Black. Después de una serie de
+		pasos, que están fuera del alcance de este trabajo, es cargado desde la eMMC(partición FAT16) el programa U-boot. Este es el encargado
+		de cargar el núcleo Linux y proporcionar información sobre el sistema de archivos Linux. Este programa busca el archivo
+		\texttt{uEnv.txt} desde el que lee una serie de parámetros de configuración como la posición del propio núcleo Linux que queremos
+		cargar. Algunos de estos parámetros pueden ser pasados al propio núcleo siempre y cuando este los acepte, por ejemplo la siguiente
+		línea nos permite habilitar dos de los puertos series que la BeagleBone Black ofrece.
+		\begin{lstlisting}[style=myFile]
+optargs=quiet drm.debug=7 capemgr.enable_partno=BB-UART2,BB-UART1
+		\end{lstlisting}
+		Acabamos de explicar este proceso porque ante la presencia de una uSD el U-boot busca el archivo \texttt{uEnv.txt} en la uSD. Si el
+		archivo no esta presente el programa no puede seguir. Es por esta razón por la que hemos creado la partición FAT16 en la uSD. Para
+		crear el archivo tenemos que seguir los siguientes pasos.
+		\begin{lstlisting}[style=myBash]
+$ mkdir trash
+$ mount /dev/mmcblk1p1 trash
+$ cd trash
+$ vim uEnv.txt
+$ cd ..
+$ umount /dev/mmcblk1p1
+$ rm -R trash
+		\end{lstlisting}
+		El contenido del archivo debe ser el siguiente.
+		\begin{lstlisting}[style=myFile]
+mmcdev=1
+bootpart=1:2
+mmcroot=/dev/mmcblk1p2 ro
+optargs=quiet 
+		\end{lstlisting}
+		La línea interesante del archivo es la que asigna valor a \texttt{mmcroot}. Esta variable debe especificar donde esta el núcleo Linux
+		que querremos arrancar. El valor asignado es \texttt{/dev/mmcblk1p2}, los lectores atentos se habrán dado cuenta que este valor
+		corresponde a la segunda partición dentro de la uSD, sitio donde no esta el núcleo.
+		\par 
+		En este punto la eMMC es el dispositivo \texttt{/dev/mmcbk0} y la uSD es el dispositivo \texttt{/dev/mmcbk1}, esto es así porque
+		arrancamos sin la uSD y añadimos esta posteriormente. Si arrancamos con la uSD presente esta es reconocida como el dispositivo
+		\texttt{/dev/mmcbk0} y la eMMC es \texttt{/dev/mmcbk1}. Teniendo esto en consideración la próxima vez que arranquemos la placa con la
+		uSD presente la variable \texttt{mmcroot} apuntara correctamente a la partición que contiene el núcleo Linux.
+		\par
+		En este punto tan solo nos queda definir un punto de montaje para la segunda partición de la uSD, la partición que guardara los datos
+		del sistema de adquisición. Para este propósito tenemos que editar el archivo \texttt{/etc/fstab}, tenemos que añadir la siguiente
+		línea al final del archivo. La partición será montada en el directorio \texttt{/server/data}.
+		\begin{lstlisting}[style=myFile]
+/dev/mmcblk0p1   /server/data   auto   defaults     0  0
+		\end{lstlisting}
+		Finalmente para que se apliquen los cambios debemos reiniciar la placa con la uSD insertada.
