@@ -66,11 +66,12 @@ $ git pull
 $ cp /server/nmda/NMDA.conf.exmaple /server/nmda/.NMDA.conf
 		\end{lstlisting}
 	\section{\emph{System Services}}
+		\label{appendix:systemctl}
 		En el capitulo dedicado al software de adquisición se explica como el sistema de adquisición debe inicializarse automáticamente ante
 		la presencia de corriente. La BeagleBone Black por defecto está configurada para arrancar automáticamente. Nos queda configurar el
 		sistema operativo arrancar nuestro software de forma automática. Para este propósito vamos a utilizar las \emph{System Services}. 
 		\par
-		Los servicios de sistema se crean mediante archivos con extensión \texttt{.service} que deben ser guardados en la carpeta
+		Los servicios de sistema se crean mediante archivos con extensión \texttt{.service} que deben ser guardados en el directorio
 		\texttt{/lib/systemd/system}. A continuación listamos los archivos que definen los servicios que necesitamos.
 		\begin{lstlisting}[style=myFile]
 # /lib/systemd/system/ntpdate.service

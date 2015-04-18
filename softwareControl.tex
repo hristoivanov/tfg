@@ -32,12 +32,42 @@ principales, a continuación haremos una breve descripción de estos.
 \section{Arranque automático del sistema}
 	Uno de los requisitos del sistema es que se ponga en marcha automáticamente ante la presencia de corriente eléctrica. La BeagleBone Black por
 	defecto está configurada para que arranque automáticamente. Nos queda configurar el sistema operativo para que arranque nuestro software de
-	forma automática. Para este propósito vamos a utilizar las \emph{System Services}\cite{AngSystemctl} que Angstrom nos ofrece. No vamos a
-	explicar muy a fondo el funcionamiento de estas, están muy bien explicadas en la bibliografía citada. Tan solo nos interesa resaltar que nos
-	permiten arrancar nuestro software de forma automática.
+	forma automática. Para este propósito vamos a utilizar las \emph{System Services}\cite{AngSystemctl} que Angstrom nos ofrece. Un servicio de
+	sistema nos permite ejecutar un programa de forma automática al ser arrancado el sistema. Angstrom utiliza \texttt{systemd}\cite{systemdWiki}
+	para gestionar los servicios de sistema. Este es un conjunto de demonios, librerías y utilidades diseñados para facilitar la administración de
+	sistemas Linux.
 	\par
-	En la figura \ref{fig:boot} podemos ver la secuencia de arranque del sistema. Vemos que antes de arrancar el software de adquisición tenemos
-	que realizar una serie de tareas. En los puntos siguientes describiremos estas tareas.
+	Para manejar la configuración de \texttt{systemd} tenemos el comando \texttt{systemctl}. A continuación podemos ver como usar este comando.
+	\begin{lstlisting}[style=myBash]
+$ systemctl start    nombre_de_servicio
+$ systemctl restart  nombre_de_servicio
+$ systemctl stop     nombre_de_servicio
+$ systemctl status   nombre_de_servicio
+$ systemctl enable   nombre_de_servicio
+$ systemctl disable  nombre_de_servicio
+	\end{lstlisting}
+	Los servicios de sistema se crean mediante archivos con extensión \texttt{.service} que deben ser guardados en el directorio
+	\texttt{/lib/systemd/system}. En el apéndice \ref{appendix:systemctl} podemos ver el contenido de los archivos que definen los cuatro
+	servicios de sistema que utilizamos en este trabajo. Veamos el significado de lo campos más importantes que se definen en estos archivos.
+	\begin{itemize}
+		\item	\texttt{Description}. Un mensaje descriptivo del servicio. Permite al usuario entender el propósito de este de forma fácil.
+		\item	\texttt{Before} y \texttt{After}. Con estos dos campos podemos referenciar a otros servicios para indicar que este servicio
+		  	debe ejecutarse antes o después del servicio que es citado. Estos dos campos nos permiten definir un orden en el que serán
+		  	ejecutados los servicios de sistema. También podemos especificar un grupo de servicios como el \texttt{network.target} que
+			agrupa los servicios responsables de establecer una conexión Internet. 
+		\item	\texttt{Type}. El tipo del servicio. Con este campo podemos dar diferentes propiedades a nuestro servicio. Los valores
+		  	aceptados que nosotros utilizamos son \texttt{oneshot}, \texttt{forking} y \texttt{simple} que es el valor por defecto.
+		\item	\texttt{ExecStart}. El comando y argumentos que queremos ejecutar.
+		\item	\texttt{WantedBy}. Es el grupo al que este servicio pertenece. El grupo \texttt{multi-user.target} es un grupo para los
+			servicios de un sistema multiusuario, un sistema no gráfico. Este campo hace que este servicio sea retrasado hacia el final
+			del proceso de arranque, específicamente hasta que el sistema sea listo para aceptar la entrada de múltiples usuarios. 
+	\end{itemize}
+	\par
+	En la figura \ref{fig:boot} podemos ver la secuencia que define el proceso de arranque del sistema de adquisición. Para cumplir con este
+	proceso hemos definido cuatro servicios de sistema. El servicio \texttt{myWatchDog.service} es el encargado de arrancar el software que
+	controla el Watchdog. El servicio \texttt{ntpdate.service} es el responsable de actualizar la fecha y hora actuales. El servicio
+	\texttt{ntpd.service} es el responsable de mantener la fecha y hora actuales. Finalmente el servicio \texttt{nmda.service} es el encargado de
+	arrancar el software de adquisición.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/boot.png}
@@ -87,9 +117,9 @@ while True:
 		\texttt{while}. 
 	\subsection{Sincronización UTC}
 		La BeagleBone Black no implementa ningún mecanismo hardware para calcular la fecha y hora actuales, por lo que en cada reinicio la
-		fecha y hora se pierden. Es nuestra responsabilidad realizar un mecanismo software que nos sincronice con el resto del mundo\cite{ntpd}.
-		Utilizaremos el programa \texttt{ntpd} para este propósito. \texttt{ntpd} es un programa que hace uso del 
-		\emph{Network Time Protocol}\cite{ntpWiki} para mantener el tiempo del sistema. Haremos dos llamadas a este programa.
+		fecha y hora se pierden. Es nuestra responsabilidad realizar un mecanismo software que nos sincronice con el resto del
+		mundo\cite{ntpd}.  Utilizaremos el programa \texttt{ntpd} para este propósito. este es un programa que hace uso del \emph{Network Time
+		Protocol}\cite{ntpWiki} para mantener el tiempo del sistema. Haremos dos llamadas a este programa.
 		\begin{lstlisting}[style=myBash]
 # Actualiza la fecha y hora.
 $ /usr/bin/ntpd -q -g -x
