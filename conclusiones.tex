@@ -13,17 +13,18 @@
 			\item[Debian]
 				Para la realización del software de adquisición hemos utilizado Angstrom, la distribución que viene por defecto con la
 				BeagleBone Black. Esta es una distribución muy ligera y adecuada, pero la comunidad de usuarios es muy pequeña.
-				Proponemos como trabajo futuro cambiar la Angstrom a alguna distribución derivada de Debian. Actualmente existen
+				Proponemos como trabajo futuro cambial la Angstrom a alguna distribución derivada de Debian. Actualmente existen
 				distribuciones basadas en Debian que son compatibles con las placas, gran parte de los usuarios instalan estas
 				distribuciones en sus placas. El fabricante también ha anunciado que en un futuro las placas serán distribuidas con un
 				Debian por defecto. El inconveniente que este cambio presenta, razón por la que no ha sido realizado en este trabajo,
-				es que el software existente tendría que sufrir gran cantidad de cambios a fin de adaptarse al nuevo entorno.
-			\item[Script de configuración]
-				Todo el proceso de configuración necesario para implantar el software esta reflejado en el archivo \texttt{README.me}.
-				Proponemos como trabajo futuro realizar un script que de forma automática realice todo el trabajo. Este script
-				reduciría la cantidad de trabajo necesario para implantar el sistema de adquisición. Con el cambio de distribución
-				todo el proceso de configuración se vería alterado, razón por la que primero debe llevarse a cabo el cambio y después
-				realizar el script.
+				es que el software existente tendría que sufrir algunos cambios a fin de adaptarse al nuevo entorno.
+				\par
+				Actualmente el núcleo Linux y todo el sistema de archivos son cargados desde la memoria interna de la placa a la que
+				nos referimos con el acrónimo eMMC. Es posible albergar la nueva distribución en la tarjeta microSD. El contenido de
+				la tarjeta uSD es fácilmente duplicable, podemos exportar este a un archivo de imagen que contendría una copia exacta.
+				Seguidamente podemos grabar este archivo de imagen en una nueva uSD. De esta manera todo el proceso descrito en el
+				apéndice \ref{app_soft} queda obsoleto, para desplegar el software de adquisición  tan solo tenemos que grabar un
+				archivo de imagen un una tarjeta uSD e introducirla en la ranura de la BeagleBone Black. 
 			\item[Adaptación para otras estaciones]
 				Este software es desarrollado en el entorno de CALMA. El software funciona para esta estación, pero es muy probable
 				que en otras estaciones surjan problemas. Proponemos como trabajo estudiar que cambios tendría que sufrir el software
