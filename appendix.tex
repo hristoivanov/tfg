@@ -231,3 +231,92 @@ optargs=quiet
 /dev/mmcblk0p1   /server/data   auto   defaults     0  0
 		\end{lstlisting}
 		Finalmente para que se apliquen los cambios debemos reiniciar la placa con la uSD insertada.
+
+
+\chapter{Despliegue aplicación Web. \emph{Back-end}}
+	\label{app_back}
+	El propósito de este punto es detallar el proceso que debe seguirse para desplegar el \emph{back-end} de la aplicación Web. Debido a que en
+	este trabajo tan solo nos centramos en el proceso de desarrollo, el proceso de despliegue presentado es para desplegar una versión de
+	desarrollo que permita seguir trabajando en el proyecto.
+	\par
+	El primer paso es desplegar un servidor MySql que contiene los datos que vamos a usar. Es recomendable instalar este servidor en la misma
+	máquina desde la que vamos a trabajar, los pasos presentados a continuación asumen que hemos procedido de esta manera. El siguiente comando
+	nos permite instalar un servidor MySql. Junto a este es instalado un programa cliente que permite conectar se al servidor desde una consola.
+	\begin{lstlisting}[style=myBash]
+$ sudo apt-get install mysql-server mysql-client
+	\end{lstlisting}
+	El siguiente paso es acceder como usuario \texttt{root} al servidor Mysql, para este propósito debemos usar el programa cliente que acabamos
+	de instalar. Seguidamente debemos crear dos bases de datos, es conveniente que usemos los nombres \texttt{nmdadb} y \texttt{nmdb}. Finalmente
+	debemos crear un usuario que el \emph{back-end} utilizara para conectarse al servidor. Debemos dar permisos al usuario sobre las bases de
+	datos que acabamos de crear, en este caso damos privilegios completos al usuario.
+	\begin{lstlisting}[style=myBash]
+$ mysql -u root -p
+mysql> CREATE DATABASE nmdadb;
+mysql> CREATE DATABASE nmdb;
+mysql> CREATE USER 'hristo'@'localhost' IDENTIFIED 'pass';
+mysql>  GRANT ALL PRIVILEGES ON *.* TO 'hristo'@'localhost';
+mysql> FLUSH PRIVILEGES;
+	\end{lstlisting}
+	El siguiente paso es introducir datos en las bases de datos. En este trabajo hemos utilizado los datos generados por CALMA. Los datos son
+	almacenados en un servidor MySql, para transferir el contenido de un servidor a otro hemos utilizado el comando \texttt{mysqldump} que permite
+	verter el contenido de una base en un archivo. A continuación podemos ver un ejemplo de uso.
+	\begin{lstlisting}[style=myBash]
+$ mysqldump -h remotehost -u hristo -ppass nmdadb > nmdadb.sql
+$ mysql -h localhost -u hristo -ppass nmdadb < nmdadb.sql
+	\end{lstlisting}
+	Antes de continuar debemos asegurarnos de que las tablas dentro de las bases de datos siguen el esquema presentado en el capítulo
+	\ref{backend}. También debemos asegurarnos de que los datos se han transferido correctamente.
+	\par
+	Una vez configuradas las bases de datos podemos seguir con la instalación del software que compone el \emph{back-end}. Este software es
+	desarrollado en PHP, que podemos instalar usando el comando presentado a continuación. Este comando también instala la extensión
+	\texttt{php-mysql} que nos permite conectarnos al servidor MySql. Es importante destacar que necesitamos una versión PHP superior a la
+	\texttt{5.3.23}, requerida por ZendFramework y Apigility.
+	\begin{lstlisting}[style=myBash]
+$ apt-get install php5 php5-mysql
+	\end{lstlisting}
+	El siguiente paso es clonar el repositorio Git que contiene nuestro proyecto. Para este propósito debemos utilizar el comando presentado a
+	continuación.
+	\begin{lstlisting}[style=myBash]
+$ git clone https://github.com/opobla/nmPanel.git directorio_de_instalacion
+	\end{lstlisting}
+	Para seguir es conveniente navegar hasta el directorio raíz del proyecto que acabamos de clonar. El siguiente paso es instalar todas las
+	dependencias de nuestro software. Este proceso puede resultar tedioso, razón por la que hemos utilizado Composer, herramienta que permite
+	gestionar las dependencias en PHP. Es conveniente destacar que Composer no es un gestor de paquetes, este gestiona las dependencias a nivel de
+	proyecto, instalando estas en el directorio \texttt{ventor} del proyecto. Podemos instalar Composer de dos maneras, globalmente como un
+	comando y localmente como parte del proyecto. A continuación podemos ver como instalar este de forma local. El segundo comando es el que
+	instala las dependencias. 
+	\begin{lstlisting}[style=myBash]
+$ curl -sS https://getcomposer.org/installer | php
+$ php composer.phar install
+	\end{lstlisting}
+	Para declarar las dependencias del proyecto es usado el archivo \texttt{Composer.json}. A continuación podemos ver un ejemplo de como declarar
+	una dependencia básica. 
+	\begin{lstlisting}[style=myFile]
+{
+   "require": {
+      "monolog/monolog": "1.2.*"
+   }
+}
+	\end{lstlisting}
+	Para trabajar con la herramienta Apigility, es necesario habilitar el modo de desarrollo, usando el comando presentado a continuación. 
+	\begin{lstlisting}[style=myBash]
+$ php public/index.php development enable
+	\end{lstlisting}
+	Finalmente debemos configurar un servidor Web desde el que acceder a nuestra aplicación. Podemos utilizar un servidor Web completo como
+	Apache, pero en este trabajo por comodidad hemos utilizado el servidor Web interno que PHP ofrece. Para arrancar este debemos utilizar el
+	siguiente comando. Es importante que  el directorio raíz sea el directorio \texttt{public} de nuestro proyecto.
+	\begin{lstlisting}[style=myBash]
+$ php -S 0.0.0.0:8080 -t public/ public/index.php
+	\end{lstlisting}
+	De esta manera todo el contenido presente en el directorio \texttt{public} será visible desde un navegador Web. Un ejemplo es nuestro
+	\texttt{front-end}, que desplegaremos en el subdirectorio \texttt{public/nmCpanel}. A continuación presentamos las URL que nos permiten
+	acceder a Apigility y a nuestra herramienta siempre y cuando esta este desplegada.
+	\begin{lstlisting}[style=myFile]
+http://localhost:8080/
+http://localhost:8080/nmCpanel/index.html
+	\end{lstlisting}
+	Eventualmente para que todo funcione bien deberemos verificar quela configuración referente a las bases de datos que creamos anteriormente es
+	correcta. Para este propósito debemos examinar los archivos \texttt{config/autoload/global.php} y {config/autoload/local.php}.
+
+\chapter{Despliegue aplicación Web. \emph{Front-end}}
+	\label{app_front}
