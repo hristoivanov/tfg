@@ -233,7 +233,8 @@ optargs=quiet
 		Finalmente para que se apliquen los cambios debemos reiniciar la placa con la uSD insertada.
 
 
-\chapter{Despliegue aplicación Web. \emph{Back-end}}
+\chapter{Despliegue aplicación Web.}
+\section{\emph{Back-end}}
 	\label{app_back}
 	El propósito de este punto es detallar el proceso que debe seguirse para desplegar el \emph{back-end} de la aplicación Web. Debido a que en
 	este trabajo tan solo nos centramos en el proceso de desarrollo, el proceso de despliegue presentado es para desplegar una versión de
@@ -316,7 +317,22 @@ http://localhost:8080/
 http://localhost:8080/nmCpanel/index.html
 	\end{lstlisting}
 	Eventualmente para que todo funcione bien deberemos verificar quela configuración referente a las bases de datos que creamos anteriormente es
-	correcta. Para este propósito debemos examinar los archivos \texttt{config/autoload/global.php} y {config/autoload/local.php}.
+	correcta. Para este propósito debemos examinar los archivos \texttt{config/autoload/global.php} y \texttt{config/autoload/local.php}.
 
-\chapter{Despliegue aplicación Web. \emph{Front-end}}
+\section{\emph{Front-end}}
 	\label{app_front}
+	El propósito de este punto es detallar el proceso que permite desplegar el \emph{front-end} de la aplicación Web. Al igual que en la sección
+	anterior describimos el proceso que nos permite desplegar una versión de desarrollo que permita seguir trabajando en el proyecto.
+	\par
+	La aplicación ha sido desarrollada con Sencha Architect, entorno de desarrollo que facilita el proceso de desarrollo de aplicaciones con
+	ExtJs. El primer paso es descargar e instalar la última versión de la herramienta. La herramienta se debe descargar desde la página oficial de
+	Sencha. La instalación es llevada a cabo mediante un entorno gráfico. Al instalar la herramienta la librería ExtJs será instalada
+	automáticamente.
+	\par
+	El siguiente paso es clonar el repositorio Git que contiene nuestro proyecto. Para este propósito debemos utilizar el siguiente comando.
+	\begin{lstlisting}[style=myBash]
+$ git clone https://github.com/opobla/nmcpanel.git directorio_de_proyecto
+	\end{lstlisting}
+	Finalmente debemos abrir el proyecto con Sencha Architect.  Seguidamente podemos empezar a trabajar. Para desplegar una versión de desarrollo
+	debemos utilizar el botón de desplegar.
+
