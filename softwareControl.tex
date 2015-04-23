@@ -349,26 +349,25 @@ GPIO.output('P9_42', GPIO.HIGH)
 		no hemos escrito ningunos drivers. Sin embargo el código está pensado para poder ser fácilmente ampliado en caso de necesidad. 
 
 \section{Pruebas unitarias}
-	Pruebas Unitarias
-	Durante la realizan de este trabajo hemos realizado usa serie de test unitarios\cite{UnitTest}. Los test unitarios son una técnica que permite
-	comprobar el funcionamiento correcto de pequeños módulos o funciones. Las pruebas unitarias a diferencia de otras técnicas pueden ser usadas
-	desde una etapa muy inicial del proyecto, incluso existen metodologías como \emph{Desarrollo dirigido por pruebas} donde las pruebas son
-	escritas primero y después es escrita la función que pasa la prueba. Recalcamos que en este trabajo no hemos seguido esta metodología.
+	Durante la realización de este trabajo hemos escrito usa serie de test unitarios\cite{UnitTest}. Los test unitarios son una técnica que
+	permite comprobar el funcionamiento correcto de pequeños módulos o funciones. Las pruebas unitarias a diferencia de otras técnicas pueden ser
+	usadas desde una etapa muy inicial del proyecto, incluso existen metodologías como \emph{Desarrollo dirigido por pruebas} donde las pruebas
+	son escritas primero y después es escrita la función que pasa la prueba. Recalcamos que en este trabajo no hemos seguido esta metodología.
 	\par
-	Para que las pruebas unitarias sean aplicables es necesario que código este bien estructurado. Un código con funciones pequeñas donde cada
+	Para que las pruebas unitarias sean aplicables es necesario el que código este bien estructurado. Un código con funciones pequeñas donde cada
 	función tiene un propósito bien definido es fácil de testear. El simple hecho de poder escribir un test de una función indica que dicha
-	función esta bien estructurada. Escribir pruebas unitarias nos lleva a refactorizar nuestro código haciéndolo mejor.
+	función esta bien estructurada. Escribir pruebas unitarias lleva a refactorizar el código, haciéndolo mejor.
 	\par
 	Las pruebas unitarias son muy útiles y es recomendable que estas tengan una gran cobertura, pero no siempre es posible escribir pruebas
 	unitarias para todas las funciones. Pongamos como ejemplo una función que lee una entrada desde una base de datos. Aunque la función este bien
 	estructurada es difícil testearla por múltiples razones. Por ejemplo el valor devuelto depende de los datos presentes en la base de datos,
-	suponiendo que esta esta presente. Es difícil escribir pruebas unitarias para este tipo de funciones, razón por la que existen las pruebas de
-	integración. En nuestro proyecto hemos omitido los test unitarios para las funciones que interactúan con las bases de datos.
+	suponiendo que esta esta presente y esta configurada correctamente. Es difícil escribir pruebas unitarias para este tipo de funciones, razón
+	por la que existen las pruebas de integración.
 	\par
-	Para realizar los test unitarios hemos utilizado mocks(objetos simulados). Estos son objetos que simulan el comportamiento de objetos reales
-	de una forma controlada. Por ejemplo en nuestra aplicación hemos utilizado un mock para simular el comportamiento de los puertos serie. Veamos
-	un pequeño ejemplo donde comprobamos la función \texttt{FPGASerialReader.run()}, función que es encargada de interpretar los datos que llegan
-	por UART de pulsos desde la FPGA.
+	Para realizar los test unitarios hemos utilizado \emph{mocks}(objetos simulados). Estos son objetos que simulan el comportamiento de objetos
+	reales de una forma controlada. Por ejemplo en nuestra aplicación hemos utilizado un \emph{mock} para simular el comportamiento de los puertos
+	serie. Veamos un pequeño ejemplo donde comprobamos la función \texttt{FPGASerialReader.run()}, función que es encargada de interpretar los
+	datos que llegan por la UART de pulsos desde la FPGA.
 	\begin{lstlisting}[style=myPython]
 def test_high_level_pulse(self):
    port=MagicMock()
@@ -392,15 +391,28 @@ class ReturnSequence(object):
       else:
          return self.expired
 	\end{lstlisting}
-	El objeto \texttt{port} es el objeto que representa el puerto. La función \texttt{inWaiting} que devuelve el numero de datos disponibles es
-	configurada para que siempre devuelva \texttt{1}. La función \texttt{read} es configurada para devolver múltiples valores en un orden
-	concreto. Seguidamente es creados el objeto pasándole la referencia de los mocks, una vez creado invocamos la función \texttt{run}. Finalmente
-	comprobamos si el atributo \texttt{shared\_countsFromEvents} tiene el valor esperado.
+	El objeto \texttt{port} es el objeto que representa el puerto como vemos este es un \emph{mock}. La función \texttt{inWaiting} que devuelve el
+	numero de datos disponibles es configurada para que siempre devuelva \texttt{1}. La función \texttt{read} es configurada para devolver
+	múltiples valores en un orden concreto. Seguidamente es creado el objeto cuya función queremos probar pasándole la referencia del mock, una
+	vez creado invocamos la función \texttt{run}. Finalmente comprobamos si el atributo \texttt{shared\_countsFromEvents} tiene el valor esperado.
 	\par
-	En el ejemplo anterior hicimos la comprobación sobre el valor de un atributo con la función \texttt{assertEqual}. Los mocks nos ofrecen aún
-	más funcionalidad, las funciones \texttt{assert\_called\_with()} y \texttt{assert\_has\_calls()} que nos permiten comprobar las llamadas que
-	hemos realizado de a los mocks  
-
+	En el ejemplo anterior hicimos la comprobación sobre el valor de un atributo con la función \texttt{assertEqual()}. Los \emph{mocks} ofrecen
+	aún más funcionalidad, las funciones \texttt{assert\_called\_with()} y \texttt{assert\_has\_calls()} que permiten comprobar las llamadas que
+	han sido realizadas sobre los \emph{mocks}.
+	\par
+	Junto a las pruebas unitarias hemos utilizado la librería \texttt{coverage} que permite medir la cobertura de estas. Una mayor cobertura
+	siempre es mejor, pero no debe convertirse en un objetivo principal. Como hemos dicho para ciertas funciones, como las que interactúan con una
+	base de datos es difícil concebir una prueba unitaria. En la figura \ref{fig:coverage} presentamos el resumen de cobertura generado por
+	\texttt{coverage}.  Podemos ver que las pruebas para el \texttt{CountManager} no son muy extensas debido a que este es un módulo que
+	interactúa mucho con las bases de datos. Sin embargo podemos ver que la cobertura del \texttt{DBUpdater} es del 100\%, esto es debido a que
+	los test escritos para este módulo no son unitarios, esto son más bien test de integración. Durante el proceso de implementación surgió la
+	necesidad de estos, razón por la que son incluidos en este trabajo.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[keepaspectratio, width=1\textwidth]{./img/coverage.png}
+		\caption{Cobertura Pruebas unitarias}   
+		\label{fig:coverage}
+	\end{figure}
 
 \section{Proceso de implementación}
 	En esta sección procederemos a exponer algunos de los aspectos más importantes del proceso de implementación del software de adquisición. Para
