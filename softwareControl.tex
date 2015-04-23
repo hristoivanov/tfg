@@ -349,9 +349,59 @@ GPIO.output('P9_42', GPIO.HIGH)
 		no hemos escrito ningunos drivers. Sin embargo el código está pensado para poder ser fácilmente ampliado en caso de necesidad. 
 
 \section{Pruebas unitarias}
-	Durante la realización de este trabajo realizaremos una serie de test unitarios\cite{UnitTest}. Estos nos ayudaran a comprobar el correcto
-	funcionamiento de pequeñas funciones por separado. En este trabajo no vamos a hacer una explicación de estos, tan solo mencionaremos que los
-	fuentes están en el directorio \texttt{\symbol{92}tests}.
+	Pruebas Unitarias
+	Durante la realizan de este trabajo hemos realizado usa serie de test unitarios\cite{UnitTest}. Los test unitarios son una técnica que permite
+	comprobar el funcionamiento correcto de pequeños módulos o funciones. Las pruebas unitarias a diferencia de otras técnicas pueden ser usadas
+	desde una etapa muy inicial del proyecto, incluso existen metodologías como \emph{Desarrollo dirigido por pruebas} donde las pruebas son
+	escritas primero y después es escrita la función que pasa la prueba. Recalcamos que en este trabajo no hemos seguido esta metodología.
+	\par
+	Para que las pruebas unitarias sean aplicables es necesario que código este bien estructurado. Un código con funciones pequeñas donde cada
+	función tiene un propósito bien definido es fácil de testear. El simple hecho de poder escribir un test de una función indica que dicha
+	función esta bien estructurada. Escribir pruebas unitarias nos lleva a refactorizar nuestro código haciéndolo mejor.
+	\par
+	Las pruebas unitarias son muy útiles y es recomendable que estas tengan una gran cobertura, pero no siempre es posible escribir pruebas
+	unitarias para todas las funciones. Pongamos como ejemplo una función que lee una entrada desde una base de datos. Aunque la función este bien
+	estructurada es difícil testearla por múltiples razones. Por ejemplo el valor devuelto depende de los datos presentes en la base de datos,
+	suponiendo que esta esta presente. Es difícil escribir pruebas unitarias para este tipo de funciones, razón por la que existen las pruebas de
+	integración. En nuestro proyecto hemos omitido los test unitarios para las funciones que interactúan con las bases de datos.
+	\par
+	Para realizar los test unitarios hemos utilizado mocks(objetos simulados). Estos son objetos que simulan el comportamiento de objetos reales
+	de una forma controlada. Por ejemplo en nuestra aplicación hemos utilizado un mock para simular el comportamiento de los puertos serie. Veamos
+	un pequeño ejemplo donde comprobamos la función \texttt{FPGASerialReader.run()}, función que es encargada de interpretar los datos que llegan
+	por UART de pulsos desde la FPGA.
+	\begin{lstlisting}[style=myPython]
+def test_high_level_pulse(self):
+   port=MagicMock()
+   port.inWaiting.return_value=1
+   # Secuencia de bytes que representan un mensaje de
+   # ancho de pulso.
+   port.read.side_effect= \
+        ReturnSequence([['\x43'],['\x80'],['\xA0']],None)	
+
+   reader=FPGASerialReader(port, None, [], [], [])
+   reader.run()
+   self.assertEqual(reader.shared_countsFromEvents[3],1)
+#------------------------------------------------------
+class ReturnSequence(object):
+   def __init__(self, return_sequence, expired):
+      self.return_sequence = return_sequence
+      self.expired = expired
+   def __call__(self, *args):
+      if 0  < len(self.return_sequence):
+         return self.return_sequence.pop(0)
+      else:
+         return self.expired
+	\end{lstlisting}
+	El objeto \texttt{port} es el objeto que representa el puerto. La función \texttt{inWaiting} que devuelve el numero de datos disponibles es
+	configurada para que siempre devuelva \texttt{1}. La función \texttt{read} es configurada para devolver múltiples valores en un orden
+	concreto. Seguidamente es creados el objeto pasándole la referencia de los mocks, una vez creado invocamos la función \texttt{run}. Finalmente
+	comprobamos si el atributo \texttt{shared\_countsFromEvents} tiene el valor esperado.
+	\par
+	En el ejemplo anterior hicimos la comprobación sobre el valor de un atributo con la función \texttt{assertEqual}. Los mocks nos ofrecen aún
+	más funcionalidad, las funciones \texttt{assert\_called\_with()} y \texttt{assert\_has\_calls()} que nos permiten comprobar las llamadas que
+	hemos realizado de a los mocks  
+
+
 \section{Proceso de implementación}
 	En esta sección procederemos a exponer algunos de los aspectos más importantes del proceso de implementación del software de adquisición. Para
 	conectarnos a la BeagleBone Black hemos utilizado SSH\cite{ssh}. Una vez conectados para editar archivos hemos utilizado VIM\cite{vim}. Desde
