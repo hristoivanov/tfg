@@ -4,7 +4,7 @@
 	\label{app_soft}
 	El propósito de este punto es detallar el proceso que debe seguirse para desplegar el software de adquisición. Siendo este un software para un
 	sistema empotrado el estado del hardware tiene una gran influencia, en este punto suponemos que ya esta configurado correctamente. También
-	suponemos que la BeagleBone Black esta tal y como la distribuye el fabricante.
+	suponemos que sobre la BeagleBone Black tenemos una distribución Angstrom recién instalada.
 	\section{Instalación de software} 
 		El primer paso es instalar el software y librerías que son necesarias. Antes de nada debemos actualizar la lista de paquetes
 		disponibles. 
@@ -12,9 +12,9 @@
 $ opkg update
 		\end{lstlisting}
 		\par
-		El primer paquete que debemos instalar es \texttt{ntp}, paquete que implementa el protocolo \emph{NTP}. Este paquete nos permite
+		El primer paquete que debemos instalar es \texttt{ntp}, paquete que implementa el protocolo \emph{NTP}. Este paquete permite
 		sincronizar la fecha y hora del sistema.  Una vez instalado este paquete debemos actualizar la fecha y hora del sistema, esto evitará
-		posibles errores.
+		posibles problemas.
 		\begin{lstlisting}[style=myBash]
 $ opkg install ntp
 $ ntpdate -b -s -u pool.ntp.org
@@ -61,8 +61,7 @@ $ git pull
 		En el capitulo dedicado al software de adquisición se explica como este lee una serie de variables desde un archivo de configuración,
 		este archivo debe seguir un formato que también se explica en ese mismo capitulo. Este archivo debe tener el nombre
 		\texttt{/server/nmda/.NMDA.conf}. Podemos crear el archivo desde cero o podemos utilizar el archivo de ejemplo que hemos clonado desde
-		el repositorio remoto. Este archivo de ejemplo especifica una configuración mínima que nos permite correr el software. Basta con
-		copiar el archivo de ejemplo para utilizarlo.
+		el repositorio remoto. Este archivo de ejemplo especifica una configuración mínima que permite correr el software. 
 		\begin{lstlisting}[style=myBash]
 $ cp /server/nmda/NMDA.conf.exmaple /server/nmda/.NMDA.conf
 		\end{lstlisting}
@@ -70,7 +69,7 @@ $ cp /server/nmda/NMDA.conf.exmaple /server/nmda/.NMDA.conf
 		\label{appendix:systemctl}
 		En el capitulo dedicado al software de adquisición se explica como el sistema de adquisición debe inicializarse automáticamente ante
 		la presencia de corriente. La BeagleBone Black por defecto está configurada para arrancar automáticamente. Nos queda configurar el
-		sistema operativo arrancar nuestro software de forma automática. Para este propósito vamos a utilizar las \emph{System Services}. 
+		sistema operativo para arrancar nuestro software de forma automática. Para este propósito vamos a utilizar las \emph{System Services}. 
 		\par
 		Los servicios de sistema se crean mediante archivos con extensión \texttt{.service} que deben ser guardados en el directorio
 		\texttt{/lib/systemd/system}. A continuación listamos los archivos que definen los servicios que necesitamos.
@@ -147,7 +146,7 @@ restrict default
 		almacenamiento. A continuación se detallan los pasos a seguir.
 		\par
 		El primer paso es arrancar la BeagleBone Black sin la tarjeta uSD. Después debemos hacer uso del comando \texttt{fdisk}, programa que
-		nos permite manipular las particiones de dispositivos de almacenamiento.
+		nos permite manipular las particiones de los dispositivos de almacenamiento.
 		\begin{lstlisting}[style=myBash]
 # Listar las particiones de los dispositivos presentes.
 $ fdisk -l
@@ -316,7 +315,7 @@ $ php -S 0.0.0.0:8080 -t public/ public/index.php
 http://localhost:8080/
 http://localhost:8080/nmCpanel/index.html
 	\end{lstlisting}
-	Eventualmente para que todo funcione bien deberemos verificar quela configuración referente a las bases de datos que creamos anteriormente es
+	Eventualmente para que todo funcione bien deberemos verificar que la configuración referente a las bases de datos que creamos anteriormente es
 	correcta. Para este propósito debemos examinar los archivos \texttt{config/autoload/global.php} y \texttt{config/autoload/local.php}.
 
 \section{\emph{Front-end}}
