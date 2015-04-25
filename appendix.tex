@@ -180,7 +180,7 @@ Disk /dev/mmcblk1: 7948 MB, 7948206080 bytes #uSD
 /dev/mmcblk1p1        2048   198655   98304  e  W95 FAT16 (LBA)
 /dev/mmcblk1p2      198656 15523839 7662592 83  Linux
 		\end{lstlisting}
-		Una vez creadas las particiones estas debes ser formateada. A continuación presentamos las instrucciones necesarias utilizando
+		Una vez creadas las particiones estas debes ser formateadas. A continuación presentamos las instrucciones necesarias utilizando
 		\texttt{mkfs}.
 		\begin{lstlisting}[style=myBash]
 $ mkfs -t vfat /dev/mmcblk1p1
@@ -201,9 +201,7 @@ optargs=quiet drm.debug=7 capemgr.enable_partno=BB-UART2,BB-UART1
 		\begin{lstlisting}[style=myBash]
 $ mkdir trash
 $ mount /dev/mmcblk1p1 trash
-$ cd trash
-$ vim uEnv.txt
-$ cd ..
+$ vim trash/uEnv.txt
 $ umount /dev/mmcblk1p1
 $ rm -R trash
 		\end{lstlisting}
