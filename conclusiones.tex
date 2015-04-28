@@ -1,9 +1,50 @@
 \chapter{Conclusiones y trabajos futuros}
 \label{cap_conclusiones}
-
+El propósito de este capítulo es exponer las experiencias obtenidas a la largo del trabajo y la visión futura que tenemos de este.
 
 \section{Conclusiones}
-%TODO
+	Las experiencias obtenidas del trabajo son generalmente buenas, el autor considera haber cumplido todos los objetivos inicialmente propuestos
+	y en muchos casos haberlos sobrepasado. 
+	\par
+	Durante el desarrollo del software de adquisición  se han adquirido y reforzado multitud de conocimientos. Las experiencias obtenidas del
+	trabajo conjunto con el equipo de CALMA han sido muy positivas. El diseño del software ha sido muy condicionado por el hardware ya existente,
+	en sistemas empotrados estos dos están muy enlazados. El autor no considera esto como una desventaja sino como una ventaja. Raras veces en
+	proyectos reales uno tiene libertad total, la mayoría de veces uno se ve forzado  a colaborar y adaptarse a las limitaciones que le son
+	impuestas. Además el colaborar con personas conlleva el aprender muchas cosas nuevas. Veamos el impacto que han tenido algunas de las
+	decisiones que hemos tomado.
+	\par
+	La BeagleBone Black ha sido una de las cosas que nos han sido impuestas, sin embargo hemos tenido la libertad de elegir la distribución Linux.
+	Entre Angstrom y Debian, las dos distribuciones oficiales que la placa soporta, nos quedamos con la primera. A pesar de haber cumplido todas
+	nuestras necesidades esta no es una distribución muy popular y pocas personas están acostumbradas a trabajar con ella. Encontrar información o
+	ayuda también ha sido desafiante debido a la pequeña comunidad de usuarios. Con respeto a esta elección podemos decir que no estamos
+	arrepentidos, sin embargo no es la mejor elección que pudimos tomar. 
+	\par
+	El desarrollo del software de adquisición en Python es una elección que el autor considera afortunada. El gran numero de librerías, la gran
+	comunidad existente y todas las propiedades inherentes del lenguaje han permitido avanzar rápidamente en el proceso de implementación. El
+	código generado es claro, corto e intuitivo. La librería de \emph{AdaFruit}\cite{AdaFruitGit} nos ha permitido operar sobre las cabeceras de
+	extensión de la BeagleBone Black de forma fácil e intuitiva.    
+	\par
+	Otra elección que consideramos afortunada es utilizar Sqlite\cite{Sqlite} para la base de datos local. Este sistema de gestión de bases de
+	datos relacionales es muy ligero cosa que lo hace muy adecuado para nuestro trabajo.
+	\par
+	La realización de la herramienta Web también ha sido una experiencia agradable en la que hemos adquirido multitud de conocimientos nuevos. A
+	diferencia del software de adquisición en la realización de esta hemos tenido más libertad a la hora del diseño. Veamos el impacto que han
+	tenido algunas de las decisiones que hemos tomado. Obviaremos alguna elecciones como la arquitectura \emph{Modelo Vista Controlador} porque
+	son muy triviales y existe gran cantidad de literatura disponible.
+	\par
+	Utilizar Zendframework y Apigility para la realización del \emph{back-end} ha sido una elección buena, sin embargo el autor no esta
+	completamente satisfecho. La combinación entre framework y herramienta han facilitado y acelerado el proceso de implementación. Sin embargo
+	los primeros pasos han sido un poco confusos, el autor considera que este es un framework muy completo pero también muy complicado para
+	principiantes.
+	\par
+	La realización del \emph{front-end} en Sencha ExtJs es una elección que el autor considera afortunada. El framework es muy completo y en
+	muchos casos implementa todo lo que una aplicación Web pueda necesitar. Trabajar con este ha sido muy fácil e intuitivo, incluso para un
+	principiante. El único inconveniente ha sido el módulo de gráficos, el framework ofrece un módulo que nos permite crear gráficos. La
+	funcionalidad es la misma que la ofrecida por HighStock, es fácil de usar, los gráficos son bellos estéticamente e interactivos. Sin embargo
+	el modulo no se comporta bien ante la necesidad de representar un gran número de datos. Para sobrevenir este problema recurrimos a HighStock.
+	\par
+	HighStock es una elección con la que estamos muy satisfechos. La funcionalidad ofrecida ha cubierto todos nuestros requisitos. Además trabajar
+	con el framework ha sido un placer, este es muy intuitivo y podemos encontrar múltiples ejemplos de uso.
 
 \section{Trabajos futuros}
 	A pesar de estar satisfecho con los resultados conseguidos en este proyecto, este podría desarrollarse más.
