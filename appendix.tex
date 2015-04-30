@@ -301,8 +301,8 @@ $ php composer.phar install
 $ php public/index.php development enable
 	\end{lstlisting}
 	Finalmente debemos configurar un servidor Web desde el que acceder a nuestra aplicación. Podemos utilizar un servidor Web completo como
-	Apache, pero en este trabajo por comodidad hemos utilizado el servidor Web interno que PHP ofrece. Para arrancar este debemos utilizar el
-	siguiente comando. Es importante que  el directorio raíz sea el directorio \texttt{public} de nuestro proyecto.
+	Apache\cite{Apache}, pero en este trabajo por comodidad hemos utilizado el servidor Web interno que PHP ofrece. Para arrancar este debemos
+	utilizar el siguiente comando. Es importante que  el directorio raíz sea el directorio \texttt{public} de nuestro proyecto.
 	\begin{lstlisting}[style=myBash]
 $ php -S 0.0.0.0:8080 -t public/ public/index.php
 	\end{lstlisting}
@@ -332,4 +332,36 @@ $ git clone https://github.com/opobla/nmcpanel.git directorio_de_proyecto
 	\end{lstlisting}
 	Finalmente debemos abrir el proyecto con Sencha Architect.  Seguidamente podemos empezar a trabajar. Para desplegar una versión de desarrollo
 	debemos utilizar el botón de desplegar.
+
+\chapter{Proceso de implementación}
+	El propósito de este punto es detallar los aspectos más importantes del proceso de implementación. Nos centraremos en las herramientas y
+	técnicas que hemos utilizado.
+	\par
+	A lo largo de todo el trabajo hemos utilizado el editor de texto VIM\cite{vim}, desde la creación del software de control hasta la edición de
+	este documento. VIM es un editor de texto que ofrece una interfaz accesible mediante una línea de comandos, esta interfaz no se basa en iconos
+	y menús, sino en comandos en forma de texto. Este es un editor que puede resultar muy complejo a los usuarios novatos, pero una vez amaestrado
+	tiene un gran potencial debido a la gran cantidad de atajos y personalizaciones que podemos realizar.
+	\par
+	Secure Shell o SHH\cite{ssh} es un programa que implementa el protocolo con el mismo nombre. Este programa permite el acceso a máquinas
+	remotas atreves de  la red mediante un intérprete de comandos, de esta manera podemos tener control total de la máquina remota. Hemos
+	utilizado este programa para trabajar con la BeagleBone Black y actualmente lo estamos utilizando para realizar todas  las labores de
+	mantenimiento del software de adquisición.
+	\par
+	Durante el desarrollo de la herramienta Web hemos utilizado servidor Web interno que PHP ofrece. Este es muy cómodo, fácil y sobre todo rápido
+	de utilizar. No es recomendable utilizar este servidor en las faces de producción por lo que debemos configurar un servidor Web completo como
+	puede ser Apache\cite{Apache}.
+	\par
+	POSTMAN\cite{Postman} es una herramienta Web que permite crear y enviar \emph{HTTP requests}. La  funcionalidad es parecida al programa de
+	línea de comandos cURL. La diferencia radica en que esta herramienta ofrece una interfaz gráfica que facilita el trabajo. La herramienta
+	también ofrece un historial de las peticiones realizadas que resulta muy útil. Hemos utilizado esta herramienta durante el desarrollo del
+	\emph{back-end} de nuestra herramienta Web.
+	\par
+	Durante el desarrollo del \emph{front-end} hemos utilizado Chrome y las herramientas de desarrollador que este ofrece\cite{ChromeDev}. Chrome
+	es un navegador Web con una popularidad creciente entre usuarios y desarrolladores. En este trabajo hemos hecho uso principalmente del
+	debugger JavaScript.  También hemos hecho uso de la herramienta Network que nos da información sobre el uso de la red, los mensajes que
+	nuestra herramienta intercambia.
+	\par
+	Sencha Architect es un entorno de desarrollo de aplicaciones basadas en ExtJs que hemos utilizado para la creación del \emph{front-end} de
+	nuestra aplicación. Este entorno facilita el desarrollo ofreciendo un entorno gráfico que permite generar gran parte del código de forma
+	automática. También nos ofrece una vista previa de la aplicación en tiempo real según editamos el código fuente de esta. 
 
