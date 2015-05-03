@@ -214,13 +214,3 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		los 18 canales esta query es invocada múltiples veces. Las tablas están indexadas por el campo \texttt{start\_date\_time}, razón por
 		la que las demás queries son efectivas. En esta query tenemos que agrupar por el número de cuentas, campo que no esta indexado. Por
 		esta razón no es deseable invocar a este servicio con un intervalo superior a un mes.
-\section{Proceso de implementación}
-	En esta sección procederemos a exponer algunos de los aspectos más importantes del proceso de implementación del \emph{back-end}. Para la
-	edición del código hemos utilizado VIM\cite{vim}, también nos hemos beneficiado de las facilidades ofrecidas por Apigility que autogeneran
-	gran parte del código. PHP \emph{5.4.0} y versiones superiores ofrecen un servidor Web concebido para el desarrollo de aplicaciones, en este
-	trabajo hemos utilizado dicho servidor. Para testear nuestra aplicación hemos utilizado POSTMAN, herramienta Web que nos permite crear y
-	enviar \emph{HTTP requests} de forma simple e intuitiva.
-	\par  
-	Desde el primer momento hemos utilizado control de versiones, hemos elegido Git\cite{git} manteniendo un repositorio remoto en
-	GitHub\cite{github}. GitHub nos permite visualizar el contenido del repositorio mediante un navegador Web. La URL del repositorio es:
-	\url{https://github.com/opobla/nmPanel}.
