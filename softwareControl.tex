@@ -1,25 +1,30 @@
 \chapter{Software de adquisición}
 \label{cap2}
-En este capítulo procederemos a explicar el funcionamiento del software de adquisición. Empezaremos recordando los aspectos básicos descritos en el
-capítulo \ref{cap1}. El software de adquisición es el encargado de coordinar la estación. El funcionamiento nominal del software consiste en recoger
-la información de los demás módulos y guardar la en una base de datos. Aparte de dotarle de esta funcionalidad nominal el software debe ser capaz de
-iniciarse automáticamente y recuperarse ante posibles fallos.  
+En este capítulo procedemos a explicar el funcionamiento del software de adquisición. Empezaremos recordando los aspectos básicos descritos en el
+capítulo de introducción. El funcionamiento nominal del software consiste en recoger la información de los módulos hardware como la FPGA, el
+barómetro, las fuentes de alimentación y los sensores de temperatura si estos están presentes. Cada minuto la información recogida es procesada y
+almacenada en una base de datos. 
 \par
-El software se ejecuta sobre un Linux en una placa BeagleBone Black\cite{Beagle}\cite{BeagleWiki}. El lenguaje utilizado para el desarrollo del
-software es Python\cite{Python}. Para la gestión de la base de datos hemos elegido Sqlite3\cite{Sqlite}. Al ser un software para un sistema empotrado
-es conveniente estar familiarizados con el entorno hardware, descrito en el capítulo \ref{entornoHW}.
+Antes de empezar a discutir a fondo el software de adquisición es conveniente estar familiarizados con el entorno hardware que describimos en el
+capítulo \ref{entornoHW}. El software es ejecutado en la BeagleBone Black sobre un Linux, distribución Angstrom. El lenguaje elegido para el
+desarrollo es Python\cite{Python}. Este  es un lenguaje interpretado de alto nivel con una sintaxis centrada en producir un código legible. El
+lenguaje se adapta igualmente bien a programación imperativa y orientada a objetos. El tipado dinámico da mucha flexibilidad al lenguaje. Todas estas
+propiedades del lenguaje permiten un desarrollo rápido. Además el lenguaje ofrece una amplia cantidad de librerías que también aligeran el trabajo. 
+\par
+Para gestionar la base de datos utilizamos Sqlite3\cite{Sqlite}. Este es un gestor muy ligero y adecuado para sistemas empotrados. Aparte de esta base
+de datos local el software permite mantener una segunda réplica remota. Para esta réplica remota utilizamos MySql\cite{MySql} que es un gestor más
+completo y enfoque \emph{Cliente-Servidor}.
 \par
 En la figura \ref{fig:soft_adquisición} podemos ver un diagrama de flujo que describe el funcionamiento de nuestro software. A lo largo de este
-capítulo haremos muchas referencias a este diagrama para explicar los diferentes módulos software que lo componen. Podemos ver que hay 4 módulos
-principales, a continuación haremos una breve descripción de estos. 
-
+capítulo haremos muchas referencias a este diagrama para explicar los diferentes módulos software que lo componen. Podemos ver que hay cuatro módulos
+principales, a continuación hacemos una breve descripción de estos. 
 \begin{itemize}
   	\item	\texttt{NMDA}. Es el proceso principal de nuestro software. Este es el encargado de realizar las configuraciones necesarias e iniciar
 	  	el \texttt{FPGASerialReader} y el \texttt{CountsManager}.
 	\item	\texttt{FPGASerialReader}. Thread que se encarga de procesar la información transmitida por la FPGA.
-	\item	\texttt{CountsManager}. Thread que se encarga de pedir la información necesaria y guardarla en la base de datos con periodicidad de un
-	  	minuto. Después de guardar la información de un nuevo minuto este inicia el \texttt{DBUpdater}.
-	\item	\texttt{DBUpdater}. Thread que se encarga de sincronizar la base de datos local con la replica remota.
+	\item	\texttt{CountsManager}. Thread que se enarga de pedir la información necesaria y guardarla en la base de datos con periodicidad de un
+	  	minuto. Después de guardar la información es iniciado el \texttt{DBUpdater}.
+	\item	\texttt{DBUpdater}. Thread que se encarga de sincronizar la base de datos local con la réplica remota.
 \end{itemize}
 
 \begin{sidewaysfigure}[p]
@@ -30,14 +35,14 @@ principales, a continuación haremos una breve descripción de estos.
 \end{sidewaysfigure}
 
 \section{Arranque automático del sistema}
-	Uno de los requisitos del sistema es que se ponga en marcha automáticamente ante la presencia de corriente eléctrica. La BeagleBone Black por
-	defecto está configurada para que arranque automáticamente. Nos queda configurar el sistema operativo para que arranque nuestro software de
-	forma automática. Para este propósito vamos a utilizar las \emph{System Services}\cite{AngSystemctl} que Angstrom nos ofrece. Un servicio de
-	sistema nos permite ejecutar un programa de forma automática al ser arrancado el sistema. Angstrom utiliza \texttt{systemd}\cite{systemdWiki}
-	para gestionar los servicios de sistema. Este es un conjunto de demonios, librerías y utilidades diseñados para facilitar la administración de
-	sistemas Linux.
+	Uno de los requisitos del sistema es que este se ponga en marcha automáticamente ante la presencia de corriente eléctrica. La BeagleBone Black
+	por defecto esta configurada para arrancar automáticamente, debemos configurarla para que inicialice nuestro software. Para este propósito
+	vamos a utilizar las \emph{System Services}\cite{AngSystemctl} que Angstrom proporciona. Un servicio de sistema permite ejecutar un programa
+	de forma automática al ser arrancado el sistema. Angstrom utiliza \texttt{systemd}\cite{systemdWiki} para gestionar los servicios de sistema.
+	Este es un conjunto de demonios, librerías y utilidades diseñados para facilitar la administración de sistemas Linux.
 	\par
-	Para manejar la configuración de \texttt{systemd} tenemos el comando \texttt{systemctl}. A continuación podemos ver como usar este comando.
+	Para operar sobre la configuración de \texttt{systemd} tenemos el comando \texttt{systemctl}. A continuación podemos ver como usar este
+	comando.
 	\begin{lstlisting}[style=myBash]
 $ systemctl start    nombre_de_servicio
 $ systemctl restart  nombre_de_servicio
@@ -46,28 +51,29 @@ $ systemctl status   nombre_de_servicio
 $ systemctl enable   nombre_de_servicio
 $ systemctl disable  nombre_de_servicio
 	\end{lstlisting}
+	\par
 	Los servicios de sistema se crean mediante archivos con extensión \texttt{.service} que deben ser guardados en el directorio
 	\texttt{/lib/systemd/system}. En el apéndice \ref{appendix:systemctl} podemos ver el contenido de los archivos que definen los cuatro
-	servicios de sistema que utilizamos en este trabajo. Veamos el significado de lo campos más importantes que se definen en estos archivos.
+	servicios de sistema que utilizamos en este trabajo. Veamos el significado de lo campos más importantes que son definidos en estos archivos.
 	\begin{itemize}
 		\item	\texttt{Description}. Un mensaje descriptivo del servicio. Permite al usuario entender el propósito de este de forma fácil.
-		\item	\texttt{Before} y \texttt{After}. Con estos dos campos podemos referenciar a otros servicios para indicar que este servicio
-		  	debe ejecutarse antes o después del servicio que es citado. Estos dos campos nos permiten definir un orden en el que serán
-		  	ejecutados los servicios de sistema. También podemos especificar un grupo de servicios como el \texttt{network.target} que
-			agrupa los servicios responsables de establecer una conexión Internet. 
+		\item	\texttt{Before} y \texttt{After}. Estos dos campos pueden referenciar a otros servicios para indicar que este servicio debe
+			ejecutarse antes o después del servicio que es citado. Esto permite definir un orden en el que serán ejecutados los servicios
+			de sistema. También es posible especificar un grupo de servicios como el \texttt{network.target} que agrupa los servicios
+			responsables de establecer una conexión Internet. 
 		\item	\texttt{Type}. El tipo del servicio. Con este campo podemos dar diferentes propiedades a nuestro servicio. Los valores
-		  	aceptados que nosotros utilizamos son \texttt{oneshot}, \texttt{forking} y \texttt{simple} que es el valor por defecto.
+			aceptados que utilizamos son \texttt{oneshot}, \texttt{forking} y \texttt{simple}, que es el valor por defecto.
 		\item	\texttt{ExecStart}. El comando y argumentos que queremos ejecutar.
 		\item	\texttt{WantedBy}. Es el grupo al que este servicio pertenece. El grupo \texttt{multi-user.target} es un grupo para los
-			servicios de un sistema multiusuario, un sistema no gráfico. Este campo hace que este servicio sea retrasado hacia el final
-			del proceso de arranque, específicamente hasta que el sistema sea listo para aceptar la entrada de múltiples usuarios. 
+			servicios de un sistema multiusuario. Este campo hace que este servicio sea retrasado hacia el final del proceso de arranque,
+			específicamente hasta que el sistema sea listo para aceptar la acceso de múltiples usuarios. 
 	\end{itemize}
 	\par
 	En la figura \ref{fig:boot} podemos ver la secuencia que define el proceso de arranque del sistema de adquisición. Para cumplir con este
 	proceso hemos definido cuatro servicios de sistema. El servicio \texttt{myWatchDog.service} es el encargado de arrancar el software que
 	controla el Watchdog. El servicio \texttt{ntpdate.service} es el responsable de actualizar la fecha y hora actuales. El servicio
-	\texttt{ntpd.service} es el responsable de mantener la fecha y hora actuales. Finalmente el servicio \texttt{nmda.service} es el encargado de
-	arrancar el software de adquisición.
+	\texttt{ntpd.service} es el responsable de mantener sincronizados la fecha y hora del sistema. Finalmente el servicio \texttt{nmda.service} es
+	el encargado de arrancar el software de adquisición.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/boot.png}
@@ -75,10 +81,11 @@ $ systemctl disable  nombre_de_servicio
 		\label{fig:boot}
 	\end{figure}
 	\subsection{Watchdog}
-		Un Watchdog \cite{WatchDogWiki} es un mecanismo de seguridad que realizar un Reset en el sistema cuando se detecta un
+		Un Watchdog \cite{WatchDogWiki} es un mecanismo de seguridad que realiza un Reset en el sistema cuando es detectado un
 		malfuncionamiento. Consiste en un temporizador que realiza una cuenta atrás, cuando esta cuenta llega a cero el sistema es reiniciado.
-		Es nuestro software el que debe reiniciar este contador para que no expire. Los Watchdogs pueden ser software o hardware, el que
-		utilizamos nosotros esta implementado en la BeagleBone Black y es hardware.
+		Es nuestro software el que debe reiniciar este contador para que no expire. Los Watchdogs pueden ser software o hardware, el utilizado
+		en este trabajo esta implementado en la BeagleBone Black y es hardware. Los Watchdogs hardware son más fiables, los software pueden
+		quedarse bloqueados.
 		\par
 		El Watchdog es accesible mediante el archivo \texttt{/dev/watchdog}. Para activar el mecanismo escribimos en el archivo, cualquier
 		valor es aceptado. El contador es puesto en marcha, si este llega a expirar es reiniciada la placa. El valor inicial del contador es
@@ -105,21 +112,21 @@ while True:
         last_data       = curr_last
 		\end{lstlisting}
 		Primero se establece la conexión con la base de datos local. La base de datos es utilizada para comprobar si el sistema de adquisición
-		genera correctamente datos, si no son generados datos la placa debe ser reiniciada. Una vez establecida la conexión procedemos a
-		invocar la función \texttt{get\_last()}, que devuelve el último valor presente en la base de datos. Seguidamente procedemos a abrir el
-		archivo  que nos permite manejar el WatchDog. Una vez abierto el archivo entramos en un bucle \texttt{while} sin condición de salida.
-		En cada iteración de este bucle escribimos un salto de línea que reinicia el contador del WatchDog. Dentro del bucle también tenemos
-		una llamada a la función \texttt{time.sleep(20)}, las iteraciones del bucle están espaciadas 20 segundos. Cada 15 iteraciones o
-		aproximadamente 5 minutos volvemos a invocar la función \texttt{get\_last()}. El valor devuelto es comparado con el valor anterior. Si
-		estos dos valores son iguales invocamos la función \texttt{time.sleep(120)}, intervalo suficiente para que el contador del WatchDog
-		expire. Los valores son iguales si en los últimos 5 minutos el sistema de adquisición no ha generado ningún dato. Por contrario si se
-		han generado datos durante los últimos 5 minutos estos dos valores son diferentes, en tal caso se sigue con la ejecución del bucle
+		genera correctamente datos, si no son generados datos la placa debe ser reiniciada. Una vez establecida la conexión se procede a
+		invocar la función \texttt{get\_last()}, que devuelve el último valor presente en la base de datos. Seguidamente es abierto el archivo
+		que permite manejar el WatchDog. Una vez abierto el archivo se entra en un bucle \texttt{while} sin condición de salida. En cada
+		iteración de este bucle es escrito un salto de línea que reinicia el contador del WatchDog. Dentro del bucle también hay una llamada a
+		la función \texttt{time.sleep(20)}, las iteraciones del bucle están espaciadas 20 segundos. Cada 15 iteraciones o aproximadamente 5
+		minutos se vuelve a invocar la función \texttt{get\_last()}. El valor devuelto es comparado con el valor anterior. Si estos dos
+		valores son iguales es invocada la función \texttt{time.sleep(120)}, intervalo suficiente para que el contador del WatchDog expire.
+		Los valores son iguales si en los últimos 5 minutos el sistema de adquisición no ha generado ningún dato. Por contrario si se han
+		generado datos durante los últimos 5 minutos estos dos valores son diferentes, en tal caso se sigue con la ejecución del bucle
 		\texttt{while}. 
 	\subsection{Sincronización UTC}
 		La BeagleBone Black no implementa ningún mecanismo hardware para calcular la fecha y hora actuales, por lo que en cada reinicio la
-		fecha y hora se pierden. Es nuestra responsabilidad realizar un mecanismo software que nos sincronice con el resto del
-		mundo\cite{ntpd}.  Utilizaremos el programa \texttt{ntpd} para este propósito. este es un programa que hace uso del \emph{Network Time
-		Protocol}\cite{ntpWiki} para mantener el tiempo del sistema. Haremos dos llamadas a este programa.
+		fecha y hora se pierden. Es nuestra responsabilidad realizar un mecanismo software que sincronice la fecha y hora con el resto del
+		mundo\cite{ntpd}. Es utilizado el programa \texttt{ntpd} para este propósito. Este es un programa que hace uso del \emph{Network Time
+		Protocol}\cite{ntpWiki} para mantener el tiempo del sistema. Son realizadas dos llamadas a este programa.
 		\begin{lstlisting}[style=myBash]
 # Actualiza la fecha y hora.
 $ /usr/bin/ntpd -q -g -x
@@ -127,14 +134,14 @@ $ /usr/bin/ntpd -q -g -x
 $ /usr/bin/ntpd -p /run/ntpd.pid
 		\end{lstlisting}
 
-
 \section{\texttt{NMDA}}
 	Este es el módulo principal de nuestro software. En la figura \ref{fig:soft_adquisición} podemos ver un diagrama de flujo que representa el
 	funcionamiento de este. En las siguientes subsecciones describiremos las funcionalidades más relevantes de este módulo.
 	\subsection{Logger}
-		Haciendo uso de la librería \texttt{logging}\cite{py_logging} configuramos un archivo de Log. En este archivo iremos registrando eventos importantes
-		que sucedan. Ejemplo de eventos que registramos son las pérdidas de datos o el inicio del sistema. El mecanismo está configurado para
-		que automáticamente se guarde la hora y fecha de cada mensaje. A continuación se muestra como se configura y usa este mecanismo.
+		Haciendo uso de la librería \texttt{logging}\cite{py_logging} es configurado un archivo de Log. En este archivo son registrando los
+		sucesos de eventos importantes. Ejemplo de eventos que registramos son las pérdidas de datos o el inicio del sistema. El mecanismo
+		está configurado para que automáticamente se guarde la hora y fecha de cada mensaje. A continuación se muestra como se configura y usa
+		este mecanismo.
 		\begin{lstlisting}[style=myPython]
 import logging
 logging.basicConfig(filename='/server/logs/NMDA.log', level=logging.DEBUG, format=''%(asctime)s %(message)s'')
@@ -142,9 +149,9 @@ logging.info('Started')
 		\end{lstlisting}
 	\subsection{Archivo de configuración y Flags}
 		Existen una serie de variables que varían en función de la estación o que simplemente pueden cambiar con el tiempo. No es buena idea
-		tener los valores de estas variables en el código. Este problema nos ha llevado a exportar estas variables a un archivo de configuración.
-		Para leer este archivo utilizamos la librería \texttt{ConfigParser}\cite{py_ConfigParser}. A continuación mostramos un ejemplo de este
-		archivo que nos ayudara a entender mejor su estructura.
+		tener los valores de estas variables en el código. Este problema nos ha llevado a exportar estas variables a un archivo de
+		configuración.  Para leer este archivo utilizamos la librería \texttt{ConfigParser}\cite{py_ConfigParser}. A continuación mostramos un
+		ejemplo de este archivo que nos ayudara a entender mejor su estructura.
 		\begin{lstlisting}[style=myFile]
 [Basics]
 # The serial RS232_FPGA1C
@@ -186,7 +193,7 @@ beta_pressure=0.0067
 # corr_efficcincy = Beta * corr_pressure
 beta_efficiency=1.0
 \end{lstlisting}
-		Los valores de las variables exportadas son también accesibles mediante el uso de Flags. En este caso hemos utilizado la librería 
+		Los valores de las variables exportadas son también accesibles mediante el uso de Flags. En este caso hemos utilizado la librería
 		\texttt{argparse}\cite{py_argparse}. Los valores que son especificados con Flags sobrescriben a los valores del archivo de
 		configuración. Los Flags se usan de la siguiente forma.
 		\begin{lstlisting}[style=myBash]
@@ -199,16 +206,43 @@ usage: NMDA.py
    [-ru REMOTE_DB_USER] [-rp REMOTE_DB_PASS] [-rdb REMOTE_DB_DB]
    [-apr AVG_PRESSURE]
 		\end{lstlisting}
+
+	\subsection{Configurar la BeagleBone Black}
+		Tal y como explicamos en el capitulo de entorno hardware la BeagleBone Black proporciona dos cabeceras de extensión de 46 pines cada
+		una\cite{BeagleWikiExp}. Muchos de estos pines son multipropósito, por lo que deben ser configurados. Esta configuración se realiza
+		mediante el uso de \emph{Device Tree Overlay}, estructura de datos que se utiliza para describir el hardware. En este trabajo
+		utilizamos la librería \emph{Adafruit BeagleBone IO Python}\cite{AdaFruitGit} que facilita la tarea de configurar estas cabeceras. A
+		continuación podemos ver una lista de los pines utilizados y la función de cada uno.
+		\begin{lstlisting}[style=myBash]
+Pin P9_21(UART2_TXD) --> Uart de Control trasmisión
+Pin P9_22(UART2_RXD) --> Uart de Control recepción
+Pin P9_24(UART1_TXD) --> Uart de Extensión trasmisión
+Pin P9_26(UART1_RXD) --> Uart de Extensión recepción
+Pin P9_37(AIN2)	     --> Entrada analógica(sensores analógicos)
+Pin P9_38(AIN3)	     --> Entrada analógica(sensores analógicos)
+Pin P9_39(AIN0)	     --> Entrada analógica(sensores analógicos)
+Pin P9_40(AIN1)	     --> Entrada analógica(sensores analógicos)
+Pin P9_42(GPIO_7)    --> Reset de la FPGA.
+Pin P8_08(GPIO_67)   --> Señal DATA del barómetro AP1.
+Pin P8_09(GPIO_69)   --> Señal CLOCK del barómetro AP1.
+Pin P8_10(GPIO_68)   --> Señal STROBE del barómetro AP1.
+		\end{lstlisting}
+
 	\subsection{Iniciar recursos}
 		Al ser el módulo principal, \texttt{NMDA} es el encargado de iniciar todos los recursos que serán utilizados. Por recursos nos
-		referimos a las variables compartidas, conectores a las bases de datos, interfaces de los puertos serie y otros. Lo más interesante de
-		este apartado es que las tablas de las bases de datos son creadas automáticamente si no existen. Esto simplifica mucho la tarea de
-		implantar el software.
+		referimos a las variables compartidas entre threads, conectores a las bases de datos, interfaces de los puertos serie y otros. Para
+		los conectores a las bases de datos utilizamos las librerías \texttt{sqlite3} y \texttt{MySQLdb}, volvemos a recordar que tenemos una
+		réplica local con Sqlite3 y otra réplica remota que gestionamos con MySql. Las tablas son creadas automáticamente en caso de no
+		existir, esto simplifica mucho el proceso de implantación. Para la interfaz de los puertos serie utilizamos la librería
+		\texttt{serial}.
+		\par
+		También son inicializados los otros dos threads, \texttt{FPGASerialReader} y \texttt{Countsmanger}. Estos dos realizan todo el proceso
+		de adquisición y serán descritos más adelante en este capítulo. 
 	\subsection{Resetear FPGA}
 		Como hemos explicado en el capítulo \ref{entornoHW} la FPGA nos permite realizar un Reset, nuestro software realizara uno antes de
-		empezar con la adquisición de datos. Este Reset nos asegura que la FPGA estará en un correcto estado. Para realizar el Reset de la
-		FPGA utilizaremos la entrada digital que está conectada al pin \emph{P9\_42} de la BeagleBone Black. Volvemos a recordar que la señal
-		digital es activa a nivel bajo. Para controlarla utilizaremos la librería de \emph{AdaFruit}\cite{AdaFruitGit} de la siguiente manera.
+		empezar con la adquisición de datos. Este Reset nos asegura que la FPGA esta en un correcto estado. Para realizar el Reset de la FPGA
+		utilizaremos la entrada digital que está conectada al pin \emph{P9\_42} de la BeagleBone Black. Volvemos a recordar que la señal
+		digital es activa a bajo nivel. Para controlarla utilizaremos la librería de \emph{AdaFruit}\cite{AdaFruitGit} de la siguiente manera.
 		\begin{lstlisting}[style=myPython]
 import Adafruit_BBIO.GPIO as GPIO
 GPIO.setup('P9_42', GPIO.OUT)
@@ -216,34 +250,33 @@ GPIO.output('P9_42', GPIO.LOW)
 time.sleep(0.5)
 GPIO.output('P9_42', GPIO.HIGH)
 		\end{lstlisting}
-	\subsection{Iniciar Tareas}
-		El siguiente paso es iniciar los dos Threads, \texttt{CountsManager} y \texttt{FPGASerialReader}. Son estos dos Threads los que
-		realizan todo el proceso de adquisición, serán descritos más adelante en este capítulo. 
+	
 	\subsection{Kill Signal Handler}
 		Este es un software que debe ejecutarse indefinidamente. En su uso real no será interrumpido, pero hemos implementado un mecanismo que
-		nos permite pararlo. Este mecanismo nos permite solicitar el fin del programa, que desencadena una serie de acciones. Estas acciones
-		tienen como objetivo asegurar que todos los recursos sean liberados de forma correcta. Liberar los recursos de forma correcta supone
-		no tener ningún conflicto si seguidamente volvemos a ejecutar el software. Esto en el uso real del software no tiene gran impacto, sin
-		embargo ha sido muy útil en el proceso de desarrollo.
+		permite pararlo. Este mecanismo permite solicitar el fin del programa, que desencadena una serie de acciones. Estas acciones tienen
+		como objetivo asegurar que todos los recursos sean liberados de forma correcta. Liberar los recursos de forma correcta supone no tener
+		ningún conflicto si seguidamente volvemos a ejecutar el software. Esto en el uso real del software no tiene gran impacto, sin embargo
+		ha sido muy útil durante el proceso de desarrollo.
 
 \section{\texttt{FPGASerialReader}}
 	Este módulo software es el encargado de leer y procesar los datos transmitidos por la FPGA. En la figura \ref{fig:soft_adquisición} podemos
 	ver un diagrama de flujo que refleja el funcionamiento de este. La ejecución del Thread empieza comprobando el estado del puerto serie, que
-	puede estar saturándose. En el caso de que el puerto se esté saturando es generada una estrada en el archivo de Log. A continuación leemos
-	los datos disponibles, en caso de no haber datos disponibles el Thread se queda bloqueado esperando a la llegada de estos. Seguidamente de
-	leer los datos pasamos a procesar los, por procesar nos referimos a interpretar el significado que tienen. Finalmente volvemos al paso inicial.  
+	puede estar saturándose. En el caso de que el puerto se esté saturando es generada una estrada en el archivo de Log. A continuación leemos los
+	datos disponibles, en caso de no haber datos disponibles el Thread se queda bloqueado esperando a la llegada de estos. Seguidamente de leer
+	los datos pasamos a procesarlos, por procesar nos referimos a interpretar el significado que tienen. Finalmente volvemos al paso inicial.  
 	\par
 	En las tablas del capítulo \ref{entornoHW} podemos ver el formato de los datos que tenemos que procesar. Vemos que hay tres tipos de mensajes
-	que podemos recibir. Los mensajes no siguen un orden concreto, además llegan de forma totalmente asíncrona. Los mensajes son transmitidos en
-	forma de bytes. El canal de transmisión no asegura la correcta transmisión de los bytes por lo que algunos se pueden perder. Todo esto
-	conlleva a que procesar los datos no sea tarea fácil.
+	que podemos recibir. Los mensajes no siguen un orden concreto, además llegan de forma totalmente asíncrona. Además el canal de trasmisión no
+	asegura la correcta trasmisión de los bytes por lo que algunos pueden perderse. Todo esto conlleva a que procesar los datos no sea una tarea
+	fácil.
 	\par
-	Para este propósito hemos implementado una máquina de Moore. Si nos volvemos a fijar en el formato de los datos podemos ver que los primeros
-	bits de cada byte son fijos. Estos bits nos ayudan a identificar a que mensaje corresponde el byte. Los estados y transiciones de la maquina
-	pueden verse en la figura \ref{fig:reader}. El estado inicial es \texttt{ByteX}. Aunque no esté reflejado en la figura la recepción de cualquier
-	valor no esperado nos lleva al estado inicial.
+	Para solventar este problema hemos implementado una máquina de Moore. Si nos volvemos a fijar en el formato de los datos podemos ver que los
+	primeros bits de cada byte son fijos. Estos bits ayudan a identificar a que mensaje corresponde el byte. Los estados y transiciones de la
+	maquina pueden verse en la figura \ref{fig:reader}. El estado inicial es \texttt{ByteX}. Aunque no esté reflejado en la figura la recepción de
+	cualquier valor no esperado nos lleva al estado inicial. También podemos ver que la lectura correcta de un mensaje de cuentas es notificada al
+	\texttt{CountsManager}. 
 	\par
-	La información generada al procesar los datos es almacenada en las variables compartidas. Estas variables son accesibles desde el 
+	La información generada al procesar los datos es almacenada en las variables compartidas. Estas variables son accesibles desde el
 	\texttt{CountsManager}.
 	\begin{figure}[h]
 		\centering
@@ -253,7 +286,7 @@ GPIO.output('P9_42', GPIO.HIGH)
 	\end{figure}
 
 \section{\texttt{CountsManager}}
-	Este es el módulo software encargado de recolectar la información de los demás módulos y guardarla en una base de datos. En la figura 
+	Este es el módulo software encargado de recolectar la información de los demás módulos y guardarla en una base de datos. En la figura
 	\ref{fig:soft_adquisición} podemos ver el diagrama que describe el funcionamiento de este. La mayoría de los datos que este módulo maneja son
 	generados por los otros módulos software como el \texttt{FPGASerialReader} o el \texttt{SensorsManager}, este tan solo calcula el valor global
 	y las correcciones de este. Finalmente este se encarga de guardar los datos. 
@@ -261,57 +294,72 @@ GPIO.output('P9_42', GPIO.HIGH)
 		Como vimos en el capítulo \ref{entornoHW} la FPGA tan solo transmite los datos de las cuentas cuando estas son solicitadas con el
 		comando apropiado. Este módulo es el encargado de mandar el comando al principio de cada minuto. La información transmitida por la
 		FPGA es procesada por el \texttt{FPGASerialReader} y almacenada en variables compartidas accesibles por el \texttt{CountsManager}.
-		Después de mandar el comando apropiado para solicitar las cuentas este Thread se queda esperando hasta que el \texttt{FPGASerialReader}
-		le notifique de que las cuentas han sido enviadas y procesadas. Al ser notificado este módulo procede a leer de las variables
-		compartidas donde está almacenada la información de las cuentas.
+		Después de mandar el comando apropiado para solicitar las cuentas este Thread se queda esperando hasta que el
+		\texttt{FPGASerialReader} le notifique de que las cuentas han sido enviadas y procesadas. Al ser notificado este módulo procede a leer
+		de las variables compartidas donde está almacenada la información de las cuentas.
 	\subsection{Median Algorithm y Correcciones}
 		Como hemos comentado al principio de esta sección este módulo calcula el valor global y una serie de correcciones sobre este. El valor
 		global es una representación de las mediciones de todos los tubos, algo como una media. En el capítulo \ref{cap1} explicamos la
 		necesidad de este valor, en este vamos a explicar el algoritmo que es utilizado para calcular este valor.
 	  	\par 
 		El MedianAlgorithm\cite{MedianAlgr} tiene dos entradas, un vector con las cuentas actuales de cada canal y un segundo vector con la
-		media de cuentas de cada canal. Comparando la desviación relativa sobre la media de cada canal selecciona el mediano, de aquí el
-		nombre del algoritmo. La desviación relativa del canal seleccionado es multiplicada por el sumatorio del vector de cuentas medias.
-		El valor devuelto por la multiplicación es el valor final devuelto por este algoritmo. 
+		media de cuentas para cada canal. Este vector con cuentas medias es calculado durante un intervalo temporal en el que la presión
+		atmosférica no fluctúa y además esta se corresponde al valor medio de presión para la estación. Además es deseable que durante dicho
+		intervalo no ocurran eventos que pueden afectar la cantidad de partículas que llegan al instrumento. Este vector de valores medio es
+		especificado  en el archivo de configuración que previamente discutimos por lo que es fácilmente modificable. El algoritmo empieza
+		calculando la desviación relativa sobre la media de cada canal, los canales con una desviación grande son descartados. Comparando la
+		desviación de los canales restantes seleccionamos el mediano, de aquí el nombre del algoritmo. La desviación relativa del canal
+		seleccionado es multiplicada por el sumatorio del vector de cuentas medias. El algoritmo devuelve el valor generado por la
+		multiplicación. A continuación presentamos la implementación del algoritmo.
+		\begin{lstlisting}[style=myPython]
+def medianAlgorithm(self, counts):
+   # Calculamos la desviación sobre la media.
+   r=[x/z for x,z in zip(counts, self.channel_avg) 
+      # Descartamos los canales con desviación grande.
+      if z>0 and (x/z)>0.3 and (x/z)<10]
+   tet = numpy.median(r)
+   s0  = sum(self.channel_avg)
+   return s0*tet
+		\end{lstlisting}
 		\par 
-		Una vez calculado el valor global usando el MiedianAlgorithm procedemos a calcular las correcciones. Calcularemos dos correcciones.
-		La primera es la corrección por presión. Como explicamos en el cápitulo \ref{cap1} la presión atmosférica influye en el proceso de
-		adquisición. Para realizar la corrección por presión hay dos factores que se toman en cuenta. El primero es la desviación de la
-		presión actual respecto al valor medio de presión para la estación. El segundo es el coeficiente de correlación de los tubos
-		respecto a la presión atmosférica. Este coeficiente ha sido calculado por el equipo de CALMA, siendo el método utilizado desconocido
-		para el autor de este trabajo. En la ecuación \ref{eq:pression} podemos ver como se usan estos dos factores, donde $N_0$ es el valor
-		sin corregir, $N$ el valor corregido, $\beta$ el coeficiente de corelación, $P$ la presión actual y $P_0$ la presión media para la
-		estación.
+		Una vez calculado el valor global usando el MiedianAlgorithm procedemos a calcular las dos correcciones. La primera es la corrección
+		por presión. Como explicamos en el cápitulo \ref{cap1} la presión atmosférica influye en el proceso de adquisición. Para realizar la
+		corrección por presión hay dos factores que se toman en cuenta. El primero es la desviación de la presión actual respecto al valor
+		medio de presión para la estación. El segundo es el coeficiente de correlación de los tubos respecto a la presión atmosférica. Este
+		coeficiente ha sido calculado por el equipo de CALMA, siendo el método utilizado desconocido para el autor de este trabajo. En la
+		ecuación \ref{eq:pression} podemos ver como se usan estos dos factores, donde $N_0$ es el valor sin corregir, $N$ el valor corregido,
+		$\beta$ el coeficiente de corelación, $P$ la presión actual y $P_0$ la presión media para la estación.
 		\begin{equation}\label{eq:pression}
 		  N=N_0*exp(\beta*(P-P_0))
 		\end{equation}
 		La segunda corrección que realizaremos es la corrección por eficiencia. Esta es una corrección muy simple, consiste en aplicar un
-		factor multiplicativo a la corrección por presión. Esta corrección se puede ver en la formula \ref{eq:efficiencia}, donde $N_0$ es
-		el valor de la corrección por presión, $N$ el valor de la corrección por eficiencia y $\beta$ el factor de corrección. 
+		factor multiplicativo a la corrección por presión. Esta corrección se puede ver en la formula \ref{eq:efficiencia}, donde $N_0$ es el
+		valor de la corrección por presión, $N$ el valor de la corrección por eficiencia y $\beta$ el factor de corrección. 
 		\begin{equation}\label{eq:efficiencia}
 		  N=N_0*\beta
 		\end{equation}
-		Cambios en el entorno de la estación pueden causar cambios en la cantidad de eventos medidos, por ejemplo la construcción cercana
-		de un nuevo edificio podría reducir la cantidad de partículas que llegan al instrumento. La persona que trabaja con los datos de la
-		estación podría creer que detrás de este decremento existe un motivo científico cuando el motivo es técnico. Es por esto por lo que
-		estos cambios se estudian y corrigen con la siguiente corrección.
+		Cambios en el entorno de la estación pueden causar cambios en la cantidad de eventos medidos, por ejemplo la construcción cercana de
+		un nuevo edificio podría reducir la cantidad de partículas que llegan al instrumento. Una persona que analiza los datos con propósito
+		científico puede equívocamente asociar el decremento con algún fenómeno físico, mientras que este es debido a un fenómeno técnico.
+		Este problema es solventado con la corrección por eficiencia.   
 
 	\subsection{Base de datos}
 		Como ya hemos explicado los datos son guardados en una base de datos para cuya gestión utilizamos Sqlite3. En la base de datos tenemos
 		tres tablas que a continuación procedemos a explicar.
 	    	\par
-	    	La primera que describiremos tiene el nombre de \texttt{binTable}, nombre que hemos heredado del NMDB. En la binTable guardamos la
-		información de las cuentas de cada minuto. Junto a las cuentas guardamos la fecha y hora actuales, la lectura del barómetro y la
-		lectura de las fuentes de alta tensión.
+		La primera tiene el nombre de \texttt{binTable}, nombre que hemos heredado del NMDB. En la binTable guardamos la información de las
+		cuentas de cada minuto. Junto a las cuentas guardamos la fecha y hora actuales, la lectura del barómetro y la lectura de las fuentes
+		de alta tensión.
 	    	\par 
-	    	En la segunda tabla llamada CALM\_ori, nombre también heredado por el NMDB, guardamos el valor global y sus correcciones. Junto a estos
-		valores también guardamos el valor de la fecha y hora actuales, y en este caso tan solo guardamos el valor de la presión atmosférica.
+		En la segunda tabla llamada CALM\_ori, nombre también heredado por el NMDB, guardamos el valor global y sus correcciones. Junto a
+		estos valores también guardamos el valor de la fecha y hora actuales, y en este caso tan solo guardamos el valor de la presión
+		atmosférica.
 	    	\par
-	    	En la última tabla guardamos los valores de los anchos de pulsos. Dado al gran número de pulsos que son procesados guardar la
+		En la última tabla guardamos los valores de los anchos de pulsos. Dado al gran número de pulsos que son procesados guardar la
 		información de cada uno por separado no es práctico. Para ilustrar el problema pondremos de ejemplo la estación de CALMA donde son
-		procesados unos 4500 pulsos cada minuto, siendo esta una de las estaciones con menos eventos por minuto. Para sobrevenir este problema
-		construimos un histograma que guardamos en la base de datos en forma de cadenas JSON\cite{JSON}. Los histogramas son construidos con
-		los datos de diez minutos, intervalo que marca la resolución de los datos de esta tabla.
+		procesados unos 4500 pulsos cada minuto, siendo esta una de las estaciones con menos eventos por minuto debido a su pequeña latitud.
+		Para sobrevenir este problema construimos un histograma que guardamos en la base de datos en forma de cadenas JSON\cite{JSON}. Los
+		histogramas son construidos con los datos de diez minutos, intervalo que marca la resolución de los datos de esta tabla.
 
 \section{\texttt{DBUpdater}}
 	Este módulo software es el encargado de actualizar el contenido de la base de datos remota. El funcionamiento de este es muy simple y se puede
@@ -320,9 +368,9 @@ GPIO.output('P9_42', GPIO.HIGH)
 	la fecha y hora de la entrada leída de la base de datos remota. Finalmente el software selecciona las diferencias entre las dos bases de datos
 	y las escribe en la remota. Es entonces cuando la ejecución de este Thread termina. 
 	\par
-	Si la conexión con la máquina que alberga a la base de datos remota se pierde por un tiempo, cuando esta vuelva a restablecerse el 
+	Si la conexión con la máquina que alberga a la base de datos remota se pierde por un tiempo, cuando esta vuelva a restablecerse el
 	\texttt{DBUpdater} sincronizara las dos bases de datos. Eventualmente si las diferencias entre las dos bases de datos son muy grandes la
-	sincronización no ocurrirá de golpe, de esta manera evitamos sobrecargar al sistema. El fallo de la sincronización no es crítico, el Thread
+	sincronización no ocurre de golpe, de esta manera evitamos sobrecargar al sistema. El fallo de la sincronización no es crítico, el Thread
 	volverá a ser lanzado el próximo minuto y volverá intentar sincronizar las dos bases de datos.
 
 \section{\texttt{SensorsManager}}
@@ -335,33 +383,33 @@ GPIO.output('P9_42', GPIO.HIGH)
 		Para leer el valor actual de la presión atmosférica este módulo nos ofrece la función \texttt{read\_pressure}. Si en el archivo de
 		configuración hemos especificado que no tenemos barómetro esta función devolverá un \emph{-1}, valor que devolverá en caso de algún
 		error. Actualmente son soportados dos tipos de barómetros, el BM35\cite{} y el AP1\cite{}. La lógica para manejar estos dos barómetros
-		se encuentra los archivos \texttt{BM53Driver} y \texttt{AP1Driver} respectivamente. No explicaremos muy a fondo el funcionamiento de
-		estos dos, tan solo destacaremos que el BM35 se comunica mediante un puerto serie y el AP1 mediante dos señales digitales, una de
-		reloj y otra de datos.
+		se encuentra en los archivos \texttt{BM53Driver} y \texttt{AP1Driver} respectivamente. No explicaremos muy a fondo el funcionamiento
+		de estos dos, tan solo destacaremos que el BM35 se comunica mediante un puerto serie y el AP1 mediante tres señales digitales que son
+		reloj, \emph{strobe} y datos.
 	\subsection{Fuentes de alta tensión}
 		En el caso de las fuentes de alta tensión las tenemos de dos tipos, analógicas y digitales. Las digitales transmiten su información
 		mediante un puerto serie. Las analógicas mediante una señal analógica entre 0V y 5V, siendo la amplitud de esta señal proporcional a
-		la amplitud de la corriente generada por la fuente de alta tensión. La  lógica para operar con las fuentes analógicas está en el
-		archivo \texttt{HVPSDriver}, la lógica para las fuentes digitales no está implementada porque no hemos podido trabajar con estas.
+		la amplitud de la corriente generada por la fuente. La lógica para operar con las fuentes analógicas está en el archivo
+		\texttt{HVPSDriver}, la lógica para las fuentes digitales no está implementada porque no hemos podido trabajar con estas.
 		Eventualmente si se produce algún error es devuelto el valor de \emph{-1}.
 	\subsection{Temperatura}
-		Como hemos comentado en muchas estaciones la temperatura ambiente es monitorizada también. Este no es el caso de CALMA, razón por la que
-		no hemos escrito ningunos drivers. Sin embargo el código está pensado para poder ser fácilmente ampliado en caso de necesidad. 
+		Como hemos comentado en muchas estaciones la temperatura ambiente es monitorizada también. Este no es el caso de CALMA, razón por la
+		que no hemos escrito ningunos drivers. Sin embargo el código está pensado para poder ser fácilmente ampliado en caso de necesidad. 
 
 \section{Pruebas unitarias}
-	Durante la realización de este trabajo hemos escrito usa serie de test unitarios\cite{UnitTest}. Los test unitarios son una técnica que
+	Durante la realización de este trabajo hemos escrito una serie de test unitarios\cite{UnitTest}. Los test unitarios son una técnica que
 	permite comprobar el funcionamiento correcto de pequeños módulos o funciones. Las pruebas unitarias a diferencia de otras técnicas pueden ser
 	usadas desde una etapa muy inicial del proyecto, incluso existen metodologías como \emph{Desarrollo dirigido por pruebas} donde las pruebas
 	son escritas primero y después es escrita la función que pasa la prueba. Recalcamos que en este trabajo no hemos seguido esta metodología.
 	\par
-	Para que las pruebas unitarias sean aplicables es necesario el que código este bien estructurado. Un código con funciones pequeñas donde cada
+	Para que las pruebas unitarias sean aplicables es necesario que el código este bien estructurado. Un código con funciones pequeñas donde cada
 	función tiene un propósito bien definido es fácil de testear. El simple hecho de poder escribir un test de una función indica que dicha
-	función esta bien estructurada. Escribir pruebas unitarias lleva a refactorizar el código, haciéndolo mejor.
+	función esta bien estructurada. Escribir pruebas unitarias conlleva refactorizar el código, haciéndolo mejor.
 	\par
 	Las pruebas unitarias son muy útiles y es recomendable que estas tengan una gran cobertura, pero no siempre es posible escribir pruebas
 	unitarias para todas las funciones. Pongamos como ejemplo una función que lee una entrada desde una base de datos. Aunque la función este bien
 	estructurada es difícil testearla por múltiples razones. Por ejemplo el valor devuelto depende de los datos presentes en la base de datos,
-	suponiendo que esta esta presente y esta configurada correctamente. Es difícil escribir pruebas unitarias para este tipo de funciones, razón
+	suponiendo que esta está presente y está configurada correctamente. Es difícil escribir pruebas unitarias para este tipo de funciones, razón
 	por la que existen las pruebas de integración.
 	\par
 	Para realizar los test unitarios hemos utilizado \emph{mocks}(objetos simulados). Estos son objetos que simulan el comportamiento de objetos
@@ -403,10 +451,10 @@ class ReturnSequence(object):
 	Junto a las pruebas unitarias hemos utilizado la librería \texttt{coverage} que permite medir la cobertura de estas. Una mayor cobertura
 	siempre es mejor, pero no debe convertirse en un objetivo principal. Como hemos dicho para ciertas funciones, como las que interactúan con una
 	base de datos es difícil concebir una prueba unitaria. En la figura \ref{fig:coverage} presentamos el resumen de cobertura generado por
-	\texttt{coverage}.  Podemos ver que las pruebas para el \texttt{CountManager} no son muy extensas debido a que este es un módulo que
-	interactúa mucho con las bases de datos. Sin embargo podemos ver que la cobertura del \texttt{DBUpdater} es del 100\%, esto es debido a que
-	los test escritos para este módulo no son unitarios, esto son más bien test de integración. Durante el proceso de implementación surgió la
-	necesidad de estos, razón por la que son incluidos en este trabajo.
+	\texttt{coverage}. Podemos ver que las pruebas para el \texttt{CountManager} no son muy extensas debido a que este es un módulo que interactúa
+	mucho con las bases de datos. Sin embargo podemos ver que la cobertura del \texttt{DBUpdater} es del 100\%, esto es debido a que los test
+	escritos para este módulo no son unitarios, esto son más bien test de integración. Durante el proceso de implementación surgió la necesidad de
+	estos, razón por la que son incluidos en este trabajo.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/coverage.png}
@@ -421,7 +469,8 @@ class ReturnSequence(object):
 	Implantar el software implica implantar el sistema de adquisición entero. En esta labor obtendremos la ayuda del equipo responsable de la
 	estación de CALMA. El sistema tendrá que funcionar conjuntamente al sistema de adquisición ya existente, compartiendo los tubos contadores, el
 	barómetros y el resto de elementos necesarios. Para resolver este problema tendremos que realizar una serie de artimañas tanto hardware como
-	software. El objetivo principal es desplegar el sistema, pero interferir lo menos posible en el funcionamiento del sistema de adquisición ya presente. 
+	software. El objetivo principal es desplegar el sistema, pero interferir lo menos posible en el funcionamiento del sistema de adquisición ya
+	presente. 
 	\par
 	Una vez puesto en marcha el nuevo sistema de adquisición nuestra labor será vigilar por el correcto funcionamiento de este. Tendremos que
 	localizar y corregir los problemas que se presenten. Finalmente elaboraremos un resumen de esta experiencia. Este resumen será presentado en

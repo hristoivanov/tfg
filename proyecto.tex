@@ -117,6 +117,7 @@
 	stringstyle	= \color{pythonString},
 	showstringspaces=false,
 	upquote		=true,
+	literate	={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\'n}}1,
 %
 	numbers=left,
 	numbersep=15pt,
@@ -133,8 +134,9 @@
 	deletekeywords	= {enable, cd},
 	commentstyle	= \small\em \color{pythonComment},
 	stringstyle	= \color{pythonString},
-	showstringspaces=false,
-	upquote		=true,
+	showstringspaces= false,
+	upquote		= true,
+	literate	={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\'n}}1,
 %
 	breaklines=true
 }
@@ -148,8 +150,8 @@
 	deletekeywords	= {test},
 	commentstyle	= \small\em \color{pythonComment},
 	stringstyle	= \color{pythonString},
-	showstringspaces=false,
-	upquote		=true,
+	showstringspaces= false,
+	upquote		= true,
 %
 	numbers=left,
 	numbersep=15pt,
@@ -178,8 +180,8 @@
 	keywordstyle	= \color{pythonKey},
 	commentstyle	= \small\em \color{pythonComment},
 	stringstyle	= \color{pythonString},
-	showstringspaces=false,
-	upquote		=true,
+	showstringspaces= false,
+	upquote		= true,
 %
 	numbers=left,
 	numbersep=15pt,
@@ -187,32 +189,6 @@
 	numberfirstline = false,
 	breaklines=true
 }
-
- 
-% minimizar fragmentado de listados
-\lstnewenvironment{listing}[1][]
-   {\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
- 
-\lstdefinestyle{consola}
-   {basicstyle=\scriptsize\bf\ttfamily,
-    backgroundcolor=\color{gray75},
-   }
-
-\lstdefinestyle{Fichero}
-   {basicstyle=\scriptsize\bf\ttfamily,
-    backgroundcolor=\color{whitesmoke},
-   }
- 
-\lstdefinestyle{C}
-   {language=C
-   }
-\lstdefinestyle{Java}
-   {language=Java,
-moredelim={**[il][\rlap{\textcolor{azure2}{\rule[-4pt]{\linewidth}{\baselineskip}}}]{--}}
-%Esta última línea se pone para que cuando se añade delante de una línea de código se resalta 
-%poniéndola en el color indicado
-   }
-
 
 \begin{document}
 
