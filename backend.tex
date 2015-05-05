@@ -2,28 +2,27 @@
 \label{backend}
 
 Fijándonos en el diseño preliminar de la figura \ref{fig:herramienta_web_preliminar} podemos ver que nuestra aplicación Web está dividida en
-\emph{front-end} y \emph{back-end}. Esta separación entre módulos es una técnica popular en diseño software. El \emph{front-end} es el encargado de
-la capa de presentación, sobre este hablaremos más en el próximo capítulo. En este capítulo nos centraremos en explicar el \emph{back-end}. Este es el
+\emph{front-end} y \emph{back-end}. Esta separación entre módulos es una técnica popular en diseño software. El \emph{front-end} es el encargado de la
+capa de presentación, sobre este hablaremos más en el próximo capítulo. En este capítulo nos centraremos en explicar el \emph{back-end}. Este es el
 encargado de procesar las peticiones provenientes del \emph{front-end} y devolver le a este la información solicitada. 
 \par
-El \emph{back-end} es implementado en PHP\cite{PHP}. Este es un lenguaje diseñado para desarrollo Web y además es una elección muy popular. 
-Hemos utilizado ZendFramework\cite{ZF}, este es un framework orientado al desarrollo de aplicaciones Web. Junto al framework hemos utilizado
+El \emph{back-end} es implementado en PHP\cite{PHP}. Este es un lenguaje diseñado para desarrollo Web y además es una elección muy popular. Hemos
+utilizado ZendFramework\cite{ZF}, este es un framework orientado al desarrollo de aplicaciones Web. Junto al framework hemos utilizado
 Apigility\cite{Apigility}, herramienta que simplifica la creación y mantenimiento de APIs.
 \par
-El \emph{back-end} tiene un enfoque RPC (llama de procedimiento remoto). Este módulo exportara un conjunto de procedimientos que pueden ser invocados
-por el \emph{front-end}. Estos procedimientos realizan tareas específicas sobre un recurso concreto. A la largo de este trabajo nos referiremos
-a estos procedimientos como \emph{servicios RPC}.
+El \emph{back-end} tiene un enfoque RPC(llama de procedimiento remoto). Este módulo exportara un conjunto de procedimientos que pueden ser invocados
+por el \emph{front-end}. Estos procedimientos realizan tareas específicas sobre un recurso concreto. A la largo de este trabajo nos referiremos a
+estos procedimientos como \emph{servicios RPC}. Un aspecto oportuno destacar es que los servicios RPC son sin estado. Esto quiere decir que la
+respuesta a un procedimiento no es influenciada por eventos anteriores, esta tan solo depende de los parámetros proporcionados.
 \par
-Un aspecto oportuno destacar es que los servicios RPC son sin estado. Esto quiere decir que la respuesta a un procedimiento no es influenciada por
-eventos anteriores, esta tan solo depende de los parámetros proporcionados.
-\par
-Si nos volvemos a fijar en la figura \ref{fig:herramienta_web_preliminar} podemos ver que en el \emph{back-end} existe la separación entre 
+Si nos volvemos a fijar en la figura \ref{fig:herramienta_web_preliminar} podemos ver que en el \emph{back-end} existe la separación entre
 \emph{Modelo} y \emph{Controlador}. Esta separación sigue el patrón de diseño MVC\cite{MVCWiki}. Podemos ver que el componente de \emph{Vista} no
-existe, en este caso el \emph{front-end} es nuestro componente de \emph{Vista}. Todos los servicios RPC tienen su parte proporcional de
-\emph{Modelo} y \emph{Controlador}. La parte de \emph{Modelo} es la encargada de gestionar la información contenida en la base de datos. La parte de
+existe, en este caso el \emph{front-end} es nuestro componente de \emph{Vista}. Todos los servicios RPC tienen su parte proporcional de \emph{Modelo}
+y \emph{Controlador}. La parte de \emph{Modelo} es la encargada de gestionar la información contenida en la base de datos. La parte de
 \emph{Controllador} la encargada de gestionar los mensajes de petición y respuesta.
 \par
-En este capítulo procederemos a explicar los servicios RPC, pero primero explicaremos algunos aspectos técnicos como la base de datos o el ZendFramework.
+En este capítulo procederemos a explicar los servicios RPC, pero primero explicaremos algunos aspectos técnicos como la base de datos o el
+ZendFramework.
 \section{Protocolo de comunicación}
 	Hemos explicado que entre el \emph{back-end} y \emph{front-end} existe una comunicación, para la que hemos elegido un enfoque RPC. En este
 	apartado nos centraremos en un aspecto más técnico de esta comunicación. 
@@ -35,32 +34,32 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 	procedimiento especificado. Los mensajes de respuesta serán discutidos en el capítulo dedicado el \emph{front-end}.
 	\par
 	Los mensajes de petición también especifican un método. Todos los servicios RPC implementados por el \emph{back-end} son servicios de
-	consulta, a excepción de \texttt{nmdbMarkNull}. Los servicios de consulta aceptan un método \texttt{GET} mientras que el servicio
-	nombrado anteriormente acepta un método \texttt{POST}.
+	consulta, a excepción de \texttt{nmdbMarkNull}. Los servicios de consulta aceptan un método \texttt{GET} mientras que el servicio nombrado
+	anteriormente acepta un método \texttt{POST}.
 \section{ZendFramework y Apigility}
-	Para la realización de este trabajo hemos utilizado ZendFramework, este es un framework orientado al desarrollo de aplicaciones y servicios Web.
-	Basado en PHP 5.3+ el framework sigue un diseño orientado a objetos. Esta enfocado para crear aplicaciones siguiendo el patrón MVC. Ofrece
-	abstracciones para las bases de datos, autenticación y validación de parámetros. El framework también disfruta de una amplia comunidad de 
-	usuarios. Todas estas ventajas nombradas anteriormente son la razón para elegir este framework en nuestro trabajo.
+	Para la realización de este trabajo hemos utilizado ZendFramework, este es un framework orientado al desarrollo de aplicaciones y servicios
+	Web. Basado en PHP 5.3+ el framework sigue un diseño orientado a objetos. Esta enfocado para crear aplicaciones siguiendo el patrón MVC.
+	Ofrece abstracciones para las bases de datos, autenticación y validación de parámetros. El framework también disfruta de una amplia comunidad
+	de usuarios. Todas estas ventajas nombradas anteriormente son la razón para elegir este framework en nuestro trabajo.
 	\par
- 	Para  los principiantes el framework ofrece la aplicación esqueleto. Esta aplicación consiste del código mínimo necesario para construir una
-	aplicación usando ZendFramework, no tiene ninguna funcionalidad y esta pensada para ser extendida. En este trabajo hemos empezado con esta
+	Para  los principiantes el framework ofrece la aplicación esqueleto. Esta aplicación consiste del código mínimo necesario para construir una
+	aplicación usando ZendFramework, no tiene ninguna funcionalidad y está pensada para ser extendida. En este trabajo hemos empezado con esta
 	aplicación esqueleto.
   	\par
 	Apigility es una herramienta creada por el equipo responsable de ZendFramework. La herramienta puede utilizarse sin necesidad del framework,
 	sin embargo esta se integra muy bien con este. La herramienta facilita la creación y mantenimiento de aplicaciones Web. En nuestro caso la
-	herramienta nos ha ayudado a crear los servicios RPC de nuestra aplicación. La aplicación ofrece un entorno gráfico accesible desde un navegador
-	Web. El uso de la aplicación es muy fácil e intuitivo.
+	herramienta nos ha ayudado a crear los servicios RPC de nuestra aplicación. La aplicación ofrece un entorno gráfico accesible desde un
+	navegador Web. El uso de la aplicación es muy fácil e intuitivo.
 \section{Bases de datos}
 	Tal y como hemos explicado al principio del capítulo la función del \emph{back-end} es  procesar las peticiones del \emph{front-end} y
 	responderle con la información solicitada. Esta información es guardada en dos bases de datos. Para la gestión de las bases de datos
-	utilizamos MySql\cite{MySql}. ZendFramework ofrece abstracciones para las bases de datos, esto facilita el trabajo con estas. En la
-	figura \ref{fig:tablas} podemos ver el esquema de las tablas con las que vamos a trabajar.
+	utilizamos MySql\cite{MySql}. ZendFramework ofrece abstracciones para las bases de datos, esto facilita el trabajo con estas. En la figura
+	\ref{fig:tablas} podemos ver el esquema de las tablas con las que vamos a trabajar.
 	\par
 	En la tabla \texttt{binTable} guardamos la información de las cuentas de cada canal. Junto a esa información guardamos las lecturas del
 	barómetro, las fuentes de alta tensión y la fecha y hora actuales. La resolución de los datos es de un minuto.
 	\par
-	En la tabla \texttt{CALM\_ori} guardamos el valor global y  las correcciones sobre este. La lectura de presión atmosférica también es guardada.
+	En la tabla \texttt{CALM\_ori} guardamos el valor global y las correcciones sobre este. La lectura de presión atmosférica también es guardada.
 	La resolución de estos datos es también de un minuto.
 	\par
 	En la tabla \texttt{CALM\_rev} guardamos la revisión de los datos de \texttt{CALM\_ori}. Vemos que la tabla tiene el mismo esquema con dos
@@ -79,16 +78,16 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 	\end{figure}
 	\par 
 	Es interesante destacar que en las tres tablas existe índice. En los tres casos el elemento indexado es el campo \texttt{start\_date\_time}.
-	Este índice nos es muy útil, es utilizado en la mayoría de queries que realizamos sobre la base de datos. 
+	Este índice es muy útil, es utilizado en la mayoría de queries que realizamos sobre la base de datos. 
 \section{Servicios RPC}
 	Es esta sección procederemos a explicar uno a uno los servicios RPC que nuestro \emph{back-end} ofrece. Para cada servicio RPC explicaremos la
 	funcionalidad, la URL que le identifica, los parámetros aceptados, la query SQL utilizada y el propósito de este.
 	\subsection{\texttt{nmdbOriginalRaw}}
-		Este servicio RPC devuelve los datos de la tabla \texttt{CALM\_ori} en un intervalo determinado. Tal y como explicamos en esta
-		tabla son guardados los datos globales de la estación, las dos correcciones de estos y los valores de presión atmosférica. Este servicio
+		Este servicio RPC devuelve los datos de la tabla \texttt{CALM\_ori} en un intervalo determinado. Tal y como explicamos en esta tabla
+		son guardados los datos globales de la estación, las dos correcciones de estos y los valores de presión atmosférica. Este servicio
 		devuelve los datos tal y como están en la base de datos. 
 	  	\par
-	  	La URL que identifica a este servicio tiene el siguiente formato.
+		La URL que identifica a este servicio tiene el siguiente formato.
 	  		\begin{center} \texttt{/nmdb/original/raw[/:start][/:finish]}  \end{center} 
 		Como vemos el servicio acepta dos parámetros, \texttt{start} y \texttt{finish}. Los parámetros delimitan el intervalo de datos
 		devueltos.
@@ -101,39 +100,39 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		Los datos devueltos por este servicio RPC son utilizados para construir un gráfico lineal.
 	\subsection{\texttt{nmdbOriginalGroup}}
 		Este servicio RPC es similar al anteriormente descrito, devuelve los datos de la tabla \texttt{CALM\_ori} en un intervalo determinado.
-		La diferencia de este servicio es que no devuelve los datos en crudo. Este junta los datos en grupos y devuelve los valores para
-		cada grupo. 
+		La diferencia de este servicio es que no devuelve los datos en crudo. Este junta los datos en grupos y devuelve los valores para cada
+		grupo. 
 		\par
 		A continuación podemos ver el formato de la URL que identifica a este servicio.
 			\begin{center} \texttt{/nmdb/original/group[/:start][/:finish][/:points]}  \end{center} 
 		Los dos parámetros \texttt{start} y \texttt{finish} al igual que en el servicio anterior delimitan el intervalo de datos. En este
 		servicio estos dos parámetros pueden tener el valor \texttt{all}, de ser así son utilizados todos los datos presentes en la base de
-		datos. El parámetro \texttt{points} especifica en número de grupo en los que serán agrupados nuestros datos.
-		Seguidamente podemos ver parte de la query SQL utilizada en este servicio. Esta parte es la encargada de agrupar nuestros datos.
+		datos. El parámetro \texttt{points} especifica en número de grupo en los que serán agrupados nuestros datos. Seguidamente podemos ver
+		parte de la query SQL utilizada en este servicio. Esta parte es la encargada de agrupar nuestros datos.
 			\begin{center} \texttt{"(SELECT CALM\_ori.*,
 			  		\\	(UNIX\_TIMESTAMP(start\_date\_time) DIV (".\$interval.")) AS timekey  
 				      	\\	FROM CALM\_ori WHERE start\_date\_time BETWEEN \cc".\$start."\cc AND \cc".\$finish."\cc)AS t1  GROUP BY timekey"}
 			\end{center} 
-		Como podemos ver son seleccionados los datos presentes en el intervalo definido por \texttt{\$start} y \texttt{\$finish}. Junto a los datos
-		presentes en la tabla \texttt{CALM\_ori} es calculado el campo \texttt{timekey}, este campo es el utilizado para formar los grupos. El 
-		\texttt{timekey} es calculado utilizando el valor de la variable \texttt{\$interval}, variable que define el intervalo de los grupos
-		y es calculada de la siguiente forma.
+		Como podemos ver son seleccionados los datos presentes en el intervalo definido por \texttt{\$start} y \texttt{\$finish}. Junto a los
+		datos presentes en la tabla \texttt{CALM\_ori} es calculado el campo \texttt{timekey}, este campo es el utilizado para formar los
+		grupos. El \texttt{timekey} es calculado utilizando el valor de la variable \texttt{\$interval}, variable que define el intervalo de
+		los grupos y es calculada de la siguiente forma.
 			\begin{center} \texttt{\$interval =round((\$finish-\$start)/(\$points));}  \end{center} 
 		Una vez formados los grupos para cada grupo es calculado el máximo, mínimo, \emph{open} y \emph{close}. El \emph{open} y \emph{close}
-		son la media más la desviación típica y la media menos la desviación típica respectivamente. Estos cuatro valores son calculados para el
-		valor global, la corrección por presión y la corrección por eficiencia. Para la presión atmosférica tan solo es calculado el valor
-		medio. Estos datos son utilizados para construir un gráfico \emph{Candlestick}, sobre este tipo de gráfico hablaremos en el
-		siguiente capítulo dedicado al \emph{front-end}.
+		son la media más la desviación típica y la media menos la desviación típica respectivamente. Estos cuatro valores son calculados para
+		el valor global, la corrección por presión y la corrección por eficiencia. Para la presión atmosférica tan solo es calculado el valor
+		medio. Estos datos son utilizados para construir un gráfico \emph{Candlestick}, sobre este tipo de gráfico hablaremos en el siguiente
+		capítulo dedicado al \emph{front-end}.
 	\subsection{\texttt{nmdbRevisedRaw}}
-		Este servicio es muy similar al \texttt{nmdbOriginalRaw}, la diferencia esta en que este devuelve los datos revisados. Para este
+		Este servicio es muy similar al \texttt{nmdbOriginalRaw}, la diferencia está en que este devuelve los datos revisados. Para este
 		propósito son utilizados los datos de las tablas \texttt{CALM\_ori} y \texttt{CALM\_rev}. La URL utilizada para identificar este
 		servicio tiene el siguiente formato.
 	  		\begin{center} \texttt{/nmdb/revised/raw[/:start][/:finish]}  \end{center} 
 		Los dos parámetros aceptados delimitan el intervalo de datos.
 		\par
-		En la tabla \texttt{CALM\_rev} son guardados los datos revisados, pero no son guardados todos, tan solo las entradas que han sido modificadas.
-		Por esta razón este servicio también hace uso de \texttt{CALM\_ori} para devolvernos la información completa. A continuación podemos
-		ver parte de la query SQL utilizada para obtener los datos revisados.
+		En la tabla \texttt{CALM\_rev} son guardados los datos revisados, pero no son guardados todos, tan solo las entradas que han sido
+		modificadas. Por esta razón este servicio también hace uso de \texttt{CALM\_ori} para devolvernos la información completa. A
+		continuación podemos ver parte de la query SQL utilizada para obtener los datos revisados.
 			\begin{center} \texttt{"SELECT ori.start\_date\_time,
 			  		\\	CASE WHEN rev.start\_date\_time IS NULL THEN ori.measured\_uncorrected ELSE rev.revised\_uncorrected END AS uncorrected 
 					\\	FROM CALM\_ori ori LEFT JOIN CALM\_rev rev ON ori.start\_date\_time = rev.start\_date\_time"}
@@ -142,7 +141,7 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		\texttt{start\_date\_time}. El \texttt{LEFT JOIN} devuelve todas las entradas de \texttt{CALM\_ori}, con las entradas coincidentes de
 		\texttt{CALM\_rev}. La parte correspondiente al \texttt{CALM\_rev} es dejada a \texttt{NULL} si no existe coincidencia. A partir de la
 		tabla temporal creada por el \texttt{LEFT JOIN} seleccionamos los datos del \texttt{CALM\_rev} si estos están presentes, sino nos
-		quedamos con lo datos del \texttt{CALM\_ori}. Los datos devueltos por este servicio serán utilizados para crear un gráfico lineal.
+		quedamos con lo datos del \texttt{CALM\_ori}. Los datos devueltos por este servicio son utilizados para crear un gráfico lineal.
 	\subsection{\texttt{nmdbRevisedGroup}}
 		Este servicio es muy similar al {\texttt{nmdbOriginalGroup}, pero este hace uso de los datos revisados. La URL que identifica este
 		servicio tiene el siguiente formato.
@@ -152,23 +151,25 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 		especifica el número de grupos en los que queremos agrupar nuestros datos.
 		\par
 		Para recolectar los datos necesarios la query utilizada es una combinación de las queries utilizadas en los servicios
-		\texttt{nmdbOriginalGroup} y \texttt{nmdbRevisedRaw}. Primero realiza un \texttt{LEFT JOIN} entre las tablas \texttt{CALM\_ori} 
-		y \texttt{CALM\_rev} para obtener el conjunto de datos revisados. Seguidamente agrupa los datos de este conjunto y para cada grupo
-		calcula los valores máximo, mínimo, \emph{open} y \emph{close}. Estos datos son utilizados para construir un gráfico \emph{Candlestick}.
+		\texttt{nmdbOriginalGroup} y \texttt{nmdbRevisedRaw}. Primero realiza un \texttt{LEFT JOIN} entre las tablas \texttt{CALM\_ori} y
+		\texttt{CALM\_rev} para obtener el conjunto de datos revisados. Seguidamente agrupa los datos de este conjunto y para cada grupo
+		calcula los valores máximo, mínimo, \emph{open} y \emph{close}. Estos datos son utilizados para construir un gráfico
+		\emph{Candlestick}.
 	\subsection{\texttt{nmdbMarkNull}}
 		Este servicio es el más peculiar de todos, los demás servicios son de consulta, mientras que este es de escritura. Uno de los
 		propósitos de nuestra aplicación Web es permitirnos visualizar los datos de la estación y al visualizar un dato corrupto poder
-		marcarlo. Para satisfacer este requisito nuestro \emph{back-end} implementa este servicio que nos permite marcar como nulo un dato en
-		el conjunto de datos revisados. De esta manera podemos descartar todos los datos no deseados.
+		marcarlo. Para satisfacer este requisito nuestro \emph{back-end} implementa este servicio que permite marcar como nulo un dato en el
+		conjunto de datos revisados. De esta manera podemos descartar todos los datos no deseados.
 		\par
 		A continuación podemos ver la URL utilizada para identificar este servicio.
 			\begin{center} \texttt{/nmdb/marknull}  \end{center}
-		Como podemos ver este servicio no necesita parámetros. Este servicio acepta un método \texttt{POST}. Los  mensajes con método
+		Como podemos ver este servicio no necesita parámetros. Este servicio acepta un método \texttt{POST}. Los mensajes con método
 		\texttt{POST} siempre van acompañados de un campo de datos. Este campo de datos contiene la información del dato que queremos marcar
-		como nulo. Eventualmente este campo puede contener un array, de esta forma podemos marcar más de un dato con solo una llamada al servicio.
+		como nulo. Eventualmente este campo puede contener un array, de esta forma podemos marcar más de un dato con solo una llamada al
+		servicio.
 		\par 
 		La query SQL utilizada por este servicio es muy simple, esta realiza un \texttt{INSERT} en la tabla \texttt{CALM\_rev}. Si el dato ya
-		esta presente tan solo incrementamos la versión actual y modificamos la fecha de última modificación. A continuación podemos ver la
+		está presente tan solo incrementamos la versión actual y modificamos la fecha de última modificación. A continuación podemos ver la
 		query que estamos discutiendo.
 			\begin{center} \texttt{\textquotedbl INSERT INTO CALM\_rev 
 			  		\\	(start\_date\_time, revised\_uncorrected, revised\_corr\_for\_efficiency, revised\_corr\_for\_pressure, revised\_pressure\_mbar, version, last\_change )
@@ -184,10 +185,11 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 	  		\begin{center} \texttt{"SELECT * FROM binTable 
 			  		\\	WHERE start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc"}
 			\end{center} 
+		Los datos devueltos por este servicio son utilizados para contruir un gráfico lineal.
 	\subsection{\texttt{nmdadbChannelStats}}
 		Este servicio tiene como propósito devolver estadísticas descriptivas para cada canal de la estación. Para este propósito usa los
-		datos de la tabla \texttt{binTable}. Para cada canal son calculados el valor medio, desviación típica, mínimo y máximo. A
-		continuación podemos ver la URL utilizada para identificar este recurso.
+		datos de la tabla \texttt{binTable}. Para cada canal son calculados el valor medio, desviación típica, mínimo y máximo. A continuación
+		podemos ver la URL utilizada para identificar este servicio.
 	  		\begin{center} \texttt{/nmdb/channel/stats[/:start][/:finish]}  \end{center} 
 		Los parámetros \texttt{start} y \texttt{finish} delimitan el intervalo de datos. Eventualmente estos dos parámetros pueden tener el
 		valor \texttt{default}, en este caso el intervalo es el último mes con datos. 
@@ -196,11 +198,10 @@ En este capítulo procederemos a explicar los servicios RPC, pero primero explic
 	  		\begin{center} \texttt{"select 'ch01' as n1, ch01, avg(ch01) as avg\_ch01, std(ch01) as std\_ch01, max(ch01) as max\_ch01, min(ch01) as min\_ch01
 			  		\\	from(select * from  binTable where start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc order by start\_date\_time desc)as t1"}
 			\end{center} 
-		Los datos generados por este servicio serán utilizados para crear un gráfico \emph{Candlestick} y también serán presentados en una
-		tabla.
+		Los datos generados por este servicio son utilizados para crear un gráfico \emph{Candlestick} y también son presentados en una tabla.
 	\subsection{\texttt{nmdadbChannelHistogram}}
 		Este servicio devuelve un histograma de la distribución de cuentas para los 18 canales, para cumplir con dicho propósito este servicio
-		utiliza los datos de la tabla \texttt{binTable}. A continuación podemos ver la URL utilizada para identificar este recurso.
+		utiliza los datos de la tabla \texttt{binTable}. A continuación podemos ver la URL utilizada para identificar este servicio.
 	  		\begin{center} \texttt{/nmdb/channel/histogram[/:start][/:finish]}  \end{center} 
 		Al igual que en los otros servicio los parámetros \texttt{start} y \texttt{finish} delimitan el intervalo de datos usados para
 		construir el histograma. Eventualmente estos dos parámetros pueden tener el valor de \texttt{default}, en este caso son utilizados los
