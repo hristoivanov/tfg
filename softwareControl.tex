@@ -36,7 +36,7 @@ principales, a continuación hacemos una breve descripción de estos.
 
 \section{Arranque automático del sistema}
 	Uno de los requisitos del sistema es que este se ponga en marcha automáticamente ante la presencia de corriente eléctrica. La BeagleBone Black
-	por defecto esta configurada para arrancar automáticamente, debemos configurarla para que inicialice nuestro software. Para este propósito
+	por defecto está configurada para arrancar automáticamente, debemos configurarla para que inicialice nuestro software. Para este propósito
 	vamos a utilizar las \emph{System Services}\cite{AngSystemctl} que Angstrom proporciona. Un servicio de sistema permite ejecutar un programa
 	de forma automática al ser arrancado el sistema. Angstrom utiliza \texttt{systemd}\cite{systemdWiki} para gestionar los servicios de sistema.
 	Este es un conjunto de demonios, librerías y utilidades diseñados para facilitar la administración de sistemas Linux.
@@ -84,7 +84,7 @@ $ systemctl disable  nombre_de_servicio
 		Un Watchdog \cite{WatchDogWiki} es un mecanismo de seguridad que realiza un Reset en el sistema cuando es detectado un
 		malfuncionamiento. Consiste en un temporizador que realiza una cuenta atrás, cuando esta cuenta llega a cero el sistema es reiniciado.
 		Es nuestro software el que debe reiniciar este contador para que no expire. Los Watchdogs pueden ser software o hardware, el utilizado
-		en este trabajo esta implementado en la BeagleBone Black y es hardware. Los Watchdogs hardware son más fiables, los software pueden
+		en este trabajo está implementado en la BeagleBone Black y es hardware. Los Watchdogs hardware son más fiables, los software pueden
 		quedarse bloqueados.
 		\par
 		El Watchdog es accesible mediante el archivo \texttt{/dev/watchdog}. Para activar el mecanismo escribimos en el archivo, cualquier
@@ -240,7 +240,7 @@ Pin P8_10(GPIO_68)   --> Señal STROBE del barómetro AP1.
 		de adquisición y serán descritos más adelante en este capítulo. 
 	\subsection{Resetear FPGA}
 		Como hemos explicado en el capítulo \ref{entornoHW} la FPGA nos permite realizar un Reset, nuestro software realizara uno antes de
-		empezar con la adquisición de datos. Este Reset nos asegura que la FPGA esta en un correcto estado. Para realizar el Reset de la FPGA
+		empezar con la adquisición de datos. Este Reset nos asegura que la FPGA está en un correcto estado. Para realizar el Reset de la FPGA
 		utilizaremos la entrada digital que está conectada al pin \emph{P9\_42} de la BeagleBone Black. Volvemos a recordar que la señal
 		digital es activa a bajo nivel. Para controlarla utilizaremos la librería de \emph{AdaFruit}\cite{AdaFruitGit} de la siguiente manera.
 		\begin{lstlisting}[style=myPython]
@@ -404,7 +404,7 @@ def medianAlgorithm(self, counts):
 	\par
 	Para que las pruebas unitarias sean aplicables es necesario que el código este bien estructurado. Un código con funciones pequeñas donde cada
 	función tiene un propósito bien definido es fácil de testear. El simple hecho de poder escribir un test de una función indica que dicha
-	función esta bien estructurada. Escribir pruebas unitarias conlleva refactorizar el código, haciéndolo mejor.
+	función está bien estructurada. Escribir pruebas unitarias conlleva refactorizar el código, haciéndolo mejor.
 	\par
 	Las pruebas unitarias son muy útiles y es recomendable que estas tengan una gran cobertura, pero no siempre es posible escribir pruebas
 	unitarias para todas las funciones. Pongamos como ejemplo una función que lee una entrada desde una base de datos. Aunque la función este bien
