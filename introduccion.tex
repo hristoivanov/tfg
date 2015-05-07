@@ -41,7 +41,7 @@ comunes que pueden ser observados indirectamente a consecuencia de observar la c
 			manera todas las partículas generadas por el entorno inmediato que tienen baja energía rebotan y no influyen en la medición.
 		\item	Productor. Esta capa compuesta generalmente de material denso tiene como objetivo conseguir algo parecido a las cascadas
 			atmosféricas. La idea es tener un material denso para que sea muy probable que las partículas secundarias impacten con las
-			partículas del material y como resultado se produzcan más partículas. A las partículas generadas en esta capa se les da el
+			partículas del material y como resultado se produzcan aún más partículas. A las partículas generadas en esta capa se les da el
 			nombre de neutrones de evaporación. Son estas partículas las que finalmente serán medidas por el instrumento, también son las
 			que le dan nombre. Los neutrones producidos tienen menos energía, por lo que son más fáciles de medir.
 		\item	Moderador. A pesar de que las partículas que tenemos a este nivel tienen tan solo una fracción de la energía original estas
@@ -74,7 +74,7 @@ comunes que pueden ser observados indirectamente a consecuencia de observar la c
 	\end{itemize}
 	\par
 	Como ya hemos comentado NMDB es una red mundial, impulsada por la Comisión Europea. Actualmente la red supera las veinte estaciones. La red
-	proporciona datos en tiempo real con resolución de 1 minuto. Los formatos de los datos están estandarizados entre las diferentes estaciones,
+	proporciona datos en tiempo real con resolución de un minuto. Los formatos de los datos están estandarizados entre las diferentes estaciones,
 	esto ayuda al análisis científico de estos. Los datos en tiempo real son utilizados para la elaboración de un sistema de alarma
 	GLE\cite{GleAlarm}. Como hemos explicado un GLE fuerte puede tener un impacto grande en nuestras vidas diarias, un impacto negativo. Es
 	interesante poder detectar estos eventos lo antes posible, este es uno de los objetivos principales del NMDB. 
@@ -89,29 +89,29 @@ comunes que pueden ser observados indirectamente a consecuencia de observar la c
 	hablaremos del sistema de adquisición, base de datos, herramientas y técnicas que son usadas.
 	\subsection{Sistema de adquisición}
 		Como hemos mencionado el sistema de adquisición que está implantado en CALMA es producto del propio equipo\cite{Garcia2014}. El
-		sistema consiste un sistema empotrado Linux. Este hace uso de una FPGA que es la encargada de medir los eventos por minuto de los 18
-		canales. Aunque la  estación tan solo tiene 15 tubos contadores el sistema esta diseñado para soportar 18, este número es un estándar
-		histórico. Antes de llegar a la FPGA las señales pasan por un circuito de adaptación, las señales pasan de analógicas a digitales. El
-		software que se ejecuta en el sistema Linux tiene como tarea comunicarse con la FPGA, su labor es recoger las \emph{cuentas} de cada
-		minuto y guardar estas en una base de datos.
+		sistema es basado en un sistema empotrado Linux. Las señales capturadas por los tubos contadores son amplificadas y digitalizadas por
+		un circuito de adaptación, seguidamente son procesadas por una FPGA. Esta es la encargada se medir los eventos por minuto de los 18
+		canales. Aunque la  estación tan solo tiene 15 tubos contadores el sistema está diseñado para soportar 18, este número es un estándar
+		histórico. El software que se ejecuta en el sistema Linux tiene como tarea comunicarse con la FPGA, su labor es recoger las
+		\emph{cuentas} de cada minuto y guardar estas en una base de datos.
 		\par
-		Actualmente el equipo de CALMA está desarrollando un nuevo sistema de adquisición de datos para su estación. Este es muy parecido al
-		que actualmente está implantado. Las señales capturadas por los tubos contadores son amplificadas y digitalizadas por un circuito de
-		adaptación, seguidamente son procesadas por la FPGA. El software que se ejecuta en el sistema Linux es el encargado de recoger la
-		información y guardarla.
+		Actualmente el equipo de CALMA está desarrollando un nuevo sistema de adquisición de datos. Este es muy parecido al que actualmente
+		está implantado. A continuación procedemos a detallar las diferencias clave entre los dos sistemas. 
 		\par
-		La primer diferencia entre los dos sistema de adquisición radica en el circuito de adaptación. En el sistema de adquisición actual
-		para cada señal el circuito de adaptación genera un pulso fijo. El nuevo sistema de adquisición incorpora nuevo circuito de
-		adaptación. Este nuevo circuito de adaptación genera un pulso cuyo ancho de banda es proporcional a la energía de la señal. El fin es
-		medir la energía de las partículas detectadas, esta magnitud es de gran interés científico y técnico.
-		\par
-		La siguiente diferencia está en la FPGA, recordamos que en el sistema de adquisición actual esta tan solo registra los eventos por
-		minuto para los 18 canales. La nueva FPGA debe realizar la misma tarea, pero aparte debe poder medir el ancho de los pulsos generados
-		por el circuito de adaptación. Los dos sistemas de adquisición utilizan un puerto serie para la comunicación entre software y FPGA, en
-		el sistema nuevo este puerto opera a una velocidad mayor a fin de poder transmitir toda la información extra.
-		\par
-		El nuevo sistema también está pensado para ofrecer una mayor compatibilidad. El fin es poder implantar este en diferentes estaciones
-		de forma fácil y rápida. El hardware y software deben ser diseñados con este requisito en mente.
+		\begin{itemize}
+			\item La primera diferencia entre los dos sistema de adquisición radica en el circuito de adaptación. En el sistema de
+			  adquisición actual para cada señal el circuito de adaptación genera un pulso fijo. El nuevo sistema de adquisición incorpora
+			  nuevo circuito de adaptación. Este nuevo circuito de adaptación genera un pulso cuyo ancho de banda es proporcional a la
+			  energía de la señal. El fin es medir la energía de las partículas detectadas, esta magnitud es de gran interés científico y
+			  técnico.
+			\item La siguiente diferencia está en la FPGA, recordamos que en el sistema de adquisición actual esta tan solo registra los
+			  eventos por minuto para los 18 canales. La nueva FPGA debe realizar la misma tarea, pero aparte debe poder medir el ancho de
+			  los pulsos generados por el circuito de adaptación. Los dos sistemas de adquisición utilizan un puerto serie para la
+			  comunicación entre software y FPGA, en el sistema nuevo este puerto opera a una velocidad mayor a fin de poder transmitir
+			  toda la información extra.
+			\item El nuevo sistema también está pensado para ofrecer una mayor compatibilidad. El fin es poder implantar este en
+			  diferentes estaciones de forma fácil y rápida. El hardware y software deben ser diseñados con este requisito en mente.
+		\end{itemize}
 	\subsection{Bases de datos}
 		La base de datos que genera CALMA está diseñada de acuerdo con el estándar impuesto por NMDB. Existen dos réplicas de la
 		base de datos. Tenemos una réplica de los datos crudos adquiridos en el propio sistema, para gestionar esta réplica es utilizado
@@ -119,23 +119,23 @@ comunes que pueden ser observados indirectamente a consecuencia de observar la c
 		crudos y también contiene la corrección por presión de estos. Para la segunda réplica es utilizado MySQL. Los datos que son mandados
 		al NMDB son los datos de la segunda réplica.
 	\subsection{Herramientas y técnicas}
-		El equipo de CALMA hace uso de herramientas que les ayudan a analizar la información desde el punto de vista científico.
-		Estas herramientas están muy bien para los científicos, pero actualmente no existe ninguna herramienta que dé información sobre el
-		estado técnico de la estación. Todas las labores relacionadas con el mantenimiento son realizadas de forma manual.
+		El equipo de CALMA hace uso de herramientas que les ayudan a analizar la información desde el punto de vista científico.  Actualmente
+		no existe ninguna herramienta que proporcioné información sobre el estado técnico de la estación. Todas las labores relacionadas con
+		el mantenimiento son realizadas de forma manual.
 
 \section{Objetivos}
 	El objetivo de este proyecto es desarrollar el software para el nuevo sistema de adquisición de datos y también desarrollar una herramienta
-	que permite operar y monitorizar el estado de la estación. A continuación procederemos a hacer una descripción más detallada de los objetivos
-	de este trabajo.  
+	que permite operar y monitorizar el estado de la estación. A continuación procedemos a hacer una descripción más detallada de los objetivos de
+	este trabajo.  
 	\subsection{Software de adquisición}
-		Tal y como hemos explicado en secciones anteriores el equipo de CALMA esta desarrollando un nuevo sistema de adquisición. Actualmente
+		Tal y como hemos explicado en secciones anteriores el equipo de CALMA está desarrollando un nuevo sistema de adquisición. Actualmente
 		la mayoría de módulos hardware incluyendo la FPGA están listos. El propósito de este trabajo es realizar el software de adquisición. A
 		continuación exponemos algunos de los requisitos más relevantes.
 		\begin{itemize}
 			\item 	El software debe ser capaz de realizar una correcta comunicación con la FPGA. Esto implica enviar los comandos
 				apropiados y ser capaz de interpretar los mensajes de datos trasmitidos por esta. En el capítulo \ref{entornoHW}
 				podemos obtener más información sobre la interfaz de comunicación con la FPGA.
-			\item 	El software debe ser capaz de mantener dos bases de datos, una replica local y una remota.
+			\item 	El software debe ser capaz de mantener dos bases de datos, una réplica local y una remota.
 			\item 	Al igual que el hardware el software debe ser capaz de adaptarse fácilmente a diferentes estaciones. Para este
 				propósito este debe ser diseñado de tal forma que sea fácil de extender.
 			\item 	El software debe ser capaz de poner en marcha la estación completa de forma automática ante la presencia de corriente
@@ -150,13 +150,13 @@ comunes que pueden ser observados indirectamente a consecuencia de observar la c
 		de este trabajo se describirán las interfaces de estos dado que es necesario para entender este trabajo. 
 	\subsection{Herramienta Web}
 		El segundo objetivo de este trabajo es el desarrollo de una herramienta que facilite la gestión de una estación. La idea de esta
-		herramienta es del equipo de CALMA. Procedemos a detallar las funcionalidades de la herramienta tal y como las concibe el equipo de
-		CALMA.
+		herramienta es del equipo de CALMA. Procedemos a detallar las funcionalidades de la herramienta tal y como las concibe este.
 		%TODO Citar el artículo de la herramienta.
 		\begin{itemize}
 	         	\item	Spike Tool. Módulo que permitirá la detección de Spikes. Usando los datos proporcionados por el sistema de
 			  	adquisición este módulo debe generar gráficos. Estos gráficos serán interactivos y su propósito será hacer fácil la
-				detección de Spikes. Los Spikes detectados podrán ser marcados como nulos en el conjunto de datos revisados. 
+				detección de Spikes. Los Spikes detectados podrán ser marcados como nulos en el conjunto de datos revisados. El
+				concepto de Spike es explicado en secciones venideras de este capítulo.
 			\item 	Configuración de la estación. Este módulo permitirá cambiar la configuración de la estación. Esta reconfiguración será
 				llevada a cabo en tiempo real sin interrumpir el proceso de adquisición. Nótese que el software de adquisición deberá
 				evolucionar para hacer posible esta funcionalidad.
@@ -224,9 +224,9 @@ comunes que pueden ser observados indirectamente a consecuencia de observar la c
 		\item[Múltiples Tubos]
 			Hasta este momento siempre hemos hablado de tubos contadores, en plural, detrás de esto hay una razón. Normalmente las
 			estaciones se componen de varios tubos contadores, donde 18 tubos contadores es un estándar. En el proceso de adquisición
-			están envueltos muchos factores probabilísticos, esto conlleva a que las medidas en un tubo tengan una gran dispersión. Tener
-			tan solo un tubo no es práctico, los datos tienen gran dispersión. La solución de este problema es tener mucho tubos, cuantos
-			más mejor. Combinando datos de diferentes tubos conseguimos reducir esta dispersión. 
+			están envueltos muchos factores probabilísticos, esto conlleva a que las medidas en un tubo tengan una gran dispersión. La
+			solución de este problema es tener mucho tubos, cuantos más mejor. Combinando datos de diferentes tubos conseguimos reducir
+			esta dispersión. 
 		\item[Valor global]
 		  	Tener los datos de muchos tubos contadores permite reducir la dispersión de los datos, sin embargo no es muy práctico trabajar
 			con esos datos en crudo. El software del sistema de adquisición actual calcula un valor global a partir de los datos de todos
@@ -237,14 +237,14 @@ comunes que pueden ser observados indirectamente a consecuencia de observar la c
 			atmosféricas dependen de la presión atmosférica. Cuando esta es elevada, es necesaria más energía para que la cascada se
 			propague hasta el nivel terrestre, por consecuente los monitores de neutrones registran menos eventos. El valor de la presión
 			atmosférica es monitorizado por los monitores de neutrones. Este valor es utilizado para realizar una corrección por presión
-			sobre el valor global de la estación. A lo largo de este trabajo utilizamos el nombre de \emph{valor corregido por presión}.
+			sobre el valor global de la estación. A lo largo de este trabajo utilizamos el término de \emph{valor corregido por presión}.
 			El software de adquisición elaborado para este trabajo debe ser capaz de leer el valor de presión desde un barómetro y debe
 			poder calcular esta corrección. 
 			\par
 			También es realizada una \emph{corrección por eficiencia}. Esta es muy simple y consiste en aplicar un factor multiplicativo
 			al valor corregido por presión. Este valor es utilizado para para solventar problemas técnicos. Cambios en el entorno
-			inmediato del instrumento o cambios en la electrónica utilizada afectan a la cantidad de eventos medidos. Estos cambios son
-			identificados, evaluados y finalmente contrarrestados con esta corrección por eficiencia. Este valor dota la estación de
+			inmediato del instrumento o cambios en la electrónica utilizada pueden afectan a la cantidad de eventos medidos. Estos cambios
+			son identificados, evaluados y finalmente contrarrestados con esta corrección por eficiencia. Este valor dota la estación de
 			consistencia histórica, de esta manera pueden ser comparados datos de diferentes intervalos temporales. El software también
 			debe ser capaz de realizar esta corrección. 
 		\item[Fuentes de alta tensión]
