@@ -132,7 +132,7 @@ referiremos a esta medición de eventos por minuto con el nombre de \emph{cuenta
 	El objetivo de este proyecto es desarrollar el software para el nuevo sistema de adquisición de datos y también desarrollar una herramienta
 	que permite operar y monitorizar el estado de la estación. A continuación procederemos a hacer una descripción más detallada de los objetivos
 	de este trabajo.  
-	\subsection{Software de adquisición de datos}
+	\subsection{Software de adquisición}
 		Tal y como hemos explicado en secciones anteriores el equipo de CALMA esta desarrollando un nuevo sistema de adquisición. Actualmente
 		la mayoría de módulos hardware incluyendo la FPGA están listos. El propósito de este trabajo es realizar el software de adquisición. A
 		continuación exponemos algunos de los requisitos más relevantes.
@@ -175,22 +175,21 @@ referiremos a esta medición de eventos por minuto con el nombre de \emph{cuenta
 		altamente interactiva. 
 
 \section{Diseño preliminar}
-	Procedernos a especificar un diseño preliminar para el software de adquisición y para la herramienta web.
+	En esta sección procedemos a especificar un diseño preliminar para el software de adquisición y para la herramienta Web.
 	\subsection{Software de adquisición}
-		El sistema de adquisición que se está desarrollando es un sistema empotrado donde hardware y software están muy vinculados. En el
-		capítulo \ref{entornoHW} se describe más a fondo el entrono hardware, en este punto tan solo mencionaremos que el software se
-		ejecutará sobre una BeagleBone Black\cite{Beagle} que está integrada con el resto de componentes hardware. Destacamos que el autor de
-		este trabajo no ha formado parte en el desarrollo hardware. En la BeagleBone tendremos un sistema empotrado Linux, la distribución
-		elegida para desarrollar este trabajo es Ångström. Actualmente nos estamos planteando cambiar la distribución a alguna derivada de
-		Debian, sobre esto hablaremos más a fondo en el capítulo \ref{cap_conclusiones}. El desarrollo del software se hará en
-		Python\cite{Python}, lenguaje interpretado de alto nivel. Actualmente Python es muy popular y existen muchas librerías de las que
-		haremos uso. Usar librerías reduce la carga de trabajo y normalmente resulta en software más robusto. Para la gestión de la base de
-		datos hemos elegido Sqlite3\cite{Sqlite}, una elección popular en sistemas empotrados como el que estamos realizando. 
+		El sistema de adquisición que se está desarrollando es un sistema empotrado donde hardware y software están muy vinculados. Esto en
+		gran medida condiciona el diseño del software que queremos realizar. El software debe ejecutarse sobre una BeagleBone
+		Black\cite{Beagle} que está integrada con el resto de componentes hardware. La distribución Linux elegida para este trabajo es
+		Angstrom. El lenguaje de programación elegido es Python\cite{Python}, lenguaje interpretado de alto nivel con tipado dinámico y
+		sintaxis centrada en producir código legible. Actualmente Python es muy popular y existen muchas librerías de las que haremos uso. El
+		uso de librerías reduce la carga de trabajo y normalmente resulta en software más robusto. Para la gestión de la base de datos hemos
+		elegido Sqlite3\cite{Sqlite}, una elección popular en sistemas empotrados como el que estamos realizando. 
 		\par
-		En la figura \ref{fig:soft_control_preliminar} podemos ver el diseño preliminar de nuestro software. Ante la presencia de corriente
-		eléctrica el sistema de adquisición se inicia solo. Nuestro software debe configurar la estación de acuerdo con el archivo de
-		configuración proporcionado. Una vez configurada la estación pasamos al funcionamiento nominal. El software debe recoger la
-		información que generan los diferentes módulos que componen el sistema. Cada minuto la información es guardada en una base de datos.
+		En la figura \ref{fig:soft_control_preliminar} podemos ver el diseño preliminar del software de adquisición. Ante la presencia de
+		corriente eléctrica este debe ser capaz de inicializarse solo. El primer paso que debe tomar es realizar la configuración necesaria
+		para el correcto funcionamiento del sistema de adquisición. Seguidamente debe continuar con el funcionamiento nominal. Este consiste
+		de tres pasos que se repiten cíclicamente. El primero es solicitar la información a la FPGA, seguidamente el software debe interpretar
+		dicha información. Finalmente la información debe ser guardada. Los posibles estados anómalos deben ser detectados y contrarrestados. 
 		\begin{figure}[h]
 			\centering
 			\includegraphics[keepaspectratio, width=1\textwidth]{./img/soft_control_preliminar.png}
@@ -198,19 +197,21 @@ referiremos a esta medición de eventos por minuto con el nombre de \emph{cuenta
 			\label{fig:soft_control_preliminar}
 		\end{figure}
 	\subsection{Herramienta Web}
-		En la figura \ref{fig:herramienta_web_preliminar} podemos ver el diseño de nuestra herramienta. Como podemos ver el diseño está
-		fuertemente basado en el patrón MVC\cite{MVCWiki}. A continuación explicaremos los tres componentes básicos. 
+		En la figura \ref{fig:herramienta_web_preliminar} podemos ver el diseño de la herramienta Web. Como podemos ver el diseño está
+		fuertemente basado en el patrón MVC\cite{MVCWiki}. A continuación explicaremos los tres componentes básicos.
 		\begin{description}
 			\item[Base de Datos]    
 				En este componente residen los datos de nuestra estación. Para la gestión de estos utilizamos un servidor
 				MySQL\cite{MySql}.
 			\item[\emph{Back-End}]
-				Este componente es el encargado de recibir y procesar las solicitudes provenientes del \emph{Front-End}. Una vez
-				procesadas las solicitudes si estas son válidas este componente se comunica con la base de datos para ejecutar las
-				solicitudes. Por último devuelve los resultados de las solicitudes. Para la implementación de este componente hemos
-				utilizado ZendFramework\cite{ZF} y Apygility\cite{Apigility}.  
+				Este componente es el encargado de recibir y procesar los mensajes de petición provenientes del \emph{Front-End}.
+				Estas peticiones pueden ser de consulta o de acción. En ambos casos este componente procede a comunicarse con la base
+				de datos a fin de satisfacer la petición. Finalmente el resultado es trasmitido al \emph{front-end} en un mensaje de
+				respuesta. En el caso de una petición de consulta son devueltos los datos especificados en ese mensaje. En el caso de
+				una petición de acción es devuelto un mensaje de estado. Para la implementación de este componente hemos utilizado
+				ZendFramework\cite{ZF} y Apygility\cite{Apigility}.
 			\item[\emph{Front-end}] 
-				Este componente implementa la interfaz de nuestra aplicación. Es el encargado de presentarnos la información y manejar
+				Este componente implementa la interfaz de nuestra aplicación. Es el encargado de presentar la información y manejar
 				las peticiones del usuario. El módulo está basado en el patrón MVC. Para implementar la Vista hemos utilizado
 				HighStock\cite{HighStock}, para el Controlador ExtJs\cite{ExtJs} y para el modelo peticiones Ajax\cite{AjaxWiki}.
 		\end{description}
@@ -221,50 +222,44 @@ referiremos a esta medición de eventos por minuto con el nombre de \emph{cuenta
 			\label{fig:herramienta_web_preliminar}
 		\end{figure}
 \section{Proceso de adquisición}
-	En este punto explicaremos más a fondo el funcionamiento de un monitor de neutrones, dado que es necesario para poder entender este trabajo.
-	\subsection{Adaptación y procesado de las señales}
-		Como ya comentamos, la radiación cósmica termina generando neutrones de baja energía. Son estas partículas las que interaccionan con
-		el gas de los tubos contadores, en el proceso es liberada una pequeña cantidad de energía. Esta pequeña cantidad de energía es
-		capturada en forma de señal eléctrica. Las señales resultantes son muy pequeñas, por lo que estas pasan por un circuito de adaptación. 
-		\par
-		En el circuito de adaptación las señales son amplificadas y digitalizadas. En el sistema de adquisición actual para cada señal el
-		circuito de adaptación genera un pulso fijo. El nuevo sistema de adquisición incorpora nuevo circuito de adaptación. Este nuevo
-		circuito de adaptación genera un pulso cuyo ancho de banda es proporcional a la energía de la señal. 
-		\par
-		Las señales generadas por el circuito de adaptación son dirigidas a la FPGA. La FPGA procesa las señales entrantes, para cada pulso
-		recibido registra un evento y además mide el ancho del pulso. La información es entonces transmitida a la BeagleBone Black, a nuestro
-		software de adquisición. Más adelante en este trabajo explicaremos la interfaz de comunicación entre la BeagleBone y la FPGA, en este
-		punto la vamos a omitir. 
-		\par
-		Como hemos podido ver la información de los eventos termina en manos de nuestro software de adquisición. El software se encarga de
-		recibir correctamente dicha información y de guardarla en una base de datos con resolución de 1 minuto.
-	\subsection{Múltiples Tubos}
-		Hasta ahora siempre hemos hablado de tubos contadores, en plural, detrás de esto hay una razón. Normalmente las estaciones se componen
-		de varios tubos contadores, donde 18 tubos contadores es un estándar. Vamos a explicar el motivo de tener muchos tubos contadores. 
-		\par
-		En el proceso de adquisición están envueltos muchos factores probabilísticos, esto conlleva a que las medidas en un tubo tengan una
-		gran dispersión. Tener tan solo un tubo no sería práctico, los datos tendrían gran dispersión. La solución de este problema es tener
-		mucho tubos, cuantos más mejor.
-	\subsection{Valor global y correcciones}
-		Tener los datos de muchos tubos es bueno, sin embargo no es muy práctico trabajar con esos datos en crudo. Tener un valor global de
-		toda la estación es más representativo. Es por eso por lo que el sistema de adquisición calcula uno a partir de los datos de todos los
-		tubos. Hay diferentes modos de calcular este valor global y es algo que está en continua discusión. Nosotros también vamos a calcular
-		este valor, utilizaremos el Median Algorithm\cite{MedianAlgr}.
-		\par
-		Anteriormente hemos comentado que también medimos el valor de la presión atmosférica. Medimos este valor porque es útil. Ya hemos
-		explicado las cascadas atmosféricas donde partículas de la atmósfera chocan unas con otras. Tener diferentes niveles de presión
-		atmosféricas afecta a las cascadas atmosféricas, en consecuente a la cantidad de partículas que llegan a la superficie terrestre, a
-		menos presión, más partículas, y a más presión, menos partículas. Resumiendo este último párrafo  podemos decir que el valor global
-		sin corregir es un indicativo de cuanta radiación cósmica llega a la superficie terrestre, y el valor corregido en función de la
-		presión es un indicativo de cuanta radiación cósmica llega a nuestra atmósfera.
-	\subsection{Fuentes de alimentación de alta tensión}
-		Para funcionar los tubos contadores requieren una corriente de alta tensión y baja intensidad. La corriente es utilizada por los tubos
-		para ionización del gas dentro del tubo. La ionización del gas afecta al funcionamiento de los tubos, por lo que cambios en la
-		corriente subministrada pueden afectar al sistema de adquisición. Es por esta razón por la que el funcionamiento de las HVPS es
-		supervisado. Es de esperar que la corriente sea constante, por lo que no es necesaria ninguna corrección en función de esta. En caso
-		de variaciones en la corriente los datos generados son considerados no consistentes.
-	\subsection{\emph{Spike}}
-		Un \emph{spike} es un dato anómalo, un dato anormalmente grande o pequeño. Son datos producidos por malfuncionamientos de la
-		instrumentación, cambios bruscos en el entorno inmediato u otros factores desconocidos. Los \emph{spikes} están presentes en todas las
-		estaciones. Con la elaboración del nuevo sistema de adquisición se pretende reducir el número \emph{spikes} generados. La herramienta
-		Web nos permitirá localizar y descartar los \emph{spikes} de forma fácil.  
+	El propósito de este punto es explicar algunos aspectos del proceso de adquisición que son relevantes para este trabajo.
+	\begin{description}[leftmargin=0cm]
+		\item[Múltiples Tubos]
+		  	Hasta este momento siempre hemos hablado de tubos contadores, en plural, detrás de esto hay una razón. Normalmente las
+			estaciones se componen de varios tubos contadores, donde 18 tubos contadores es un estándar. En el proceso de adquisición
+			están envueltos muchos factores probabilísticos, esto conlleva a que las medidas en un tubo tengan una gran dispersión. Tener
+			tan solo un tubo no es práctico, los datos tienen gran dispersión. La solución de este problema es tener mucho tubos, cuantos
+			más mejor. Combinando datos de diferentes tubos conseguimos reducir esta dispersión. 
+		\item[Valor global]
+			Tener los datos de muchos tubos es bueno, sin embargo no es muy práctico trabajar con esos datos en crudo. El software del
+			sistema de adquisición actual calcula un valor global apartar de los datos de todos los tubos contadores. El software de
+			adquisición que desarrollamos en este trabajo también debe calcular este valor global. Para este propósito utilizamos el
+			Median Algorithm\cite{MedianAlgr}.
+		\item[Correcciónes]
+			Anteriormente en este capítulo explicamos las cascadas atmosféricas que son originadas por los rayos cósmicos. Estas cascadas
+			atmosféricas dependen de la presión atmosférica. Cuando esta es elevada, es necesaria más energía para que la cascada se
+			propague hasta el nivel terrestre, por consecuente los monitores de neutrones registran menos eventos. El valor de la presión
+			atmosférica es monitorizado por los monitores de neutrones. Este valor es utilizado para realizar una corrección por presión
+			sobre el valor global de la estación. A lo largo de este trabajo utilizamos el nombre de \emph{valor corregido por presión}.
+			El software de adquisición elaborado para este trabajo debe ser capaza de leer el valor de presión desde un barómetro y debe
+			poder calcular esta corrección. 
+			\par
+			También es realizada una \emph{corrección por eficiencia}. Esta es muy simple y consiste en aplicar un factor multiplicativo
+			al valor corregido por presión. Este valor es utilizado para para solventar problemas técnicos. Cambios en el entorno
+			inmediato del instrumento o cambios en la electrónica utilizada pueden causar cambios en la cantidad de eventos medidos. Estos
+			cambios son identificados, evaluados y finalmente contrarrestados con esta corrección por eficiencia. Este valor dota la
+			estación de consistencia histórica, de esta manera pueden ser comparados datos de diferentes intervalos temporales. El
+			software también debe ser capaz de realizar esta corrección. 
+		\item[Fuentes de alta tensión]
+			A principios de este capítulo explicamos que los tubos contadores están rellenos de gas ionizado. Este gas es ionizado
+			mediante la aplicación de una corriente eléctrica de alta tensión. Para la generación de esta corriente son utilizadas fuentes
+			de alimentación de alta tensión. Cambios en la corriente generada pueden afectar a la cantidad de eventos registrados. Esto ha
+			conllevado a que el funcionamiento de las fuentes sea monitorizado. El software para el sistema de adquisición debe ser capaz
+			de realizas esta operación. Es de esperar que la corriente sea constante, por lo que no es necesaria ninguna corrección en
+			función de esta. En caso de variaciones en la corriente los datos generados son considerados no consistentes.
+		\item[\emph{Spikes}]
+			Un \emph{Spike} es un dato anómalo, un dato anormalmente grande o pequeño. Son datos producidos por malfuncionamientos de la
+			instrumentación, cambios bruscos en el entorno inmediato u otros factores desconocidos. Estos están presentes en todas las
+			estaciones. Con la elaboración del nuevo sistema de adquisición se pretende reducir el número de \emph{Spikes} generados. Con
+			la elaboración de la herramienta Web pretendemos ofrecer un método fácil de identificar y descartar dichos datos.
+	\end{description}
