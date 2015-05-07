@@ -13,7 +13,7 @@ propiedades del lenguaje permiten un desarrollo rápido. Además el lenguaje ofr
 \par
 Para gestionar la base de datos utilizamos Sqlite3\cite{Sqlite}. Este es un gestor muy ligero y adecuado para sistemas empotrados. Aparte de esta base
 de datos local el software permite mantener una segunda réplica remota. Para esta réplica remota utilizamos MySql\cite{MySql} que es un gestor más
-completo y enfoque \emph{Cliente-Servidor}.
+completo con enfoque \emph{Cliente-Servidor}.
 \par
 En la figura \ref{fig:soft_adquisición} podemos ver un diagrama de flujo que describe el funcionamiento de nuestro software. A lo largo de este
 capítulo haremos muchas referencias a este diagrama para explicar los diferentes módulos software que lo componen. Podemos ver que hay cuatro módulos
@@ -35,11 +35,11 @@ principales, a continuación hacemos una breve descripción de estos.
 \end{sidewaysfigure}
 
 \section{Arranque automático del sistema}
-	Uno de los requisitos del sistema es que este se ponga en marcha automáticamente ante la presencia de corriente eléctrica. La BeagleBone Black
-	por defecto está configurada para arrancar automáticamente, debemos configurarla para que inicialice nuestro software. Para este propósito
-	vamos a utilizar las \emph{System Services}\cite{AngSystemctl} que Angstrom proporciona. Un servicio de sistema permite ejecutar un programa
-	de forma automática al ser arrancado el sistema. Angstrom utiliza \texttt{systemd}\cite{systemdWiki} para gestionar los servicios de sistema.
-	Este es un conjunto de demonios, librerías y utilidades diseñados para facilitar la administración de sistemas Linux.
+	Uno de los requisitos del sistema es el arranque automático ante la presencia de corriente eléctrica. La BeagleBone Black por defecto está
+	configurada para arrancar automáticamente, debemos configurarla para que inicialice nuestro software. Para este propósito vamos a utilizar las
+	\emph{System Services}\cite{AngSystemctl} que Angstrom proporciona. Un servicio de sistema permite ejecutar un programa de forma automática al
+	ser arrancado el sistema. Angstrom utiliza \texttt{systemd}\cite{systemdWiki} para gestionar los servicios de sistema.  Este es un conjunto de
+	demonios, librerías y utilidades diseñados para facilitar la administración de sistemas Linux.
 	\par
 	Para operar sobre la configuración de \texttt{systemd} tenemos el comando \texttt{systemctl}. A continuación podemos ver como usar este
 	comando.
@@ -54,19 +54,19 @@ $ systemctl disable  nombre_de_servicio
 	\par
 	Los servicios de sistema se crean mediante archivos con extensión \texttt{.service} que deben ser guardados en el directorio
 	\texttt{/lib/systemd/system}. En el apéndice \ref{appendix:systemctl} podemos ver el contenido de los archivos que definen los cuatro
-	servicios de sistema que utilizamos en este trabajo. Veamos el significado de lo campos más importantes que son definidos en estos archivos.
+	servicios de sistema utilizados en este trabajo. Veamos el significado de lo campos más importantes que son definidos en estos archivos.
 	\begin{itemize}
 		\item	\texttt{Description}. Un mensaje descriptivo del servicio. Permite al usuario entender el propósito de este de forma fácil.
-		\item	\texttt{Before} y \texttt{After}. Estos dos campos pueden referenciar a otros servicios para indicar que este servicio debe
-			ejecutarse antes o después del servicio que es citado. Esto permite definir un orden en el que serán ejecutados los servicios
-			de sistema. También es posible especificar un grupo de servicios como el \texttt{network.target} que agrupa los servicios
-			responsables de establecer una conexión Internet. 
+		\item	\texttt{Before} y \texttt{After}. Estos dos campos pueden referenciar a otros servicios para indicar que este debe ejecutarse
+			antes o después del servicio que es citado. Esto permite definir un orden en el que serán ejecutados los servicios de sistema.
+			También es posible especificar un grupo de servicios como el \texttt{network.target} que agrupa los servicios responsables de
+			establecer la conexión a Internet. 
 		\item	\texttt{Type}. El tipo del servicio. Con este campo podemos dar diferentes propiedades a nuestro servicio. Los valores
 			aceptados que utilizamos son \texttt{oneshot}, \texttt{forking} y \texttt{simple}, que es el valor por defecto.
 		\item	\texttt{ExecStart}. El comando y argumentos que queremos ejecutar.
 		\item	\texttt{WantedBy}. Es el grupo al que este servicio pertenece. El grupo \texttt{multi-user.target} es un grupo para los
 			servicios de un sistema multiusuario. Este campo hace que este servicio sea retrasado hacia el final del proceso de arranque,
-			específicamente hasta que el sistema sea listo para aceptar la acceso de múltiples usuarios. 
+			específicamente hasta que el sistema sea listo para aceptar el acceso de múltiples usuarios. 
 	\end{itemize}
 	\par
 	En la figura \ref{fig:boot} podemos ver la secuencia que define el proceso de arranque del sistema de adquisición. Para cumplir con este
@@ -111,6 +111,7 @@ while True:
             time.sleep(120)   #Este sleep reinicia la placa
         last_data       = curr_last
 		\end{lstlisting}
+		\par
 		Primero se establece la conexión con la base de datos local. La base de datos es utilizada para comprobar si el sistema de adquisición
 		genera correctamente datos, si no son generados datos la placa debe ser reiniciada. Una vez establecida la conexión se procede a
 		invocar la función \texttt{get\_last()}, que devuelve el último valor presente en la base de datos. Seguidamente es abierto el archivo
@@ -239,10 +240,10 @@ Pin P8_10(GPIO_68)   --> Señal STROBE del barómetro AP1.
 		También son inicializados los otros dos threads, \texttt{FPGASerialReader} y \texttt{Countsmanger}. Estos dos realizan todo el proceso
 		de adquisición y serán descritos más adelante en este capítulo. 
 	\subsection{Resetear FPGA}
-		Como hemos explicado en el capítulo \ref{entornoHW} la FPGA nos permite realizar un Reset, nuestro software realizara uno antes de
-		empezar con la adquisición de datos. Este Reset nos asegura que la FPGA está en un correcto estado. Para realizar el Reset de la FPGA
-		utilizaremos la entrada digital que está conectada al pin \emph{P9\_42} de la BeagleBone Black. Volvemos a recordar que la señal
-		digital es activa a bajo nivel. Para controlarla utilizaremos la librería de \emph{AdaFruit}\cite{AdaFruitGit} de la siguiente manera.
+		Como hemos explicado en el capítulo \ref{entornoHW} la FPGA permite realizar un Reset, nuestro software realizara uno antes de empezar
+		con la adquisición de datos. Este Reset asegura que la FPGA está en un correcto estado. Para realizar el Reset utilizamos la entrada
+		digital que está conectada al pin \emph{P9\_42} de la BeagleBone Black. Volvemos a recordar que la señal digital es activa a bajo
+		nivel. Para controlarla utilizaremos la librería de \emph{AdaFruit}\cite{AdaFruitGit} de la siguiente manera.
 		\begin{lstlisting}[style=myPython]
 import Adafruit_BBIO.GPIO as GPIO
 GPIO.setup('P9_42', GPIO.OUT)
@@ -347,9 +348,9 @@ def medianAlgorithm(self, counts):
 		Como ya hemos explicado los datos son guardados en una base de datos para cuya gestión utilizamos Sqlite3. En la base de datos tenemos
 		tres tablas que a continuación procedemos a explicar.
 	    	\par
-		La primera tiene el nombre de \texttt{binTable}, nombre que hemos heredado del NMDB. En la binTable guardamos la información de las
-		cuentas de cada minuto. Junto a las cuentas guardamos la fecha y hora actuales, la lectura del barómetro y la lectura de las fuentes
-		de alta tensión.
+		La primera tiene el nombre de \texttt{binTable}, nombre que hemos heredado del NMDB. En esta guardamos la información de las cuentas
+		de cada minuto. Junto a las cuentas guardamos la fecha y hora actuales, la lectura del barómetro y la lectura de las fuentes de alta
+		tensión.
 	    	\par 
 		En la segunda tabla llamada CALM\_ori, nombre también heredado por el NMDB, guardamos el valor global y sus correcciones. Junto a
 		estos valores también guardamos el valor de la fecha y hora actuales, y en este caso tan solo guardamos el valor de la presión
@@ -376,13 +377,13 @@ def medianAlgorithm(self, counts):
 \section{\texttt{SensorsManager}}
 	Este es el módulo software encargado de manejar los sensores, por sensores nos referimos al barómetro, las fuentes de alta tensión o los
 	termómetros si están presentes. A este módulo le es pasada la información referente a los sensores del archivo de configuración. De acuerdo
-	con esta configuración este módulo realiza las funciones de configuración necesarias. Una vez realizada esta configuración inicial podemos
+	con esta información este módulo invoca las funciones de configuración necesarias. Una vez realizada esta configuración inicial podemos
 	empezar a leer la información de los sensores, para este propósito este módulo exporta tres funciones. A continuación explicaremos estas tres
 	funciones.
 	\subsection{Presión atmosférica}
 		Para leer el valor actual de la presión atmosférica este módulo nos ofrece la función \texttt{read\_pressure}. Si en el archivo de
-		configuración hemos especificado que no tenemos barómetro esta función devolverá un \emph{-1}, valor que devolverá en caso de algún
-		error. Actualmente son soportados dos tipos de barómetros, el BM35\cite{} y el AP1\cite{}. La lógica para manejar estos dos barómetros
+		configuración hemos especificado que no tenemos barómetro esta función devuelve un \emph{-1}, valor que devuelve en caso de algún
+		error. Actualmente son soportados dos tipos de barómetros, el BM35 y el AP1. La lógica para manejar estos dos barómetros
 		se encuentra en los archivos \texttt{BM53Driver} y \texttt{AP1Driver} respectivamente. No explicaremos muy a fondo el funcionamiento
 		de estos dos, tan solo destacaremos que el BM35 se comunica mediante un puerto serie y el AP1 mediante tres señales digitales que son
 		reloj, \emph{strobe} y datos.
@@ -439,6 +440,7 @@ class ReturnSequence(object):
       else:
          return self.expired
 	\end{lstlisting}
+	\par
 	El objeto \texttt{port} es el objeto que representa el puerto como vemos este es un \emph{mock}. La función \texttt{inWaiting} que devuelve el
 	numero de datos disponibles es configurada para que siempre devuelva \texttt{1}. La función \texttt{read} es configurada para devolver
 	múltiples valores en un orden concreto. Seguidamente es creado el objeto cuya función queremos probar pasándole la referencia del mock, una
@@ -463,8 +465,8 @@ class ReturnSequence(object):
 	\end{figure}
 
 \section{Implantación y mantenimiento}
-	Como hemos explicado en el capítulo \ref{cap1} aparte de implementar el software tenemos como objetivo implantar y hacer el mantenimiento de
-	este durante un tiempo. 
+	Como hemos explicado en el capítulo de introducción aparte de implementar el software tenemos como objetivo implantar y realizar el
+	mantenimiento de este durante un tiempo. 
 	\par
 	Implantar el software implica implantar el sistema de adquisición entero. En esta labor obtendremos la ayuda del equipo responsable de la
 	estación de CALMA. El sistema tendrá que funcionar conjuntamente al sistema de adquisición ya existente, compartiendo los tubos contadores, el
