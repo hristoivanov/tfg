@@ -24,8 +24,8 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 	código generado es claro, corto e intuitivo. La librería de \emph{AdaFruit}\cite{AdaFruitGit} nos ha permitido operar sobre las cabeceras de
 	extensión de la BeagleBone Black de forma fácil e intuitiva.    
 	\par
-	Otra elección que consideramos afortunada es utilizar Sqlite\cite{Sqlite} para la base de datos local. Este sistema de gestión de bases de
-	datos relacionales es muy ligero cosa que lo hace muy adecuado para nuestro trabajo.
+	Otra elección que consideramos afortunada es utilizar Sqlite\cite{Sqlite} para la gestión de la base de datos local. Este sistema de gestión
+	de bases de datos relacionales es muy ligero cosa que lo hace muy adecuado para este trabajo.
 	\par
 	La realización de la herramienta Web también ha sido una experiencia agradable en la que hemos adquirido multitud de conocimientos nuevos. A
 	diferencia del software de adquisición en la realización de esta hemos tenido más libertad a la hora del diseño. Veamos el impacto que han
@@ -39,9 +39,7 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 	\par
 	La realización del \emph{front-end} en Sencha ExtJs es una elección que el autor considera afortunada. El framework es muy completo y en
 	muchos casos implementa todo lo que una aplicación Web pueda necesitar. Trabajar con este ha sido muy fácil e intuitivo, incluso para un
-	principiante. El único inconveniente ha sido el módulo de gráficos, el framework ofrece un módulo que nos permite crear gráficos. La
-	funcionalidad es la misma que la ofrecida por HighStock, es fácil de usar, los gráficos son bellos estéticamente e interactivos. Sin embargo
-	el modulo no se comporta bien ante la necesidad de representar un gran número de datos. Para sobrevenir este problema recurrimos a HighStock.
+	principiante. 
 	\par
 	HighStock es una elección con la que estamos muy satisfechos. La funcionalidad ofrecida ha cubierto todos nuestros requisitos. Además trabajar
 	con el framework ha sido un placer, este es muy intuitivo y podemos encontrar múltiples ejemplos de uso.
@@ -86,14 +84,14 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 				distribuciones basadas en Debian que son compatibles con las placas, gran parte de los usuarios instalan estas
 				distribuciones en sus placas. El fabricante también ha anunciado que en un futuro las placas serán distribuidas con un
 				Debian por defecto. El inconveniente que este cambio presenta, razón por la que no ha sido realizado en este trabajo,
-				es que el software existente tendría que sufrir algunos cambios a fin de adaptarse al nuevo entorno.
+				es que el software existente tendrá que sufrir algunos cambios a fin de adaptarse al nuevo entorno.
 				\par
 				Actualmente el núcleo Linux y todo el sistema de archivos son cargados desde la memoria interna de la placa a la que
 				nos referimos con el acrónimo eMMC. Es posible albergar la nueva distribución en la tarjeta microSD. El contenido de
 				la tarjeta uSD es fácilmente duplicable, podemos exportar este a un archivo de imagen que contendría una copia exacta.
 				Seguidamente podemos grabar este archivo de imagen en una nueva uSD. De esta manera todo el proceso descrito en el
 				apéndice \ref{app_soft} queda obsoleto, para desplegar el software de adquisición  tan solo tenemos que grabar un
-				archivo de imagen un una tarjeta uSD e introducirla en la ranura de la BeagleBone Black. 
+				archivo de imagen en una tarjeta uSD e introducirla en la ranura de la BeagleBone Black. 
 		\end{description}
 	\subsection{Herramienta Web}
 		A continuación son detalladas una serie de mejoras y cambios que la herramienta Web podría experimentar a fin de mejorar.

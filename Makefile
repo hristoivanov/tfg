@@ -9,6 +9,7 @@ entornoHW.tex \
 softwareControl.tex \
 backend.tex \
 frontend.tex \
+conclusiones.tex \
 appendix.tex
 
 USE_PDFLATEX=true
