@@ -16,11 +16,11 @@ HighStock es un framework con un propósito específico. Este está orientado a 
 reduce la carga computacional de nuestra aplicación. Los gráficos generados por este son altamente interactivos, permiten ocultar series, navegar,
 realizar zoom y mucho más.
 \par
-Empezaremos este capitulo aclarando los aspectos técnicos relacionados con estos dos frameworks. Explicaremos como usarlos, que funcionalidad nos
+Empezaremos este capítulo aclarando los aspectos técnicos relacionados con estos dos frameworks. Explicaremos como usarlos, que funcionalidad nos
 proporcionan, consideraciones que debemos tener en cuenta y mucho más.
 \par
 Como podemos ver en la figura \ref{frontend} nuestro \emph{front-end} está basado en el patrón de diseño
-\emph{modelo-vista-controlador}\cite{MVCWiki}. En la segunda parte de este capitulo hablaremos más a fondo sobre la división impuesta por este patrón
+\emph{modelo-vista-controlador}\cite{MVCWiki}. En la segunda parte de este capítulo hablaremos más a fondo sobre la división impuesta por este patrón
 de diseño.
 \begin{figure}[h]
 	\centering
@@ -30,7 +30,7 @@ de diseño.
 \end{figure}
 \par
 En nuestra aplicación también hacemos una división funcional, diferenciamos entre tres módulos funcionales que son \texttt{Spike},
-\texttt{SpikeRevised} y \texttt{ChannelStats}. En las secciones finales de este capitulo hablaremos sobre estos módulos funcionales. 
+\texttt{SpikeRevised} y \texttt{ChannelStats}. En las secciones finales de este capítulo hablaremos sobre estos módulos funcionales. 
 
 \section{Sencha ExtJs}
 	El propósito de esta sección es explicar alguno de los aspectos básicos del framework. Empezaremos explicando como crear una aplicación básica
@@ -56,6 +56,7 @@ Ext.application({
    } 
 });
 	\end{lstlisting}
+	\par
 	En la primera línea hacemos uso del singletone \texttt{Ext}. Este es un objeto que encapsula todas las clases, métodos y singletones
 	proporcionados por el framework. La función utilizada \texttt{Ext.application} carga e inicializa una instancia de la clase
 	\texttt{Ext.app.Application}. Esta clase representa una aplicación ExtJs single page. La llamada a esta función crea la variable global
@@ -83,21 +84,20 @@ Ext.application({
 	\texttt{layout} especifica la forma en la que se posicionan y ajustan los \emph{componetes} hijos dentro del padre. En este caso el
 	\texttt{layout} especificado es \texttt{\cc fit\cc}, donde un solo hijo ocupa todo el espacio del padre.
 	\subsection{Component Manager}
-		ExtJs ofrece el singletone \texttt{Ext.ComponentManager} que provee un registro con todos los componentes. Esto facilita la referencia
+		ExtJs ofrece el singletone \texttt{Ext.ComponentManager} que provee un registro con todos los componentes. Este facilita la referencia
 		a elementos desde cualquier punto del código. El propósito de esta sección es explicar como hacer uso de esta facilidad.
 		\par
 		Empezaremos especificando un requisito que  los componentes deben cumplir, estos deben definir el atributo \texttt{itemId}. Este
 		atributo es el identificador del componente. El ámbito que tiene este identificador es local al contenedor que contiene el componente.
 		Esto hace que los identificadores no tengan que ser únicos para toda la aplicación. 
 		\par
-		Es el singletone \texttt{Ext.ComponentQuery} el que nos permite realizar búsquedas de componentes en función del \texttt{itemId}.
-		Concretamente es \texttt{Ext.ComponentQuery.query()} el método que nos permite realizar las búsquedas. Este método acepta dos
-		parámetros. El primer parámetro, \texttt{selector}, es un String y especifica el \texttt{itemId} que queremos buscar. El segundo
-		parámetro, \texttt{root} es opcional y especifica el contenedor dentro de cual queremos hacer la búsqueda. Si el segundo parámetro es
-		omitido la búsqueda es realizada entre todos los componentes. La función devuelve un array con todos los componentes que reúnen las
-		condiciones, pudiendo ser este un array vacío. Eventualmente podemos hacer búsquedas más complejas, podemos buscar por tipo, atributos
-		y mucho más. En este trabajo tan solo hemos utilizado queries simples, razón por la que no explicamos como se realizan estas queries
-		avanzadas.
+		Es el singletone \texttt{Ext.ComponentQuery} el que permite realizar búsquedas de componentes en función del \texttt{itemId}.
+		Concretamente es \texttt{Ext.ComponentQuery.query()} el método que permite realizar las búsquedas. Este método acepta dos parámetros.
+		El primer parámetro, \texttt{selector}, es un String y especifica el \texttt{itemId} que queremos buscar. El segundo parámetro,
+		\texttt{root} es opcional y especifica el contenedor dentro de cual queremos hacer la búsqueda. Si el segundo parámetro es omitido la
+		búsqueda es realizada entre todos los componentes. La función devuelve un array con todos los componentes que reúnen las condiciones,
+		pudiendo ser este un array vacío. Eventualmente podemos hacer búsquedas más complejas, podemos buscar por tipo, atributos y mucho más.
+		En este trabajo tan solo hemos utilizado queries simples, razón por la que no explicamos como se realizan estas queries avanzadas.
 		\par
 		La clase \texttt{Ext.container.Container} implementa las funciones \texttt{down()} y \texttt{query()}. Estas dos realizar una llamada
 		a \texttt{Ext.ComponentQuery.query()} teniéndose a si mismo como parámetro \texttt{root}. Esto les permite hacer una búsqueda entre
@@ -121,19 +121,18 @@ Ext.application({
 			  \texttt{setPosition()} y \texttt{setSize()}.
 			\item[\texttt{Accordion}] Este layout se asemeja a un acordeón. Los \emph{componentes} hijo pueden ser expandidos y
 			  colapsados, teniendo tan solo uno expandido a la vez. Los \emph{componentes} son ordenados en vertical ocupando todo el
-			  espacio disponible. Las funciones \texttt{expand} y \texttt{collapse} nos permiten expandir y colapsar los paneles hijo.
-			  También están presentes multitud de manejadores de eventos que podemos sobrescribir, en nuestro caso haremos uso del
+			  espacio disponible. Las funciones \texttt{expand} y \texttt{collapse} permiten expandir y colapsar los paneles hijo.
+			  También están presentes multitud de manejadores de eventos que podemos sobrescribir, en nuestro caso hacemos uso del
 			  \texttt{beforeExpand} que se dispara antes de expandir un \emph{componente}. 
-			\item[\texttt{Border}] Este layout nos permite tener hasta cinco \emph{componentes} dispuestos de la manera que podemos ver en
-			  la figura \ref{fig:layouts}.  Los componentes hijos deben especificar el atributo \texttt{region} que determina el
+			\item[\texttt{Border}] Este layout permite tener hasta cinco \emph{componentes} dispuestos de la manera que podemos ver en la
+			  figura \ref{fig:layouts}.  Los componentes hijos deben especificar el atributo \texttt{region} que determina el
 			  posicionamiento de estos. El atributo puede tomar los siguientes valores \texttt{[north, east, south, west, center]}. No es
 			  necesario que estén presentes los cinco hijos, podemos omitir los no deseados. Esto hace que este layout sea muy flexible e
 			  interesante.
 			\item[\texttt{Card}] Este layout maneja multiples \emph{componentes} hijo. Los hijos ocupan todo el espacio disponible, por lo
 			  que se solapan uno a otro.  Esto hace que solo uno pueda ser visible a la vez. El layout asemeja una baraja de cartas donde
-			  solo una carta puede estar en la parte superior. La función que nos permite hacer visible un hijo es
-			  \texttt{setActiveItem()}. Esta función acepta el \emph{componente}, el \texttt{itemId} del \emph{componente} o el índice del
-			  \emph{componente}.
+			  solo una carta puede estar en la parte superior. La función que permite hacer visible un hijo es \texttt{setActiveItem()}.
+			  Esta función acepta el \emph{componente}, el \texttt{itemId} de este o el índice de este.
 			\item[\texttt{Fit}] Este es un layout muy simple, este tan solo acepta un hijo que ocupa todo el espacio que el padre ofrece.
 			  El \emph{componente} hijo se expande automáticamente para ajustarse al tamaño del padre.
 			\item[\texttt{HBox y VBox}] Estos son dos layouts diferentes, pero muy parecidos, razón por la que serán explicados en la
@@ -141,7 +140,7 @@ Ext.application({
 			  \texttt{VBox} hace lo mismo, pero la organización es de forma vertical. Los componentes hijos pueden especificar el atributo
 			  \texttt{flex}, este atributo determina como será repartido el espacio disponible entre los diferentes hijos. Para ilustrar
 			  el funcionamiento del \texttt{flex} expondremos un ejemplo. Teniendo dos \emph{componentes} hijo con \texttt{1} y \texttt{2}
-			  de \texttt{flex} respectivamente, el primero ocupara 1/3 y el segundo 2/3 del espacio total.
+			  de \texttt{flex} respectivamente, el primero ocupará 1/3 y el segundo 2/3 del espacio total.
 		\end{description}
 		\begin{figure}[h]
 			\centering
@@ -168,6 +167,7 @@ items:[
    Ext.create('Ext.form.field.Text', {
       fieldLabel: 'Bar'})]
 		\end{lstlisting}
+		\par
 		El ejemplo presentado anteriormente no habilita la inicialización perezosa. Para este propósito tenemos que evitar el uso de la
 		función \texttt{Ext.create()}. Tenemos que especificar los componentes hijos como objetos de configuración. A continuación se presenta
 		un ejemplo.
@@ -179,6 +179,7 @@ items: [{
    xtype: 'textfield',
    fieldLabel: 'Bar'}]
 		\end{lstlisting}
+		\par
 		La diferencia que podemos apreciar entre los dos ejemplos es el atributo \texttt{xtype}. Este especifica la clase que tendrá el
 		componente.  Como podemos ver no se especifica el nombre completo de la clase. \texttt{xtype} acepta una serie de atajos para
 		referenciar a las clases. En nuestro caso la clase \texttt{Ext.form.field.Text} es referenciada por el \texttt{xtype:\cc
@@ -199,7 +200,7 @@ Ext.define('MyApp.PressMeButton', {
 		interesante le ocurre a nuestro componente. Un ejemplo es el evento \texttt{afterrender} que se dispara después de mostrar en pantalla
 		el componente.
 		\par
-		La parte interesante de los eventos es que podemos definir funciones, \texttt{listeners}, que se ejecuten cuando se produzca un evento
+		Los eventos son muy interesantes porque podemos definir funciones, \texttt{listeners}, que se ejecutan cuando se produce un evento
 		determinado. De esta manera somos capaces de responder a dichos eventos. A continuación presentamos un ejemplo en el que podemos ver
 		como manejar dichos eventos. En el ejemplo trataremos el evento \texttt{click}, evento que se dispara al hacer \emph{click} sobre un
 		componente. 
@@ -214,7 +215,7 @@ Ext.create('Ext.Button',{
 });
 		\end{lstlisting}
 		\par
-		ExtJs también nos permite configurar eventos propios. Estos eventos se declaran como si fuesen eventos normales. La peculiaridad está
+		ExtJs también permite configurar eventos propios. Estos eventos se declaran como si fuesen eventos normales. La peculiaridad está
 		en que somos nosotros los que tenemos que disparar estos eventos. Para disparar un evento tenemos que hacer uso de la función
 		\texttt{fireEvent} que acepta como parámetros el evento que queremos disparar y todos los parámetros que la función encargada del
 		evento necesite. A continuación podemos ver un pequeño ejemplo de como declarar y disparar un evento propio, que tiene como nombre
@@ -296,7 +297,7 @@ Ext.History.on('change', function(hash){
 });
 		\end{lstlisting}
 		\par
-		El propósito de esta sección ha sido explicar el problema que surge con el historial de navegación y como prevenir lo haciendo uso del
+		El propósito de esta sección ha sido explicar el problema que surge con el historial de navegación y como prevenirlo haciendo uso del
 		\texttt{Ext.History}. Del uso concreto que hemos hecho de este módulo hablaremos en secciones futuras de este capítulo.
 
 \section{HighStock}
@@ -316,7 +317,8 @@ myChart = new Highcharts.StockChart({
    }]
 });
 	\end{lstlisting}
-	Como podemos ver para crear un gráfico invocamos la función \texttt{HighCharts.StockChart()}. Esta función acepta como parámetro un objeto que
+	\par
+	Como podemos ver para crear un gráfico invocamos la función \texttt{StockChart()}. Esta función acepta como parámetro un objeto que
 	define la configuración del gráfico. El formato de este objeto puede verse en la documentación del framework\cite{HighStockDoc}. En nuestro
 	caso tan solo especificaremos dos atributos, la mayoría de los atributos tiene un valor por defecto por lo que no es necesario especificarlos
 	explícitamente. 
@@ -396,11 +398,11 @@ myChart = new Highcharts.StockChart({
 		el uso de la función \texttt{wrap}.
 		\begin{lstlisting}[style=myJs]
 H.wrap(H.Series.prototype, 'drawGraph', function (proceed) {
-// Antes de la funcion original.
+// Antes de la función original.
 console.log("We are about to draw the graph: ", this.graph);
-// Invocar la funcion original usando todos los argumentos menos el primero.
+// Invocar la función original usando todos los argumentos menos el primero.
 proceed.apply(this, Array.prototype.slice.call(arguments, 1));
-// Despues de la funcion original.
+// Después de la función original.
 console.log("We just finished drawing the graph: ", this.graph);
 });
 		\end{lstlisting}
@@ -420,7 +422,7 @@ console.log("We just finished drawing the graph: ", this.graph);
 			\par
 			Para poder registrar la dirección de arrastre hemos hecho uso de dos eventos, \texttt{mousedown} y \texttt{mouseup}. En cada
 			evento registramos la posición de este y usamos la diferencia entre las posiciones para determinar la dirección de arrastre. A
-			continuación presentamos el código. Es la variable \emph{selectDirection} la que indica la dirección de arrastre.
+			continuación presentamos el código. Es la variable \texttt{selectDirection} la que indica la dirección de arrastre.
 			\begin{lstlisting}[style=myJs]
 H.addEvent(container, 'mousedown', function (e) {
    selectFrom = chart.pointer.normalize(e).chartX;
@@ -433,7 +435,7 @@ H.addEvent(container, 'mouseup', function (e) {
 			\end{lstlisting}
 			\par
 			El evento que se dispara al realizar una selección es \texttt{selection}, por lo que tenemos que registrar un manejador para
-			el evento. La primera acción es comprobar el estado del \emph{selectDirection}, la variable que nos indica la dirección de
+			el evento. La primera acción es comprobar el estado del \emph{selectDirection}, la variable que indica la dirección de
 			arrastre. En el caso de que la variable tenga un valor positivo no tomamos acción, dejamos que se realice el zoom In por
 			defecto. Si por contrario la variable tiene un valor negativo tenemos que realizar un zoom Out. La primera acción que tomamos
 			es prevenir la acción por defecto. Seguidamente calculamos los valores que definen el nuevo intervalo temporal y para terminar
@@ -456,9 +458,9 @@ H.addEvent(chart, 'selection', function (e) {
 			\par
 			HighStock permite añadir una leyenda a los gráficos, elemento gráfico que facilita el identificar e interpretar las diferentes
 			series del gráfico. La leyenda al igual que los gráficos es altamente interactiva. Haciendo \emph{click} sobre los elementos
-			de una leyenda podemos mostrar u ocultar la serie correspondiente. En este trabajo preservaremos esta funcionalidad y
-			añadiremos la funcionalidad de resaltar una serie. Para este propósito utilizaremos los eventos \texttt{mouseover} y
-			\texttt{mouseout}, la serie será resaltada al posicionar el puntero sobre el elemento correspondiente de la leyenda. 
+			de una leyenda podemos mostrar u ocultar la serie correspondiente. En este trabajo preservamos esta funcionalidad y añadimos
+			la funcionalidad de resaltar una serie. Para este propósito utilizamos los eventos \texttt{mouseover} y \texttt{mouseout}, la
+			serie es resaltada al posicionar el puntero sobre el elemento correspondiente de la leyenda. 
 			\par
 			El proceso de resaltar una serie para poder visualizarla mejor consiste en bajar la opacidad de todas las demás series, de
 			esta manera la serie que queremos resaltar es más visible. En la figura \ref{fig:resalto} podemos ver el resultado que
@@ -478,7 +480,7 @@ H.addEvent(chart, 'selection', function (e) {
 	\par
 	Tal y como especificamos en el  capítulo anterior el protocolo para la comunicación entre los dos módulos es \emph{HTTP}. Nuestro
 	\emph{front-end} es el que empieza la comunicación enviando un mensaje de petición y el \emph{back-end} responde a esa peticion con un mensaje
-	de respuesta. El \emph{modelo} es el encargado de construir y enviar los mensajes de petición y después interpretar los mensajes de respuesta.
+	de respuesta. El \emph{modelo} es el encargado de enviar los mensajes de petición y después interpretar los mensajes de respuesta.
 	\par
 	Para dotar el \emph{modelo} de la funcionalidad necesaria utilizamos las facilidades que ExtJs ofrece, concretamente utilizamos el singletone
 	\texttt{Ext.Ajax}. Ajax\cite{AjaxWiki} es una técnica de desarrollo Web donde cliente y servidor mantienen una comunicación asíncrona en
@@ -497,20 +499,20 @@ H.addEvent(chart, 'selection', function (e) {
 		\item	\texttt{method}. El método que especifica nuestro mensaje de petición. Los mensajes \emph{HTTP} de petición pueden especificar
 			un método. Si este campo es dejado vacío el método utilizado es \texttt{GET}. La mayoría de los servicios ofrecidos por el
 			\emph{back-end} aceptan un método \texttt{GET}, pero el servicio \texttt{nmdbMarkNull} acepta un método \texttt{POST}.
-		\item	\texttt{success}. La función a ser llamada al completar exitosamente la petición. Esta función a su vez acepta como parámetro
+		\item	\texttt{success}. La función a ser invocada al completar exitosamente la petición. Esta función a su vez acepta como parámetro
 		  	\texttt{response}. Este parámetro contiene los datos del mensaje de respuesta.
-		\item	\texttt{failure}. La función a ser llamada al completar sin éxito la petición. Esta función también acepta el parámetro
+		\item	\texttt{failure}. La función a ser invocada al completar sin éxito la petición. Esta función también acepta el parámetro
 		  	\texttt{response} que podemos utilizar para identificar la causa del fallo.
-		\item	\texttt{timeout}. El numero de milisegundos en los que el \emph{back-end} debe responder. Si el tiempo expira la solicitud se
+		\item	\texttt{timeout}. El número de milisegundos en los que el \emph{back-end} debe responder. Si el tiempo expira la solicitud se
 		  	considera como fallida. 
 	\end{itemize}
-	Más allá de \texttt{Ext.Ajax} el framework ofrece abstracciones de un nivel superior. La clase \texttt{Ext.data.Model} es una
-	representación de un objeto utilizado por nuestra aplicación. Estos modelos son usados por la clase \texttt{Ext.data.Store}, que encapsula
-	instancias de un modelo. Estas abstracciones son muy útiles, pero algo complejas. Al no estar acostumbrado a trabajar con estas el autor de
-	este trabajo ha preferido utilizarlas lo menos posible. Por esta razón la mayoría de los datos se manejan usando el
-	\texttt{Ext.data.Connection}, hemos utilizado el \texttt{Ext.data.Store} en casos muy específicos como los datos que necesitan ser mostrados
-	en una tabla. Las tablas en ExtJs deben tener asociado un \texttt{Ext.data.Store} cuyos datos mostrar. A continuación podemos ver un ejemplo
-	de como declarar un \texttt{Ext.data.Model} y un \texttt{Ext.data.Store} que enlazaremos a un \texttt{Ext.grid.Panel}.
+	Más allá de \texttt{Ext.Ajax} el framework ofrece abstracciones de un nivel superior. La clase \texttt{Ext.data.Model} es una representación
+	de un objeto utilizado por nuestra aplicación. Estos modelos son usados por la clase \texttt{Ext.data.Store}, que encapsula instancias de
+	estos. Estas abstracciones son muy útiles, pero algo complejas. Al no estar acostumbrado a trabajar con estas el autor de este trabajo ha
+	preferido utilizarlas lo menos posible. Por esta razón la mayoría de los datos se manejan usando el \texttt{Ext.data.Connection}, hemos
+	utilizado el \texttt{Ext.data.Store} en casos muy específicos como los datos que necesitan ser mostrados en una tabla. Las tablas en ExtJs
+	deben tener asociado un \texttt{Ext.data.Store} cuyos datos mostrar. A continuación podemos ver un ejemplo de como declarar un
+	\texttt{Ext.data.Model} y un \texttt{Ext.data.Store} que enlazaremos a un \texttt{Ext.grid.Panel}.
 	\begin{lstlisting}[style=myJs]
 Ext.define('MyApp.model.MyModel',{
    extend: 'Ext.data.Model',
@@ -562,6 +564,7 @@ Ext.define('MyApp.controller.Users', {
       console.log('Podemos empezar..');}
 });
 	\end{lstlisting}
+	\par
 	La función \texttt{onLaunch()} es una función especial que es invocada después de inicializar la aplicación. La Vista y Modelo ya están
 	inicializados, por lo que es un buen punto para empezar a actuar sobre estos elementos.
 	\par
@@ -572,12 +575,12 @@ Ext.define('MyApp.controller.Users', {
 	\par
 	En nuestra aplicación hemos definido cinco Controladores, las subsecciones venideras son dedicadas a estos.
 	\subsection{\texttt{HighStockExtend}}
-		El propósito de este Controlador es inicializar las dos extensiones de HighStock que discutimos previamente en este capitulo. Este
+		El propósito de este Controlador es inicializar las dos extensiones de HighStock que discutimos previamente en este capítulo. Este
 		Controlador es invocado antes de empezar a construir los gráficos de la aplicación para que las extensiones estén listas y sean
 		aplicadas a estos.
 	\subsection{\texttt{Navigation}}
 		Este Controlador es el encargado de inicializar el \texttt{Ext.History}, mecanismo que solventa el problema de navegación por el
-		historial en aplicaciones \emph{single page}. El problema y el mecanismo fueron descritos en secciones anteriores de este capitulo.
+		historial en aplicaciones \emph{single page}. El problema y el mecanismo fueron descritos en secciones anteriores de este capítulo.
 		\par
 		El Controlador define la función \texttt{onLaunch()}, función que es invocada una vez creados la Vista y el Modelo de la aplicación.
 		Empieza invocando la función \texttt{Ext.History.init()}, función esencial para inicializar este módulo. Seguidamente define la
@@ -610,11 +613,11 @@ Ext.define('MyApp.controller.Users', {
 			  enfoque funcional.
 			\item[\texttt{initChannelChart()}] Esta función es la encargada de crear el gráfico que representa los datos de los tubos
 			  contadores por separado. Igual que en el caso anterior hablaremos más sobre este gráfico en secciones futuras.
-			\item[\texttt{LineOrOhcl(start, finish, N\_points)}] Anteriormente en este capitulo discutimos el problema que surge al
-			  intentar representar un gran número de datos en un gráfico convencional y que el gráfico \emph{Candlestick} daba solución a
+			\item[\texttt{LineOrOhcl(start, finish, N\_points)}] Anteriormente en este capítulo discutimos el problema que surge al
+			  intentar representar un gran número de datos en un gráfico convencional y que el gráfico \emph{Candlestick} da solución a
 			  este problema. Esta función determina si debemos utilizar un gráfico de línea o bien uno \emph{Candlestick}. La cantidad de
-			  datos está definida por los parámetros \texttt{start} y \texttt{finish}, el parámetro \texttt{N\_points} representa el
-			  número de pixeles que tenemos a disposición para representar los datos.
+			  datos es definida por los parámetros \texttt{start} y \texttt{finish}, el parámetro \texttt{N\_points} representa el número
+			  de pixeles que tenemos a disposición para representar los datos.
 			\item[\texttt{updateMode(start, finish)}] Esta función es invocada cuando ocurre algún cambio en el gráfico \emph{Candlestick}
 			  y calcula el modo en que deben ser representados los datos. Esta función hace un uso intensivo de la función
 			  \texttt{LineOrOhcl()}, pero tiene en cuenta más cosas como la serie actual.
@@ -713,9 +716,9 @@ Ext.define('MyApp.controller.Users', {
 			\item[\texttt{loadInitialData()}]
 				Esta función carga los datos necesarios para construir el módulo. Los datos son cargados realizando una petición Ajax
 				al \emph{back-end}. Son invocados dos servicios RPC, \texttt{nmdadbChannelStats} y \texttt{nmdadbChannelHistogram}. El
-				primero carga una serie de estadísticas descriptivas de los canales, estos datos son representados en un gráfico y
+				primero devuelve una serie de estadísticas descriptivas de los canales, estos datos son representados en un gráfico y
 				también listados en una tabla. El segundo carga los datos necesarios para construir un histograma de la distribución
-				de cuentas de los 18 canales.
+				de cuentas para los 18 canales.
 				\par
 				Al cargar los datos con éxito son invocadas las funciones \texttt{initStatsChart()} y \texttt{initHistogramChart()}
 				que  crean los dos gráficos, el gráfico con las estadísticas y el histograma. Los datos de la tabla son actualizados
@@ -758,7 +761,7 @@ Ext.define('MyApp.controller.Users', {
 		\label{fig:vista}
 	\end{figure}
 	\par
-	La Vista en una aplicación ExtJs es compuesta por una jerarquía de \emph{componentes}. En nuestro caso en lo mas alto de esta jerarquía
+	La Vista en una aplicación ExtJs es compuesta por una jerarquía de \emph{componentes}. En nuestro caso en lo más alto de esta jerarquía
 	tenemos un \texttt{ViewPort} al que hemos asignado el nombre \texttt{MyViewPort}. Este es un \emph{componente} que se ajusta al área de
 	aplicación disponible. El layout que determina como se posicionan los hijos de este \emph{componente} es \texttt{border}. Los
 	\emph{componentes} hijos deben especificar el atributo \texttt{region} que determina su posicionamiento.
@@ -786,7 +789,7 @@ Ext.define('MyApp.controller.Users', {
 	El propósito de esta sección es hacer una descripción funcional de la herramienta. Diferenciamos entre tres módulos funcionales que son
 	\texttt{Spike}, \texttt{SpikeRevised} y \texttt{ChannelStats}.
 	\subsection{\texttt{Spike}}
-		El propósito de este módulo es ofrecer un gráfico interactivo que nos permita localizar los \emph{spikes} de forma fácil. Recordamos
+		El propósito de este módulo es ofrecer un gráfico interactivo que permite localizar los \emph{spikes} de forma fácil. Recordamos
 		que estos son datos anormalmente grandes o pequeños. La figura \ref{fig:spikeRevised} presenta el módulo funcional
 		\texttt{SpikeRevised}, dado que los dos módulos son muy similares podemos fijarnos en esta figura.
 		\par
@@ -822,7 +825,7 @@ Ext.define('MyApp.controller.Users', {
 		nulos en el futuro. Este botón además de enviar los datos actualiza el gráfico para reflejar los cambios que acaban de producir se.
 		\par
 		Cuando los datos son representados en modo línea podemos hacer \emph{click} sobre un dato para añadir este a la tabla anteriormente
-		descrita. En el gráfico será añadido un \emph{flag}, la letra que aparece en dicho \emph{flag} se corresponde con el campo
+		descrita. En el gráfico es añadido un \emph{flag}, la letra que aparece en dicho \emph{flag} se corresponde con el campo
 		\texttt{Label} de la tabla.
 		\begin{figure}[h]
 			\centering

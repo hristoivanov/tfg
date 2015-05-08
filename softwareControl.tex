@@ -209,7 +209,7 @@ usage: NMDA.py
 		\end{lstlisting}
 
 	\subsection{Configurar la BeagleBone Black}
-		Tal y como explicamos en el capitulo de entorno hardware la BeagleBone Black proporciona dos cabeceras de extensión de 46 pines cada
+		Tal y como explicamos en el capítulo de entorno hardware la BeagleBone Black proporciona dos cabeceras de extensión de 46 pines cada
 		una\cite{BeagleWikiExp}. Muchos de estos pines son multipropósito, por lo que deben ser configurados. Esta configuración se realiza
 		mediante el uso de \emph{Device Tree Overlay}, estructura de datos que se utiliza para describir el hardware. En este trabajo
 		utilizamos la librería \emph{Adafruit BeagleBone IO Python}\cite{AdaFruitGit} que facilita la tarea de configurar estas cabeceras. A
@@ -442,7 +442,7 @@ class ReturnSequence(object):
 	\end{lstlisting}
 	\par
 	El objeto \texttt{port} es el objeto que representa el puerto como vemos este es un \emph{mock}. La función \texttt{inWaiting} que devuelve el
-	numero de datos disponibles es configurada para que siempre devuelva \texttt{1}. La función \texttt{read} es configurada para devolver
+	número de datos disponibles es configurada para que siempre devuelva \texttt{1}. La función \texttt{read} es configurada para devolver
 	múltiples valores en un orden concreto. Seguidamente es creado el objeto cuya función queremos probar pasándole la referencia del mock, una
 	vez creado invocamos la función \texttt{run}. Finalmente comprobamos si el atributo \texttt{shared\_countsFromEvents} tiene el valor esperado.
 	\par

@@ -27,7 +27,7 @@ $ python --version
 $ opkg install python
 		\end{lstlisting}
 		Seguidamente debemos instalar \texttt{pip}, herramienta que facilita el proceso de instalación de librerías Python.  Utilizando
-		\texttt{pip} debemos instalar las librerías necesarias. El uso que hemos hecho de estas librerías esta descrito en el capitulo
+		\texttt{pip} debemos instalar las librerías necesarias. El uso que hemos hecho de estas librerías esta descrito en el capítulo
 		dedicado al software de adquisición.
 		\begin{lstlisting}[style=myBash]
 $ opkg install python-pip python-setuptools python-smbus
@@ -58,8 +58,8 @@ $ opkg install git
 $ git clone https://github.com/opobla/nmpw.git .
 $ git pull
 		\end{lstlisting}
-		En el capitulo dedicado al software de adquisición se explica como este lee una serie de variables desde un archivo de configuración,
-		este archivo debe seguir un formato que también se explica en ese mismo capitulo. Este archivo debe tener el nombre
+		En el capítulo dedicado al software de adquisición se explica como este lee una serie de variables desde un archivo de configuración,
+		este archivo debe seguir un formato que también se explica en ese mismo capítulo. Este archivo debe tener el nombre
 		\texttt{/server/nmda/.NMDA.conf}. Podemos crear el archivo desde cero o podemos utilizar el archivo de ejemplo que hemos clonado desde
 		el repositorio remoto. Este archivo de ejemplo especifica una configuración mínima que permite correr el software. 
 		\begin{lstlisting}[style=myBash]
@@ -67,7 +67,7 @@ $ cp /server/nmda/NMDA.conf.exmaple /server/nmda/.NMDA.conf
 		\end{lstlisting}
 	\section{\emph{System Services}}
 		\label{appendix:systemctl}
-		En el capitulo dedicado al software de adquisición se explica como el sistema de adquisición debe inicializarse automáticamente ante
+		En el capítulo dedicado al software de adquisición se explica como el sistema de adquisición debe inicializarse automáticamente ante
 		la presencia de corriente. La BeagleBone Black por defecto está configurada para arrancar automáticamente. Nos queda configurar el
 		sistema operativo para arrancar nuestro software de forma automática. Para este propósito vamos a utilizar las \emph{System Services}. 
 		\par
@@ -140,7 +140,7 @@ server pool.ntp.org
 restrict default
 		\end{lstlisting}
 	\section{Tarjeta microSD}
-		Tal y como explicamos en el capitulo dedicado al entorno hardware la BeagleBone Black dispone de una memoria integrada (eMMC) de 4GB.
+		Tal y como explicamos en el capítulo dedicado al entorno hardware la BeagleBone Black dispone de una memoria integrada (eMMC) de 4GB.
 		En esta memoria tenemos el sistema operativo y todo el software necesario para el sistema de adquisición. Esto hace que el porcentaje
 		de ocupación de esta memoria sea muy alto. Es conveniente hacer uso de la ranura microSD (uSD) para extender  la capacidad de
 		almacenamiento. A continuación se detallan los pasos a seguir.
