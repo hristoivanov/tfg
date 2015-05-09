@@ -93,7 +93,14 @@ comunes que pueden ser observados indirectamente a consecuencia de observar la c
 		un circuito de adaptación, seguidamente son procesadas por una FPGA. Esta es la encargada se medir los eventos por minuto de los 18
 		canales. Aunque la  estación tan solo tiene 15 tubos contadores el sistema está diseñado para soportar 18, este número es un estándar
 		histórico. El software que se ejecuta en el sistema Linux tiene como tarea comunicarse con la FPGA, su labor es recoger las
-		\emph{cuentas} de cada minuto y guardar estas en una base de datos.
+		\emph{cuentas} de cada minuto y guardar estas en una base de datos. En la figura \ref{fig:acqsis} podemos ver que diagrama de bloques
+		que representa el sistema de adquisición.
+		\begin{figure}[h]
+			\centering
+			\includegraphics[keepaspectratio, width=1\textwidth]{./img/AcqSis.png}
+			\caption{Sistema de adquisición.}
+			\label{fig:acqsis}
+		\end{figure}
 		\par
 		Actualmente el equipo de CALMA está desarrollando un nuevo sistema de adquisición de datos. Este es muy parecido al que actualmente
 		está implantado. A continuación procedemos a detallar las diferencias clave entre los dos sistemas. 
