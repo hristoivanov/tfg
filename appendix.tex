@@ -3,7 +3,7 @@
 \chapter{Despliegue Software de adquisición}
 	\label{app_soft}
 	El propósito de este punto es detallar el proceso que debe seguirse para desplegar el software de adquisición. Siendo este un software para un
-	sistema empotrado el estado del hardware tiene una gran influencia, en este punto suponemos que ya esta configurado correctamente. También
+	sistema empotrado el estado del hardware tiene una gran influencia, en este punto suponemos que ya está configurado correctamente. También
 	suponemos que sobre la BeagleBone Black tenemos una distribución Angstrom recién instalada.
 	\section{Instalación de software} 
 		El primer paso es instalar el software y librerías que son necesarias. Antes de nada debemos actualizar la lista de paquetes
@@ -20,14 +20,14 @@ $ opkg install ntp
 $ ntpdate -b -s -u pool.ntp.org
 		\end{lstlisting}
 		\par
-		Nuestro software esta escrito en Python, debemos asegurarnos que la versión \texttt{2.7.x} esta instalada. En caso de no estar
-		presente debemos instalarla.
+		Nuestro software es escrito en Python, debemos asegurarnos que la versión \texttt{2.7.x} esta instalada. En caso de no estar presente
+		debemos instalarla.
 		\begin{lstlisting}[style=myBash]
 $ python --version
 $ opkg install python
 		\end{lstlisting}
 		Seguidamente debemos instalar \texttt{pip}, herramienta que facilita el proceso de instalación de librerías Python.  Utilizando
-		\texttt{pip} debemos instalar las librerías necesarias. El uso que hemos hecho de estas librerías esta descrito en el capítulo
+		\texttt{pip} debemos instalar las librerías necesarias. El uso que hemos hecho de estas librerías está descrito en el capítulo
 		dedicado al software de adquisición.
 		\begin{lstlisting}[style=myBash]
 $ opkg install python-pip python-setuptools python-smbus
@@ -37,7 +37,7 @@ $ pip install MySQL_python
 $ pip install Adafruit_BBIO
 		\end{lstlisting}
 		\par
-		Finalmente debemos instalar Git, si este no esta presente.
+		Finalmente debemos instalar Git, si este no está presente.
 		\begin{lstlisting}[style=myBash]
 $ opkg install git
 		\end{lstlisting}
@@ -146,7 +146,7 @@ restrict default
 		almacenamiento. A continuación se detallan los pasos a seguir.
 		\par
 		El primer paso es arrancar la BeagleBone Black sin la tarjeta uSD. Después debemos hacer uso del comando \texttt{fdisk}, programa que
-		nos permite manipular las particiones de los dispositivos de almacenamiento.
+		permite manipular las particiones de los dispositivos de almacenamiento.
 		\begin{lstlisting}[style=myBash]
 # Listar las particiones de los dispositivos presentes.
 $ fdisk -l
@@ -171,7 +171,7 @@ Disk /dev/mmcblk1: 7948 MB, 7948206080 bytes #uSD
 	Device Boot Start      End  Blocks Id System
 /dev/mmcblk1p1       2048 15523839   98304  c W95 FAT32 (LBA)
 		\end{lstlisting}
-		Usando \texttt{fdisk} debemos borrar todas las particiones de la uSD y después crear dos nuevas. El estado final de la uSD esta
+		Usando \texttt{fdisk} debemos borrar todas las particiones de la uSD y después crear dos nuevas. El estado final de la uSD es
 		presentado a continuación.
 		\begin{lstlisting}[style=myBash]
 $ fdisk -l
@@ -196,7 +196,7 @@ $ mkfs -t ext3 /dev/mmcblk1p2
 optargs=quiet drm.debug=7 capemgr.enable_partno=BB-UART2,BB-UART1
 		\end{lstlisting}
 		Acabamos de explicar este proceso porque ante la presencia de una uSD el U-boot busca el archivo \texttt{uEnv.txt} en la uSD. Si el
-		archivo no esta presente el programa no puede seguir. Es por esta razón por la que hemos creado la partición FAT16 en la uSD. Para
+		archivo no está presente el programa no puede seguir. Es por esta razón por la que hemos creado la partición FAT16 en la uSD. Para
 		crear el archivo tenemos que seguir los siguientes pasos.
 		\begin{lstlisting}[style=myBash]
 $ mkdir trash
@@ -212,16 +212,16 @@ bootpart=1:2
 mmcroot=/dev/mmcblk1p2 ro
 optargs=quiet 
 		\end{lstlisting}
-		La línea interesante del archivo es la que asigna valor a \texttt{mmcroot}. Esta variable debe especificar donde esta el núcleo Linux
+		La línea interesante del archivo es la que asigna valor a \texttt{mmcroot}. Esta variable debe especificar donde está el núcleo Linux
 		que querremos arrancar. El valor asignado es \texttt{/dev/mmcblk1p2}, los lectores atentos se habrán dado cuenta que este valor
-		corresponde a la segunda partición dentro de la uSD, sitio donde no esta el núcleo.
+		corresponde a la segunda partición dentro de la uSD, sitio donde no está el núcleo.
 		\par 
 		En este punto la eMMC es el dispositivo \texttt{/dev/mmcbk0} y la uSD es el dispositivo \texttt{/dev/mmcbk1}, esto es así porque
 		arrancamos sin la uSD y añadimos esta posteriormente. Si arrancamos con la uSD presente esta es reconocida como el dispositivo
 		\texttt{/dev/mmcbk0} y la eMMC es \texttt{/dev/mmcbk1}. Teniendo esto en consideración la próxima vez que arranquemos la placa con la
 		uSD presente la variable \texttt{mmcroot} apuntara correctamente a la partición que contiene el núcleo Linux.
 		\par
-		En este punto tan solo nos queda definir un punto de montaje para la segunda partición de la uSD, la partición que guardara los datos
+		En este punto tan solo nos queda definir un punto de montaje para la segunda partición de la uSD, la partición que guardará los datos
 		del sistema de adquisición. Para este propósito tenemos que editar el archivo \texttt{/etc/fstab}, tenemos que añadir la siguiente
 		línea al final del archivo. La partición será montada en el directorio \texttt{/server/data}.
 		\begin{lstlisting}[style=myFile]
@@ -239,13 +239,13 @@ optargs=quiet
 	\par
 	El primer paso es desplegar un servidor MySql que contiene los datos que vamos a usar. Es recomendable instalar este servidor en la misma
 	máquina desde la que vamos a trabajar, los pasos presentados a continuación asumen que hemos procedido de esta manera. El siguiente comando
-	nos permite instalar un servidor MySql. Junto a este es instalado un programa cliente que permite conectar se al servidor desde una consola.
+	permite instalar un servidor MySql. Junto a este es instalado un programa cliente que permite conectar se al servidor desde una consola.
 	\begin{lstlisting}[style=myBash]
 $ sudo apt-get install mysql-server mysql-client
 	\end{lstlisting}
 	El siguiente paso es acceder como usuario \texttt{root} al servidor Mysql, para este propósito debemos usar el programa cliente que acabamos
 	de instalar. Seguidamente debemos crear dos bases de datos, es conveniente que usemos los nombres \texttt{nmdadb} y \texttt{nmdb}. Finalmente
-	debemos crear un usuario que el \emph{back-end} utilizara para conectarse al servidor. Debemos dar permisos al usuario sobre las bases de
+	debemos crear un usuario que el \emph{back-end} utilizará para conectarse al servidor. Debemos dar permisos al usuario sobre las bases de
 	datos que acabamos de crear, en este caso damos privilegios completos al usuario.
 	\begin{lstlisting}[style=myBash]
 $ mysql -u root -p
@@ -267,7 +267,7 @@ $ mysql -h localhost -u hristo -ppass nmdadb < nmdadb.sql
 	\par
 	Una vez configuradas las bases de datos podemos seguir con la instalación del software que compone el \emph{back-end}. Este software es
 	desarrollado en PHP, que podemos instalar usando el comando presentado a continuación. Este comando también instala la extensión
-	\texttt{php-mysql} que nos permite conectarnos al servidor MySql. Es importante destacar que necesitamos una versión PHP superior a la
+	\texttt{php-mysql} que habilita la conexión al servidor MySql. Es importante destacar que necesitamos una versión PHP superior a la
 	\texttt{5.3.23}, requerida por ZendFramework y Apigility.
 	\begin{lstlisting}[style=myBash]
 $ apt-get install php5 php5-mysql
@@ -307,13 +307,13 @@ $ php public/index.php development enable
 $ php -S 0.0.0.0:8080 -t public/ public/index.php
 	\end{lstlisting}
 	De esta manera todo el contenido presente en el directorio \texttt{public} será visible desde un navegador Web. Un ejemplo es nuestro
-	\texttt{front-end}, que desplegaremos en el subdirectorio \texttt{public/nmCpanel}. A continuación presentamos las URL que nos permiten
-	acceder a Apigility y a nuestra herramienta siempre y cuando esta este desplegada.
+	\texttt{front-end}, que desplegaremos en el subdirectorio \texttt{public/nmCpanel}. A continuación presentamos las URL's que permiten
+	acceder a Apigility y a nuestra herramienta siempre y cuando esta esté desplegada.
 	\begin{lstlisting}[style=myFile]
 http://localhost:8080/
 http://localhost:8080/nmCpanel/index.html
 	\end{lstlisting}
-	Eventualmente para que todo funcione bien deberemos verificar que la configuración referente a las bases de datos que creamos anteriormente es
+	Eventualmente para que todo funcione bien debemos verificar que la configuración referente a las bases de datos que creamos anteriormente es
 	correcta. Para este propósito debemos examinar los archivos \texttt{config/autoload/global.php} y \texttt{config/autoload/local.php}.
 
 \section{\emph{Front-end}}
@@ -330,7 +330,7 @@ http://localhost:8080/nmCpanel/index.html
 	\begin{lstlisting}[style=myBash]
 $ git clone https://github.com/opobla/nmcpanel.git directorio_de_proyecto
 	\end{lstlisting}
-	Finalmente debemos abrir el proyecto con Sencha Architect.  Seguidamente podemos empezar a trabajar. Para desplegar una versión de desarrollo
+	Finalmente debemos abrir el proyecto con Sencha Architect. Seguidamente podemos empezar a trabajar. Para desplegar una versión de desarrollo
 	debemos utilizar el botón de desplegar.
 
 \chapter{Proceso de implementación}
@@ -338,7 +338,7 @@ $ git clone https://github.com/opobla/nmcpanel.git directorio_de_proyecto
 	técnicas que hemos utilizado.
 	\par
 	A lo largo de todo el trabajo hemos utilizado el editor de texto VIM\cite{vim}, desde la creación del software de control hasta la edición de
-	este documento. VIM es un editor de texto que ofrece una interfaz accesible mediante una línea de comandos, esta interfaz no se basa en iconos
+	este documento. Este es un editor de texto que ofrece una interfaz accesible mediante una línea de comandos, esta interfaz no se basa en iconos
 	y menús, sino en comandos en forma de texto. Este es un editor que puede resultar muy complejo a los usuarios novatos, pero una vez amaestrado
 	tiene un gran potencial debido a la gran cantidad de atajos y personalizaciones que podemos realizar.
 	\par
@@ -358,17 +358,17 @@ $ git clone https://github.com/opobla/nmcpanel.git directorio_de_proyecto
 	\par
 	Durante el desarrollo del \emph{front-end} hemos utilizado Chrome y las herramientas de desarrollador que este ofrece\cite{ChromeDev}. Chrome
 	es un navegador Web con una popularidad creciente entre usuarios y desarrolladores. En este trabajo hemos hecho uso principalmente del
-	debugger JavaScript.  También hemos hecho uso de la herramienta Network que nos da información sobre el uso de la red, los mensajes que
-	nuestra herramienta intercambia.
+	debugger JavaScript. También hemos hecho uso de la herramienta Network que da información sobre el uso de la red, los mensajes que nuestra
+	herramienta intercambia.
 	\par
 	Sencha Architect es un entorno de desarrollo de aplicaciones basadas en ExtJs que hemos utilizado para la creación del \emph{front-end} de
 	nuestra aplicación. Este entorno facilita el desarrollo ofreciendo un entorno gráfico que permite generar gran parte del código de forma
-	automática. También nos ofrece una vista previa de la aplicación en tiempo real según editamos el código fuente de esta. 
+	automática. También ofrece una vista previa de la aplicación en tiempo real según editamos el código fuente de esta. 
 	\par
 	Para la elaboración de este documento hemos utilizado LaTeX\cite{latex}. Este es un conjunto de macros escritos en el lenguaje Tex\cite{tex}
 	que tienen como propósito facilitar el uso del lenguaje. Tex es un lenguaje de marcado pensado para la creación de documentos. Para los
 	usuarios novatos LeTeX puede resultar muy difícil, en este trabajo hemos empezado utilizando una plantilla sobre la que hemos añadido
-	contenido. Esto nos ha permitido centrarnos en el contenido del documento, despreocupándonos de la presentación. 
+	contenido. Esto ha permitido centrarnos en el contenido del documento, despreocupándonos de la presentación. 
 	\par
 	A lo largo de este trabajo hemos realizado un control de versiones, para este propósito hemos utilizado Git\cite{git}. Esta es una herramienta
 	fácil de aprender y usar que enfatiza en la velocidad y el desarrollo no lineal. Para mantener un repositorio remoto hemos utilizado
