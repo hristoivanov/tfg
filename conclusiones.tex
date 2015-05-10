@@ -6,7 +6,7 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 	Las experiencias obtenidas del trabajo son generalmente buenas, el autor considera haber cumplido todos los objetivos inicialmente propuestos
 	y en muchos casos haberlos sobrepasado. 
 	\par
-	Durante el desarrollo del software de adquisición  se han adquirido y reforzado multitud de conocimientos. Las experiencias obtenidas del
+	Durante el desarrollo del software de adquisición se han adquirido y reforzado multitud de conocimientos. Las experiencias obtenidas del
 	trabajo conjunto con el equipo de CALMA han sido muy positivas. El diseño del software ha sido muy condicionado por el hardware ya existente,
 	en sistemas empotrados estos dos están muy enlazados. El autor no considera esto como una desventaja sino como una ventaja. Raras veces en
 	proyectos reales uno tiene libertad total, la mayoría de veces uno se ve forzado  a colaborar y adaptarse a las limitaciones que le son
@@ -28,7 +28,7 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 	de bases de datos relacionales es muy ligero cosa que lo hace muy adecuado para este trabajo.
 	\par
 	La realización de la herramienta Web también ha sido una experiencia agradable en la que hemos adquirido multitud de conocimientos nuevos. A
-	diferencia del software de adquisición en la realización de esta hemos tenido más libertad a la hora del diseño. Veamos el impacto que han
+	diferencia del software de adquisición, en la realización de esta hemos tenido más libertad a la hora del diseño. Veamos el impacto que han
 	tenido algunas de las decisiones que hemos tomado. Obviaremos alguna elecciones como la arquitectura \emph{Modelo Vista Controlador} porque
 	son muy triviales y existe gran cantidad de literatura disponible.
 	\par
@@ -44,13 +44,13 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 	HighStock es una elección con la que estamos muy satisfechos. La funcionalidad ofrecida ha cubierto todos nuestros requisitos. Además trabajar
 	con el framework ha sido un placer, este es muy intuitivo y podemos encontrar múltiples ejemplos de uso.
 	\par
-	A continuación procederemos a detallar los resultados conseguidos en este trabajo. Empezaremos por el software de adquisición. Conjuntamente
-	al sistema de adquisición actual e intentando interferir lo menos posible hemos desplegado el nuevo sistema de adquisición. El objetivo es
+	A continuación procederemos a detallar los resultados conseguidos en este trabajo, empezando por el software de adquisición. Conjuntamente al
+	sistema de adquisición actual e intentando interferir lo menos posible hemos desplegado el nuevo sistema de adquisición. El objetivo es
 	identificar y eliminar posibles malfuncionamientos que puedan presentarse. El nuevo sistema de adquisición lleva operando de forma parcial
-	desde el 25 de febrero de 2015. Acabamos de utilizar la palabra parcial porque hay algunas funcionalidades que no explotamos. La primera de
-	estas es el barómetro. Un barómetro como el BM35 es muy caro, además el proceso de calibración y certificación puede ser aún más costoso. Al
-	no tener barómetro no podemos generar los datos corregidos por presión. Actualmente estamos trabajando en alguna solución que permita a dos o
-	más sistemas de adquisición compartir un barómetro. La segunda funcionalidad que no explotamos son los anchos de pulso. Como explicamos en el
+	desde el 25 de febrero de 2015. Utilizamos la palabra parcial porque hay algunas funcionalidades que no explotamos, siendo la primera de estas
+	es el barómetro (un barómetro como el BM35 es muy caro, además el proceso de calibración y certificación puede ser aún más costoso). Al no
+	tener barómetro no podemos generar los datos corregidos por presión. Actualmente estamos trabajando en alguna solución que permita a dos o más
+	sistemas de adquisición compartir un barómetro. La segunda funcionalidad que no explotamos son los anchos de pulso. Como explicamos en el
 	capítulo de introducción el nuevo sistema esta diseñado para hacer uso de un circuito de adaptación que genera pulsos cuyo ancho es
 	proporcional a la energía de la señal. Estos circuitos no están listos, en su lugar seguimos utilizando los viejos que generan pulsos cuyo
 	ancho es fijo. Debido a esto los histogramas de ancho de pulso carecen de significado. 
@@ -104,20 +104,20 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 			\item[Anchos de pulso] 
 				Tal y como explicamos anteriormente en este trabajo el nuevo sistema de adquisición registra los anchos de los pulsos,
 				anchos que son proporcionales a la energía de la señal original. Con estos datos son construidos histogramas con una
-				resolución de 10 minutos. Estos histogramas son guardados en la base de datos en forma de cadenas Json. Proponemos
-				como trabajo futuro extender la herramienta con un módulo funcional que permita visualizar estos datos. Para este
-				propósito debemos encontrar la manera más efectiva de presentar los datos.  Al igual que el resto de la herramienta
-				este módulo debe ser intuitivo e altamente interactivo. El módulo debe permitirnos especificar diferentes intervalos
-				temporales, ocultar/mostrar series y mucho más.
+				resolución de 10 minuto que son guardados en la base de datos en forma de cadenas Json. Proponemos como trabajo futuro
+				extender la herramienta con un módulo funcional que permita visualizar estos datos. Para este propósito debemos
+				encontrar la manera más efectiva de presentar los datos. Al igual que el resto de la herramienta este módulo debe ser
+				intuitivo, altamente interactivo y además debe permitirnos especificar diferentes intervalos temporales,
+				ocultar/mostrar series y mucho más.
 			\item[Configuración del sistema de adquisición]
 				Proponemos como trabajo futuro extender la herramienta con un módulo funcional que permita cambiar la configuración
 				del sistema de adquisición en tiempo real. Recordemos del capítulo \ref{cap2} el archivo de configuración en el que
 				definimos una serie de variables que configuran el software de adquisición. El módulo funcional que proponemos debería
 				permitirnos cambiar el valor de estas variables sin interrumpir el proceso de adquisición. El desarrollo de este
-				módulo tendrá que ser acompañado por el avance del software de adquisición. Este debe ofrecer una interfaz que permita
+				módulo tendrá que ser acompañado por el avance del software de adquisición, este debe ofrecer una interfaz que permita
 				esta configuración remota.
 			\item[Alarmas y Notificación]
-				Proponemos como trabajo futuro realizar un módulo funcional que genere alarmas y notificaciones. El módulo funcional
+				Proponemos como trabajo futuro realizar un módulo funcional que genere alarmas y notificaciones.  El módulo funcional
 				debe ser capaz de detectar malfuncionamientos y tomar las acciones oportunas para informar al equipo de la estación.
 				No generar datos o generar datos anormales son algunos ejemplos de malfuncionamiento.
 			\item[Autenticación y autorización]
@@ -130,6 +130,4 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 				En el capítulo de introducción especificamos los objetivos de este trabajo, entre estos objetivos tan solo
 				contemplamos el desarrollo de la herramienta. Proponemos como trabajo futuro el implantar y mantener el software que
 				compone la herramienta Web. 
-
-			
 		\end{description}
