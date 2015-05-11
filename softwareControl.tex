@@ -5,11 +5,11 @@ capítulo de introducción. El funcionamiento nominal del software consiste en r
 barómetro, las fuentes de alimentación y los sensores de temperatura si estos están presentes. Cada minuto la información recogida es procesada y
 almacenada en una base de datos. 
 \par
-Antes de empezar a discutir a fondo el software de adquisición es conveniente estar familiarizados con el entorno hardware que describimos en el
-capítulo \ref{entornoHW}. El software es ejecutado en la BeagleBone Black sobre un Linux, distribución Angstrom. El lenguaje elegido para el
-desarrollo es Python\cite{Python}. Este  es un lenguaje interpretado de alto nivel con una sintaxis centrada en producir un código legible. El
-lenguaje se adapta igualmente bien a programación imperativa y orientada a objetos. El tipado dinámico da mucha flexibilidad al lenguaje. Todas estas
-propiedades del lenguaje permiten un desarrollo rápido. Además el lenguaje ofrece una amplia cantidad de librerías que también aligeran el trabajo. 
+Antes de empezar a discutir a fondo el software de adquisición es conveniente estar familiarizados con el entorno hardware descrito en el capítulo
+\ref{entornoHW}. El software es ejecutado en la BeagleBone Black sobre un Linux, distribución Angstrom. El lenguaje elegido para el desarrollo es
+Python\cite{Python}. Este  es un lenguaje interpretado de alto nivel con una sintaxis centrada en producir un código legible. El lenguaje se adapta
+igualmente bien a programación imperativa y orientada a objetos. El tipado dinámico da mucha flexibilidad al lenguaje. Todas estas propiedades del
+lenguaje permiten un desarrollo rápido. Además el lenguaje ofrece una amplia cantidad de librerías que también aligeran el trabajo. 
 \par
 Para gestionar la base de datos utilizamos Sqlite3\cite{Sqlite}. Este es un gestor muy ligero y adecuado para sistemas empotrados. Aparte de esta base
 de datos local el software permite mantener una segunda réplica remota. Para esta réplica remota utilizamos MySql\cite{MySql} que es un gestor más
