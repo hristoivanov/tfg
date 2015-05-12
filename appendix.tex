@@ -221,7 +221,7 @@ optargs=quiet
 		\texttt{/dev/mmcbk0} y la eMMC es \texttt{/dev/mmcbk1}. Teniendo esto en consideración la próxima vez que arranquemos la placa con la
 		uSD presente la variable \texttt{mmcroot} apuntara correctamente a la partición que contiene el núcleo Linux.
 		\par
-		En este punto tan solo nos queda definir un punto de montaje para la segunda partición de la uSD, la partición que guardará los datos
+		En este punto tan sólo nos queda definir un punto de montaje para la segunda partición de la uSD, la partición que guardará los datos
 		del sistema de adquisición. Para este propósito tenemos que editar el archivo \texttt{/etc/fstab}, tenemos que añadir la siguiente
 		línea al final del archivo. La partición será montada en el directorio \texttt{/server/data}.
 		\begin{lstlisting}[style=myFile]
@@ -234,7 +234,7 @@ optargs=quiet
 \section{\emph{Back-end}}
 	\label{app_back}
 	El propósito de este punto es detallar el proceso que debe seguirse para desplegar el \emph{back-end} de la aplicación Web. Debido a que en
-	este trabajo tan solo nos centramos en el proceso de desarrollo, el proceso de despliegue presentado es para desplegar una versión de
+	este trabajo tan sólo nos centramos en el proceso de desarrollo, el proceso de despliegue presentado es para desplegar una versión de
 	desarrollo que permita seguir trabajando en el proyecto.
 	\par
 	El primer paso es desplegar un servidor MySql que contiene los datos que vamos a usar. Es recomendable instalar este servidor en la misma

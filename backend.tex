@@ -13,7 +13,7 @@ Apigility\cite{Apigility}, herramienta que simplifica la creación y mantenimien
 El \emph{back-end} tiene un enfoque RPC o \emph{Remote Procedure Call}. Este módulo exporta un conjunto de procedimientos que pueden ser invocados por
 el \emph{front-end}. Estos procedimientos realizan tareas específicas sobre un recurso concreto. A la largo de este trabajo nos referiremos a estos
 procedimientos como \emph{servicios RPC}. Un aspecto oportuno destacar es que los servicios RPC son sin estado. Esto quiere decir que la respuesta a
-un procedimiento no es influenciada por eventos anteriores, esta tan solo depende de los parámetros proporcionados.
+un procedimiento no es influenciada por eventos anteriores, esta tan sólo depende de los parámetros proporcionados.
 \par
 Si nos volvemos a fijar en la figura \ref{fig:herramienta_web_preliminar} podemos ver que en el \emph{back-end} existe la separación entre
 \emph{Modelo} y \emph{Controlador}. Esta separación sigue el patrón de diseño MVC\cite{MVCWiki}. Podemos ver que el componente de \emph{Vista} no
@@ -137,7 +137,7 @@ public function interval($start,$finish){
 			\begin{center} \texttt{\$interval =round((\$finish-\$start)/(\$points));}  \end{center} 
 		Una vez formados los grupos para cada grupo es calculado el máximo, mínimo, \emph{open} y \emph{close}. El \emph{open} y \emph{close}
 		son la media más la desviación típica y la media menos la desviación típica respectivamente. Estos cuatro valores son calculados para
-		el valor global, la corrección por presión y la corrección por eficiencia. Para la presión atmosférica tan solo es calculado el valor
+		el valor global, la corrección por presión y la corrección por eficiencia. Para la presión atmosférica tan sólo es calculado el valor
 		medio. Estos datos son utilizados para construir un gráfico \emph{Candlestick}, sobre este tipo de gráfico hablaremos en el siguiente
 		capítulo dedicado al \emph{front-end}.
 	\subsection{\texttt{nmdbRevisedRaw}}
@@ -147,7 +147,7 @@ public function interval($start,$finish){
 	  		\begin{center} \texttt{/nmdb/revised/raw[/:start][/:finish]}  \end{center} 
 		Los dos parámetros aceptados delimitan el intervalo de datos.
 		\par
-		En la tabla \texttt{CALM\_rev} son guardados los datos revisados, pero no son guardados todos, tan solo las entradas que han sido
+		En la tabla \texttt{CALM\_rev} son guardados los datos revisados, pero no son guardados todos, tan sólo las entradas que han sido
 		modificadas. Por esta razón este servicio también hace uso de \texttt{CALM\_ori} para devolvernos la información completa. A
 		continuación podemos ver parte de la query SQL utilizada para obtener los datos revisados.
 			\begin{center} \texttt{"SELECT ori.start\_date\_time,
@@ -183,11 +183,11 @@ public function interval($start,$finish){
 			\begin{center} \texttt{/nmdb/marknull}  \end{center}
 		Como podemos ver este servicio no necesita parámetros. Este servicio acepta un método \texttt{POST}. Los mensajes con método
 		\texttt{POST} siempre van acompañados de un campo de datos. Este campo de datos contiene la información del dato que queremos marcar
-		como nulo. Eventualmente este campo puede contener un array, de esta forma podemos marcar más de un dato con solo una llamada al
+		como nulo. Eventualmente este campo puede contener un array, de esta forma podemos marcar más de un dato con sólo una llamada al
 		servicio.
 		\par 
 		La query SQL utilizada por este servicio es muy simple, esta realiza un \texttt{INSERT} en la tabla \texttt{CALM\_rev}. Si el dato ya
-		está presente tan solo incrementamos la versión actual y modificamos la fecha de última modificación. A continuación podemos ver la
+		está presente tan sólo incrementamos la versión actual y modificamos la fecha de última modificación. A continuación podemos ver la
 		query que estamos discutiendo.
 			\begin{center} \texttt{\textquotedbl INSERT INTO CALM\_rev 
 			  		\\	(start\_date\_time, revised\_uncorrected, revised\_corr\_for\_efficiency, revised\_corr\_for\_pressure, revised\_pressure\_mbar, version, last\_change )
@@ -229,7 +229,7 @@ public function interval($start,$finish){
 	  		\begin{center} \texttt{"select chh as num, count(chh) as val from (select ch div 5 as chh  from 
 				      	\\	(select ".\$channel.\textquotedbl  as ch from binTable where start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc) as t1) as t2 group by chh order by num"}
 			\end{center} 
-		La query calcula el histograma para un solo canal, especificado por la variable \texttt{\$channel}. Para construir el histograma de
+		La query calcula el histograma para un único canal, especificado por la variable \texttt{\$channel}. Para construir el histograma de
 		los 18 canales esta query es invocada múltiples veces. Las tablas están indexadas por el campo \texttt{start\_date\_time}, razón por
 		la que las demás queries son efectivas. En esta query tenemos que agrupar por el número de cuentas, campo que no está indexado. Por
 		esta razón no es deseable invocar a este servicio con un intervalo superior a un mes.

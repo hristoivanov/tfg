@@ -34,7 +34,7 @@ En nuestra aplicación también hacemos una división funcional, diferenciamos e
 
 \section{Sencha ExtJs}
 	El propósito de esta sección es explicar alguno de los aspectos básicos del framework. Empezaremos explicando como crear una aplicación básica
-	basándonos en ExtJs. En la mayoría de los casos existe un solo documento HTML\cite{HTML} que contiene toda la aplicación. En este documento
+	basándonos en ExtJs. En la mayoría de los casos existe un único documento HTML\cite{HTML} que contiene toda la aplicación. En este documento
 	tenemos que cargar dos \emph{scripts} de la siguiente forma.
     		\begin{center} \texttt{<script type="text/javascript" src=\textquotedbl extjs/ext-all-debug.js\textquotedbl ></script>}  \end{center}
     		\begin{center} \texttt{<script type="text/javascript" src=\textquotedbl app.js\textquotedbl ></script>}  \end{center}
@@ -64,7 +64,7 @@ Ext.application({
  	\par
 	En la segunda línea declaramos el nombre de nuestra aplicación. Seguidamente definimos la función \texttt{launch}. Esta es la función que debe
 	lanzar nuestra aplicación. La primera función invocada es \texttt{Ext.create} que crea una instancia de la clase proporcionada, en este caso
-	\texttt{Ext.container.Viewport}. \texttt{Viewport} es un \emph{contenedor} que representa el área de aplicación y puede haber tan solo uno por
+	\texttt{Ext.container.Viewport}. \texttt{Viewport} es un \emph{contenedor} que representa el área de aplicación y puede haber tan sólo uno por
 	aplicación. 
  	\par
 	La interfaz de usuario en una aplicación ExtJs es compuesta por \emph{componentes}. Un \emph{contenedor} es un \emph{componente} especial que
@@ -77,12 +77,12 @@ Ext.application({
 	\end{figure}
  	\par
 	El \texttt{Viewport} es el \emph{contenedor} que contiene todos los demás \emph{componentes} de nuestra aplicación. Los \emph{compenentes} de
-	un \emph{contenedor} se especifican en el campo \texttt{items} que es una lista. En el ejemplo presentado tan solo tenemos un
+	un \emph{contenedor} se especifican en el campo \texttt{items} que es una lista. En el ejemplo presentado tan sólo tenemos un
 	\emph{conponente}, pero pueden ser añadidos más.
  	\par
 	Fijándonos en el código de ejemplo podemos ver que antes de definir el campo \texttt{items} definimos el campo \texttt{layout}. El
 	\texttt{layout} especifica la forma en la que se posicionan y ajustan los \emph{componetes} hijos dentro del padre. En este caso el
-	\texttt{layout} especificado es \texttt{\cc fit\cc}, donde un solo hijo ocupa todo el espacio del padre.
+	\texttt{layout} especificado es \texttt{\cc fit\cc}, donde un único hijo ocupa todo el espacio del padre.
 	\subsection{Component Manager}
 		ExtJs ofrece el singletone \texttt{Ext.ComponentManager} que provee un registro con todos los componentes. Este facilita la referencia
 		a elementos desde cualquier punto del código. El propósito de esta sección es explicar como hacer uso de esta facilidad.
@@ -97,7 +97,7 @@ Ext.application({
 		\texttt{root} es opcional y especifica el contenedor dentro de cual queremos hacer la búsqueda. Si el segundo parámetro es omitido la
 		búsqueda es realizada entre todos los componentes. La función devuelve un array con todos los componentes que reúnen las condiciones,
 		pudiendo ser este un array vacío. Eventualmente podemos hacer búsquedas más complejas, podemos buscar por tipo, atributos y mucho más.
-		En este trabajo tan solo hemos utilizado queries simples, razón por la que no explicamos como se realizan estas queries avanzadas.
+		En este trabajo tan sólo hemos utilizado queries simples, razón por la que no explicamos como se realizan estas queries avanzadas.
 		\par
 		La clase \texttt{Ext.container.Container} implementa las funciones \texttt{down()} y \texttt{query()}. Estas dos realizar una llamada
 		a \texttt{Ext.ComponentQuery.query()} teniéndose a si mismo como parámetro \texttt{root}. Esto les permite hacer una búsqueda entre
@@ -111,7 +111,7 @@ Ext.application({
 		anteriormente explicada, pero no deben ser usados con ese propósito. Estan considerados como obsoletos y pueden dar lugar a
 		colisiones. 
 	\subsection{Layouts}
-		El propósito de esta sección es explicar los layouts utilizados en este trabajo. Tan solo explicaremos la funcionalidad de estos sin
+		El propósito de esta sección es explicar los layouts utilizados en este trabajo. Tan sólo explicaremos la funcionalidad de estos sin
 		centrarnos en el uso que les hemos dado, este será explicado en las secciones venideras cuando proceda. En la figura \ref{fig:layouts}
 		podemos ver una representación de los layouts que describiremos a continuación.
 		\begin{description}[style=unboxed,leftmargin=0cm,labelwidth=1cm]
@@ -120,7 +120,7 @@ Ext.application({
 			  \texttt{width}. La posición y tamaño de los componentes se puede cambiar mediante el uso de las funciones
 			  \texttt{setPosition()} y \texttt{setSize()}.
 			\item[\texttt{Accordion}] Este layout se asemeja a un acordeón. Los \emph{componentes} hijo pueden ser expandidos y
-			  colapsados, teniendo tan solo uno expandido a la vez. Los \emph{componentes} son ordenados en vertical ocupando todo el
+			  colapsados, teniendo tan sólo uno expandido a la vez. Los \emph{componentes} son ordenados en vertical ocupando todo el
 			  espacio disponible. Las funciones \texttt{expand} y \texttt{collapse} permiten expandir y colapsar los paneles hijo.
 			  También están presentes multitud de manejadores de eventos que podemos sobrescribir, en nuestro caso hacemos uso del
 			  \texttt{beforeExpand} que se dispara antes de expandir un \emph{componente}. 
@@ -130,10 +130,10 @@ Ext.application({
 			  necesario que estén presentes los cinco hijos, podemos omitir los no deseados. Esto hace que este layout sea muy flexible e
 			  interesante.
 			\item[\texttt{Card}] Este layout maneja multiples \emph{componentes} hijo. Los hijos ocupan todo el espacio disponible, por lo
-			  que se solapan uno a otro.  Esto hace que solo uno pueda ser visible a la vez. El layout asemeja una baraja de cartas donde
-			  solo una carta puede estar en la parte superior. La función que permite hacer visible un hijo es \texttt{setActiveItem()}.
+			  que se solapan uno a otro. Esto hace que solamente uno pueda ser visible a la vez. El layout asemeja una baraja de cartas donde
+			  solamente una carta puede estar en la parte superior. La función que permite hacer visible un hijo es \texttt{setActiveItem()}.
 			  Esta función acepta el \emph{componente}, el \texttt{itemId} de este o el índice de este.
-			\item[\texttt{Fit}] Este es un layout muy simple, este tan solo acepta un hijo que ocupa todo el espacio que el padre ofrece.
+			\item[\texttt{Fit}] Este es un layout muy simple, este tan sólo acepta un hijo que ocupa todo el espacio que el padre ofrece.
 			  El \emph{componente} hijo se expande automáticamente para ajustarse al tamaño del padre.
 			\item[\texttt{HBox y VBox}] Estos son dos layouts diferentes, pero muy parecidos, razón por la que serán explicados en la
 			  misma subsección. \texttt{HBox} organiza sus elementos hijos de forma horizontal a lo largo del \emph{componente} padre.
@@ -152,7 +152,7 @@ Ext.application({
 	\subsection{Lazy instantiation}
 		La inicialización perezosa es una técnica que consiste en retrasar la creación de recursos hasta el momento en el que sean necesarios.
 		Como hemos visto en la sección dedicada a los layouts en muchos casos los componentes no son visibles. Tener que crear todos los
-		componentes al inicializar la aplicación no es muy eficiente, dado que tan solo unos pocos son visibles. Crear tan solo los
+		componentes al inicializar la aplicación no es muy eficiente, dado que tan sólo unos pocos son visibles. Crear tan sólo los
 		componentes visibles y después ir creando los componentes según se vayan necesitando supone un incremento en el rendimiento. En
 		páginas pequeñas con pocos componentes el aumento no es apreciable, sin embargo en páginas que manejan multitud de componentes el
 		incremento puede ser drástico. 
@@ -320,14 +320,14 @@ myChart = new Highcharts.StockChart({
 	\par
 	Como podemos ver para crear un gráfico invocamos la función \texttt{StockChart()}. Esta función acepta como parámetro un objeto que
 	define la configuración del gráfico. El formato de este objeto puede verse en la documentación del framework\cite{HighStockDoc}. En nuestro
-	caso tan solo especificaremos dos atributos, la mayoría de los atributos tiene un valor por defecto por lo que no es necesario especificarlos
+	caso tan sólo especificaremos dos atributos, la mayoría de los atributos tiene un valor por defecto por lo que no es necesario especificarlos
 	explícitamente. 
 	\par
 	El primer atributo que especificamos es \texttt{chart}. Este atributo es un objeto que a su vez especifica  aspectos básicos del gráfico. El
 	atributo que especificamos es \texttt{renderTo}, el elemento HTLM en el que nuestro gráfico será presentado.
 	\par
 	El segundo atributo que especificamos es \texttt{series}. Este es un array de objetos que especifican las series de nuestro gráfico. En este
-	ejemplo tenemos tan solo un objeto, por lo que nuestro gráfico tendrá tan solo una serie.  Definiendo el atributo \texttt{name} le damos un
+	ejemplo tenemos tan sólo un objeto, por lo que nuestro gráfico tendrá tan sólo una serie.  Definiendo el atributo \texttt{name} le damos un
 	nombre a nuestra serie y especificando el atributo \texttt{data} le damos datos a nuestra serie. El atributo \texttt{data} tiene que ser un
 	array que contenga los datos, este array puede tener múltiples formatos que no explicaremos dado que están muy bien explicado en la
 	documentación proporcionada\cite{HighStockDoc}.
@@ -361,7 +361,7 @@ myChart = new Highcharts.StockChart({
 		\par
 		El agrupamiento de datos y cálculo de estos cuatro valores para cada grupo está implementado en el \emph{back-end}. Los servicios RPC
 		que nos permiten acceder a estos datos son \texttt{nmdbOriginalGroup} y \texttt{nmdbRevisedGroup}. Estos servicios fueron explicados
-		en el capítulo dedicado al \emph{back-end}, en este punto tan solo nos interesa destacar el argumento \texttt{points} que estos dos
+		en el capítulo dedicado al \emph{back-end}, en este punto tan sólo nos interesa destacar el argumento \texttt{points} que estos dos
 		servicios aceptan. Este argumento especifica el número de grupos en los que serán agrupados los datos, este será proporcional al
 		número de pixeles que tenemos disponibles para representar nuestro gráfico. 
 		\par
@@ -488,12 +488,12 @@ H.addEvent(chart, 'selection', function (e) {
 	realizar una comunicación Ajax. 
 	\par
 	Concretamente hacemos uso de la función \texttt{Ext.data.Connection.request}. Esta función envía una petición \emph{HTTP} a un servidor
-	remoto. La función acepta un solo parámetro que es un objeto cuyas propiedades definen el comportamiento de la función. Las propiedades de las
+	remoto. La función acepta únicamente un parámetro que es un objeto cuyas propiedades definen el comportamiento de la función. Las propiedades de las
 	que nosotros hacemos uso están detalladas a continuación. 
 	\begin{itemize}
 		\item	\texttt{url}. La URL a la que enviaremos la petición. En nuestro caso \emph{back-end} y \emph{front-end} estarán albergados en
 			el mismo \emph{host}. Esto nos permite no especificar el \emph{host}, la petición se hará al \emph{host} utilizado para cargar
-			la aplicación. En la URL tan solo tendremos que especificar el servicio deseado y los parámetros que acompañan a este.
+			la aplicación. En la URL solamente hay que que especificar el servicio deseado y los parámetros que acompañan a este.
 			Seguidamente presentamos un ejemplo del valor que puede tomar el campo \texttt{url}.
     				\begin{center} \texttt{url: \cc/nmdadb/channel/stats/default/default\cc}  \end{center}
 		\item	\texttt{method}. El método que especifica nuestro mensaje de petición. Los mensajes \emph{HTTP} de petición pueden especificar
@@ -773,7 +773,7 @@ Ext.define('MyApp.controller.Users', {
 	\texttt{itemId} que define es \texttt{Controls}. Este \emph{contenedor} tiene tres hijos que son instancias de la misma clase. Estos tres
 	hijos contienen los controles vinculados a los tres módulos funcionales. Los \texttt{itemId} que estos tres hijos especifican son:
     		\begin{center} \texttt{[SpikeControls, SpikeRevisedControls, ChannelStatsControls]}  \end{center}
-	\texttt{Controls} usa el layout \texttt{accordion}, donde tan solo uno de los hijos puede estar expandido y los demás están
+	\texttt{Controls} usa el layout \texttt{accordion}, donde solamente uno de los hijos puede estar expandido y los demás están
 	colapsados, de esta manera no pueden ser visibles lo controles de dos módulos funcionales a la vez. Cada vez que son expandidos los
 	controles de un módulo funcional el evento \texttt{Ext.panel.Panel.beforeexpand} es disparado. El handler asociado a este evento
 	invoca la función apropiada de los Controladores para mostrar el módulo funcional al que pertenecen los controles que acaban de ser
@@ -781,7 +781,7 @@ Ext.define('MyApp.controller.Users', {
 	\par
 	La tercer hijo del \texttt{MyViewPort} con \texttt{region:center} es también una instancia de la clase \texttt{Ext.container.Container}. El
 	\texttt{ítemId} que identifica a este componente es \texttt{NavigationPanel}. El layout utilizado es \texttt{card} donde los hijos se solapan
-	unos a otros y tan solo uno puede ser visible a la vez. Los \emph{componentes} hijos contienen todos los gráficos y tablas que nuestra
+	unos a otros y tan sólo uno puede ser visible a la vez. Los \emph{componentes} hijos contienen todos los gráficos y tablas que nuestra
 	aplicación ofrece, estos son mostrados en función del estado de los controles.
 	\par
 	En la figura \ref{fig:vista} podemos ver como se organizan los componentes de la Vista que acabamos de explicar.

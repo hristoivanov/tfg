@@ -289,10 +289,10 @@ GPIO.output('P9_42', GPIO.HIGH)
 \section{\texttt{CountsManager}}
 	Este es el módulo software encargado de recolectar la información de los demás módulos y guardarla en una base de datos. En la figura
 	\ref{fig:soft_adquisición} podemos ver el diagrama que describe el funcionamiento de este. La mayoría de los datos que este módulo maneja son
-	generados por los otros módulos software como el \texttt{FPGASerialReader} o el \texttt{SensorsManager}, este tan solo calcula el valor global
+	generados por los otros módulos software como el \texttt{FPGASerialReader} o el \texttt{SensorsManager}, este tan sólo calcula el valor global
 	y las correcciones de este. Finalmente este se encarga de guardar los datos. 
 	\subsection{Solicitar cuentas a la FPGA}
-		Como vimos en el capítulo \ref{entornoHW} la FPGA tan solo transmite los datos de las cuentas cuando estas son solicitadas con el
+		Como vimos en el capítulo \ref{entornoHW} la FPGA tan sólo transmite los datos de las cuentas cuando estas son solicitadas con el
 		comando apropiado. Este módulo es el encargado de mandar el comando al principio de cada minuto. La información transmitida por la
 		FPGA es procesada por el \texttt{FPGASerialReader} y almacenada en variables compartidas accesibles por el \texttt{CountsManager}.
 		Después de mandar el comando apropiado para solicitar las cuentas este Thread se queda esperando hasta que el
@@ -353,7 +353,7 @@ def medianAlgorithm(self, counts):
 		tensión.
 	    	\par 
 		En la segunda tabla llamada CALM\_ori, nombre también heredado por el NMDB, guardamos el valor global y sus correcciones. Junto a
-		estos valores también guardamos el valor de la fecha y hora actuales, y en este caso tan solo guardamos el valor de la presión
+		estos valores también guardamos el valor de la fecha y hora actuales, y en este caso tan sólo guardamos el valor de la presión
 		atmosférica.
 	    	\par
 		En la última tabla guardamos los valores de los anchos de pulsos. Dado al gran número de pulsos que son procesados guardar la
@@ -385,7 +385,7 @@ def medianAlgorithm(self, counts):
 		configuración hemos especificado que no tenemos barómetro esta función devuelve un \emph{-1}, valor que devuelve en caso de algún
 		error. Actualmente son soportados dos tipos de barómetros, el BM35 y el AP1. La lógica para manejar estos dos barómetros
 		se encuentra en los archivos \texttt{BM53Driver} y \texttt{AP1Driver} respectivamente. No explicaremos muy a fondo el funcionamiento
-		de estos dos, tan solo destacaremos que el BM35 se comunica mediante un puerto serie y el AP1 mediante tres señales digitales que son
+		de estos dos, tan sólo destacaremos que el BM35 se comunica mediante un puerto serie y el AP1 mediante tres señales digitales que son
 		reloj, \emph{strobe} y datos.
 	\subsection{Fuentes de alta tensión}
 		En el caso de las fuentes de alta tensión las tenemos de dos tipos, analógicas y digitales. Las digitales transmiten su información
