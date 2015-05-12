@@ -89,11 +89,11 @@ comunes que pueden ser observados indirectamente a consecuencia de estudiar la c
 	hablaremos del sistema de adquisición, base de datos, herramientas y técnicas que son usadas.
 	\subsection{Sistema de adquisición}
 		Como hemos mencionado el sistema de adquisición que está implantado en CALMA es producto del propio equipo\cite{Garcia2014}. El
-		sistema es basado en un sistema empotrado Linux. Las señales capturadas por los tubos contadores son amplificadas y digitalizadas por
-		un circuito de adaptación, seguidamente son procesadas por una FPGA. Esta es la encargada se medir los eventos por minuto de los 18
+		sistema está basado en un sistema empotrado Linux. Las señales capturadas por los tubos contadores son amplificadas y digitalizadas por
+		un circuito de adaptación, a continuación son procesadas por una FPGA. Ésta es la encargada de medir los eventos por minuto de los 18
 		canales. Aunque la  estación tan sólo tiene 15 tubos contadores el sistema está diseñado para soportar 18, este número es un estándar
 		histórico. El software que se ejecuta en el sistema Linux tiene como tarea comunicarse con la FPGA, su labor es recoger las
-		\emph{cuentas} de cada minuto y guardar estas en una base de datos. En la figura \ref{fig:acqsis} podemos ver que diagrama de bloques
+		\emph{cuentas} de cada minuto y guardar éstas en una base de datos. En la figura \ref{fig:acqsis} podemos ver un diagrama de bloques
 		que representa el sistema de adquisición.
 		\begin{figure}[h]
 			\centering
@@ -106,28 +106,28 @@ comunes que pueden ser observados indirectamente a consecuencia de estudiar la c
 		está implantado. A continuación procedemos a detallar las diferencias clave entre los dos sistemas. 
 		\par
 		\begin{itemize}
-			\item La primera diferencia entre los dos sistema de adquisición radica en el circuito de adaptación. En el sistema de
+			\item La primera diferencia entre los dos sistemas de adquisición radica en el circuito de adaptación. En el sistema de
 			  adquisición actual para cada señal el circuito de adaptación genera un pulso fijo. El nuevo sistema de adquisición incorpora
 			  nuevo circuito de adaptación. Este nuevo circuito de adaptación genera un pulso cuyo ancho de banda es proporcional a la
 			  energía de la señal. El fin es medir la energía de las partículas detectadas, esta magnitud es de gran interés científico y
 			  técnico.
-			\item La siguiente diferencia está en la FPGA, recordamos que en el sistema de adquisición actual esta tan sólo registra los
+			\item La siguiente diferencia está en la FPGA, recordamos que en el sistema de adquisición actual ésta tan sólo registra los
 			  eventos por minuto para los 18 canales. La nueva FPGA debe realizar la misma tarea, pero aparte debe poder medir el ancho de
 			  los pulsos generados por el circuito de adaptación. Los dos sistemas de adquisición utilizan un puerto serie para la
-			  comunicación entre software y FPGA, en el sistema nuevo este puerto opera a una velocidad mayor a fin de poder transmitir
+			  comunicación entre software y FPGA. En el nuevo sistema este puerto opera a una velocidad mayor a fin de poder transmitir
 			  toda la información extra.
-			\item El nuevo sistema también está pensado para ofrecer una mayor compatibilidad. El fin es poder implantar este en
+			\item El nuevo sistema también está pensado para ofrecer una mayor compatibilidad. El fin es poder implantar éste en
 			  diferentes estaciones de forma fácil y rápida. El hardware y software deben ser diseñados con este requisito en mente.
 		\end{itemize}
 	\subsection{Bases de datos}
 		La base de datos que genera CALMA está diseñada de acuerdo con el estándar impuesto por NMDB. Existen dos réplicas de la
-		base de datos. Tenemos una réplica de los datos crudos adquiridos en el propio sistema, para gestionar esta réplica es utilizado
-		Sqlite3. La segunda réplica está en otra máquina conectada por red con el sistema de adquisición de datos. Esta contiene los datos
-		crudos y también contiene la corrección por presión de estos. Para la segunda réplica es utilizado MySQL. Los datos que son mandados
+		base de datos. Tenemos una réplica de los datos crudos adquiridos en el propio sistema, para gestionar esta réplica se utiliza
+		Sqlite3. La segunda réplica está alojada en otra máquina conectada por red con el sistema de adquisición de datos. Ésta contiene los datos
+		crudos y también contiene la corrección por presión de éstos. Para la segunda réplica se emplea MySQL. Los datos que son enviados
 		al NMDB son los datos de la segunda réplica.
 	\subsection{Herramientas y técnicas}
 		El equipo de CALMA hace uso de herramientas que les ayudan a analizar la información desde el punto de vista científico. Actualmente
-		no existe ninguna herramienta que proporcioné información sobre el estado técnico de la estación, todas las labores relacionadas con
+		no existe ninguna herramienta que proporcione información sobre el estado técnico de la estación, todas las labores relacionadas con
 		el mantenimiento son realizadas de forma manual.
 
 \section{Objetivos}
@@ -140,30 +140,30 @@ comunes que pueden ser observados indirectamente a consecuencia de estudiar la c
 		continuación exponemos algunos de los requisitos más relevantes.
 		\begin{itemize}
 			\item 	El software debe ser capaz de realizar una correcta comunicación con la FPGA. Esto implica enviar los comandos
-				apropiados y ser capaz de interpretar los mensajes de datos trasmitidos por esta. En el capítulo \ref{entornoHW} se
+				apropiados y ser capaz de interpretar los mensajes de datos trasmitidos por ésta. En el capítulo \ref{entornoHW} se
 				puede obtener más información sobre la interfaz de comunicación con la FPGA.
 			\item 	El software debe ser capaz de mantener dos bases de datos, una réplica local y una remota.
 			\item 	Al igual que el hardware, el software debe ser capaz de adaptarse fácilmente a diferentes estaciones. Para este
-				propósito este debe ser diseñado de tal forma que sea fácil de extender.
+				propósito éste debe ser diseñado de tal forma que sea fácil de extender.
 			\item 	El software debe ser capaz de poner en marcha la estación completa de forma automática ante la presencia de corriente
 			  	eléctrica. 
-			\item 	El software debe ser capaz de detectar estados anómalos y actuar conforme a estos. En una estación de este tipo la
+			\item 	El software debe ser capaz de detectar estados anómalos y actuar conforme a éstos. En una estación de este tipo la
 				mayoría de veces un funcionamiento anómalo se traduce en no generar datos o generar datos irregulares. Ante la
-				presencia de un estado anómalo debe generarse una alarma. En muchos casos realizar un reinicio del sistema resuelve el
+				presencia de un estado anómalo debe dispararse una alarma. En muchos casos realizar un reinicio del sistema resuelve el
 				problema.
 		\end{itemize}
-		Aparte de la realización del software en este trabajo también contemplamos el proceso de implantación y mantenimiento de este.
-		Volvemos a recordar que los demás módulos que componen el sistema de adquisición son desarrollados por el equipo de CALMA. A lo largo
-		de este trabajo se describirán las interfaces de estos, dado que es necesario para entender este trabajo.
+		Aparte de la realización del software en este trabajo también contemplamos el proceso de implantación y mantenimiento de éste.
+		Volvemos a recordar que los demás módulos que componen el sistema de adquisición ya están desarrollados por el equipo de CALMA. A lo largo
+		de este trabajo se describirán las interfaces de éstos, dado que es necesario para entender este trabajo.
 	\subsection{Herramienta Web}
-		El segundo objetivo de este trabajo es el desarrollo de una herramienta que facilite la gestión de una estación. La idea de esta
-		herramienta es del equipo de CALMA. Procedemos a detallar las funcionalidades de la herramienta tal y como las concibe este.
+		El segundo objetivo de este trabajo es el desarrollo de una herramienta que facilite la gestión de una estación. La idea de ésta
+		es del equipo de CALMA. Procedemos a detallar las funcionalidades de la herramienta tal y como las concibe éste.
 		%TODO Citar el artículo de la herramienta.
 		\begin{itemize}
 			\item	Spike Tool. Módulo que permitirá la detección de Spikes. Usando los datos proporcionados por el sistema de
-				adquisición, este módulo debe generar gráficos. Estos gráficos serán interactivos y su propósito será hacer fácil la
+				adquisición, este módulo debe generar gráficos. Éstos serán interactivos y su propósito será hacer más fácil la
 				detección de Spikes. Los Spikes detectados podrán ser marcados como nulos en el conjunto de datos revisados. El
-				concepto de Spike es explicado en secciones venideras de este capítulo.
+				concepto de Spike será explicado en secciones posteriores de este capítulo.
 			\item 	Configuración de la estación. Este módulo permitirá cambiar la configuración de la estación. Esta reconfiguración será
 				llevada a cabo en tiempo real sin interrumpir el proceso de adquisición. Nótese que el software de adquisición deberá
 				evolucionar para hacer posible esta funcionalidad.
