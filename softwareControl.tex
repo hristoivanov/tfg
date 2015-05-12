@@ -82,7 +82,7 @@ $ systemctl disable  nombre_de_servicio
 	\end{figure}
 	\subsection{Watchdog}
 		Un Watchdog \cite{WatchDogWiki} es un mecanismo de seguridad que realiza un Reset en el sistema cuando es detectado un
-		malfuncionamiento. Consiste en un temporizador que realiza una cuenta atrás, cuando esta cuenta llega a cero el sistema es reiniciado.
+		mal funcionamiento. Consiste en un temporizador que realiza una cuenta atrás, cuando esta cuenta llega a cero el sistema es reiniciado.
 		Es nuestro software el que debe reiniciar este contador para que no expire. Los Watchdogs pueden ser software o hardware, el utilizado
 		en este trabajo está implementado en la BeagleBone Black y es hardware. Los Watchdogs hardware son más fiables, los software pueden
 		quedarse bloqueados.
