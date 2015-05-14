@@ -1,13 +1,13 @@
 \chapter{Introducción}
 \label{cap1}
 
-El propósito de este documento es describir el \emph{Trabajo fin de Grado} realizado por el autor. Este es parte del desarrollo de un nuevo sistema de
+El propósito de este documento es describir el \emph{Trabajo de Fin de Grado} realizado por el autor. Este es parte del desarrollo de un nuevo sistema de
 adquisición de datos para un monitor de neutrones, instrumento que permite medir los niveles de radiación cósmica. Los objetivos del trabajo son la
 realización del software encargado de gestionar la adquisición de datos y el desarrollo de una herramienta Web dirigida a la gestión del sistema.	
 \par
-Empezamos este capítulo haciendo una breve introducción a los conceptos teóricos y el entrono en el que se desarrolla este trabajo. Continuamos
-estableciendo los objetivos y el diseño preliminar. Finalmente son aclaradas algunas peculiaridades referentes al proceso de adquisición de datos. El
-segundo capítulo describe el entorno hardware en el que es desarrollado el software de adquisición. Los siguientes capítulos describen en detalle el
+Empezamos este capítulo haciendo una breve introducción a los conceptos teóricos y el entorno en el que se desarrolla este trabajo. Continuamos
+estableciendo los objetivos y el diseño preliminar. Finalmente aclaramos algunas peculiaridades referentes al proceso de adquisición de datos. El
+segundo capítulo describe el entorno hardware en el que se desarrolla el software de adquisición. Los siguientes capítulos describen en detalle el
 trabajo realizado. El primero de estos es dedicado al software de adquisición. Debido a la separación impuesta por el modelo \emph{Cliente-Servidor}
 son utilizados dos capítulos para describir la herramienta Web, el primero dedicado al \emph{Servidor} y el segundo al \emph{Cliente}. El último
 capítulo de este documento recoge las conclusiones obtenidas del trabajo y la visión futura de este. El documento también incluye un apéndice, en este
@@ -25,7 +25,7 @@ utilizadas en el trabajo.
 	originales en partículas secundarias. Estas a su vez pueden colisionar con otras partículas de la atmósfera para así formar aún más partículas
 	secundarias. Vemos como una sola partícula proveniente del espacio produce el fenómeno denominado \emph{cascadas atmosféricas}. Como es de
 	esperar con cada choque consecutivo se pierde parte de la energía. Normalmente las partículas secundarias que alcanzan la superficie terrestre
-	tan sólo tienen una pequeña fracción de la energía inicial. Si una partícula no posee la energía suficiente la cascada que es originada no se
+	tan solo tienen una pequeña fracción de la energía inicial. Si una partícula no posee la energía suficiente la cascada que es originada no se
 	propaga hasta la superficie terrestre.
 	\par
 	Como hemos dicho la mayor parte de la radiación cósmica proviene de fuera de nuestro sistema solar, pero está fuertemente relacionada con los
@@ -43,7 +43,7 @@ utilizadas en el trabajo.
 			e intensifica el campo magnético solar. Como ya hemos explicado el aumento del campo magnético solar conlleva al descenso de
 			radiación cósmica.
 		\item	Ground level enhancements(GLE). Eventualmente la actividad solar es tan elevada que el Sol es capaz de emitir partículas muy
-			energéticas.  Estas partículas son a veces tan energéticas que pueden generar cascadas atmosféricas que alcanzan la superficie
+			energéticas. Estas partículas son a veces tan energéticas que pueden generar cascadas atmosféricas que alcanzan la superficie
 			terrestre. Estos sucesos son muy raros, entre 10 y 15 por década. A pesar de ser muy raros estos pueden tener un gran impacto
 			en nuestras vidas cotidianas, pueden afectar el funcionamiento de la electrónica sensible que está en orbita e incluso la que
 			está en tierra.   
@@ -55,31 +55,37 @@ utilizadas en el trabajo.
 	las cascadas atmosféricas. A continuación procedemos a explicar estas cuatro capas, empezaremos por la más exterior y acabaremos explicando la
 	capa más interior.
 	\begin{itemize}
-		\item	Reflector. La primera capa consiste en un escudo reflector que tan sólo deja pasar las partículas con energía alta. De esta
-			manera todas las partículas generadas por el entorno inmediato que tienen baja energía rebotan y no influyen en la medición.
-		\item	Productor. Esta capa compuesta generalmente de material denso tiene como objetivo conseguir algo parecido a las cascadas
-			atmosféricas. La idea es tener un material denso para que aumente la probabilidad de que las partículas secundarias impacten
-			con las partículas del material y como resultado se produzcan aún más partículas. A las partículas generadas en esta capa se
-			les da el nombre de neutrones de evaporación. Son estas partículas las que finalmente serán medidas por el instrumento,
-			también son las que le dan nombre. Los neutrones producidos tienen menos energía, por lo que son más fáciles de medir.
-		\item	Moderador. A pesar de que las partículas que tenemos a este nivel tienen tan sólo una fracción de la energía original, estas
-			aún siguen siendo demasiado energéticas para ser capturadas. Esta capa tiene como objetivo ralentizar, disminuir la energía,
-			de las partículas para así poder capturarlas.
-		\item	Contador. Un contador o tubo contador generalmente está relleno de gas ionizado con propiedades específicas. Cuando una de
-			las partículas ralentizadas por el Moderador choca con una de las partículas del gas es liberada una pequeña cantidad de
-			energía en forma de electricidad, una señal eléctrica que podemos medir. 
+		\item	\textbf{Reflector}. La primera capa consiste en un escudo reflector que tan solo deja pasar las partículas con energía alta.
+			De esta manera todas las partículas generadas por el entorno inmediato que tienen baja energía rebotan y no influyen en la
+			medición.
+		\item	\textbf{Productor}. Esta capa compuesta generalmente de material denso tiene como objetivo conseguir algo parecido a las
+			cascadas atmosféricas. La idea es tener un material denso para que aumente la probabilidad de que las partículas secundarias
+			impacten con las partículas del material y como resultado se produzcan aún más partículas. A las partículas generadas en esta
+			capa se les da el nombre de neutrones de evaporación. Son estas partículas las que finalmente serán medidas por el
+			instrumento, también son las que le dan nombre. Los neutrones producidos tienen menos energía, por lo que son más fáciles de
+			medir.
+		\item	\textbf{Moderador}. A pesar de que las partículas que tenemos a este nivel tienen tan solo una fracción de la energía
+			original, estas aún siguen siendo demasiado energéticas para ser capturadas. Esta capa tiene como objetivo ralentizar,
+			disminuir la energía, de las partículas para así poder capturarlas.
+		\item	\textbf{Contador}. Un contador proporcional o tubo contador generalmente está relleno de gas con propiedades específicas.
+			Cuando el gas interacciona con los neutrones de evaporación este es ionizado, en el proceso son liberados electrones. Debido
+			al campo eléctrico que atraviesa constantemente el gas estos electrones son acelerados hacia el ánodo, hilo conductor que
+			atraviesa el tubo contador en su centro. Conforme los electrones ganan energía, estos pueden producir ionizaciones
+			secundarias. El número total de electrones que llegan al ánodo se mantiene, sin embargo, proporcional a la energía de la
+			partícula inicial. Al llegar al ánodo estos electrones producen una correinte eléctrica. 
+
 	\end{itemize}
 	\par
-	Los sistemas de adquisición están diseñados para recoger estas pequeñas señales y medirlas. Tradicionalmente la medida que se realiza son
-	eventos por minuto, las señales son capturadas, amplificadas y registradas en un contador que se reinicia cada minuto. A lo largo de este
-	trabajo muchas veces nos referiremos a esta medición de eventos por minuto con el nombre de \emph{cuentas}. 
+	Los sistemas de adquisición están diseñados para recoger estas pequeñas corrientes eléctricas y medirlas. Tradicionalmente la medida que se
+	realiza son eventos por minuto, las señales son capturadas, amplificadas y registradas en un contador que se reinicia cada minuto. A lo largo
+	de este trabajo muchas veces nos referiremos a esta medición de eventos por minuto con el nombre de \emph{cuentas}. 
 
 \section{NMDB}
 	NMDB\cite{NMDB2011} o \emph{Neutron Monitor Database} es una red mundial de monitores de neutrones. Antes de proceder a hablar sobre la red en
 	concreto expondremos las ventajas y objetivos de una red como esta.
 	\begin{itemize}
 		\item 	Espectro de energías. Al igual que el Sol, la Tierra tiene campo magnético. Este campo magnético repele con mayor fuerza en
-		  	las regiones ecuatoriales que en los polos. Esto implica que sólo las partículas más energéticas son perceptibles en las
+		  	las regiones ecuatoriales que en los polos. Esto implica que solo las partículas más energéticas son perceptibles en las
 			zonas ecuatoriales, mientras que en los polos las partículas no necesitan ser tan energéticas para alcanzar la superficie.
 			Combinando datos de estaciones que se encuentran a diferentes latitudes podemos construir espectrogramas basados en la energía
 			de las partículas.
@@ -106,13 +112,16 @@ utilizadas en el trabajo.
 	energético para ser detectado en una estación con tan poca latitud. A continuación procedemos a hablar más a fondo del estado actual de CALMA,
 	hablaremos del sistema de adquisición, base de datos, herramientas y técnicas que son usadas.
 	\subsection{Sistema de adquisición}
-		Como hemos mencionado el sistema de adquisición que está implantado en CALMA es producto del propio equipo\cite{Garcia2014}. El
-		sistema está basado en un sistema empotrado Linux. Las señales capturadas por los tubos contadores son amplificadas y digitalizadas por
-		un circuito de adaptación, a continuación son procesadas por una FPGA. Ésta es la encargada de medir los eventos por minuto de los 18
-		canales. Aunque la  estación tan sólo tiene 15 tubos contadores el sistema está diseñado para soportar 18, este número es un estándar
+		Como hemos mencionado el sistema de adquisición que está implantado en CALMA es producto del propio equipo\cite{Garcia2014}. Este está
+		basado en un sistema empotrado Linux. Si las señales generadas por los tubos contadores superan un determinado umbral, estas son
+		covertidas en pulsos digitales por los amplificadores. A continuación, un circuito de adaptación se encarga de elevar los niveles de
+		tensión de los pulsos digitales a niveles \emph{TTL} y de adaptar la impedancia de la línea de comunicaciones si el preamplificador
+		así lo requiere. Seguidamente los pulsos son procesados por una FPGA que es la encargada de medir los eventos por minuto de los 18
+		canales. Aunque la estación tan solo tiene 15 tubos contadores el sistema está diseñado para soportar 18, este número es un estándar
 		histórico. El software que se ejecuta en el sistema Linux tiene como tarea comunicarse con la FPGA, su labor es recoger las
-		\emph{cuentas} de cada minuto y guardar éstas en una base de datos. En la figura \ref{fig:acqsis} podemos ver un diagrama de bloques
-		que representa el sistema de adquisición.
+		\emph{cuentas} de cada minuto y guardar estas en una base de datos. El software hace uso del \emph{Network Time Protocol} para
+		asegurar la correcta sincronización temporal entre estaciones, esta sincronización permite contrastar los datos de diferentes
+		estaciones. En la figura \ref{fig:acqsis} podemos ver un diagrama de bloques que representa el sistema de adquisición.
 		\begin{figure}[h]
 			\centering
 			\includegraphics[keepaspectratio, width=1\textwidth]{./img/AcqSis.png}
@@ -120,91 +129,99 @@ utilizadas en el trabajo.
 			\label{fig:acqsis}
 		\end{figure}
 		\par
-		Actualmente el equipo de CALMA está desarrollando un nuevo sistema de adquisición de datos. Este es muy parecido al que actualmente
-		está implantado. A continuación procedemos a detallar las diferencias clave entre los dos sistemas. 
+		Actualmente el equipo de CALMA está desarrollando un nuevo sistema de adquisición de datos. El esquema presentado en la figura
+		\ref{fig:acqsis} es aplicable al nuevo sistema. Las diferencias entre los dos sistemas de adquisición radican en los componentes. La
+		primera de estas está en los amplificadores. Los utilizados en el sistema actual generan pulsos fijos, mientras que los amplificadores
+		utilizados en este nuevo sistema de adquisición generan pulsos cuyo ancho es proporcional a la energia de la señal original. El fin es
+		medir la energía de las señales generadas por los tubos contadores, esta magnitud es de gran interés técnico.
 		\par
-		\begin{itemize}
-			\item La primera diferencia entre los dos sistemas de adquisición radica en el circuito de adaptación. En el sistema de
-			  adquisición actual para cada señal el circuito de adaptación genera un pulso fijo. El nuevo sistema de adquisición incorpora
-			  nuevo circuito de adaptación. Este nuevo circuito de adaptación genera un pulso cuyo ancho de banda es proporcional a la
-			  energía de la señal. El fin es medir la energía de las partículas detectadas, esta magnitud es de gran interés científico y
-			  técnico.
-			\item La siguiente diferencia está en la FPGA, recordamos que en el sistema de adquisición actual ésta tan sólo registra los
-			  eventos por minuto para los 18 canales. La nueva FPGA debe realizar la misma tarea, pero aparte debe poder medir el ancho de
-			  los pulsos generados por el circuito de adaptación. Los dos sistemas de adquisición utilizan un puerto serie para la
-			  comunicación entre software y FPGA. En el nuevo sistema este puerto opera a una velocidad mayor a fin de poder transmitir
-			  toda la información extra.
-			\item El nuevo sistema también está pensado para ofrecer una mayor compatibilidad. El fin es poder implantar éste en
-			  diferentes estaciones de forma fácil y rápida. El hardware y software deben ser diseñados con este requisito en mente.
-		\end{itemize}
+		La segunda diferencia está en el circuito de adaptación. Este cambia a fin de soportar los nuevos amplificadores que acabamos de
+		explicar. La compatibilidad con los amplificadores utilizados en el sistema de adquisición actual también es mantenida. Esto da mucha
+		flexibilidad a la estación, permitiéndole incorporar diferentes amplificadores a la vez.
+		\par
+		La siguiente diferencia está en la FPGA, recordamos que en el sistema de adquisición actual esta tan solo registra los eventos por
+		minuto para los 18 canales. La nueva FPGA debe realizar la misma tarea, pero aparte debe poder medir el ancho de los pulsos generados
+		por los amplificadores. Los dos sistemas de adquisición utilizan un puerto serie para la comunicación entre software y FPGA. En
+		el nuevo sistema este puerto opera a una velocidad mayor a fin de poder transmitir toda la información extra.
+		\par
+		El nuevo sistema también está pensado para ofrecer una mayor compatibilidad. El fin es poder implantar este en diferentes estaciones
+		de forma fácil y rápida. El hardware y software deben ser diseñados con este requisito en mente.
 	\subsection{Bases de datos}
-		La base de datos que genera CALMA está diseñada de acuerdo con el estándar impuesto por NMDB. Existen dos réplicas de la
-		base de datos. Tenemos una réplica de los datos crudos adquiridos en el propio sistema, para gestionar esta réplica se utiliza
-		Sqlite3. La segunda réplica está alojada en otra máquina conectada por red con el sistema de adquisición de datos. Ésta contiene los datos
-		crudos y también contiene la corrección por presión de éstos. Para la segunda réplica se emplea MySQL. Los datos que son enviados
-		al NMDB son los datos de la segunda réplica.
+		La base de datos que genera CALMA está diseñada de acuerdo con el estándar impuesto por NMDB. Los eventos por minuto de los 18 canales
+		se guardan en la tabla \texttt{binTable}. En una segunda tabla,\texttt{CALM\_ori}, se guarda el valor global de la estación, calculado
+		a partir de los datos de todos los tubos. Junto a este valor global también se guardan las correcciones que se realizan sobre este. El
+		valor global y las correcciones se explican en la última sección de este capítulo. Los datos de esta segunda tabla son revisados
+		por un operador humano y finalmente guardados en una tercera tabla cuyo nombre es \texttt{CALM\_rev}. Los datos de estas dos últimas
+		tablas se envian al NMDB. Este envío es realizado por un proceso que se ejecuta cada minuto. El envío consiste en calcular las
+		diferencias entre los dos conjuntos de datos y tan solo enviar estas.
 	\subsection{Herramientas y técnicas}
 		El equipo de CALMA hace uso de herramientas que les ayudan a analizar la información desde el punto de vista científico. Actualmente
 		no existe ninguna herramienta que proporcione información sobre el estado técnico de la estación, todas las labores relacionadas con
 		el mantenimiento son realizadas de forma manual.
 
 \section{Objetivos}
-	El objetivo de este proyecto es desarrollar el software para el nuevo sistema de adquisición de datos y también desarrollar una herramienta
-	que permite operar y monitorizar el estado de la estación. A continuación procedemos a hacer una descripción más detallada de los objetivos de
-	este trabajo.  
+	\textbf{El objetivo de este proyecto es desarrollar el software para el nuevo sistema de adquisición de datos y también desarrollar una
+	herramienta que permite operar y monitorizar el estado de la estación}. A continuación procedemos a hacer una descripción más detallada de los
+	objetivos de este trabajo.  
 	\subsection{Software de adquisición}
 		Tal y como hemos explicado en secciones anteriores el equipo de CALMA está desarrollando un nuevo sistema de adquisición. Actualmente
 		la mayoría de módulos hardware incluyendo la FPGA están listos. El propósito de este trabajo es realizar el software de adquisición. A
 		continuación exponemos algunos de los requisitos más relevantes.
 		\begin{itemize}
 			\item 	El software debe ser capaz de realizar una correcta comunicación con la FPGA. Esto implica enviar los comandos
-				apropiados y ser capaz de interpretar los mensajes de datos trasmitidos por ésta. En el capítulo \ref{entornoHW} se
+				apropiados y ser capaz de interpretar los mensajes de datos trasmitidos por esta. En el capítulo \ref{entornoHW} se
 				puede obtener más información sobre la interfaz de comunicación con la FPGA.
-			\item 	El software debe ser capaz de mantener dos bases de datos, una réplica local y una remota.
+			\item 	El software debe ser capaz de calcular el valor global de la estación y las correcciones que se realizan sobre este.
+			  	Estos valores son explicados en la última sección de este capítulo.
+			\item	El software debe ser capaz de almacenar en local tanto los eventos por minuto de los 18 canales como el dato global y
+			  	las correcciones de este.
+			\item 	El software también debe ser capaz de mantener una réplica remota de los datos.
 			\item 	Al igual que el hardware, el software debe ser capaz de adaptarse fácilmente a diferentes estaciones. Para este
-				propósito éste debe ser diseñado de tal forma que sea fácil de extender.
+				propósito este debe ser diseñado de tal forma que sea fácil de extender.
 			\item 	El software debe ser capaz de poner en marcha la estación completa de forma automática ante la presencia de corriente
 			  	eléctrica. 
-			\item 	El software debe ser capaz de detectar estados anómalos y actuar conforme a éstos. En una estación de este tipo la
+			\item 	El software debe ser capaz de detectar estados anómalos y actuar conforme a estos. En una estación de este tipo la
 				mayoría de veces un funcionamiento anómalo se traduce en no generar datos o generar datos irregulares. Ante la
-				presencia de un estado anómalo debe dispararse una alarma. En muchos casos realizar un reinicio del sistema resuelve el
-				problema.
+				presencia de un estado anómalo debe generarse una alerta. El software también debe reaccionar ante dichos estados
+				anómalos, la mayoria de problemas son solucionados realizando un reinicio del sistema.
 		\end{itemize}
-		Aparte de la realización del software en este trabajo también contemplamos el proceso de implantación y mantenimiento de éste.
-		Volvemos a recordar que los demás módulos que componen el sistema de adquisición ya están desarrollados por el equipo de CALMA. A lo largo
-		de este trabajo se describirán las interfaces de éstos, dado que es necesario para entender este trabajo.
+		Aparte de la realización del software en este trabajo también contemplamos el proceso de implantación y mantenimiento de este.
+		Volvemos a recordar que los demás módulos que componen el sistema de adquisición ya están desarrollados por el equipo de CALMA. Las
+		interfaces de estos son descritas, dado que es necesario para entender este trabajo.
 	\subsection{Herramienta Web}
-		El segundo objetivo de este trabajo es el desarrollo de una herramienta que facilite la gestión de una estación. La idea de ésta
-		es del equipo de CALMA. Procedemos a detallar las funcionalidades de la herramienta tal y como las concibe éste.
+		El segundo objetivo de este trabajo es el desarrollo de una herramienta que facilite la gestión de una estación. La idea de esta
+		es del equipo de CALMA. Procedemos a detallar las funcionalidades de la herramienta tal y como las concibe este.
 		%TODO Citar el artículo de la herramienta.
 		\begin{itemize}
-			\item	Spike Tool. Módulo que permitirá la detección de Spikes. Usando los datos proporcionados por el sistema de
-				adquisición, este módulo debe generar gráficos. Éstos serán interactivos y su propósito será hacer más fácil la
-				detección de Spikes. Los Spikes detectados podrán ser marcados como nulos en el conjunto de datos revisados. El
-				concepto de Spike será explicado en secciones posteriores de este capítulo.
-			\item 	Configuración de la estación. Este módulo permitirá cambiar la configuración de la estación. Esta reconfiguración será
-				llevada a cabo en tiempo real sin interrumpir el proceso de adquisición. Nótese que el software de adquisición deberá
-				evolucionar para hacer posible esta funcionalidad.
-			\item	Alertas. La herramienta visualizará las alertas producidas por el software de adquisición.
-			\item 	Histogramas con la intensidad de los eventos. El nuevo sistema de adquisición proporciona información sobre la energía
-				de las partículas incidentes. Este módulo debería generar histogramas con estos datos. Estos histogramas permitirán
-				hacer mejores diagnósticos sobre el funcionamiento de los tubos contadores. 
+			\item	\textbf{Spike Tool}. Módulo que permitirá la detección de Spikes. Un Spike es un dato anómalo, un dato
+				anormalmente grande o pequeño. Usando los datos proporcionados por el sistema de adquisición, este módulo generara
+				gráficos. Éstos serán interactivos y su propósito será hacer más fácil la detección de Spikes. Los Spikes detectados
+				podrán ser marcados como nulos en el conjunto de datos revisados. 
+			\item 	\textbf{Configuración de los parámetros la estación}. Este módulo permitirá la reconfiguración de los parámetros de la
+				estación. Esta reconfiguración será llevada a cabo sin interrumpir el proceso de adquisición. Nótese que el software
+				de adquisición deberá evolucionar para hacer posible esta funcionalidad.
+			\item	\textbf{Alertas}. La herramienta visualizará las alertas producidas por el software de adquisición.
+			\item 	\textbf{Histogramas con la intensidad de los eventos}. El nuevo sistema de adquisición proporciona información sobre
+				la energía de las partículas detectadas. Este módulo generará histogramas con estos datos. Estos histogramas
+				permitirán hacer mejores diagnósticos sobre el funcionamiento de los tubos contadores. 
 		\end{itemize}
-		Podemos ver que la herramienta ofrece un gran abanico de funcionalidades. Por desgracia en este trabajo tan sólo nos centraremos en el
-		primer módulo, realizar los demás módulos está fuera del alcance de un trabajo como este. También cabe destacar que tan sólo nos
+		Podemos ver que la herramienta ofrece un gran abanico de funcionalidades. Por desgracia en este trabajo tan solo nos centraremos en el
+		primer módulo, realizar los demás módulos está fuera del alcance de un trabajo como este. También cabe destacar que tan solo nos
 		centraremos en la implementación, no implantaremos ni mantendremos la herramienta. La herramienta será una herramienta Web intuitiva y
 		altamente interactiva.
 
 \section{Diseño preliminar}
-	En esta sección procedemos a especificar un diseño preliminar para el software de adquisición y para la herramienta Web.
+	En esta sección procedemos a especificar un diseño preliminar para el software de adquisición y para la herramienta Web. La primera subsección
+	es dedicada al software de adquisición, mientras que la segunda es reservada para la herramienta Web.
 	\subsection{Software de adquisición}
 		El sistema de adquisición que se está desarrollando es un sistema empotrado donde hardware y software están muy vinculados. Esto en
 		gran medida condiciona el diseño del software que queremos realizar. El software debe ejecutarse sobre una BeagleBone
-		Black\cite{Beagle} que está integrada con el resto de componentes hardware.  La distribución Linux elegida para este trabajo es
-		Angstrom. El lenguaje de programación elegido es Python\cite{Python}, lenguaje interpretado de alto nivel con tipado dinámico y
-		sintaxis centrada en producir código legible.  Actualmente Python es muy popular y existen muchas librerías de las que haremos uso. El
-		uso de librerías reduce la carga de trabajo y normalmente resulta en software más robusto. Para la gestión de la base de datos hemos
-		elegido Sqlite3\cite{Sqlite}, una elección popular en sistemas empotrados. 
+		Black\cite{Beagle} que está integrada con el resto de componentes hardware. La distribución Linux elegida para este trabajo es
+		Angstrom, la distribución por defecto. El lenguaje de programación elegido es Python\cite{Python}, lenguaje interpretado de alto nivel
+		con tipado dinámico y sintaxis centrada en producir código legible.  Actualmente Python es muy popular y existen muchas bibliotecas de
+		las que haremos uso. El uso de bibliotecas reduce la carga de trabajo y normalmente resulta en software más robusto. Para la gestión
+		de la base de datos hemos elegido Sqlite3\cite{Sqlite}, una elección popular en sistemas empotrados. Este es un sistema ligero, de
+		alto rendimineto que implementa la base de datos en un único archivo. Esto junto al API bien definido simplifica la administración.
 		\par
 		En la figura \ref{fig:soft_control_preliminar} podemos ver el diseño preliminar del software de adquisición. Ante la presencia de
 		corriente eléctrica este debe ser capaz de inicializarse solo. El primer paso que debe tomar es realizar la configuración necesaria
@@ -219,23 +236,25 @@ utilizadas en el trabajo.
 		\end{figure}
 	\subsection{Herramienta Web}
 		En la figura \ref{fig:herramienta_web_preliminar} podemos ver el diseño preliminar de la herramienta Web. Como podemos ver el diseño
-		está fuertemente basado en el patrón \emph{Modelo Vista Controlador}\cite{MVCWiki}. A continuación explicamos los tres componentes
-		básicos.
+		está fuertemente basado en el modelo \emph{Cliente-Servidor}\cite{MVCWiki}. En este trabajo utilizamos los términos \emph{back-end} y
+		\emph{front-end} para referirnos al Cliente y al Servidor respectivamente. A continuación explicamos los componentes básicos.
 		\begin{description}
-			\item[Base de Datos]    
+			\item[Base de Datos.]    
 				En este componente residen los datos de nuestra estación. Para la gestión de estos utilizamos un servidor
 				MySQL\cite{MySql}.
-			\item[\emph{Back-End}]
+			\item[\emph{Back-End}.]
 				Este componente es el encargado de recibir y procesar los mensajes de petición provenientes del \emph{Front-End}.
 				Estas peticiones pueden ser de consulta o de acción. En ambos casos este componente procede a comunicarse con la base
 				de datos a fin de satisfacer la petición. Finalmente el resultado es trasmitido al \emph{Front-End} en un mensaje de
 				respuesta. En el caso de una petición de consulta son devueltos los datos especificados. En el caso de una petición de
 				acción es devuelto un mensaje de estado. Para la implementación de este componente hemos utilizado
 				ZendFramework\cite{ZF} y Apygility\cite{Apigility}.
-			\item[\emph{Front-end}] 
+			\item[\emph{Front-end}.] 
 				Este componente implementa la interfaz de nuestra aplicación. Es el encargado de presentar la información y manejar
-				las peticiones del usuario. El módulo está basado en el patrón MVC. Para implementar la Vista hemos utilizado
-				HighStock\cite{HighStock}, para el Controlador ExtJs\cite{ExtJs} y para el modelo peticiones Ajax\cite{AjaxWiki}.
+				las peticiones del usuario. El módulo está basado en el patrón \emph{Modelo-Vista-Controlador}. Para implementar la
+				Vista incargada de presentar los datos hemos utilizado HighStock\cite{HighStock}, para el Controlador encargado de
+				gestionar los eventos utilizamos ExtJs\cite{ExtJs} y para el modelo encargado de manejar los datos utilizamos
+				peticiones Ajax\cite{AjaxWiki}.
 		\end{description}
 		\begin{figure}[h]
 			\centering
@@ -245,43 +264,37 @@ utilizadas en el trabajo.
 		\end{figure}
 \section{Proceso de adquisición}
 	El propósito de este punto es explicar algunos aspectos del proceso de adquisición que son relevantes para este trabajo.
-	\begin{description}[leftmargin=0cm]
-		\item[Múltiples Tubos]
-			Hasta este momento siempre hemos hablado de tubos contadores, en plural, detrás de esto hay una razón. Normalmente las
-			estaciones se componen de varios tubos contadores, donde 18 tubos contadores es un estándar. En el proceso de adquisición
-			están envueltos muchos factores probabilísticos, esto conlleva a que las medidas en un tubo tengan una gran dispersión. La
-			solución de este problema es tener mucho tubos, cuantos más mejor. Combinando datos de diferentes tubos conseguimos reducir
-			esta dispersión. 
-		\item[Valor global]
-		  	Tener los datos de muchos tubos contadores permite reducir la dispersión de los datos, sin embargo no es muy práctico trabajar
-			con esos datos en crudo. El software del sistema de adquisición actual calcula un valor global a partir de los datos de todos
-			los tubos contadores. El software de adquisición que desarrollamos en este trabajo también debe calcular este valor global.
-			Para este propósito utilizamos el Median Algorithm\cite{MedianAlgr}.
-		\item[Correcciónes]
-			Anteriormente en este capítulo explicamos las cascadas atmosféricas que son originadas por los rayos cósmicos. Estas cascadas
-			atmosféricas dependen de la presión atmosférica. Cuando esta es elevada, es necesaria más energía para que la cascada se
-			propague hasta el nivel terrestre, por consecuente los monitores de neutrones registran menos eventos. El valor de la presión
-			atmosférica es monitorizado por los monitores de neutrones. Este valor es utilizado para realizar una corrección por presión
-			sobre el valor global de la estación, a lo largo de este trabajo utilizamos el término de \emph{valor corregido por presión}
-			para referirnos a este valor. El software de adquisición elaborado para este trabajo debe ser capaz de leer el valor de
-			presión desde un barómetro y debe poder calcular esta corrección. 
-			\par
-			También es realizada una \emph{corrección por eficiencia}. Esta es muy simple y consiste en aplicar un factor multiplicativo
-			al valor corregido por presión. Este valor es utilizado para para solventar problemas técnicos. Cambios en el entorno
-			inmediato del instrumento o cambios en la electrónica utilizada pueden afectan a la cantidad de eventos medidos. Estos cambios
-			son identificados, evaluados y finalmente contrarrestados con esta corrección por eficiencia. Este valor dota la estación de
-			consistencia histórica, de esta manera pueden ser comparados datos de diferentes intervalos temporales. El software también
-			debe ser capaz de realizar esta corrección. 
-		\item[Fuentes de alta tensión]
-			A principios de este capítulo explicamos que los tubos contadores están rellenos de gas ionizado. Este gas es ionizado
-			mediante la aplicación de una corriente eléctrica de alta tensión. Para la generación de esta corriente son utilizadas fuentes
-			de alimentación de alta tensión. Cambios en la corriente generada pueden afectar a la cantidad de eventos registrados. Esto ha
-			conllevado a que el funcionamiento de las fuentes sea monitorizado. El software para el sistema de adquisición debe ser capaz
-			de realizas esta operación. Es de esperar que la corriente sea constante, por lo que no es necesaria ninguna corrección en
-			función de esta. En caso de variaciones en la corriente los datos generados son considerados no consistentes.
-		\item[\emph{Spikes}]
-			Un \emph{Spike} es un dato anómalo, un dato anormalmente grande o pequeño. Son datos producidos por mal funcionamientos de la
-			instrumentación, cambios bruscos en el entorno inmediato u otros factores desconocidos. Estos están presentes en todas las
-			estaciones. Con la elaboración del nuevo sistema de adquisición se pretende reducir el número de \emph{Spikes} generados. Con
-			la elaboración de la herramienta Web pretendemos ofrecer un método fácil de identificar y descartar dichos datos.
-	\end{description}
+	\par
+	Hasta este momento siempre hemos hablado de tubos contadores, en plural, detrás de esto hay una razón. Normalmente las estaciones se componen
+	de varios tubos contadores, donde 18 tubos contadores es un estándar. En el proceso de adquisición están envueltos muchos factores
+	probabilísticos, esto conlleva a que las medidas en un tubo tengan una gran dispersión. La solución de este problema es tener mucho tubos,
+	cuantos más mejor. Combinando datos de diferentes tubos conseguimos reducir esta dispersión. 
+	\par
+	Tener los datos de muchos tubos contadores permite reducir la dispersión de los datos, sin embargo no es muy práctico trabajar con esos datos
+	en crudo. El software del sistema de adquisición actual calcula un valor global a partir de los datos de todos los tubos contadores. El
+	software de adquisición que desarrollamos en este trabajo también debe calcular este valor global.  Para este propósito utilizamos el Median
+	Algorithm\cite{MedianAlgr}.
+	\par
+	Anteriormente en este capítulo explicamos las cascadas atmosféricas que son originadas por los rayos cósmicos. Estas cascadas atmosféricas
+	dependen de la presión atmosférica. Cuando esta es elevada, es necesaria más energía para que la cascada se propague hasta el nivel terrestre,
+	por consecuente los monitores de neutrones registran menos eventos. El valor de la presión atmosférica es monitorizado por los monitores de
+	neutrones. Este valor es utilizado para realizar una corrección por presión sobre el valor global de la estación, a lo largo de este trabajo
+	utilizamos el término de \emph{valor corregido por presión} para referirnos a este valor. El software de adquisición elaborado para este
+	trabajo debe ser capaz de leer el valor de presión desde un barómetro y debe poder calcular esta corrección. 
+	\par
+	También es realizada una \emph{corrección por eficiencia}. Esta es muy simple y consiste en aplicar un factor multiplicativo al valor
+	corregido por presión. Este valor es utilizado para para solventar problemas técnicos. Cambios en el entorno inmediato del instrumento o
+	cambios en la electrónica utilizada pueden afectan a la cantidad de eventos medidos. Estos cambios son identificados, evaluados y finalmente
+	contrarrestados con esta corrección por eficiencia. Este valor dota la estación de consistencia histórica, de esta manera pueden ser
+	comparados datos de diferentes intervalos temporales. El software también debe ser capaz de realizar esta corrección. 
+	\par
+	Al principio de este capítulo explicamos que los tubos contadores están rellenos de gas con propiedades especiales. Sobre este gas es aplicado
+	un campo eléctrico. Para la generación de dicho campo son utilizadas fuentes de alimentación de alta tensión. Cambios en la tensión generada
+	pueden afectar a la cantidad de eventos registrados. Esto ha conllevado a que el funcionamiento de las fuentes sea monitorizado. El software
+	para el sistema de adquisición debe ser capaz de realizar esta operación. Es de esperar que la tensión sea constante, en caso de variaciones
+	los datos generados son considerados no consistentes.
+	\par
+	Un \emph{Spike} es un dato anómalo, un dato anormalmente grande o pequeño. Son datos producidos por mal funcionamientos de la instrumentación,
+	cambios bruscos en el entorno inmediato u otros factores desconocidos. Estos están presentes en todas las estaciones. Con la elaboración del
+	nuevo sistema de adquisición se pretende reducir el número de \emph{Spikes} generados. Con la elaboración de la herramienta Web pretendemos
+	ofrecer un método fácil de identificar y descartar dichos datos.
