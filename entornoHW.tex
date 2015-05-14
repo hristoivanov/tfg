@@ -32,17 +32,20 @@ la realización de los módulos hardware que serán descritos a continuación.
 		\label{fig:beaglebone}
 	\end{figure}
 	\par
-	Fijándonos en la figura \ref{fig:beaglebone} podemos ver que muchos de los módulos son accesibles mediante los pines de
-	extensión\cite{BeagleWikiExp}. La placa ofrece 2x46 pines de los cuales muchos son multipropósito, pueden ser configurados para tener
+	Fijándonos en la figura \ref{fig:beaglebone} podemos ver que muchos de los módulos son accesibles mediante los conectores de
+	expansión\cite{BeagleWikiExp}. Estos conectores tienen 2x46 pines, de los cuales muchos son multipropósito. Estos pueden ser configurados para tener
 	funcionalidades diversas y además esta configuración puede ser realizada de forma dinámica. La configuración de los pines se realiza mediante
 	el \emph{Device Tree Overlay}, estructura de datos que se utiliza para describir el hardware. En la realización de este trabajo no lidiamos
-	con este mecanismo, utilizamos una librería que facilita el trabajo. La librería utilizada es \emph{Adafruit BeagleBone IO
-	Python}\cite{AdaFruitGit}. Esta librería ayuda a configurar dinámicamente los pines de extensión, además la librería ofrece métodos para
+	con este mecanismo, si no que utilizamos una librería que facilita el trabajo. La librería utilizada es \emph{Adafruit BeagleBone IO
+	Python}\cite{AdaFruitGit}. Esta librería ayuda a configurar dinámicamente los pines de expansión, además la librería ofrece métodos para
 	operar sobre estos una vez configurados.
 
 \section{FPGA}
-	En esta sección vamos a hacer una descripción de la FPGA. En la figura \ref{fig:fpga} podemos ver un diagrama de bloques que refleja los
-	módulos funcionales y interfaces que esta posee.
+	La FPGA es el núcleo fundamental del sistema, ya que, se encarga de procesar las señales y transmitir la información al software de
+	adquisición. Una FPGA es un circuito integrado, que es formado por unidades lógicas cuya interconexión y funcionalidad pueden ser
+	configurados. Esta configuración es definida por el \emph{IP core} que es integrado, por lo tanto, es este el que establece la funcionalidad
+	de una FPGA. En esta sección vamos a hacer una descripción funcional de la FPGA, por consiguiente será explicado el \emph{IP core} de esta.
+	En la figura \ref{fig:fpga} podemos ver un diagrama de bloques que refleja los módulos funcionales y interfaces que el este posee.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/fpga.png}
@@ -50,24 +53,25 @@ la realización de los módulos hardware que serán descritos a continuación.
 		\label{fig:fpga}
 	\end{figure}	
 	\subsection{Procesado de pulsos}
-		Como ya hemos comentado en el capítulo \ref{cap1} la FPGA es la encarga de procesar las señales provenientes de los tubos, una vez
-		procesadas las señales, la información es transmitida a la BeagleBone Black. Esta transmisión se realiza mediante una UART a la que
-		nos referiremos como \emph{UART de pulsos}. En las tablas \ref{tab:FPGAUartPulso}, \ref{tab:FPGAUartOver}, \ref{tab:FPGAUartCont}
-		podemos ver el formato de los datos transmitidos. Vemos que hay tres mensajes diferentes que la FPGA puede transmitir.
+		Como hemos comentado la FPGA es la encargada de procesar las senales y trasmitir la información a la BeagleBone Black. Esta trasmisión
+		es realizada mediante una línea serie asíncrona de 1Mbps. Esta línea es controlada por una UART(Universal Asynchronous
+		Receiver-Transmitter) a la que nos referiremos como \emph{UART de pulsos}. En las tablas \ref{tab:FPGAUartPulso},
+		\ref{tab:FPGAUartOver} y \ref{tab:FPGAUartCont} podemos ver el formato de los datos transmitidos. Vemos que hay tres mensajes
+		diferentes que la FPGA puede transmitir.
 		\begin{itemize}
 			\item	En la tabla \ref{tab:FPGAUartPulso} podemos ver el formato del primer mensaje que vamos a discutir. Este mensaje se
-				constituye de tres bytes que dan información sobre el ancho de un pulso. El mensaje permite identificar el canal en el
+				compone de tres bytes que dan información sobre el ancho de un pulso. El mensaje permite identificar el canal en el
 				que se ha producido el pulso, el nivel (alto/bajo) y la longitud de este. Los pulsos de nivel alto representan la
-				detección de una partícula por los tubos contadores, el ancho del pulso es proporcional a la energía de la partícula
+				detección de una partícula por los tubos contadores y el ancho del pulso es proporcional a la energía de la partícula
 				detectada. La longitud de los pulsos de nivel bajo también es medida para poder identificar pulsos con pequeña
-				separación temporal.
+				separación temporal, que podrían indicar la presencia de un fenómeno físico denominado multiplicidad.
 			\item 	En la siguiente tabla \ref{tab:FPGAUartOver} podemos ver el mensaje de estado que la FPGA genera. Dado que la UART usa
 				una FIFO de tamaño fijo es posible que la FIFO se llene y se pierdan mensajes. En este caso la FPGA genera un mensaje
 				de estado que es transmitido para indicarle al software que se han producido perdidas de datos.
-			\item	Además de medir el ancho de los pulsos la PFGA lleva la cuenta de pulsos recibidos para cada canal. Esta información
-				puede ser solicitada por la BeagleBone Black utilizando el comando apropiado, ver tabla \ref{tab:FPGAUartComm}. En la
+			\item	Además de medir el ancho de los pulsos la FPGA lleva la cuenta de pulsos recibidos para cada canal. Esta información
+				puede ser solicitada por la BeagleBone Black utilizando el comando apropiado(ver tabla \ref{tab:FPGAUartComm}). En la
 				tabla \ref{tab:FPGAUartCont} podemos ver el formato en el que se transmite la información de las cuentas. Los bytes 2,
-				3, 4 son transmitidos 18 veces, una vez para cada canal. Después de transmitir la información de las cuentas la FPGA
+				3 y 4 son transmitidos 18 veces, una vez para cada canal. Después de transmitir la información de las cuentas la FPGA
 				reinicia los contadores para cada canal.
 		\end{itemize}
 		En la figura \ref{fig:fpgaWave} podemos ver un posible diagrama de como se generan los mensajes anteriormente descritos.

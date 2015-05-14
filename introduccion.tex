@@ -139,10 +139,11 @@ utilizadas en el trabajo.
 		explicar. La compatibilidad con los amplificadores utilizados en el sistema de adquisición actual también es mantenida. Esto da mucha
 		flexibilidad a la estación, permitiéndole incorporar diferentes amplificadores a la vez.
 		\par
-		La siguiente diferencia está en la FPGA, recordamos que en el sistema de adquisición actual esta tan solo registra los eventos por
-		minuto para los 18 canales. La nueva FPGA debe realizar la misma tarea, pero aparte debe poder medir el ancho de los pulsos generados
-		por los amplificadores. Los dos sistemas de adquisición utilizan un puerto serie para la comunicación entre software y FPGA. En
-		el nuevo sistema este puerto opera a una velocidad mayor a fin de poder transmitir toda la información extra.
+		La siguiente diferencia está en la FPGA, pero sobre todo en el \emph{IP core} integrado en cada uno de los dos sistemas. Recordamos
+		que en el sistema de adquisición actual este tan solo registra los eventos por minuto para los 18 canales. El nuevo \emph{IP core}
+		debe realizar la misma tarea, pero aparte debe poder medir el ancho de los pulsos generados por los amplificadores. Los dos sistemas
+		de adquisición utilizan un puerto serie para la comunicación entre software y FPGA. En el nuevo sistema este puerto opera a una
+		velocidad mayor a fin de poder transmitir toda la información extra.
 		\par
 		El nuevo sistema también está pensado para ofrecer una mayor compatibilidad. El fin es poder implantar este en diferentes estaciones
 		de forma fácil y rápida. El hardware y software deben ser diseñados con este requisito en mente.
