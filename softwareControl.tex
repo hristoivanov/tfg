@@ -36,10 +36,10 @@ principales, a continuación hacemos una breve descripción de estos.
 
 \section{Arranque automático del sistema}
 	Uno de los requisitos del sistema es el arranque automático ante la presencia de corriente eléctrica. La BeagleBone Black por defecto está
-	configurada para arrancar automáticamente, debemos configurarla para que inicialice nuestro software. Para este propósito vamos a utilizar las
-	\emph{System Services}\cite{AngSystemctl} que Angstrom proporciona. Un servicio de sistema permite ejecutar un programa de forma automática al
-	ser arrancado el sistema. Angstrom utiliza \texttt{systemd}\cite{systemdWiki} para gestionar los servicios de sistema.  Este es un conjunto de
-	demonios, librerías y utilidades diseñados para facilitar la administración de sistemas Linux.
+	configurada para arrancar automáticamente,pero debemos configurarla para que también inicialice nuestro software. Para este propósito vamos a
+	utilizar las \emph{System Services}\cite{AngSystemctl} que Angstrom proporciona. Esta distribución utiliza \texttt{systemd}\cite{systemdWiki}
+	para gestionar los servicios de sistema y la forma en la que estos servicios arrancan cuando se pone en marcha la BeagleBone Black. Este es un
+	conjunto de demonios, librerías y utilidades diseñados para facilitar la administración de sistemas Linux.
 	\par
 	Para operar sobre la configuración de \texttt{systemd} tenemos el comando \texttt{systemctl}. A continuación podemos ver como usar este
 	comando.
@@ -69,11 +69,11 @@ $ systemctl disable  nombre_de_servicio
 			específicamente hasta que el sistema sea listo para aceptar el acceso de múltiples usuarios. 
 	\end{itemize}
 	\par
-	En la figura \ref{fig:boot} podemos ver la secuencia que define el proceso de arranque del sistema de adquisición. Para cumplir con este
-	proceso hemos definido cuatro servicios de sistema. El servicio \texttt{myWatchDog.service} es el encargado de arrancar el software que
-	controla el Watchdog. El servicio \texttt{ntpdate.service} es el responsable de actualizar la fecha y hora actuales. El servicio
-	\texttt{ntpd.service} es el responsable de mantener sincronizados la fecha y hora del sistema. Finalmente el servicio \texttt{nmda.service} es
-	el encargado de arrancar el software de adquisición.
+	En la figura \ref{fig:boot} podemos ver la secuencia que define el proceso de arranque del sistema de adquisición. Esta secuencia empieza con
+	el servicio \texttt{myWatchDog.service}, que es el encargado de arrancar el software que controla el Watchdog. El servicio
+	\texttt{ntpdate.service} es el responsable de establecer la fecha y hora actuales mientras que el servicio \texttt{ntpd.service} tiene como
+	tarea corregir las derivas que pueden presentrase. Finalmente el servicio \texttt{nmda.service} es el encargado de arrancar el software de
+	adquisición.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/boot.png}
@@ -81,16 +81,17 @@ $ systemctl disable  nombre_de_servicio
 		\label{fig:boot}
 	\end{figure}
 	\subsection{Watchdog}
-		Un Watchdog \cite{WatchDogWiki} es un mecanismo de seguridad que realiza un Reset en el sistema cuando es detectado un
-		mal funcionamiento. Consiste en un temporizador que realiza una cuenta atrás, cuando esta cuenta llega a cero el sistema es reiniciado.
-		Es nuestro software el que debe reiniciar este contador para que no expire. Los Watchdogs pueden ser software o hardware, el utilizado
-		en este trabajo está implementado en la BeagleBone Black y es hardware. Los Watchdogs hardware son más fiables, los software pueden
-		quedarse bloqueados.
+		Un Watchdog \cite{WatchDogWiki} es un mecanismo de seguridad que realiza un Reset en el sistema cuando es detectado un mal
+		funcionamiento. Consiste en un temporizador que realiza una cuenta atrás, de forma que, cuando esta cuenta llega a cero, el sistema es
+		reiniciado. Es nuestro software el que debe reponer el valor de este contador para evitar que expire. Los Watchdogs pueden ser
+		software o hardware, el utilizado en este trabajo está implementado en la BeagleBone Black y es hardware. Los Watchdogs hardware son
+		más fiables, los software son más susceptibles a bloquearse.
 		\par
-		El Watchdog es accesible mediante el archivo \texttt{/dev/watchdog}. Para activar el mecanismo escribimos en el archivo, cualquier
-		valor es aceptado. El contador es puesto en marcha, si este llega a expirar es reiniciada la placa. El valor inicial del contador es
-		de 60 segundos, valor que adquiere cada vez que es reiniciado. El contador es reiniciado al escribir en el archivo. Al cerrar dicho
-		archivo el mecanismo es deshabilitado. A continuación presentamos una parte del código fuente responsable de controlar el WatchDog.
+		El Watchdog es accesible mediante el archivo \texttt{/dev/watchdog}. Para activar el mecanismo basta con escribir cualquier valor en
+		dicho archivo. El contador se pone en marcha automáticamente y, si este llegara a expirar, se produciría el reinicio del sistema. El
+		valor inicial del contador es de 60 segundos, valor que adquiere cada vez que es reiniciado. El contador es reiniciado al volver a
+		escribir en el archivo. Al cerrar dicho archivo el mecanismo es deshabilitado. A continuación presentamos una parte del código fuente
+		responsable de controlar el WatchDog.
 		\begin{lstlisting}[style=myPython]
 args		= NMDA.create_parser().parse_args()
 conn_local      = sqlite3.connect(args.database)
@@ -113,90 +114,99 @@ while True:
 		\end{lstlisting}
 		\par
 		Primero se establece la conexión con la base de datos local. La base de datos es utilizada para comprobar si el sistema de adquisición
-		genera correctamente datos, si no son generados datos la placa debe ser reiniciada. Una vez establecida la conexión se procede a
-		invocar la función \texttt{get\_last()}, que devuelve el último valor presente en la base de datos. Seguidamente es abierto el archivo
-		que permite manejar el WatchDog. Una vez abierto el archivo se entra en un bucle \texttt{while} sin condición de salida. En cada
-		iteración de este bucle es escrito un salto de línea que reinicia el contador del WatchDog. Dentro del bucle también hay una llamada a
-		la función \texttt{time.sleep(20)}, las iteraciones del bucle están espaciadas 20 segundos. Cada 15 iteraciones o aproximadamente 5
-		minutos se vuelve a invocar la función \texttt{get\_last()}. El valor devuelto es comparado con el valor anterior. Si estos dos
-		valores son iguales es invocada la función \texttt{time.sleep(120)}, intervalo suficiente para que el contador del WatchDog expire.
-		Los valores son iguales si en los últimos 5 minutos el sistema de adquisición no ha generado ningún dato. Por contrario si se han
-		generado datos durante los últimos 5 minutos estos dos valores son diferentes, en tal caso se sigue con la ejecución del bucle
-		\texttt{while}. 
-	\subsection{Sincronización UTC}
-		La BeagleBone Black no implementa ningún mecanismo hardware para calcular la fecha y hora actuales, por lo que en cada reinicio la
+		genera correctamente datos. Si no fuera así, la placa debe ser reiniciada. Una vez establecida la conexión se procede a invocar la
+		función \texttt{get\_last()}, que devuelve el último valor presente en la base de datos. Seguidamente se abre el archivo que permite
+		manejar el WatchDog. Una vez abierto el archivo se entra en un bucle \texttt{while} sin condición de salida. En cada iteración de este
+		bucle se escribe un salto de línea que reinicia el contador del WatchDog. Dentro del bucle también hay una llamada a la función
+		\texttt{time.sleep(20)}, las iteraciones del bucle están espaciadas 20 segundos. Cada 15 iteraciones o aproximadamente 5 minutos se
+		vuelve a invocar la función \texttt{get\_last()}. El valor devuelto es comparado con el valor anterior. Si estos dos valores son
+		iguales es invocada la función \texttt{time.sleep(120)}, intervalo suficiente para que el contador del WatchDog expire. Los valores
+		son iguales si en los últimos 5 minutos el sistema de adquisición no ha generado ningún dato. Por contrario si se han generado datos
+		durante los últimos 5 minutos estos dos valores son diferentes, en tal caso se sigue con la ejecución del bucle \texttt{while}. 
+	\subsection{Sincronización de fecha y hoara}
+		La BeagleBone Black no implementa ningún mecanismo hardware para mantener la fecha y hora actuales, por lo que en cada reinicio la
 		fecha y hora se pierden. Es nuestra responsabilidad realizar un mecanismo software que sincronice la fecha y hora con el resto del
-		mundo\cite{ntpd}. Es utilizado el programa \texttt{ntpd} para este propósito. Este es un programa que hace uso del \emph{Network Time
-		Protocol}\cite{ntpWiki} para mantener el tiempo del sistema. Son realizadas dos llamadas a este programa.
+		mundo\cite{ntpd}. Utilizamos el programa \texttt{ntpd} para este propósito. Este programa hace uso del \emph{Network Time
+		Protocol}\cite{ntpWiki}, que permite la sincronización entre dos relojes a través de una red de datos con latencia variable. Son
+		realizadas dos llamadas a este programa.
 		\begin{lstlisting}[style=myBash]
-# Actualiza la fecha y hora.
+# Establece inicialmente la fecha y hora.
 $ /usr/bin/ntpd -q -g -x
 # Lanza un demonio que corrige las derivas que puedan presentarse
 $ /usr/bin/ntpd -p /run/ntpd.pid
 		\end{lstlisting}
 
 \section{\texttt{NMDA}}
-	Este es el módulo principal de nuestro software. En la figura \ref{fig:soft_adquisición} podemos ver un diagrama de flujo que representa el
-	funcionamiento de este. En las siguientes subsecciones describiremos las funcionalidades más relevantes de este módulo.
+	Este es el módulo principal de nuestro software. Es el encargado de realizar la configuración inicial de acuerdo con los parámetros
+	proporcionados, resetear la FPGA y finalmente inicializar los demás módulos. En la figura \ref{fig:soft_adquisición} podemos ver un diagrama
+	de flujo que representa el funcionamiento de este. En las siguientes subsecciones describiremos las funcionalidades más relevantes de este
+	módulo.
 	\subsection{Logger}
-		Haciendo uso de la librería \texttt{logging}\cite{py_logging} es configurado un archivo de Log. En este archivo son registrando los
-		sucesos de eventos importantes. Ejemplo de eventos que registramos son las pérdidas de datos o el inicio del sistema. El mecanismo
-		está configurado para que automáticamente se guarde la hora y fecha de cada mensaje. A continuación se muestra como se configura y usa
-		este mecanismo.
+		Haciendo uso de la librería \texttt{logging}\cite{py_logging} se configura un archivo de Log. En este archivo se registran los sucesos
+		de eventos importantes. Un ejemplo de los posibles eventos que se registran son los relacionados con las pérdidas de datos. El
+		mecanismo está configurado para que automáticamente se guarde la hora y fecha de cada mensaje. A continuación se muestra como se
+		configura y usa este mecanismo. Los comentarios representan la entrada producida en el archivo de Log.
 		\begin{lstlisting}[style=myPython]
 import logging
 logging.basicConfig(filename='/server/logs/NMDA.log', level=logging.DEBUG, format=''%(asctime)s %(message)s'')
-logging.info('Started')
+logging.info('Data Loss')   
+# 2015-05-14 09:50:56,017   Data Loss
+logging.info('Uart_1 Overflow') 
+# 2015-05-14 09:50:55,936   Uart_1 Overflow
 		\end{lstlisting}
 	\subsection{Archivo de configuración y Flags}
-		Existen una serie de variables que varían en función de la estación o que simplemente pueden cambiar con el tiempo. No es buena idea
-		tener los valores de estas variables en el código. Este problema nos ha llevado a exportar estas variables a un archivo de
-		configuración.  Para leer este archivo utilizamos la librería \texttt{ConfigParser}\cite{py_ConfigParser}. A continuación mostramos un
-		ejemplo de este archivo que nos ayudara a entender mejor su estructura.
+		Existen una serie de parámetros que varían en función de la estación o que simplemente pueden cambiar con el tiempo. No es buena idea
+		tener los valores de estas variables en el código. Este problema nos ha llevado a exportar estos parámetros a un archivo de
+		configuración. Para leer este archivo utilizamos la librería \texttt{ConfigParser}\cite{py_ConfigParser}. A continuación mostramos un
+		ejemplo de este archivo que nos ayudará a entender mejor su estructura. Los comentarios explicativos son suficientes para entender el
+		propósito de cado uno de los campos.
 		\begin{lstlisting}[style=myFile]
 [Basics]
-# The serial RS232_FPGA1C
+# Referencia a la Uart de pulsos dentro del sistema de archivos.
 serial_port_control  = /dev/ttyO2
-# The local database where data will be saved. If 'shell' is specified as database data will be printed to the shell
+# Referencia la la base de datos local.
+# El valor 'shell' imprimirá los valores por consola.
 database = /server/data/test.db
-# Channel averages used for the median algorithm\ldots
+# Valores medios para los 18 canales que serán utilizados para el Median Algorithm.
 Channel_avg = 255, 290, 0, 295, 0, 0, 289, 291, 252, 254, 293, 299, 298, 328, 299, 302, 302, 272
 
 [Sensors]
-# The serial RS232_FPGA1
+# Referencia a la Uart de extensión dentro del sistema de archivos.
 serial_port_sensors= None
-# The type of barometer that will be used. 'None', 'bm35', 'ap1'
+# Tipo de barómetro. Valores aceptados [None, bm35, ap1].
 barometer_type = None
-# The type of hvps that will be used. 'None', 'analog', 'digital'
+# Tipo de HVPS. Valores acpetados [None, analog, digital].
 hvps_type = None
-#Correction coefficient for the analog hvps, 1.0 => No correction
+# Coeficiente de correción para las HVPS analógicas.
 analog_hvps_corr = 1.0
 
 [dbUpdater]
+# Habilitar y deshabilitar.
 db_updater_enabled=True
-# Must be the same that Basic.database
+# Referencia la la base de datos local. Debe tener el mismo valor que Basics.database.
 local_db= /server/data/test.db 
-# The remote database config
+# La dirreción IP de la base de datos remota.
 remote_db_host= 192.168.1.1
-# The user must have privileges
+# Usuario y contraseña del usuario para la base de datos remota
 remote_db_user= hristo
 remote_db_pass= 123qwe
-# The database will be created if not exists along with all the tables
+# Nombre de la base de datos remota
 remote_db_db= nmdadb2
 
 [Pressure]
-# Average pressure for the station.
+# Presión media para la estación
 avg_pressure=932
-# N=N0*exp(Beta*(P-P0))
+# Coeficiente de correlación atmosférica
 beta_pressure=0.0067
 
 [Efficiency]
-# corr_efficcincy = Beta * corr_pressure
+# Factor de correción
 beta_efficiency=1.0
-\end{lstlisting}
-		Los valores de las variables exportadas son también accesibles mediante el uso de Flags. En este caso hemos utilizado la librería
-		\texttt{argparse}\cite{py_argparse}. Los valores que son especificados con Flags sobrescriben a los valores del archivo de
-		configuración. Los Flags se usan de la siguiente forma.
+\end{lstlisting} 
+		\par
+		Los valores de los parámetros exportados son también accesibles a través de flags. En este caso hemos utilizado la librería
+		\texttt{argparse}\cite{py_argparse}. Los valores especificados mediante flags tienen precedencia sobre los mismos que estuvieran en el
+		archivo de configuración. Los flags se usan de la siguiente forma.
 		\begin{lstlisting}[style=myBash]
 $ python NMDA.py -h
 usage: NMDA.py 
@@ -209,7 +219,7 @@ usage: NMDA.py
 		\end{lstlisting}
 
 	\subsection{Configurar la BeagleBone Black}
-		Tal y como explicamos en el capítulo de entorno hardware la BeagleBone Black proporciona dos cabeceras de extensión de 46 pines cada
+		Tal y como explicamos en el capítulo de entorno hardware la BeagleBone Black proporciona dos cabeceras de expansión de 46 pines cada
 		una\cite{BeagleWikiExp}. Muchos de estos pines son multipropósito, por lo que deben ser configurados. Esta configuración se realiza
 		mediante el uso de \emph{Device Tree Overlay}, estructura de datos que se utiliza para describir el hardware. En este trabajo
 		utilizamos la librería \emph{Adafruit BeagleBone IO Python}\cite{AdaFruitGit} que facilita la tarea de configurar estas cabeceras. A
