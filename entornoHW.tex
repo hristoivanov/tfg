@@ -74,7 +74,8 @@ la realización de los módulos hardware que serán descritos a continuación.
 				3 y 4 son transmitidos 18 veces, una vez para cada canal. Después de transmitir la información de las cuentas la FPGA
 				reinicia los contadores para cada canal.
 		\end{itemize}
-		En la figura \ref{fig:fpgaWave} podemos ver un posible diagrama de como se generan los mensajes anteriormente descritos.
+		En la figura \ref{fig:fpgaWave} podemos ver un ejemplo de la secuencia de datos transmitidos por la \emph{UART de pulsos}, junto a
+		estos podemos ver los estímilos que los causan. 
 
 		\begin{table}[h]
 			\tiny
@@ -86,7 +87,7 @@ la realización de los módulos hardware que serán descritos a continuación.
 				\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & Dato (6)	 & Dato (5)      		& Dato (4)     & Dato (3)    & Dato (2)   & Dato (1)   & Dato (0)    \\ \hline
 				\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & X          & Nivel ('1'->alto, '0'->bajo) & Dato (11)    & Dato (10)   & Dato (9)   & Dato (8)   & Dato (7)    \\ \hline
 			\end{tabularx}
-			\caption{UART pulsos. Palabra de ancho de pulso}
+			\caption{\emph{UART de pulsos}. Palabra de ancho de pulso}
 			\label{tab:FPGAUartPulso}
 			\begin{tabularx}{\textwidth}{|l|c|X|X|X|X|X|X|X|}
 				\hline
@@ -96,7 +97,7 @@ la realización de los módulos hardware que serán descritos a continuación.
 				\cellcolor[HTML]{C0C0C0}\textbf{Byte 2} & 1 & OverFlow FIFO Tubo 12    & OverFlow FIFO Tubo 11 & OverFlow FIFO Tubo 10 & OverFlow FIFO Tubo 9  & OverFlow FIFO Tubo 8  & OverFlow FIFO Tubo 7  & OverFlow FIFO Tubo 6	\\ \hline
 				\cellcolor[HTML]{C0C0C0}\textbf{Byte 3} & 1 & Almost Full FIFO General & OverFlow FIFO General & OverFlow FIFO Tubo 17 & OverFlow FIFO Tubo 16 & OverFlow FIFO Tubo 15 & OverFlow FIFO Tubo 14 & OverFlow FIFO Tubo 13	\\ \hline
 			\end{tabularx}
-			\caption{UART pulsos. Palabra de estado}
+			\caption{\emph{UART de pulsos}. Palabra de estado}
 			\label{tab:FPGAUartOver}
 			\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|c|c|c|}
 				\hline
@@ -110,7 +111,7 @@ la realización de los módulos hardware que serán descritos a continuación.
 				\cellcolor[HTML]{C0C0C0}\textbf{......}  & . & .........   & ......... 	& .........   & .........   & .........  & .........   & .........  	\\ \hline
 				\cellcolor[HTML]{C0C0C0}\textbf{Byte 55} & 1 & X	   & X	 	& X	      & X	    & X		 & Dato17 (15) & Dato17 (14)	\\ \hline
 			\end{tabularx}
-			\caption{UART pulsos. Palabra de cuentas}
+			\caption{\emph{UART de pulsos}. Palabra de cuentas}
 			\label{tab:FPGAUartCont}
 			\begin{tabularx}{\hsize}{|c|X|}
 		  		\hline
@@ -123,7 +124,7 @@ la realización de los módulos hardware que serán descritos a continuación.
 		  		0x10     & Reset general del sistema              \\\hline
 		  		0x11     & Solicita la transmisión de las cuentas \\\hline
 			\end{tabularx}
-			\caption{UART pulsos. Commandos}
+			\caption{\emph{UART de pulsos}. Commandos}
 			\label{tab:FPGAUartComm}
 		\end{table}
 		\begin{figure}[h]
@@ -133,14 +134,19 @@ la realización de los módulos hardware que serán descritos a continuación.
 			\label{fig:fpgaWave}
 		\end{figure}
 	\subsection{Multiplexor}
-		Entre la FPGA y la BeagleBone Black hay una segunda UART a la que nos referiremos como \emph{UART de extensión}. Esta está conectada a
-		un multiplexor implementado en la FPGA. En el otro extremo del multiplexor tenemos cuatro UART. El estado del multiplexor puede
-		cambiarse enviando comandos por la UART de pulsos, de acuerdo a la especificación presentada en la tabla\ref{tab:FPGAUartComm}.
-		Mediante el uso de este multiplexor pueden ser conectados más dispositivos que requieren una UART. Un ejemplo es el barómetro
-		\emph{BM35} utilizado en CALMA. 
+		Tal y como explicamos en el capítulo de introducción, el sistema de adquisición debe monitorizar la presión atmosférica, el
+		funcionamiento de las fuentes de tensión y en muchos casos la temperatura ambiente. Al igual que muchos otros dispositivos que pueden
+		ser necesarios, la mayoria de estos sensores hacen uso de un puerto serie. Estos son menejados según el patron \emph{Master-Slave} y
+		generalmente intercambian poca información, por consiguiente, pueden compartir un puerto serie. El macanismo que resuelve este
+		problema está implmentado en el \emph{IP core}. Este consiste en una UART a la que nos referiremos como \emph{UART de extensión}. Esta
+		está conectada a un multiplexor, que es el encargado de realizar la conmutación entre los cuatro dispositivos soportados. El estado
+		del multiplexor puede cambiarse enviando comandos por la \emph{UART de pulsos}, de acuerdo a la especificación presentada en la tabla
+		\ref{tab:FPGAUartComm}. Ejemplo de dispositivos que requiren un puerto serie son el barómetro \emph{BM35} utilizado en CALMA, varias
+		fuentes de alimentación comerciales, estaciones meteorológicas, GPS, etc.
 	\subsection{Reset}
-		La FPGA permite realizar un Reset de esta. Todas las variables son puestas a sus valores iniciales, excepto el multiplexor que
-		mantiene su estado. Existen dos maneras de realizar este Reset. La primera es mediante un comando trasmitido por la UART de pulsos, de
-		acuerdo a la especificación presentada en la tabla \ref{tab:FPGAUartComm}. La segunda manera de realizar este Reset es mediante una
-		señal digital activa a bajo nivel. La señal mencionada está conectada a una de las entradas GPIO de la BeagleBone Black por lo que es
-		accesible desde nuestro software de adquisición.
+		El \emph{IP core} permite realizar un Reset del estado interno de la FPGA. Todas las variables son puestas a sus valores iniciales,
+		excepto el miltiplexor que mantiene su estado. Para la realización de dicho Reset son exportadas tres interfaces. La primera es un
+		boton hardware accesible de forma física. La segunda es un commando trasmitido por la \emph{UART de pulsos}, de acuerdo a la
+		especificación presentada en la tabla \ref{tab:FPGAUartComm}. La tercera es una señal digital activa a bajo nivel. La señal definida
+		como \emph{BS1}, está conectada al pin \emph{P9\_42(GPIO\_7)} de la BeagleBone Black, por consiguiente, es accesible desde nuestro
+		software de adquisición.
