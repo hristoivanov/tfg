@@ -9,7 +9,7 @@ Empezamos este capítulo haciendo una breve introducción a los conceptos teóri
 estableciendo los objetivos y el diseño preliminar. Finalmente aclaramos algunas peculiaridades referentes al proceso de adquisición de datos. El
 segundo capítulo describe el entorno hardware en el que se desarrolla el software de adquisición. Los siguientes capítulos describen en detalle el
 trabajo realizado. El primero de estos es dedicado al software de adquisición. Debido a la separación impuesta por el modelo \emph{Cliente-Servidor}
-son utilizados dos capítulos para describir la herramienta Web, el primero dedicado al \emph{Servidor} y el segundo al \emph{Cliente}. El último
+se utilizarán dos capítulos para describir la herramienta Web, el primero dedicado al \emph{Servidor} y el segundo al \emph{Cliente}. El último
 capítulo de este documento recoge las conclusiones obtenidas del trabajo y la visión futura de este. El documento también incluye un apéndice, en este
 son descritos los pasos a seguir para implantar el software de adquisición y la herramienta Web. En este apéndice también son reflejados los aspectos
 más importantes del proceso de implementación. Finalmente el documento incluye una lista de referencias bibliográficas a las fuentes de información
@@ -39,9 +39,9 @@ utilizadas en el trabajo.
 			radiación cósmica es un buen indicador de la actividad solar donde la relación es inversa. Menos radiación generalmente
 			significa una actividad solar elevada.
 		\item	Forbush decrease\cite{Forbush1938}. Estos sucesos consisten en un descenso rápido de los niveles de radiación cósmica medida
-			en la Tierra. Estos descensos son consecuencia de CME's. La materia expulsada en un CME al ser en su mayoría plasma, extiende
-			e intensifica el campo magnético solar. Como ya hemos explicado el aumento del campo magnético solar conlleva al descenso de
-			radiación cósmica.
+			en la Tierra. Estos descensos son consecuencia de CME's(Eyección de masa coronal). La materia expulsada en un CME al ser en su
+			mayoría plasma, extiende e intensifica el campo magnético solar. Como ya hemos explicado el aumento del campo magnético solar
+			conlleva al descenso de radiación cósmica.
 		\item	Ground level enhancements(GLE). Eventualmente la actividad solar es tan elevada que el Sol es capaz de emitir partículas muy
 			energéticas. Estas partículas son a veces tan energéticas que pueden generar cascadas atmosféricas que alcanzan la superficie
 			terrestre. Estos sucesos son muy raros, entre 10 y 15 por década. A pesar de ser muy raros estos pueden tener un gran impacto
@@ -51,13 +51,12 @@ utilizadas en el trabajo.
 
 \section{Monitor de neutrones}
 	Un monitor de neutrones es una estación terrestre que monitoriza la llegada de partículas extraterrestres de forma indirecta a partir de las
-	cascadas atmosféricas. Estos están compuestos por cuatro capas especialmente diseñadas para capturar las partículas secundarias producidas en
-	las cascadas atmosféricas. A continuación procedemos a explicar estas cuatro capas, empezaremos por la más exterior y acabaremos explicando la
-	capa más interior.
+	cascadas atmosféricas. Este está compuesto por cuatro capas especialmente diseñadas para capturar las partículas secundarias producidas en las
+	cascadas atmosféricas. A continuación procedemos a explicar estas cuatro capas.
 	\begin{itemize}
-		\item	\textbf{Reflector}. La primera capa consiste en un escudo reflector que tan solo deja pasar las partículas con energía alta.
-			De esta manera todas las partículas generadas por el entorno inmediato que tienen baja energía rebotan y no influyen en la
-			medición.
+		\item	\textbf{Reflector}. La primera capa, la exterior, consiste en un escudo reflector que tan solo deja pasar las partículas con
+			energía alta.  De esta manera todas las partículas generadas por el entorno inmediato que tienen baja energía rebotan y no
+			influyen en la medición.
 		\item	\textbf{Productor}. Esta capa compuesta generalmente de material denso tiene como objetivo conseguir algo parecido a las
 			cascadas atmosféricas. La idea es tener un material denso para que aumente la probabilidad de que las partículas secundarias
 			impacten con las partículas del material y como resultado se produzcan aún más partículas. A las partículas generadas en esta
@@ -72,7 +71,7 @@ utilizadas en el trabajo.
 			al campo eléctrico que atraviesa constantemente el gas estos electrones son acelerados hacia el ánodo, hilo conductor que
 			atraviesa el tubo contador en su centro. Conforme los electrones ganan energía, estos pueden producir ionizaciones
 			secundarias. El número total de electrones que llegan al ánodo se mantiene, sin embargo, proporcional a la energía de la
-			partícula inicial. Al llegar al ánodo estos electrones producen una correinte eléctrica. 
+			partícula inicial. Al llegar al ánodo estos electrones producen una corriente eléctrica. 
 
 	\end{itemize}
 	\par
@@ -110,12 +109,12 @@ utilizadas en el trabajo.
 	de forma plena en diciembre de 2012 y desde entonces lleva haciéndolo ininterrumpidamente con pequeñas excepciones. Desde su puesta en marcha
 	la estación ha registrado 18 Forbush decreases. Desafortunadamente aún no ha habido ningún GLE que detectar, aunque este tendría que ser muy
 	energético para ser detectado en una estación con tan poca latitud. A continuación procedemos a hablar más a fondo del estado actual de CALMA,
-	hablaremos del sistema de adquisición, base de datos, herramientas y técnicas que son usadas.
+	hablaremos del sistema de adquisición, base de datos, herramientas y técnicas que son utilizadas.
 	\subsection{Sistema de adquisición}
 		Como hemos mencionado el sistema de adquisición que está implantado en CALMA es producto del propio equipo\cite{Garcia2014}. Este está
 		basado en un sistema empotrado Linux. Si las señales generadas por los tubos contadores superan un determinado umbral, estas son
 		covertidas en pulsos digitales por los amplificadores. A continuación, un circuito de adaptación se encarga de elevar los niveles de
-		tensión de los pulsos digitales a niveles \emph{TTL} y de adaptar la impedancia de la línea de comunicaciones si el preamplificador
+		tensión de los pulsos digitales a niveles \emph{TTL} y de adaptar la impedancia de la línea de comunicaciones si el amplificador
 		así lo requiere. Seguidamente los pulsos son procesados por una FPGA que es la encargada de medir los eventos por minuto de los 18
 		canales. Aunque la estación tan solo tiene 15 tubos contadores el sistema está diseñado para soportar 18, este número es un estándar
 		histórico. El software que se ejecuta en el sistema Linux tiene como tarea comunicarse con la FPGA, su labor es recoger las
@@ -136,7 +135,7 @@ utilizadas en el trabajo.
 		medir la energía de las señales generadas por los tubos contadores, esta magnitud es de gran interés técnico.
 		\par
 		La segunda diferencia está en el circuito de adaptación. Este cambia a fin de soportar los nuevos amplificadores que acabamos de
-		explicar. La compatibilidad con los amplificadores utilizados en el sistema de adquisición actual también es mantenida. Esto da mucha
+		explicar. La compatibilidad con los amplificadores utilizados en el sistema de adquisición actual también se mantiene. Esto da mucha
 		flexibilidad a la estación, permitiéndole incorporar diferentes amplificadores a la vez.
 		\par
 		La siguiente diferencia está en la FPGA, pero sobre todo en el \emph{IP core} integrado en cada uno de los dos sistemas. Recordamos
@@ -184,7 +183,7 @@ utilizadas en el trabajo.
 			\item 	El software debe ser capaz de detectar estados anómalos y actuar conforme a estos. En una estación de este tipo la
 				mayoría de veces un funcionamiento anómalo se traduce en no generar datos o generar datos irregulares. Ante la
 				presencia de un estado anómalo debe generarse una alerta. El software también debe reaccionar ante dichos estados
-				anómalos, la mayoria de problemas son solucionados realizando un reinicio del sistema.
+				anómalos, la mayoría de problemas se solucionan realizando un reinicio del sistema.
 		\end{itemize}
 		Aparte de la realización del software en este trabajo también contemplamos el proceso de implantación y mantenimiento de este.
 		Volvemos a recordar que los demás módulos que componen el sistema de adquisición ya están desarrollados por el equipo de CALMA. Las
@@ -195,7 +194,7 @@ utilizadas en el trabajo.
 		%TODO Citar el artículo de la herramienta.
 		\begin{itemize}
 			\item	\textbf{Spike Tool}. Módulo que permitirá la detección de Spikes. Un Spike es un dato anómalo, un dato
-				anormalmente grande o pequeño. Usando los datos proporcionados por el sistema de adquisición, este módulo generara
+				anormalmente grande o pequeño. Usando los datos proporcionados por el sistema de adquisición, este módulo generará
 				gráficos. Éstos serán interactivos y su propósito será hacer más fácil la detección de Spikes. Los Spikes detectados
 				podrán ser marcados como nulos en el conjunto de datos revisados. 
 			\item 	\textbf{Configuración de los parámetros la estación}. Este módulo permitirá la reconfiguración de los parámetros de la
@@ -225,7 +224,7 @@ utilizadas en el trabajo.
 		alto rendimineto que implementa la base de datos en un único archivo. Esto junto al API bien definido simplifica la administración.
 		\par
 		En la figura \ref{fig:soft_control_preliminar} podemos ver el diseño preliminar del software de adquisición. Ante la presencia de
-		corriente eléctrica este debe ser capaz de inicializarse solo. El primer paso que debe tomar es realizar la configuración necesaria
+		corriente eléctrica este debe ser capaz de inicializarse solo. El primer paso que debe hacer es realizar la configuración necesaria
 		para el correcto funcionamiento del sistema de adquisición. Seguidamente debe continuar con el funcionamiento nominal. Este consiste
 		de tres pasos que se repiten cíclicamente. El primero es solicitar la información a la FPGA, seguidamente el software debe interpretar
 		dicha información y finalmente la información debe ser guardada. Los posibles estados anómalos deben ser detectados y contrarrestados. 
@@ -236,9 +235,10 @@ utilizadas en el trabajo.
 			\label{fig:soft_control_preliminar}
 		\end{figure}
 	\subsection{Herramienta Web}
-		En la figura \ref{fig:herramienta_web_preliminar} podemos ver el diseño preliminar de la herramienta Web. Como podemos ver el diseño
-		está fuertemente basado en el modelo \emph{Cliente-Servidor}\cite{MVCWiki}. En este trabajo utilizamos los términos \emph{back-end} y
-		\emph{front-end} para referirnos al Cliente y al Servidor respectivamente. A continuación explicamos los componentes básicos.
+		En la figura \ref{fig:herramienta_web_preliminar} podemos ver el diseño preliminar de la herramienta Web. Como podemos observar el
+		diseño está fuertemente basado en el modelo \emph{Cliente-Servidor}\cite{MVCWiki}. En este trabajo utilizamos los términos
+		\emph{back-end} y \emph{front-end} para referirnos al Cliente y al Servidor respectivamente. A continuación explicamos los componentes
+		básicos.
 		\begin{description}
 			\item[Base de Datos.]    
 				En este componente residen los datos de nuestra estación. Para la gestión de estos utilizamos un servidor
@@ -253,8 +253,8 @@ utilizadas en el trabajo.
 			\item[\emph{Front-end}.] 
 				Este componente implementa la interfaz de nuestra aplicación. Es el encargado de presentar la información y manejar
 				las peticiones del usuario. El módulo está basado en el patrón \emph{Modelo-Vista-Controlador}. Para implementar la
-				Vista incargada de presentar los datos hemos utilizado HighStock\cite{HighStock}, para el Controlador encargado de
-				gestionar los eventos utilizamos ExtJs\cite{ExtJs} y para el modelo encargado de manejar los datos utilizamos
+				Vista encargada de presentar los datos hemos utilizado HighStock\cite{HighStock}, para el Controlador responsable de
+				gestionar los eventos empleamos ExtJs\cite{ExtJs} y para el modelo encargado de manejar los datos utilizamos
 				peticiones Ajax\cite{AjaxWiki}.
 		\end{description}
 		\begin{figure}[h]
@@ -268,7 +268,7 @@ utilizadas en el trabajo.
 	\par
 	Hasta este momento siempre hemos hablado de tubos contadores, en plural, detrás de esto hay una razón. Normalmente las estaciones se componen
 	de varios tubos contadores, donde 18 tubos contadores es un estándar. En el proceso de adquisición están envueltos muchos factores
-	probabilísticos, esto conlleva a que las medidas en un tubo tengan una gran dispersión. La solución de este problema es tener mucho tubos,
+	probabilísticos, esto conlleva a que las medidas en un tubo tengan una gran dispersión. La solución de este problema es tener muchos tubos,
 	cuantos más mejor. Combinando datos de diferentes tubos conseguimos reducir esta dispersión. 
 	\par
 	Tener los datos de muchos tubos contadores permite reducir la dispersión de los datos, sin embargo no es muy práctico trabajar con esos datos
