@@ -21,10 +21,10 @@ principales, a continuación hacemos una breve descripción de estos.
 \begin{itemize}
   	\item	\texttt{NMDA}. Es el proceso principal de nuestro software. Este es el encargado de realizar las configuraciones necesarias e iniciar
 	  	el \texttt{FPGASerialReader} y el \texttt{CountsManager}.
-	\item	\texttt{FPGASerialReader}. Thread que se encarga de procesar la información transmitida por la FPGA.
-	\item	\texttt{CountsManager}. Thread que se enarga de pedir la información necesaria y guardarla en la base de datos con periodicidad de un
-	  	minuto. Después de guardar la información es iniciado el \texttt{DBUpdater}.
-	\item	\texttt{DBUpdater}. Thread que se encarga de sincronizar la base de datos local con la réplica remota.
+	\item	\texttt{FPGASerialReader}. \emph{Thread} que se encarga de procesar la información transmitida por la FPGA.
+	\item	\texttt{CountsManager}. \emph{Thread} que se enarga de pedir la información necesaria y guardarla en la base de datos con periodicidad
+	  	de un minuto. Después de guardar la información es iniciado el \texttt{DBUpdater}.
+	\item	\texttt{DBUpdater}. \emph{Thread} que se encarga de sincronizar la base de datos local con la réplica remota.
 \end{itemize}
 
 \begin{sidewaysfigure}[p]
@@ -243,13 +243,13 @@ Pin P8_10(GPIO_68)   --> Señal STROBE del barómetro AP1.
 
 	\subsection{Iniciar recursos}
 		Al ser el módulo principal, \texttt{NMDA} es el encargado de iniciar todos los recursos que serán utilizados. Por recursos nos
-		referimos a las variables compartidas entre threads, conectores a las bases de datos, interfaces de los puertos serie y otros. Para
-		los conectores a las bases de datos utilizamos las librerías \texttt{sqlite3} y \texttt{MySQLdb}, volvemos a recordar que tenemos una
-		réplica local con Sqlite3 y otra réplica remota que gestionamos con MySql. Las tablas son creadas automáticamente en caso de no
+		referimos a las variables compartidas entre \emph{threads}, conectores a las bases de datos, interfaces de los puertos serie y otros.
+		Para los conectores a las bases de datos utilizamos las librerías \texttt{sqlite3} y \texttt{MySQLdb}, volvemos a recordar que tenemos
+		una réplica local con Sqlite3 y otra réplica remota que gestionamos con MySql. Las tablas son creadas automáticamente en caso de no
 		existir, esto simplifica mucho el proceso de implantación. Para la interfaz de los puertos serie utilizamos la librería
 		\texttt{serial}.
 		\par
-		Son inicializados los otros dos threads, \texttt{FPGASerialReader} y \texttt{CountsManager}. Estos dos realizan todo el proceso
+		Son inicializados los otros dos \emph{threads}, \texttt{FPGASerialReader} y \texttt{CountsManager}. Estos dos realizan todo el proceso
 		de adquisición y serán descritos más adelante en este capítulo. 
 	\subsection{Resetear FPGA}
 		Como hemos explicado en el capítulo \ref{entornoHW}, la FPGA permite realizar un Reset, que el software realizará antes de empezar con
@@ -274,10 +274,10 @@ GPIO.output('P9_42', GPIO.HIGH)
 
 \section{\texttt{FPGASerialReader}}
 	Este módulo software es el encargado de leer y procesar los datos transmitidos por la FPGA. En la figura \ref{fig:soft_adquisición} podemos
-	ver un diagrama de flujo que refleja el funcionamiento de este. La ejecución del Thread empieza comprobando el estado del puerto serie, que
-	puede estar saturándose. En el caso de que el puerto esté saturado se genera una entrada en el archivo de Log indicando este hecho. A
-	continuación leemos los datos disponibles, y en caso de no haber datos disponibles el Thread se queda bloqueado esperando a la llegada de
-	estos. Seguidamente de leer los datos pasamos a procesarlos. Por procesar nos referimos a interpretar el significado que tienen. Finalmente
+	ver un diagrama de flujo que refleja el funcionamiento de este. La ejecución del \emph{thread} empieza comprobando el estado del puerto serie,
+	que puede estar saturándose. En el caso de que el puerto esté saturado se genera una entrada en el archivo de Log indicando este hecho. A
+	continuación leemos los datos disponibles, y en caso de no haber datos disponibles el \emph{thread} se queda bloqueado esperando a la llegada
+	de estos. Seguidamente de leer los datos pasamos a procesarlos. Por procesar nos referimos a interpretar el significado que tienen. Finalmente
 	volvemos al paso inicial, volviendo a comprobar si han llegado nuevos datos a la UART.
 	\par
 	En las tablas \ref{tab:FPGAUartPulso}, \ref{tab:FPGAUartOver} y \ref{tab:FPGAUartCont}  del capítulo \ref{entornoHW}, podemos ver el formato
@@ -309,9 +309,9 @@ GPIO.output('P9_42', GPIO.HIGH)
 		Como vimos en el capítulo \ref{entornoHW}, la FPGA tan sólo transmite los datos de las cuentas cuando estas son solicitadas con el
 		comando apropiado. Este módulo es el encargado de mandar el comando al principio de cada minuto. La información transmitida por la
 		FPGA es procesada por el \texttt{FPGASerialReader} y almacenada en variables compartidas accesibles por el \texttt{CountsManager}.
-		Después de mandar el comando apropiado para solicitar las cuentas este Thread se queda esperando hasta que el
-		\texttt{FPGASerialReader} le notifique que las cuentas han sido enviadas y procesadas. Al ser notificado este módulo procede a leer
-		de las variables compartidas donde está almacenada la información de las cuentas. Dicha notificación se realiza mediante un
+		Después de mandar el comando apropiado para solicitar las cuentas este \emph{thread} se queda esperando hasta que el
+		\texttt{FPGASerialReader} le notifique que las cuentas han sido enviadas y procesadas. Al ser notificado este módulo procede a leer de
+		las variables compartidas donde está almacenada la información de las cuentas. Dicha notificación se realiza mediante un
 		\texttt{threading.Lock}
 		\par
 		Los valores de presión atmosférica, diferencia de potencial generado por las fuentes de alimentación y temperatura ambiente son
@@ -382,15 +382,15 @@ def medianAlgorithm(self, counts):
 
 \section{\texttt{DBUpdater}}
 	Este módulo software es el encargado de actualizar el contenido de la base de datos remota. El funcionamiento de este es muy simple y se puede
-	ver en la figura \ref{fig:soft_adquisición}. Empieza estableciendo la conexión con la base de datos remota. Si esta se establece procede a leer la
-	última entrada en la base de datos remota. Seguidamente el software calcula la diferencia entre las dos bases de datos, para el propósito usa
-	la fecha y hora de la entrada leída de la base de datos remota. Finalmente el software selecciona las diferencias entre las dos bases de datos
-	y las escribe en la remota. Es entonces cuando la ejecución de este Thread termina. 
+	ver en la figura \ref{fig:soft_adquisición}. Empieza estableciendo la conexión con la base de datos remota. Si esta se establece procede a
+	leer la última entrada en la base de datos remota. Seguidamente el software calcula la diferencia entre las dos bases de datos, para el
+	propósito usa la fecha y hora de la entrada leída de la base de datos remota. Finalmente el software selecciona las diferencias entre las dos
+	bases de datos y las escribe en la remota. Es entonces cuando la ejecución de este \emph{thread} termina. 
 	\par
 	Si la conexión con la máquina que alberga a la base de datos remota se pierde por un tiempo, cuando esta vuelva a restablecerse el
 	\texttt{DBUpdater} sincronizara las dos bases de datos. Eventualmente si las diferencias entre las dos bases de datos son muy grandes la
-	sincronización no ocurre de golpe, de esta manera evitamos sobrecargar al sistema. El fallo de la sincronización no es crítico, el Thread
-	volverá a ser lanzado el próximo minuto y volverá intentar sincronizar las dos bases de datos.
+	sincronización no ocurre de golpe, de esta manera evitamos sobrecargar al sistema. El fallo de la sincronización no es crítico, el
+	\emph{thread} volverá a ser lanzado el próximo minuto y volverá intentar sincronizar las dos bases de datos.
 
 \section{\texttt{SensorsManager}}
 	Este es el módulo software encargado de manejar los sensores, por sensores nos referimos al barómetro, las fuentes de alta tensión o los
