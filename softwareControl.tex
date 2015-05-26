@@ -2,7 +2,7 @@
 \label{cap2}
 En este capítulo procedemos a explicar el funcionamiento del software de adquisición. Empezaremos recordando los aspectos básicos descritos en el
 capítulo de introducción. El funcionamiento nominal del software consiste en recoger la información de los módulos hardware como la FPGA, el
-barómetro, las fuentes de alimentación y los sensores de temperatura si estos están presentes. Cada minuto la información recogida es procesada y
+barómetro, las fuentes de alimentación y los sensores de temperatura si estos están presentes. Cada minuto, la información recogida es procesada y
 almacenada en una base de datos. 
 \par
 Antes de empezar a discutir a fondo el software de adquisición es conveniente estar familiarizados con el entorno hardware descrito en el capítulo
@@ -12,14 +12,14 @@ igualmente bien a programación imperativa y orientada a objetos. El tipado din�
 lenguaje permiten un desarrollo rápido. Además el lenguaje ofrece una amplia cantidad de librerías que también aligeran el trabajo. 
 \par
 Para gestionar la base de datos utilizamos Sqlite3\cite{Sqlite}. Este es un gestor muy ligero y adecuado para sistemas empotrados. Aparte de esta base
-de datos local el software permite mantener una segunda réplica remota. Para esta réplica remota utilizamos MySql\cite{MySql} que es un gestor más
+de datos local, el software permite mantener una segunda réplica remota. Para esta réplica remota utilizamos MySql\cite{MySql} que es un gestor más
 completo con enfoque \emph{Cliente-Servidor}.
 \par
 En la figura \ref{fig:soft_adquisición} podemos ver un diagrama de flujo que describe el funcionamiento de nuestro software. A lo largo de este
 capítulo haremos muchas referencias a este diagrama para explicar los diferentes módulos software que lo componen. Podemos ver que hay cuatro módulos
 principales, a continuación hacemos una breve descripción de estos. 
 \begin{itemize}
-  	\item	\texttt{NMDA}. Es el proceso principal de nuestro software. Este es el encargado de realizar las configuraciones necesarias e iniciar
+  	\item	\texttt{NMDA}. Es el proceso principal de nuestro software. Es el encargado de realizar las configuraciones necesarias e iniciar
 	  	el \texttt{FPGASerialReader} y el \texttt{CountsManager}.
 	\item	\texttt{FPGASerialReader}. \emph{Thread} que se encarga de procesar la información transmitida por la FPGA.
 	\item	\texttt{CountsManager}. \emph{Thread} que se enarga de pedir la información necesaria y guardarla en la base de datos con periodicidad
@@ -144,7 +144,7 @@ $ /usr/bin/ntpd -p /run/ntpd.pid
 	\subsection{Logger}
 		Haciendo uso de la librería \texttt{logging}\cite{py_logging} se configura un archivo de Log. En este archivo se registran los sucesos
 		de eventos importantes. Un ejemplo de los posibles eventos que se registran son los relacionados con las pérdidas de datos. El
-		mecanismo está configurado para que automáticamente se guarde la hora y fecha de cada mensaje. A continuación se muestra como se
+		mecanismo está configurado para que automáticamente se guarde la hora y fecha de cada mensaje. A continuación se muestra cómo se
 		configura y usa este mecanismo. Los comentarios representan la entrada producida en el archivo de Log.
 		\begin{lstlisting}[style=myPython]
 import logging
@@ -287,7 +287,7 @@ GPIO.output('P9_42', GPIO.HIGH)
 	\par
 	Para solucionar este problema hemos implementado una máquina de Moore. Si nos volvemos a fijar en el formato de los datos podemos ver que los
 	primeros bits de cada byte son fijos. Estos bits ayudan a identificar a que mensaje corresponde el byte. Los estados y transiciones de la
-	maquina pueden verse en la figura \ref{fig:reader}. El estado inicial es \texttt{ByteX}. Aunque no esté reflejado en la figura la recepción de
+	máquina pueden verse en la figura \ref{fig:reader}. El estado inicial es \texttt{ByteX}. Aunque no esté reflejado en la figura la recepción de
 	cualquier valor no esperado nos lleva al estado inicial. También podemos ver que la lectura correcta de un mensaje de cuentas es notificada al
 	\texttt{CountsManager}.
 	\par
@@ -352,7 +352,7 @@ def medianAlgorithm(self, counts):
 		  N=N_0*exp(\beta*(P-P_0))
 		\end{equation}
 		La segunda corrección que realizaremos es la corrección por eficiencia. Esta es una corrección muy simple, consiste en aplicar un
-		factor multiplicativo a la corrección por presión. Esta corrección se puede ver en la formula \ref{eq:efficiencia}, donde $N_0$ es el
+		factor multiplicativo a la corrección por presión. Esta corrección se puede ver en la fórmula \ref{eq:efficiencia}, donde $N_0$ es el
 		valor de la corrección por presión, $N$ el valor de la corrección por eficiencia y $\beta$ el factor de corrección. 
 		\begin{equation}\label{eq:efficiencia}
 		  N=N_0*\beta
@@ -388,7 +388,7 @@ def medianAlgorithm(self, counts):
 	bases de datos y las escribe en la remota. Es entonces cuando la ejecución de este \emph{thread} termina. 
 	\par
 	Si la conexión con la máquina que alberga a la base de datos remota se pierde por un tiempo, cuando esta vuelva a restablecerse el
-	\texttt{DBUpdater} sincronizara las dos bases de datos. Eventualmente si las diferencias entre las dos bases de datos son muy grandes la
+	\texttt{DBUpdater} sincronizará las dos bases de datos. Eventualmente si las diferencias entre las dos bases de datos son muy grandes la
 	sincronización no ocurre de golpe, de esta manera evitamos sobrecargar al sistema. El fallo de la sincronización no es crítico, el
 	\emph{thread} volverá a ser lanzado el próximo minuto y volverá intentar sincronizar las dos bases de datos.
 
