@@ -341,7 +341,7 @@ def medianAlgorithm(self, counts):
    return s0*tet
 		\end{lstlisting}
 		\par 
-		Una vez calculado el valor global usando el MiedianAlgorithm procedemos a calcular las dos correcciones. La primera es la corrección
+		Una vez calculado el valor global usando el MedianAlgorithm procedemos a calcular las dos correcciones. La primera es la corrección
 		por presión. Como explicamos en el cápitulo \ref{cap1} la presión atmosférica influye en el proceso de adquisición. Para realizar la
 		corrección por presión hay dos factores que se toman en cuenta. El primero es la desviación de la presión actual respecto al valor
 		medio de presión para la estación. El segundo es el coeficiente de correlación de los tubos respecto a la presión atmosférica. Este
@@ -357,60 +357,58 @@ def medianAlgorithm(self, counts):
 		\begin{equation}\label{eq:efficiencia}
 		  N=N_0*\beta
 		\end{equation}
-		Cambios en el entorno de la estación pueden causar cambios en la cantidad de eventos medidos, por ejemplo la construcción cercana de
-		un nuevo edificio podría reducir la cantidad de partículas que llegan al instrumento. Una persona que analiza los datos con propósito
-		científico puede equívocamente asociar el decremento con algún fenómeno físico, mientras que este es debido a un fenómeno técnico.
-		Este problema es solventado con la corrección por eficiencia.   
-
+		Cambios en el entorno de la estación pueden causar cambios en la cantidad de eventos medidos, por ejemplo las precipitaciones de nieve
+		pueden reducir la cantidad de partículas que llegan al instrumento. Una persona que analiza los datos con propósito científico puede
+		equívocamente asociar el decremento con algún fenómeno físico, mientras que este es debido a un fenómeno técnico.  Este problema es
+		solventado con la corrección por eficiencia.   
 	\subsection{Base de datos}
 		Como ya hemos explicado los datos son guardados en una base de datos para cuya gestión utilizamos Sqlite3. En la base de datos tenemos
 		tres tablas que a continuación procedemos a explicar.
 	    	\par
-		La primera tiene el nombre de \texttt{binTable}, nombre que hemos heredado del NMDB. En esta guardamos la información de las cuentas
-		de cada minuto. Junto a las cuentas guardamos la fecha y hora actuales, la lectura del barómetro y la lectura de las fuentes de alta
-		tensión.
+		La primera tiene el nombre de \texttt{binTable}, nombre que hemos heredado de los primeros sistemas de adquisición Rusos. En esta
+		guardamos la información de las cuentas de cada minuto. Junto a las cuentas guardamos la fecha y hora en los que se realizó la medida,
+		la lectura del barómetro y la lectura de las fuentes de alta tensión.
 	    	\par 
-		En la segunda tabla llamada CALM\_ori, nombre también heredado por el NMDB, guardamos el valor global y sus correcciones. Junto a
-		estos valores también guardamos el valor de la fecha y hora actuales, y en este caso tan sólo guardamos el valor de la presión
+		En la segunda tabla llamada \texttt{CALM\_ori}, nombre definido por el NMDB, guardamos el valor global y sus correcciones.  Junto a
+		estos valores también guardamos el valor de la fecha y hora en los que se realizó la medida, y también el valor de la presión
 		atmosférica.
 	    	\par
-		En la última tabla guardamos los valores de los anchos de pulsos. Dado al gran número de pulsos que son procesados guardar la
-		información de cada uno por separado no es práctico. Para ilustrar el problema pondremos de ejemplo la estación de CALMA donde son
-		procesados unos 4500 pulsos cada minuto, siendo esta una de las estaciones con menos eventos por minuto debido a su pequeña latitud.
-		Para sobrevenir este problema construimos un histograma que guardamos en la base de datos en forma de cadenas JSON\cite{JSON}. Los
-		histogramas son construidos con los datos de diez minutos, intervalo que marca la resolución de los datos de esta tabla.
+		En la última tabla guardamos los valores de los anchos de pulsos. Dado al gran número de pulsos, guardar la información de cada uno
+		por separado no es práctico. Para ilustrar el problema pondremos de ejemplo la estación de CALMA donde son procesados unos 4500 pulsos
+		cada minuto, siendo esta una de las estaciones con menos eventos por minuto debido a su baja latitud.  Para sobrevenir este problema
+		construimos un histograma que guardamos en la base de datos, en forma de cadenas JSON\cite{JSON}. Los histogramas se construyen con
+		los datos de diez minutos, intervalo que marca la resolución de los datos de esta tabla.
 
 \section{\texttt{DBUpdater}}
 	Este módulo software es el encargado de actualizar el contenido de la base de datos remota. El funcionamiento de este es muy simple y se puede
-	ver en la figura \ref{fig:soft_adquisición}. Empieza estableciendo la conexión con la base de datos remota. Si esta se establece procede a
-	leer la última entrada en la base de datos remota. Seguidamente el software calcula la diferencia entre las dos bases de datos, para el
+	ver en la figura \ref{fig:soft_adquisición}. Empieza estableciendo la conexión con la base de datos remota. Si esta se establece se procede a
+	leer la última entrada en la base de datos remota. Seguidamente el software calcula la diferencia entre las dos bases de datos, para este
 	propósito usa la fecha y hora de la entrada leída de la base de datos remota. Finalmente el software selecciona las diferencias entre las dos
-	bases de datos y las escribe en la remota. Es entonces cuando la ejecución de este \emph{thread} termina. 
+	bases de datos y las escribe en la remota. Es entonces cuando la ejecución de este \emph{thread} termina.  A fin de asegurar la sincronización
+	en tiempo real se crea y lanza una instancia de este \emph{thread} cada minuto.
 	\par
 	Si la conexión con la máquina que alberga a la base de datos remota se pierde por un tiempo, cuando esta vuelva a restablecerse el
 	\texttt{DBUpdater} sincronizará las dos bases de datos. Eventualmente si las diferencias entre las dos bases de datos son muy grandes la
-	sincronización no ocurre de golpe, de esta manera evitamos sobrecargar al sistema. El fallo de la sincronización no es crítico, el
-	\emph{thread} volverá a ser lanzado el próximo minuto y volverá intentar sincronizar las dos bases de datos.
+	sincronización no ocurre de golpe, de esta manera evitamos sobrecargar al sistema.
 
 \section{\texttt{SensorsManager}}
-	Este es el módulo software encargado de manejar los sensores, por sensores nos referimos al barómetro, las fuentes de alta tensión o los
-	termómetros si están presentes. A este módulo le es pasada la información referente a los sensores del archivo de configuración. De acuerdo
+	Este es el módulo software encargado de manejar los sensores. Por sensores nos referimos al barómetro, las fuentes de alta tensión o los
+	termómetros si están presentes. A este módulo se le pasa la información referente a los sensores desde el archivo de configuración. De acuerdo
 	con esta información este módulo invoca las funciones de configuración necesarias. Una vez realizada esta configuración inicial podemos
-	empezar a leer la información de los sensores, para este propósito este módulo exporta tres funciones. A continuación explicaremos estas tres
-	funciones.
+	empezar a leer la información de los sensores. Para este propósito este módulo exporta tres funciones, que se explican a continuación.
 	\subsection{Presión atmosférica}
 		Para leer el valor actual de la presión atmosférica este módulo nos ofrece la función \texttt{read\_pressure}. Si en el archivo de
-		configuración hemos especificado que no tenemos barómetro esta función devuelve un \emph{-1}, valor que devuelve en caso de algún
-		error. Actualmente son soportados dos tipos de barómetros, el BM35 y el AP1. La lógica para manejar estos dos barómetros
-		se encuentra en los archivos \texttt{BM53Driver} y \texttt{AP1Driver} respectivamente. No explicaremos muy a fondo el funcionamiento
-		de estos dos, tan sólo destacaremos que el BM35 se comunica mediante un puerto serie y el AP1 mediante tres señales digitales que son
+		configuración hemos especificado que no tenemos barómetro esta función devuelve un \emph{-1}, así como en el caso de que se produzca
+		algún error. Actualmente se soportan dos tipos de barómetros, el BM35 y el AP1. La lógica para manejar estos dos barómetros se
+		encuentra en los archivos \texttt{BM53Driver} y \texttt{AP1Driver} respectivamente. No explicaremos a fondo el funcionamiento de
+		estos dos. Tan solo destacaremos que el BM35 se comunica mediante un puerto serie y el AP1 mediante tres señales digitales que son
 		reloj, \emph{strobe} y datos.
 	\subsection{Fuentes de alta tensión}
 		En el caso de las fuentes de alta tensión las tenemos de dos tipos, analógicas y digitales. Las digitales transmiten su información
-		mediante un puerto serie. Las analógicas mediante una señal analógica entre 0V y 5V, siendo la amplitud de esta señal proporcional a
-		la amplitud de la corriente generada por la fuente. La lógica para operar con las fuentes analógicas está en el archivo
-		\texttt{HVPSDriver}, la lógica para las fuentes digitales no está implementada porque no hemos podido trabajar con estas.
-		Eventualmente si se produce algún error es devuelto el valor de \emph{-1}.
+		mediante un puerto serie. Las analógicas mediante una señal analógica entre 0V y 5V, que es proporcional a la tensión ofrecida por la
+		fuente. La lógica para operar con las fuentes analógicas está en el archivo \texttt{HVPSDriver}, la lógica para las fuentes digitales
+		no está implementada porque no hemos podido trabajar con estas. Eventualmente si se produce algún error se devuelve el valor de
+		\emph{-1}.
 	\subsection{Temperatura}
 		Como hemos comentado en muchas estaciones la temperatura ambiente es monitorizada también. Este no es el caso de CALMA, razón por la
 		que no hemos escrito ningunos drivers. Sin embargo el código está pensado para poder ser fácilmente ampliado en caso de necesidad. 
@@ -481,17 +479,3 @@ class ReturnSequence(object):
 		\caption{Cobertura Pruebas unitarias}   
 		\label{fig:coverage}
 	\end{figure}
-
-\section{Implantación y mantenimiento}
-	Como hemos explicado en el capítulo de introducción aparte de implementar el software tenemos como objetivo implantar y realizar el
-	mantenimiento de este durante un tiempo. 
-	\par
-	Implantar el software implica implantar el sistema de adquisición entero. En esta labor obtendremos la ayuda del equipo responsable de la
-	estación de CALMA. El sistema tendrá que funcionar conjuntamente al sistema de adquisición ya existente, compartiendo los tubos contadores, el
-	barómetros y el resto de elementos necesarios. Para resolver este problema tendremos que realizar una serie de artimañas tanto hardware como
-	software. El objetivo principal es desplegar el sistema, pero interferir lo menos posible en el funcionamiento del sistema de adquisición ya
-	presente. 
-	\par
-	Una vez puesto en marcha el nuevo sistema de adquisición nuestra labor será vigilar por el correcto funcionamiento de este. Tendremos que
-	localizar y corregir los problemas que se presenten. Finalmente elaboraremos un resumen de esta experiencia. Este resumen será presentado en
-	el capítulo \ref{cap_conclusiones}.
