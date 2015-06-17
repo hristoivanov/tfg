@@ -73,13 +73,13 @@ ZendFramework.
 	\end{figure}
 	\par 
 	Es interesante destacar que en las tres tablas un existe índice. En los tres casos el elemento indexado es el campo
-	\texttt{start\_date\_time}. Este índice es muy útil para la mayoría de queries que realizamos sobre los datos.
+	\texttt{start\_date\_time}. Este índice es muy útil para la mayoría de consultas que realizamos sobre los datos.
 	\par
 	ZendFramework ofrece abstracciones para las bases de datos que facilitan el trabajo con estas. A continuación presentamos un pequeño ejemplo
 	de cómo hacer uso de estas facilidades. \texttt{Zend\textbackslash Db\textbackslash Adapter\textbackslash AdapterInterface} es la abstracción
 	que representa un conector a una base de datos. En este ejemplo la variable \texttt{\$this->adapter} es una instancia de esta clase. La
 	variable \texttt{resultSet} instancia de la clase \texttt{Zend\textbackslash Db\textbackslash ResultSet\textbackslash ResultSet} es un
-	iterable que contiene los datos devueltos por la query ejecutada.
+	iterable que contiene los datos devueltos por la consulta ejecutada.
 	\begin{lstlisting}[style=myPhp]
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Adapter\AdapterInterface;
@@ -95,7 +95,7 @@ public function interval($start,$finish){
 	\end{lstlisting}
 \section{Servicios RPC}
 	En esta sección procedemos a explicar todos los servicios RPC que nuestro \emph{back-end} ofrece. Para cada servicio RPC explicamos la
-	funcionalidad, la URL que le identifica, los parámetros aceptados, la query SQL utilizada y el propósito de este.
+	funcionalidad, la URL que le identifica, los parámetros aceptados, la consulta SQL utilizada y el propósito de este.
 	\subsection{\texttt{nmdbOriginalRaw}}
 		Este servicio RPC devuelve los datos de la tabla \texttt{CALM\_ori} en un intervalo determinado. Tal y como explicamos en esta tabla
 		son guardados los datos globales de la estación, las dos correcciones de estos y los valores de presión atmosférica. Este servicio
@@ -106,10 +106,10 @@ public function interval($start,$finish){
 		Como vemos el servicio acepta dos parámetros, \texttt{start} y \texttt{finish}. Los parámetros delimitan el intervalo de datos
 		devueltos.
 		\par
-		A continuación podemos ver la query SQL utilizada para obtener los datos, dado a la simplicidad de esta no procederemos a discutirla
+		A continuación podemos ver la consulta SQL utilizada para obtener los datos, dado a la simplicidad de esta no procederemos a discutirla
 		más a fondo.
-	  		\begin{center} \texttt{"SELECT * FROM CALM\_ori 
-			  		\\	WHERE start\_date\_time BETWEEN \cc".\$start."\cc AND \cc".\$finish"\cc"}
+	  		\begin{center} \texttt{SELECT * FROM CALM\_ori 
+			  		\\	WHERE start\_date\_time BETWEEN \cc.\$start.\cc AND \cc.\$finish\cc}
 			\end{center} 
 		Los datos devueltos por este servicio RPC son utilizados para construir un gráfico de líneas.
 	\subsection{\texttt{nmdbOriginalGroup}}
@@ -123,10 +123,10 @@ public function interval($start,$finish){
 		servicio estos dos parámetros pueden tener el valor \texttt{all}, de ser así son utilizados todos los datos presentes en la base de
 		datos. El parámetro \texttt{points} especifica el número de grupos en los que serán agrupados nuestros datos. 
 		\par
-		Seguidamente podemos ver parte de la query SQL utilizada en este servicio. Esta parte es la encargada de agrupar nuestros datos.
-			\begin{center} \texttt{"(SELECT CALM\_ori.*,
-			  		\\	(UNIX\_TIMESTAMP(start\_date\_time) DIV (".\$interval.")) AS timekey  
-				      	\\	FROM CALM\_ori WHERE start\_date\_time BETWEEN \cc".\$start."\cc AND \cc".\$finish."\cc)AS t1  GROUP BY timekey"}
+		Seguidamente podemos ver parte de la consulta SQL utilizada en este servicio. Esta parte es la encargada de agrupar nuestros datos.
+			\begin{center} \texttt{(SELECT CALM\_ori.*,
+			  		\\	(UNIX\_TIMESTAMP(start\_date\_time) DIV (.\$interval.)) AS timekey  
+				      	\\	FROM CALM\_ori WHERE start\_date\_time BETWEEN \cc.\$start.\cc AND \cc.\$finish.\cc)AS t1  GROUP BY timekey}
 			\end{center} 
 		Como podemos ver son seleccionados los datos presentes en el intervalo definido por \texttt{\$start} y \texttt{\$finish}. Junto a los
 		datos presentes en la tabla \texttt{CALM\_ori} es calculado el campo \texttt{timekey}. Este campo es el utilizado para formar los
@@ -147,12 +147,12 @@ public function interval($start,$finish){
 		\par
 		En la tabla \texttt{CALM\_rev} son guardados los datos revisados, pero no son guardados todos, tan sólo las entradas que han sido
 		modificadas. Por esta razón este servicio también hace uso de \texttt{CALM\_ori} para devolvernos la información completa. A
-		continuación podemos ver parte de la query SQL utilizada para obtener los datos revisados.
-			\begin{center} \texttt{"SELECT ori.start\_date\_time,
+		continuación podemos ver parte de la consulta SQL utilizada para obtener los datos revisados.
+			\begin{center} \texttt{SELECT ori.start\_date\_time,
 			  		\\	CASE WHEN rev.start\_date\_time IS NULL THEN ori.measured\_uncorrected ELSE rev.revised\_uncorrected END AS uncorrected 
-					\\	FROM CALM\_ori ori LEFT JOIN CALM\_rev rev ON ori.start\_date\_time = rev.start\_date\_time"}
+					\\	FROM CALM\_ori ori LEFT JOIN CALM\_rev rev ON ori.start\_date\_time = rev.start\_date\_time}
 			\end{center} 
-		La query empieza haciendo un \texttt{LEFT JOIN} sobre el campo \texttt{start\_date\_time} de las tablas \texttt{CALM\_ori} y
+		La consulta empieza haciendo un \texttt{LEFT JOIN} sobre el campo \texttt{start\_date\_time} de las tablas \texttt{CALM\_ori} y
 		\texttt{CALM\_rev}. El \texttt{LEFT JOIN} devuelve todas las entradas de \texttt{CALM\_ori}, con las entradas coincidentes de
 		\texttt{CALM\_rev}. La parte correspondiente al \texttt{CALM\_rev} es dejada a \texttt{NULL} si no existe coincidencia. A partir de la
 		tabla temporal creada por el \texttt{LEFT JOIN} son seleccionados los datos de \texttt{CALM\_rev} si estos están presentes, en caso
@@ -166,7 +166,7 @@ public function interval($start,$finish){
 		valor de \texttt{all}, de esta manera son usados todos los datos presentes en la base de datos. El tercer parámetro, \texttt{points},
 		especifica el número de grupos en los que queremos agrupar nuestros datos.
 		\par
-		Para recolectar los datos necesarios la query utilizada es una combinación de las utilizadas en los servicios
+		Para recolectar los datos necesarios la consulta utilizada es una combinación de las utilizadas en los servicios
 		\texttt{nmdbOriginalGroup} y \texttt{nmdbRevisedRaw}. Primero se realiza un \texttt{LEFT JOIN} entre las tablas \texttt{CALM\_ori} y
 		\texttt{CALM\_rev} para obtener el conjunto de datos revisados. Seguidamente se agrupan los datos de este conjunto y para cada grupo
 		se calculan los valores máximo, mínimo, \emph{open} y \emph{close}. Estos datos son utilizados para construir un gráfico
@@ -184,22 +184,22 @@ public function interval($start,$finish){
 		como nulo. Eventualmente este campo puede contener un array, de esta forma podemos marcar más de un dato con sólo una llamada al
 		servicio.
 		\par 
-		La query SQL utilizada por este servicio es muy simple, esta realiza un \texttt{INSERT} en la tabla \texttt{CALM\_rev}. Si el dato ya
+		La consulta SQL utilizada por este servicio es muy simple, esta realiza un \texttt{INSERT} en la tabla \texttt{CALM\_rev}. Si el dato ya
 		está presente tan sólo incrementamos la versión actual y modificamos la fecha de última modificación. A continuación podemos ver la
-		query que estamos discutiendo.
-			\begin{center} \texttt{\textquotedbl INSERT INTO CALM\_rev 
+		consulta que estamos discutiendo.
+			\begin{center} \texttt{INSERT INTO CALM\_rev 
 			  		\\	(start\_date\_time, revised\_uncorrected, revised\_corr\_for\_efficiency, revised\_corr\_for\_pressure, revised\_pressure\_mbar, version, last\_change )
-				      	\\	VALUES (\cc".\$start\_date\_time."\cc,null,null,null,null,1,now()) 
-				      	\\	on DUPLICATE KEY UPDATE version=version+1, last\_change=now()"}
+				      	\\	VALUES (\cc.\$start\_date\_time.\cc,null,null,null,null,1,now()) 
+				      	\\	on DUPLICATE KEY UPDATE version=version+1, last\_change=now()}
 			\end{center} 
 	\subsection{\texttt{nmdadbRawData}}
 		Este servicio tiene como propósito devolver lo datos crudos de la tabla \texttt{binTable}. La URL utilizada para identificar este
 		servicio tiene el siguiente formato. 
 	  		\begin{center} \texttt{/nmdadb/rawdata[/:start][/:finish]}  \end{center} 
 		Los parámetros \texttt{start} y \texttt{finish} delimitan el intervalo de datos. Para recolectar los datos crudos de la tabla
-		\texttt{binTable} este servicio usa una query muy simple, que se muestra a continuación.
-	  		\begin{center} \texttt{"SELECT * FROM binTable 
-			  		\\	WHERE start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc"}
+		\texttt{binTable} este servicio usa una consulta muy simple, que se muestra a continuación.
+	  		\begin{center} \texttt{SELECT * FROM binTable 
+			  		\\	WHERE start\_date\_time between \cc.\$start.\cc  and \cc.\$finish.\cc}
 			\end{center} 
 		Los datos devueltos por este servicio son utilizados para construir un gráfico de líneas.
 	\subsection{\texttt{nmdadbChannelStats}}
@@ -210,9 +210,9 @@ public function interval($start,$finish){
 		Los parámetros \texttt{start} y \texttt{finish} delimitan el intervalo de datos. Eventualmente estos dos parámetros pueden tener el
 		valor \texttt{default}, en este caso el intervalo es el último mes con datos. 
 		\par
-		A continuación podemos ver parte de la query utilizada para recolectar los datos devueltos por este servicio.
-	  		\begin{center} \texttt{"select 'ch01' as n1, ch01, avg(ch01) as avg\_ch01, std(ch01) as std\_ch01, max(ch01) as max\_ch01, min(ch01) as min\_ch01
-			  		\\	from(select * from  binTable where start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc order by start\_date\_time desc)as t1"}
+		A continuación podemos ver parte de la consulta utilizada para recolectar los datos devueltos por este servicio.
+	  		\begin{center} \texttt{select 'ch01' as n1, ch01, avg(ch01) as avg\_ch01, std(ch01) as std\_ch01, max(ch01) as max\_ch01, min(ch01) as min\_ch01
+			  		\\	from(select * from  binTable where start\_date\_time between \cc.\$start.\cc and \cc.\$finish.\cc order by start\_date\_time desc)as t1}
 			\end{center} 
 		Los datos generados por este servicio son utilizados para crear un gráfico \emph{Candlestick} y también son presentados en una tabla.
 	\subsection{\texttt{nmdadbChannelHistogram}}
@@ -223,11 +223,11 @@ public function interval($start,$finish){
 		construir el histograma. Eventualmente estos dos parámetros pueden tener el valor de \texttt{default} y en este caso son utilizados los
 		datos del último mes.
 		\par
-		Seguidamente podemos ver la query utilizada para construir el histograma devuelto por este servicio.
-	  		\begin{center} \texttt{"select chh as num, count(chh) as val from (select ch div 5 as chh  from 
-				      	\\	(select ".\$channel.\textquotedbl  as ch from binTable where start\_date\_time between \cc".\$start."\cc and \cc".\$finish."\cc) as t1) as t2 group by chh order by num"}
+		Seguidamente podemos ver la consulta utilizada para construir el histograma devuelto por este servicio.
+	  		\begin{center} \texttt{select chh as num, count(chh) as val from (select ch div 5 as chh  from 
+				      	\\	(select .\$channel. as ch from binTable where start\_date\_time between \cc.\$start.\cc and \cc.\$finish.\cc) as t1) as t2 group by chh order by num}
 			\end{center} 
-		La query calcula el histograma para un único canal, especificado por la variable \texttt{\$channel}. Para construir el histograma de
-		los 18 canales esta query es invocada múltiples veces. En esta query tenemos que agrupar por el número de cuentas, campo que no está
-		indexado. Esto hace que la consulta tarde bastante más tiempo que las otras, por lo tanto no es recomendable invocarla con mucha
+		La consulta calcula el histograma para un único canal, especificado por la variable \texttt{\$channel}. Para construir el histograma de
+		los 18 canales esta consulta es invocada múltiples veces. En esta consulta tenemos que agrupar por el número de cuentas, campo que no está
+		indexado. Esto hace que esta tarde bastante más tiempo que las otras, por lo tanto no es recomendable invocarla con mucha
 		frecuencia sobre conjuntos muy grandes.

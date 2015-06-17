@@ -97,7 +97,7 @@ Ext.application({
 		\texttt{root} es opcional y especifica el contenedor dentro de cual queremos hacer la búsqueda. Si el segundo parámetro es omitido la
 		búsqueda es realizada entre todos los componentes. La función devuelve un array con todos los componentes que reúnen las condiciones,
 		pudiendo ser este un array vacío. Eventualmente podemos hacer búsquedas más complejas, podemos buscar por tipo, atributos y mucho más.
-		En este trabajo tan sólo hemos utilizado queries simples, razón por la que no explicamos como se realizan estas queries avanzadas.
+		En este trabajo tan sólo hemos utilizado consultas simples, razón por la que no explicamos como se realizan estas consultas avanzadas.
 		\par
 		La clase \texttt{Ext.container.Container} implementa las funciones \texttt{down()} y \texttt{query()}. Estas dos realizar una llamada
 		a \texttt{Ext.ComponentQuery.query()} teniéndose a si mismo como parámetro \texttt{root}. Esto les permite hacer una búsqueda entre
@@ -569,7 +569,7 @@ Ext.define('MyApp.controller.Users', {
 	inicializados, por lo que es un buen punto para empezar a actuar sobre estos elementos.
 	\par
 	Antes de empezar a discutir los Controladores que hemos implementado en este trabajo es conveniente destacar que el framework ofrece una
-	facilidad similar al \texttt{Ext.ComponentQuery}, pero para los Controladores. Podemos hacer queries para acceder a los Controladores desde
+	facilidad similar al \texttt{Ext.ComponentQuery}, pero para los Controladores. Podemos hacer consultas para acceder a los Controladores desde
 	cualquier punto del código. A continuación podemos ver como hacer uso de esta facilidad.
     		\begin{center} \texttt{MyApp.app.getController("Nombre\_del\_Controlador")}  \end{center}
 	\par
@@ -842,6 +842,6 @@ Ext.define('MyApp.controller.Users', {
 		ser visto en una pestaña separada.
 		\par
 		Inicialmente los datos y el histograma son calculados para el último mes. En los controles podemos encontrar los campos de entrada que
-		permiten solicitar un intervalo de tiempo determinado. La búsqueda por intervalo está limitada a un mes dado a que las queries
+		permiten solicitar un intervalo de tiempo determinado. La búsqueda por intervalo está limitada a un mes dado a que las consultas
 		necesarias para obtener estos datos no son muy efficientes, estas agrupan los datos por campos que no están indexados. Más sobre este
 		problema podemos encontrar en el capítulo dedicado al \emph{back-end}.
