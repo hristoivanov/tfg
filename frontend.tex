@@ -3,21 +3,20 @@
 Nuestra aplicación Web está dividida en \emph{back-end} y \emph{front-end}. En el capítulo anterior se describió el \emph{back-end}. El propósito de
 este capítulo es describir el \emph{front-end}, que es el encargado de la capa de presentación.
 \par
-El \emph{front-end} es implementado en JavaScript\cite{JavaScript}. Este es un lenguaje de programación soportado por la mayoría de navegadores Web,
-permite dotar de funcionalidad extendida a las páginas Web. Actualmente el uso de este lenguaje está tan extendido y avanzado que permite crear
+El \emph{front-end} se implementa en JavaScript\cite{JavaScript}. Este es un lenguaje de programación soportado por la mayoría de navegadores, que
+permite dotar de funcionalidad extra a las páginas Web. Actualmente el uso de este lenguaje está tan extendido y avanzado que permite crear
 aplicaciones enteras para navegadores Web. Existen múltiples frameworks escritos en JavaScript que facilitan la creación de aplicaciones Web. En este
-trabajo utilizamos dos, Sencha ExtJs\cite{ExtJs} y HighStock\cite{HighStock}.
+trabajo utilizamos dos: Sencha ExtJs\cite{ExtJs} y HighStock\cite{HighStock}.
 \par
-Sencha ExtJs es un framework orientado a la creación de aplicaciones Web interactivas. Debido al gran abanico de funcionalidades que este framework
-presenta, podemos decir que este es de propósito general. Este ofrece abstracciones para gestionar nuestros datos, arquitectura MVC, componentes
-gráficos de control y otros.
+Sencha ExtJs es un framework orientado a la creación de aplicaciones Web interactivas. Se trata de un framework de propósito general que ofrece
+abstracciones para gestionar nuestros datos, arquitectura MVC, componentes gráficos de control y otros. 
 \par
-HighStock es un framework con un propósito específico. Este está orientado a facilitar la creación de gráficos. El framework es muy eficiente, esto
-reduce la carga computacional de nuestra aplicación. Los gráficos generados por este son altamente interactivos, permiten ocultar series, navegar,
+HighStock es un framework con un propósito específico, que es la creación de gráficos. Podemos elegir entre diferentes tipos de gráficos, que pueden
+ser: lineas, barras, áreas, \emph{candlestick} y otros. Los gráficos generados son altamente interactivos lo que permite ocultar series, navegar,
 realizar zoom y mucho más.
 \par
 Empezaremos este capítulo aclarando los aspectos técnicos relacionados con estos dos frameworks. Explicaremos como usarlos, que funcionalidad nos
-proporcionan, consideraciones que debemos tener en cuenta y mucho más.
+proporcionan, consideraciones que debemos tener en cuenta.
 \par
 Como podemos ver en la figura \ref{frontend} nuestro \emph{front-end} está basado en el patrón de diseño
 \emph{modelo-vista-controlador}\cite{MVCWiki}. En la segunda parte de este capítulo hablaremos más a fondo sobre la división impuesta por este patrón
@@ -29,20 +28,20 @@ de diseño.
 	\label{fig:frontend}
 \end{figure}
 \par
-En nuestra aplicación también hacemos una división funcional, diferenciamos entre tres módulos funcionales que son \texttt{Spike},
-\texttt{SpikeRevised} y \texttt{ChannelStats}. En las secciones finales de este capítulo hablaremos sobre estos módulos funcionales. 
+En nuestra aplicación también hacemos una división funcional, diferenciamos entre tres módulos que son \texttt{Spike}, \texttt{SpikeRevised} y
+\texttt{ChannelStats}. En las secciones finales de este capítulo hablaremos sobre estos módulos. 
 
 \section{Sencha ExtJs}
 	El propósito de esta sección es explicar alguno de los aspectos básicos del framework. Empezaremos explicando como crear una aplicación básica
-	basándonos en ExtJs. En la mayoría de los casos existe un único documento HTML\cite{HTML} que contiene toda la aplicación. En este documento
-	tenemos que cargar dos \emph{scripts} de la siguiente forma.
+	con ExtJs. En la mayoría de los casos existe un único documento HTML\cite{HTML} que contiene toda la aplicación. En él tenemos que cargar dos
+	\emph{scripts} de la siguiente forma.
     		\begin{center} \texttt{<script type="text/javascript" src=\textquotedbl extjs/ext-all-debug.js\textquotedbl ></script>}  \end{center}
     		\begin{center} \texttt{<script type="text/javascript" src=\textquotedbl app.js\textquotedbl ></script>}  \end{center}
 	El primer \emph{script} contiene el framework que queremos utilizar. Es conveniente destacar que esta es una versión concebida para el proceso
-	de desarrollo. Para la versión final es conveniente usar el \texttt{ext-all.js}.
+	de desarrollo. Para la versión final es conveniente usar el \texttt{ext-all.js}, que es una versión comprimida del mismo \emph{script}.
  	\par
-	El segundo \emph{script} es el que contiene la lógica de nuestra aplicación. A continuación podemos ver el código mínimo para crear una
-	aplicación. El código presentado será explicado a fondo.
+	El segundo \emph{script} es el que contiene la lógica de nuestra aplicación. A continuación podemos ver un ejemplo del código mínimo que este
+	\emph{script} debe contener. El código presentado se explicará a fondo.
 	\begin{lstlisting}[style=myJs]
 Ext.application({
    name: 'HelloExt',
@@ -57,17 +56,17 @@ Ext.application({
 });
 	\end{lstlisting}
 	\par
-	En la primera línea hacemos uso del singletone \texttt{Ext}. Este es un objeto que encapsula todas las clases, métodos y singletones
-	proporcionados por el framework. La función utilizada \texttt{Ext.application} carga e inicializa una instancia de la clase
-	\texttt{Ext.app.Application}. Esta clase representa una aplicación ExtJs single page. La llamada a esta función crea la variable global
-	\texttt{MyApp}, que debe contener todas las clases e instancias de nuestra aplicación.
+	En la primera línea hacemos uso del singleton \texttt{Ext}. Este es un objeto que encapsula todas las clases y métodos proporcionados por el
+	framework. La función utilizada \texttt{Ext.application} carga e inicializa una instancia de la clase \texttt{Ext.app.Application}. Esta clase
+	representa una aplicación ExtJs \emph{single-page}. La llamada a esta función crea la variable global \texttt{MyApp}, que debe contener todas las
+	clases e instancias de nuestra aplicación.
  	\par
-	En la segunda línea declaramos el nombre de nuestra aplicación. Seguidamente definimos la función \texttt{launch}. Esta es la función que debe
-	lanzar nuestra aplicación. La primera función invocada es \texttt{Ext.create} que crea una instancia de la clase proporcionada, en este caso
-	\texttt{Ext.container.Viewport}. \texttt{Viewport} es un \emph{contenedor} que representa el área de aplicación y puede haber tan sólo uno por
-	aplicación. 
+	En la segunda línea declaramos el nombre de nuestra aplicación. Seguidamente definimos la función \texttt{launch}. Esta función es ejecuta
+	cuando se lanza la aplicación. La primera función invocada es \texttt{Ext.create} que crea una instancia de la clase proporcionada, en este
+	caso \texttt{Ext.container.Viewport}. \texttt{Viewport} es un \emph{contenedor} que representa el área de aplicación y puede haber tan sólo
+	uno por aplicación. 
  	\par
-	La interfaz de usuario en una aplicación ExtJs es compuesta por \emph{componentes}. Un \emph{contenedor} es un \emph{componente} especial que
+	La interfaz de usuario en una aplicación ExtJs se compone de \emph{componentes}. Un \emph{contenedor} es un \emph{componente} especial que
 	contiene otros \emph{componentes}. En la figura \ref{fig:comps} podemos ver un ejemplo que ilustra esta jerarquía.
 	\begin{figure}[h]
 		\centering
@@ -76,44 +75,45 @@ Ext.application({
 		\label{fig:comps}
 	\end{figure}
  	\par
-	El \texttt{Viewport} es el \emph{contenedor} que contiene todos los demás \emph{componentes} de nuestra aplicación. Los \emph{compenentes} de
-	un \emph{contenedor} se especifican en el campo \texttt{items} que es una lista. En el ejemplo presentado tan sólo tenemos un
-	\emph{conponente}, pero pueden ser añadidos más.
+	El \texttt{Viewport} es el \emph{contenedor} que gestiona el área de representación del navegador Web. Los \emph{compenentes} de un
+	\emph{contenedor} se especifican en el campo \texttt{items} que es una lista. En el ejemplo presentado tan sólo tenemos un \emph{componente},
+	pero pueden añadirse más.
  	\par
 	Fijándonos en el código de ejemplo podemos ver que antes de definir el campo \texttt{items} definimos el campo \texttt{layout}. El
-	\texttt{layout} especifica la forma en la que se posicionan y ajustan los \emph{componetes} hijos dentro del padre. En este caso el
+	\texttt{layout} especifica la forma en la que se posicionan y ajustan los \emph{componentes} hijos dentro del padre. En este caso el
 	\texttt{layout} especificado es \texttt{\cc fit\cc}, donde un único hijo ocupa todo el espacio del padre.
 	\subsection{Component Manager}
-		ExtJs ofrece el singletone \texttt{Ext.ComponentManager} que provee un registro con todos los componentes. Este facilita la referencia
+		ExtJs ofrece el singleton \texttt{Ext.ComponentManager} que provee un registro con todos los componentes. Este facilita la referencia
 		a elementos desde cualquier punto del código. El propósito de esta sección es explicar como hacer uso de esta facilidad.
 		\par
 		Empezaremos especificando un requisito que  los componentes deben cumplir, estos deben definir el atributo \texttt{itemId}. Este
 		atributo es el identificador del componente. El ámbito que tiene este identificador es local al contenedor que contiene el componente.
 		Esto hace que los identificadores no tengan que ser únicos para toda la aplicación. 
 		\par
-		Es el singletone \texttt{Ext.ComponentQuery} el que permite realizar búsquedas de componentes en función del \texttt{itemId}.
+		Es el singleton \texttt{Ext.ComponentQuery} el que permite realizar búsquedas de componentes en función del \texttt{itemId}.
 		Concretamente es \texttt{Ext.ComponentQuery.query()} el método que permite realizar las búsquedas. Este método acepta dos parámetros.
 		El primer parámetro, \texttt{selector}, es un String y especifica el \texttt{itemId} que queremos buscar. El segundo parámetro,
-		\texttt{root} es opcional y especifica el contenedor dentro de cual queremos hacer la búsqueda. Si el segundo parámetro es omitido la
-		búsqueda es realizada entre todos los componentes. La función devuelve un array con todos los componentes que reúnen las condiciones,
-		pudiendo ser este un array vacío. Eventualmente podemos hacer búsquedas más complejas, podemos buscar por tipo, atributos y mucho más.
-		En este trabajo tan sólo hemos utilizado consultas simples, razón por la que no explicamos como se realizan estas consultas avanzadas.
+		\texttt{root} es opcional y especifica el contenedor dentro de cual queremos hacer la búsqueda. Si el segundo parámetro se omite la
+		búsqueda se realizará entre todos los componentes. La función devuelve un array con todos los componentes que reúnen las condiciones,
+		pudiendo ser un array vacío. Eventualmente podemos hacer búsquedas más complejas, que nos permiten buscar por tipo, atributos y mucho
+		más. En este trabajo tan sólo hemos utilizado consultas simples.
 		\par
-		La clase \texttt{Ext.container.Container} implementa las funciones \texttt{down()} y \texttt{query()}. Estas dos realizar una llamada
+		La clase \texttt{Ext.container.Container} implementa las funciones \texttt{down()} y \texttt{query()}. Estas dos realizan una llamada
 		a \texttt{Ext.ComponentQuery.query()} teniéndose a si mismo como parámetro \texttt{root}. Esto les permite hacer una búsqueda entre
 		sus hijos.
 		\par
 		También existe el método \texttt{up()} implementado por \texttt{Ext.Component}. Este permite hacer una búsqueda similar a las
-		anteriormente descritas. En este caso se navega hacia arriba en la jerarquía de componentes y se busca por componentes que reúnen los
+		anteriormente descritas. En este caso se navega hacia arriba en la jerarquía de componentes y se busca por componentes que reúnan los
 		criterios. Esta función puede ser invocada sin ningún parámetro, caso en el que devuelve el padre inmediato del componente.
 		\par
 		Es conveniente citar el parámetro \texttt{id} y la función \texttt{Ext.getCmp()}. Estos dos ofrecen una funcionalidad parecida a la
 		anteriormente explicada, pero no deben ser usados con ese propósito. Estan considerados como obsoletos y pueden dar lugar a
 		colisiones. 
 	\subsection{Layouts}
-		El propósito de esta sección es explicar los layouts utilizados en este trabajo. Tan sólo explicaremos la funcionalidad de estos sin
-		centrarnos en el uso que les hemos dado, este será explicado en las secciones venideras cuando proceda. En la figura \ref{fig:layouts}
-		podemos ver una representación de los layouts que describiremos a continuación.
+		El propósito de esta sección es explicar los \texttt{layouts} utilizados en este trabajo. Tal y como explicamos anteriormente, el
+		\texttt{layout} especifica la forma en la que se posicionan y ajustan los componetes hijos dentro del padre. Tan sólo explicaremos la
+		funcionalidad de estos sin centrarnos en el uso que les hemos dado, este será explicado en las secciones venideras cuando proceda. En
+		la figura \ref{fig:layouts} podemos ver una representación de los \texttt{layouts} que describiremos a continuación.
 		\begin{description}[style=unboxed,leftmargin=0cm,labelwidth=1cm]
 			\item[\texttt{Absolute}] Los \emph{componentes} hijo son posicionados mediante el uso de coordenadas \texttt{X,Y}. Las
 			  dimensiones de estos también se definen de forma estática mediante el uso de dos atributos, \texttt{height} and
@@ -121,26 +121,25 @@ Ext.application({
 			  \texttt{setPosition()} y \texttt{setSize()}.
 			\item[\texttt{Accordion}] Este layout se asemeja a un acordeón. Los \emph{componentes} hijo pueden ser expandidos y
 			  colapsados, teniendo tan sólo uno expandido a la vez. Los \emph{componentes} son ordenados en vertical ocupando todo el
-			  espacio disponible. Las funciones \texttt{expand} y \texttt{collapse} permiten expandir y colapsar los paneles hijo.
-			  También están presentes multitud de manejadores de eventos que podemos sobrescribir, en nuestro caso hacemos uso del
+			  espacio disponible. Las funciones \texttt{expand} y \texttt{collapse} permiten expandir y colapsar los paneles.
+			  También están presentes multitud de manejadores de eventos que podemos sobrescribir. En nuestro caso hacemos uso del
 			  \texttt{beforeExpand} que se dispara antes de expandir un \emph{componente}. 
 			\item[\texttt{Border}] Este layout permite tener hasta cinco \emph{componentes} dispuestos de la manera que podemos ver en la
-			  figura \ref{fig:layouts}.  Los componentes hijos deben especificar el atributo \texttt{region} que determina el
-			  posicionamiento de estos. El atributo puede tomar los siguientes valores \texttt{[north, east, south, west, center]}. No es
-			  necesario que estén presentes los cinco hijos, podemos omitir los no deseados. Esto hace que este layout sea muy flexible e
-			  interesante.
+			  figura \ref{fig:layouts}. Los componentes hijos deben especificar el atributo \texttt{region} que determina la posición que
+			  tendrán. El atributo puede tomar los siguientes valores: \texttt{[north, east, south, west, center]}. No es necesario que
+			  estén presentes los cinco hijos, podemos omitir los que no sean necesarios.
 			\item[\texttt{Card}] Este layout maneja multiples \emph{componentes} hijo. Los hijos ocupan todo el espacio disponible, por lo
-			  que se solapan uno a otro. Esto hace que solamente uno pueda ser visible a la vez. El layout asemeja una baraja de cartas donde
+			  que se solapan entre ellos. Esto hace que solamente uno sea visible a la vez. El layout asemeja una baraja de cartas donde
 			  solamente una carta puede estar en la parte superior. La función que permite hacer visible un hijo es \texttt{setActiveItem()}.
-			  Esta función acepta el \emph{componente}, el \texttt{itemId} de este o el índice de este.
-			\item[\texttt{Fit}] Este es un layout muy simple, este tan sólo acepta un hijo que ocupa todo el espacio que el padre ofrece.
+			  Esta función acepta el \emph{componente}, el \texttt{itemId} o el índice de este.
+			\item[\texttt{Fit}] Este es un layout muy simple, que tan sólo acepta un hijo, y este ocupa todo el espacio que el padre ofrece.
 			  El \emph{componente} hijo se expande automáticamente para ajustarse al tamaño del padre.
-			\item[\texttt{HBox y VBox}] Estos son dos layouts diferentes, pero muy parecidos, razón por la que serán explicados en la
-			  misma subsección. \texttt{HBox} organiza sus elementos hijos de forma horizontal a lo largo del \emph{componente} padre.
-			  \texttt{VBox} hace lo mismo, pero la organización es de forma vertical. Los componentes hijos pueden especificar el atributo
-			  \texttt{flex}, este atributo determina como será repartido el espacio disponible entre los diferentes hijos. Para ilustrar
-			  el funcionamiento del \texttt{flex} expondremos un ejemplo. Teniendo dos \emph{componentes} hijo con \texttt{1} y \texttt{2}
-			  de \texttt{flex} respectivamente, el primero ocupará 1/3 y el segundo 2/3 del espacio total.
+			\item[\texttt{HBox y VBox}] Estos son dos layouts diferentes, pero muy parecidos. \texttt{HBox} organiza sus elementos hijos
+			  de forma horizontal a lo largo del \emph{componente} padre. \texttt{VBox} hace lo mismo, pero la organización es de forma
+			  vertical. Los componentes hijos pueden especificar el atributo \texttt{flex}, que determina como será repartido el
+			  espacio disponible entre los diferentes hijos. Para ilustrar el funcionamiento del \texttt{flex} expondremos un ejemplo.
+			  Teniendo dos \emph{componentes} hijo con \texttt{1} y \texttt{2} de \texttt{flex} respectivamente, el primero ocupará 1/3 y
+			  el segundo 2/3 del espacio total.
 		\end{description}
 		\begin{figure}[h]
 			\centering
@@ -150,12 +149,11 @@ Ext.application({
 		\end{figure}
 
 	\subsection{Lazy instantiation}
-		La inicialización perezosa es una técnica que consiste en retrasar la creación de recursos hasta el momento en el que sean necesarios.
-		Como hemos visto en la sección dedicada a los layouts en muchos casos los componentes no son visibles. Tener que crear todos los
+		La inicialización perezosa es una técnica que consiste en retrasar la creación de recursos hasta el momento en el que sea necesario su
+		uso. Como hemos visto en la sección dedicada a los layouts en muchos casos los componentes no son visibles. Tener que crear todos los
 		componentes al inicializar la aplicación no es muy eficiente, dado que tan sólo unos pocos son visibles. Crear tan sólo los
-		componentes visibles y después ir creando los componentes según se vayan necesitando supone un incremento en el rendimiento. En
-		páginas pequeñas con pocos componentes el aumento no es apreciable, sin embargo en páginas que manejan multitud de componentes el
-		incremento puede ser drástico. 
+		componentes visibles según se vayan necesitando supone un incremento en el rendimiento. En páginas pequeñas con pocos componentes el
+		aumento no es apreciable, sin embargo en páginas que manejan multitud de componentes el incremento puede ser drástico. 
 		\par
 		Para implementar esta inicialización perezosa ExtJs se basa en la jerarquía de componentes previamente explicada. Cuando un componente
 		es creado también se crean todos los componentes hijos que deben ser visibles en ese momento. Tal y como explicamos los componentes
@@ -185,9 +183,9 @@ items: [{
 		referenciar a las clases. En nuestro caso la clase \texttt{Ext.form.field.Text} es referenciada por el \texttt{xtype:\cc
 		textfield\cc}.
 		\par
-		La lista completa de \texttt{xtypes} aceptados podemos ver en la documentación de ExtJs\cite{ExtJsDoc}. Eventualmente podemos extender
-		esta lista declarando nuestros propios \texttt{xtypes}. Esto se hace especificando el campo \texttt{xtype} a la hora de definir
-		nuestra clase. A continuación presentamos un pequeño ejemplo.
+		La lista completa de \texttt{xtypes} aceptados se puede consultar en la documentación de ExtJs\cite{ExtJsDoc}. Eventualmente podemos
+		extender esta lista declarando nuestros propios \texttt{xtypes}. Esto se hace especificando el campo \texttt{xtype} a la hora de
+		definir nuestra clase. A continuación presentamos un pequeño ejemplo.
 		\begin{lstlisting}[style=myJs]
 Ext.define('MyApp.PressMeButton', {
    extend: 'Ext.button.Button',
@@ -200,10 +198,9 @@ Ext.define('MyApp.PressMeButton', {
 		interesante le ocurre a nuestro componente. Un ejemplo es el evento \texttt{afterrender} que se dispara después de mostrar en pantalla
 		el componente.
 		\par
-		Los eventos son muy interesantes porque podemos definir funciones, \texttt{listeners}, que se ejecutan cuando se produce un evento
-		determinado. De esta manera somos capaces de responder a dichos eventos. A continuación presentamos un ejemplo en el que podemos ver
-		como manejar dichos eventos. En el ejemplo trataremos el evento \texttt{click}, evento que se dispara al hacer \emph{click} sobre un
-		componente. 
+		Los eventos son muy interesantes porque podemos definir funciones, \texttt{listeners}, que se ejecutan cuando se producen dichos
+		eventos. A continuación presentamos un ejemplo en el que podemos ver cómo manejar el evento \texttt{click}, que se dispara al hacer
+		\emph{click} sobre un componente. 
 		\begin{lstlisting}[style=myJs]
 Ext.create('Ext.Button',{
    text: 'Click Me',
@@ -215,11 +212,10 @@ Ext.create('Ext.Button',{
 });
 		\end{lstlisting}
 		\par
-		ExtJs también permite configurar eventos propios. Estos eventos se declaran como si fuesen eventos normales. La peculiaridad está
-		en que somos nosotros los que tenemos que disparar estos eventos. Para disparar un evento tenemos que hacer uso de la función
-		\texttt{fireEvent} que acepta como parámetros el evento que queremos disparar y todos los parámetros que la función encargada del
-		evento necesite. A continuación podemos ver un pequeño ejemplo de como declarar y disparar un evento propio, que tiene como nombre
-		\texttt{myEvent}.
+		ExtJs también permite configurar eventos propios. Estos se declaran como si fuesen eventos normales. La peculiaridad está en que somos
+		nosotros los que debemos dispararlos haciendo uso de la función \texttt{fireEvent}. Esta acepta como parámetros el evento que queremos
+		disparar y todos los parámetros que la función encargada de este necesite. A continuación podemos ver un pequeño ejemplo de como
+		declarar y disparar un evento propio, que tiene como nombre \texttt{myEvent}.
 		\begin{lstlisting}[style=myJs]
 var button = Ext.create('Ext.Button',{
    text: 'Custom Event',
@@ -232,21 +228,21 @@ var button = Ext.create('Ext.Button',{
 button.fireEvent('myEvent', 42);
 		\end{lstlisting}
 	\subsection{Componentes}  %Muy mal. %Si sobra contenido esta sección tiene que ser eliminada.
-		ExtJs ofrece multitud de componentes, todos son subclases del \texttt{Ext.Component}, cada uno con un propósito diferente. El objetivo
+		ExtJs ofrece multitud de componentes, que son subclases del \texttt{Ext.Component}, cada uno con un propósito diferente. El objetivo
 		de esta sección es describir los componentes usados en este trabajo. Nos centraremos en los aspectos técnicos sin especificar el uso
-		concreto que les hemos dado, este será explicado en secciones futuras cuando proceda. 
+		concreto que les hemos dado. Este será explicado en secciones futuras cuando proceda. 
 		\begin{description}[style=unboxed,leftmargin=0cm]
 			\item[\texttt{Ext.button.Button xtype:button}] Este componente permite crear un botón. El propósito de un botón es ofrecer un
 			  medio fácil al usuario para interactuar con la aplicación. Los botones que ExtJs ofrece son altamente configurables, tanto
 			  funcionalmente como estéticamente. Podemos tener botones normales, botones \emph{toggle}, botones que despliegan menús y
-			  mucho más. Para dar funcionalidad a estos botones tenemos que escuchar por los eventos que estos disparan. Los eventos más
+			  mucho más. Para dar funcionalidad a estos botones tenemos que escuchar los eventos que estos disparan. Los eventos más
 			  comunes son \texttt{click}, \texttt{toggle}, \texttt{mouseover} y \texttt{mouseout}.
 			\item[\texttt{Ext.form.field.Date xtype:datefield}] Este componente proporciona un campo de entrada de fecha. Es posible
-			  especificar el formato deseado en el que introducir la fecha. Si este formato no es respetado el campo es subrayado en color
-			  rojo indicando al usuario la inconsistencia. Eventualmente este campo puede desplegar un selector de fechas que facilita el
-			  proceso de introducir la fecha deseada. Al igual que los demás componentes este dispara multitud de eventos que podemos
-			  manejar.
-			\item[\texttt{Ext.form.field.Time xtype:timefield}] Este componente es muy similar al anteriormente descrito. Este proporciona
+			  especificar el formato deseado en el que introducir la fecha, y si este formato no es respetado el campo es subrayado en
+			  color rojo indicando al usuario la inconsistencia. Eventualmente este campo puede desplegar un selector de fechas que
+			  facilita el proceso de introducir la fecha deseada. Al igual que los demás componentes este dispara multitud de eventos que
+			  podemos manejar.
+			\item[\texttt{Ext.form.field.Time xtype:timefield}] Este componente es muy similar al anteriormente descrito, y proporciona
 			  un campo de entrada de tiempo. También acepta una configuración del formato deseado y advierte  al usuario cuando este no es
 			  respetado. El componente puede desplegar un selector de tiempo que facilita la tarea de introducir el valor deseado.
 			\item[\texttt{Ext.form.Label xtype:label}] Este componente permite generar una etiqueta de texto. Este componente es muy
@@ -262,23 +258,23 @@ button.fireEvent('myEvent', 42);
 			  más.
 		\end{description}
 	\subsection{History stack}
-		La aplicación Web que estamos desarrollando es una aplicación \emph{single page}. Este modelo rompe con el patrón tradicional de
+		La aplicación Web que estamos desarrollando es una aplicación \emph{single-page}. Este modelo rompe con el patrón tradicional de
 		navegación por el historial usando los botones \emph{Forward/Back}. Esto presenta un problema de usabilidad cuando el usuario utiliza
-		el botón de navegación hacia atrás, este espera volver al estado anterior de la aplicación, sin embargo es cargada la página anterior
-		del historial y nuestra aplicación \emph{single page} es descargada.
+		el botón de navegación hacia atrás, ya que lo esperado es volver al estado anterior de la aplicacióin. Sin embargo se carga la
+		página anterior del historial y nuestra aplicación \emph{single-page} es descartada.
 		\par
-		La solución que la mayoría de aplicaciones \emph{single page} han adoptado se basa en el \emph{Fragment Identifier}  o \emph{hash},
+		La solución que la mayoría de aplicaciones \emph{single-page} han adoptado se basa en el \emph{Fragment Identifier}  o \emph{hash},
 		nombre que recibe porque va precedido del símbolo \textbf{\#}. El \emph{hash} es una parte opcional de la URL que históricamente se
-		utilizaba para navegar por documentos largos, un cambio en el \emph{hash} hace que se muestren diferentes partes del documento.
+		utilizaba para navegar por documentos largos. Un cambio en el \emph{hash} hace que se muestren diferentes partes del documento.
 		\par
-		Actualmente el \emph{hash} es usado por aplicaciones \emph{single page} para manipular la pila de historial. El hash es cambiado
+		Actualmente el \emph{hash} es usado por aplicaciones \emph{single-page} para manipular la pila de historial. El hash es cambiado
 		acuerdo al estado de la aplicación. Esto hace que los cambios en la aplicación sean registrados en la pila de historial.
 		\par
 		Al pulsar el botón de navegación hacia atrás el \emph{hash} de la URL cambia a su estado anterior. Nuestra aplicación debe ser capaz
 		de detectar los cambios en el \emph{hash} y actuar acuerdo a estos. De esta manera podemos preservar la funcionalidad de los botones
 		de navegación \emph{Forward/Back}. 
 		\par
-		Para implementar la funcionalidad anteriormente descrita ExtJs ofrece el singletone \texttt{Ext.util.History}. Para inicializar este
+		Para implementar la funcionalidad anteriormente descrita ExtJs ofrece el singleton \texttt{Ext.util.History}. Para inicializar este
 		módulo tenemos que invocar la función \texttt{Ext.History.init()}. Una vez inicializado este módulo podemos hacer cambios en el
 		\emph{hash} invocando la función \texttt{Ext.History.add()}. Esta función acepta como parámetro el valor del \emph{hash}. 
 		\par
@@ -482,9 +478,9 @@ H.addEvent(chart, 'selection', function (e) {
 	\emph{front-end} es el que empieza la comunicación enviando un mensaje de petición y el \emph{back-end} responde a esa peticion con un mensaje
 	de respuesta. El \emph{modelo} es el encargado de enviar los mensajes de petición y después interpretar los mensajes de respuesta.
 	\par
-	Para dotar el \emph{modelo} de la funcionalidad necesaria utilizamos las facilidades que ExtJs ofrece, concretamente utilizamos el singletone
+	Para dotar el \emph{modelo} de la funcionalidad necesaria utilizamos las facilidades que ExtJs ofrece, concretamente utilizamos el singleton
 	\texttt{Ext.Ajax}. Ajax\cite{AjaxWiki} es una técnica de desarrollo Web donde cliente y servidor mantienen una comunicación asíncrona en
-	segundo plano. \texttt{Ext.Ajax} es un singletone de la clase \texttt{Ext.data.Connection}, clase que encapsula la lógica necesaria para
+	segundo plano. \texttt{Ext.Ajax} es un singleton de la clase \texttt{Ext.data.Connection}, clase que encapsula la lógica necesaria para
 	realizar una comunicación Ajax. 
 	\par
 	Concretamente hacemos uso de la función \texttt{Ext.data.Connection.request}. Esta función envía una petición \emph{HTTP} a un servidor
@@ -580,7 +576,7 @@ Ext.define('MyApp.controller.Users', {
 		aplicadas a estos.
 	\subsection{\texttt{Navigation}}
 		Este Controlador es el encargado de inicializar el \texttt{Ext.History}, mecanismo que solventa el problema de navegación por el
-		historial en aplicaciones \emph{single page}. El problema y el mecanismo fueron descritos en secciones anteriores de este capítulo.
+		historial en aplicaciones \emph{single-page}. El problema y el mecanismo fueron descritos en secciones anteriores de este capítulo.
 		\par
 		El Controlador define la función \texttt{onLaunch()}, función que es invocada una vez creados la Vista y el Modelo de la aplicación.
 		Empieza invocando la función \texttt{Ext.History.init()}, función esencial para inicializar este módulo. Seguidamente define la
