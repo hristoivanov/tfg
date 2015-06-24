@@ -575,11 +575,11 @@ Ext.define('MyApp.controller.Users', {
 		Controlador se invoca antes de empezar a construir los gráficos de la aplicación para que las extensiones estén listas y sean
 		aplicadas a estos.
 	\subsection{\texttt{Navigation}}
-		Este Controlador es el encargado de inicializar el \texttt{Ext.History}, mecanismo que solventa el problema de navegación por el
+		Este Controlador es el encargado de inicializar el \texttt{Ext.History},que es el mecanismo que soluciona el problema de navegación por el
 		historial en aplicaciones \emph{single-page}. El problema y el mecanismo fueron descritos en secciones anteriores de este capítulo.
 		\par
-		El Controlador define la función \texttt{onLaunch()}, función que es invocada una vez creados la Vista y el Modelo de la aplicación.
-		Empieza invocando la función \texttt{Ext.History.init()}, función esencial para inicializar este módulo. Seguidamente define la
+		El Controlador define la función \texttt{onLaunch()}, que se invoca una vez creados la Vista y el Modelo de la aplicación.
+		Empieza invocando la función \texttt{Ext.History.init()}, a fin de inicializar este módulo. Seguidamente define la
 		función encargada de manejar el evento \texttt{change}, que se dispara al cambiar el \emph{hash} de la URL. Esta función soporta tres
 		valores diferentes como \emph{hash} que son \texttt{[Spike, SpikeRevised, ChannelStats]}. Estos tres valores representan los tres
 		módulos funcionales entre los que hacemos distinción. Cambiando el \emph{hash} cambiamos el módulo funcional mostrado en
@@ -588,22 +588,22 @@ Ext.define('MyApp.controller.Users', {
 		Podemos ver que el soporte de navegación por el historial es pobre en funcionalidad, por esta razón proponemos como trabajo futuro
 		extender y ampliar la funcionalidad de este.
 		\par
-		También debemos tener en cuenta que al inicializarse la aplicación puede haber un \emph{hash} especificado. Una vez especificado el
+		También debemos tener en cuenta que al inicializarse la aplicación puede haber un \emph{hash} presente. Una vez especificado el
 		comportamiento ante un evento \texttt{change} procedemos a evaluar el \emph{hash} actual. Este puede no estar presente, caso en el que
 		cargamos el módulo funcional \texttt{Spike}. En el caso de la presencia de un \emph{hash} actuamos conforme a este.
 	\subsection{\texttt{Spike}}
 		Este Controlador es directamente relacionado al módulo funcional con el mismo nombre, \texttt{Spike}. Este Controlador es algo más
-		complicado que los anteriormente discutidos, dado que es compuesto por múltiples funciones. A continuación procedemos a explicar estas
+		complicado que los anteriores, dado que se compone de múltiples funciones. A continuación procedemos a explicar estas
 		funciones.
 		\begin{description}[style=unboxed,leftmargin=0cm]
 			\item[\texttt{Launch()}] Inicializa el módulo funcional \texttt{Spike}. Es conveniente destacar que esta función no es
-			  \texttt{onLauch}, esta no es invocada automáticamente al inicio de la aplicación, somos nosotros los que la invocamos. Esta
-			  función inicializa el objeto \texttt{app}, objeto que debe contener todas las variables usadas en este módulo. La mayoría de
-			  las demás funciones usaran este objeto para acceder a estas variables. Después de inicializar este objeto es invocada la
-			  función \texttt{loadInitialData()}.
+			  \texttt{onLauch}, y por lo tanto no es invocada automáticamente al inicio de la aplicación, sino que somos nosotros los que
+			  la invocamos. Esta función inicializa el objeto \texttt{app}, que debe contener todas las variables usadas en este
+			  módulo. La mayoría de las demás funciones usaran este objeto para acceder a estas variables. Después de inicializar este
+			  objeto se invoca \texttt{loadInitialData()}.
 			\item[\texttt{loadInitialData()}] Esta función carga los datos necesarios para construir el módulo. Los datos son cargados
 			  realizando una petición Ajax al \emph{back-end}. El servicio RPC que invocamos es \texttt{nmdbOriginalGroup}. Al cargar los
-			  datos con éxito son invocadas las funciones \texttt{initCandleChart()} y \texttt{initChannelChart()}. 
+			  datos con éxito se invocann a su vez las funciones \texttt{initCandleChart()} y \texttt{initChannelChart()}. 
 			\item[\texttt{initCandleChart()}] Esta función es la encargada de crear el gráfico \emph{Candlestick} con los datos de la
 			  estación. Hablaremos más a fondo sobre este gráfico en las secciones futuras donde discutiremos la herramienta desde un
 			  enfoque funcional.
@@ -612,24 +612,24 @@ Ext.define('MyApp.controller.Users', {
 			\item[\texttt{LineOrOhcl(start, finish, N\_points)}] Anteriormente en este capítulo discutimos el problema que surge al
 			  intentar representar un gran número de datos en un gráfico convencional y que el gráfico \emph{Candlestick} da solución a
 			  este problema. Esta función determina si debemos utilizar un gráfico de línea o bien uno \emph{Candlestick}. La cantidad de
-			  datos es definida por los parámetros \texttt{start} y \texttt{finish}, el parámetro \texttt{N\_points} representa el número
-			  de pixeles que tenemos a disposición para representar los datos.
+			  datos se define por los parámetros \texttt{start} y \texttt{finish}, mientras que el parámetro \texttt{N\_points} representa
+			  el número de pixeles que tenemos a disposición para representar los datos.
 			\item[\texttt{updateMode(start, finish)}] Esta función es invocada cuando ocurre algún cambio en el gráfico \emph{Candlestick}
 			  y calcula el modo en que deben ser representados los datos. Esta función hace un uso intensivo de la función
 			  \texttt{LineOrOhcl()}, pero tiene en cuenta más cosas como la serie actual.
 			\item[\texttt{changeSeries(series)}] Esta función cambia la serie que es presentada en el gráfico \emph{Candlestick}. El
 			  parámetro \texttt{series} es un entero que puede tomar los siguientes valores \texttt{[1, 2, 3]}, donde estos representan
 			  uncorrected, corrected for pressure y corrected for efficiency.
-			\item[\texttt{updateSeries()}] Esta función simplemente refresca los datos de las series del gráfico \emph{CandleStick}. Es
-			  invocada cada vez que ocurre algún cambio en este para refrescar los datos.
+			\item[\texttt{updateSeries()}] Esta función simplemente refresca los datos de las series del gráfico \emph{CandleStick}, y se
+			  invoca cada vez que ocurre algún cambio en este para refrescar los datos.
 			\item[\texttt{updateCandleData(start, finish)}] Esta función carga los datos para el gráfico \emph{Candlestick} en función de
 			  la petición realizada por el usuario. Para cargar los datos la función realiza una petición Ajax al \emph{back-end}. La
 			  función invoca el servicio RPC \texttt{nmdbOriginalGroup} o \texttt{nmdbOriginalRaw} en función del valor devuelto por la
-			  función \texttt{LineOrOhcl()}. El intervalo de datos que será solicitado es definido por los parámetros \texttt{start} y
+			  función \texttt{LineOrOhcl()}. El intervalo de datos que será solicitado se define por los parámetros \texttt{start} y
 			  \texttt{finish}. 
 			\item[\texttt{updateChannelData()}] Esta función carga los datos para el gráfico que representa los datos de los tubos
-			  contadores por separado. Los datos son cargado del \emph{back-end} mediante una petición Ajax que invoca el servicio RPC
-			  \texttt{nmdadbRawData}.
+			  contadores por separado. Estos datos se descargan desde el \emph{back-end} mediante una petición Ajax que invoca el servicio
+			  RPC \texttt{nmdadbRawData}.
 			\item[\texttt{searchInterval(start, finish)}] Esta función permite hacer una búsqueda por intervalos temporales. El intervalo
 			  es definido por los parámetros \texttt{start} y \texttt{finish}.
 			\item[\texttt{getTimestamp(str)}] Esta función acepta una cadena de texto que debe seguir un formato determinado y devuelve un
@@ -654,20 +654,20 @@ Ext.define('MyApp.controller.Users', {
 				todas las variables asociadas a este módulo. La estructura de este objeto es idéntica al objeto creado en la función
 				\texttt{Launch()} del Controlador \texttt{Spike} a excepción de una serie de atributos extra. 
 				\par
-				Seguidamente son importadas todas las funciones que podemos reutilizar del Controlador \texttt{Spike}, de esta forma
-				se evita duplicar código idéntico. Las funciones importadas son listadas a continuación.
+				Seguidamente se importan todas las funciones que podemos reutilizar del Controlador \texttt{Spike}, de esta forma
+				se evita duplicar código idéntico. Las funciones importadas son las siguientes:
 					\begin{center} \texttt{	initCandleChart, initChannelChart, changeSeries, searchInterval, updateChannelData,
 					  			LineOrOhcl, updateMode, updateSeries, getTimestamp}
 					\end{center}
-				Finalmente es invocada la función \texttt{loadInitialData()}.
+				Finalmente se llama a la función \texttt{loadInitialData()}.
 		    	\item[\texttt{loadInitialData()}]
 				Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función carga los
 				datos necesarios para construir el módulo. La diferencia radica en el servicio RCP utilizado. Esta función utiliza el
 				servicio \texttt{nmdbRevisedGroup}, tal y como explicamos este módulo utiliza los datos revisados.
 				\par
 				Al cargar los datos con éxito son invocadas las funciones \texttt{initCandleChart} y \texttt{initChannelChart} que
-				crean los dos gráficos, estas son función importadas del Controlador \texttt{Spike}. Finalmente es invocada la función
-				\texttt{extendChandleChart} que será explicada a continuación.
+				crean los dos gráficos, estas son función importadas del Controlador \texttt{Spike}. Finalmente se invoca la función
+				\texttt{extendChandleChart} que se explicará a continuación.
 			\item[\texttt{extendCandleChart()}]
 				Volvemos a recordar que este módulo es muy similar al \texttt{Spike}, pero ofrece alguna funcionalidad extra. Esta
 				función es la encargada de extender la funcionalidad del gráfico \emph{Candlestick}. La función define el
@@ -681,17 +681,17 @@ Ext.define('MyApp.controller.Users', {
 				por los parámetros \texttt{start} y \texttt{finish}.
 			\item[\texttt{removeFromGrid(rowIndex)}]
 				Los datos marcados son guardados en una tabla. Esta función permite eliminar un dato de esta tabla. El parámetro que
-				esta función acepta especifica el dato que será eliminado de la tabla. 
+				esta función acepta especifica el índice del dato que será eliminado de la tabla. 
 			\item[\texttt{submitGrid()}]
 				Esta función permite clasificar como inválidos los datos en la tabla. La función invoca el servicio
 				\texttt{nmdbMarkNull} del \emph{back-end} a fin de cumplir con su propósito. Una vez anulados correctamente los datos,
-				la tabla es vaciada y el gráfico refrescado a fin de mostrar los cambios.
+				la tabla se vacía y el gráfico se refresca con el fin de mostrar los cambios.
 			\item[\texttt{showHideGrid()}]
 				Esta función permite mostrar u ocultar la tabla que contiene los datos marcados, de esta manera los datos pueden ser
 				inspeccionados.
 			\item[\texttt{clearGrid()}]
-				Esta función permite vaciar la tabla que contiene los datos marcados, de esta manera estos son descartados y no es
-				tomada ninguna acción.
+				Esta función permite vaciar la tabla que contiene los datos marcados, de esta manera estos son descartados y no se
+				toma ninguna acción.
 			\item[\texttt{showCandle()}]
 				Esta función es muy parecida a la función con el mismo nombre del Controlador \texttt{Spike}. La función muestra el
 				gráfico \emph{Candlestick} y todos los controles vinculados a este. La función \texttt{Launch()} es invocada en el
@@ -702,22 +702,22 @@ Ext.define('MyApp.controller.Users', {
 				a este. Es invocada la función \texttt{updateChannelData()} para asegurar que son mostrados los datos correctos.
 		\end{description}
 	\subsection{\texttt{ChannelStats}}
-		Este Controlador es directamente relacionado con el módulo funcional con el mismo nombre, \texttt{ChannelStats}. Este Controlador es
-		compuesto por varias funciones que discutiremos a continuación.
+		Este Controlador está directamente relacionado con el módulo funcional con el mismo nombre, \texttt{ChannelStats}. Este Controlador se
+		compone de varias funciones que discutiremos a continuación.
 		\begin{description}[style=unboxed,leftmargin=0cm]
 			\item[\texttt{Launch()}]
-				Inicializa el módulo funcional \texttt{ChannelStats}. Esta función inicializa el objeto \texttt{app}, objeto que debe
-				contener todas las variable usadas en este módulo. Después de iniciar este objeto es invocada la función
+				Inicializa el módulo funcional \texttt{ChannelStats}. Esta función inicializa el objeto \texttt{app}, que debe
+				contener todas las variable usadas en este módulo. Después de iniciar este objeto se invoca la función
 				\texttt{loadInitialData()}.
 			\item[\texttt{loadInitialData()}]
 				Esta función carga los datos necesarios para construir el módulo. Los datos son cargados realizando una petición Ajax
-				al \emph{back-end}. Son invocados dos servicios RPC, \texttt{nmdadbChannelStats} y \texttt{nmdadbChannelHistogram}. El
-				primero devuelve una serie de estadísticas descriptivas de los canales, estos datos son representados en un gráfico y
-				también listados en una tabla. El segundo carga los datos necesarios para construir un histograma de la distribución
+				al \emph{back-end}. Se invocan dos servicios RPC, \texttt{nmdadbChannelStats} y \texttt{nmdadbChannelHistogram}. El
+				primero devuelve una serie de estadísticas descriptivas de los canales. Estos datos se representan en un gráfico y
+				también se muestran en una tabla. El segundo carga los datos necesarios para construir un histograma de la distribución
 				de cuentas para los 18 canales.
 				\par
-				Al cargar los datos con éxito son invocadas las funciones \texttt{initStatsChart()} y \texttt{initHistogramChart()}
-				que  crean los dos gráficos, el gráfico con las estadísticas y el histograma. Los datos de la tabla son actualizados
+				Al cargar los datos con éxito se invocan las funciones \texttt{initStatsChart()} y \texttt{initHistogramChart()}
+				que  crean los dos gráficos: el gráfico con las estadísticas y el histograma. Los datos de la tabla son actualizados
 				automáticamente, por lo que no tenemos que tomar ninguna acción.
 			\item[\texttt{initStatsChart()}]
 				Esta función es la encargada de crear el gráfico a partir de los datos devueltos por el serviocio RPC
@@ -727,19 +727,20 @@ Ext.define('MyApp.controller.Users', {
 				la estación.
 			\item[\texttt{searchInterval()}]
 				La función que carga los datos iniciales carga los datos del último mes, esta función permite solicitar otro intervalo
-				temporal. Este intervalo es definido por los dos parámetros que esta función acepta, \texttt{start} y \texttt{finish}.
+				temporal. Este intervalo se define por los dos parámetros que esta función acepta, \texttt{start} y \texttt{finish}.
 				La función invoca los servicios RPC \texttt{nmdadbChannelStats} y \texttt{nmdadbChannelHistogram} para solicitar los
 				datos al \emph{back-end}.
 			\item[\texttt{showModule()}]
-				Esta función muestra en pantalla este módulo funcional. En el caso de que este módulo no esté creado es invocada la
+				Esta función muestra en pantalla este módulo funcional. En el caso de que este módulo no esté creado se invoca la
 				función \texttt{Launch()}.
 		\end{description}
 	\subsection{Visión general}
 		En la figura \ref{fig:controllers} podemos ver un diagrama que representa los Controladores que acabamos de explicar. En color azul
 		podemos ver las funciones, gris en caso de que sean funciones importadas desde otro Controlador. Las flecha azules que unen las
-		funciones muestras como estas se invocan unas a otras. Algunas funciones son invocadas al producirse un cierto evento, estos pueden
-		verse en verde dentro de las funciones. Todos los eventos son producidos por los elementos que forman la Vista de la aplicación, a
-		excepción del evento \texttt{Ext.History.change} que es disparado al realizar un cambio en la pila de historial de navegación.
+		funciones muestras como estas se invocan las unas a las otras. Algunas funciones son invocadas al producirse un cierto evento, estos
+		pueden verse en verde dentro de las funciones. Todos los eventos son producidos por los elementos que forman la Vista de la
+		aplicación, a excepción del evento \texttt{Ext.History.change} que se dispara al realizar un cambio en la pila del historial de
+		navegación.
 		\begin{figure}[h]
 			\centering
 			\includegraphics[keepaspectratio, width=1\textwidth]{./img/controllers.png}
@@ -747,7 +748,7 @@ Ext.define('MyApp.controller.Users', {
 			\label{fig:controllers}
 		\end{figure}
 \section{Vista}
-	El componente de Vista en una aplicación \emph{modelo-vista-controlados}\cite{MVCWiki} es el responsable de presentar la información de la
+	El componente de Vista en una aplicación \emph{modelo-vista-controlador}\cite{MVCWiki} es el responsable de presentar la información de la
 	aplicación junto a todos los componentes que componen la interfaz de usuario. El propósito de esta sección es describir los aspectos básicos
 	de este componente.
 	\begin{figure}[h]
@@ -757,28 +758,28 @@ Ext.define('MyApp.controller.Users', {
 		\label{fig:vista}
 	\end{figure}
 	\par
-	La Vista en una aplicación ExtJs es compuesta por una jerarquía de \emph{componentes}. En nuestro caso en lo más alto de esta jerarquía
+	La Vista en una aplicación ExtJs se compone de una jerarquía de \emph{componentes}. En nuestro caso en lo más alto de esta jerarquía
 	tenemos un \texttt{ViewPort} al que hemos asignado el nombre \texttt{MyViewPort}. Este es un \emph{componente} que se ajusta al área de
 	aplicación disponible. El layout que determina como se posicionan los hijos de este \emph{componente} es \texttt{border}. Los
 	\emph{componentes} hijos deben especificar el atributo \texttt{region} que determina su posicionamiento.
 	\par
-	El primer hijo con \texttt{region:north} es un \texttt{Ext.container.Container}, clase que especifica un \emph{contenedor} base. Actualmente este
-	\emph{contenedor} no tiene ninguna funcionalidad, en un futuro se plantea visualizar mensajes de alerta.
+	El primer hijo con \texttt{region:north} es un \texttt{Ext.container.Container}, que especifica un \emph{contenedor} base. Actualmente este
+	\emph{contenedor} no tiene ninguna funcionalidad. En un futuro se plantea visualizar en él mensajes de alerta.
 	\par
 	El segundo hijo del \texttt{MyViewPort} con \texttt{region:west} es también una instancia de la clase \texttt{Ext.container.Container}. El
 	\texttt{itemId} que define es \texttt{Controls}. Este \emph{contenedor} tiene tres hijos que son instancias de la misma clase. Estos tres
 	hijos contienen los controles vinculados a los tres módulos funcionales. Los \texttt{itemId} que estos tres hijos especifican son:
     		\begin{center} \texttt{[SpikeControls, SpikeRevisedControls, ChannelStatsControls]}  \end{center}
 	\texttt{Controls} usa el layout \texttt{accordion}, donde solamente uno de los hijos puede estar expandido y los demás están
-	colapsados, de esta manera no pueden ser visibles lo controles de dos módulos funcionales a la vez. Cada vez que son expandidos los
-	controles de un módulo funcional el evento \texttt{Ext.panel.Panel.beforeexpand} es disparado. El handler asociado a este evento
+	colapsados, de esta manera no pueden ser visibles lo controles de dos módulos funcionales a la vez. Cada vez que se expanden los
+	controles de un módulo funcional se dispara el evento \texttt{Ext.panel.Panel.beforeexpand}. El handler asociado a este evento
 	invoca la función apropiada de los Controladores para mostrar el módulo funcional al que pertenecen los controles que acaban de ser
 	expandidos.
 	\par
 	La tercer hijo del \texttt{MyViewPort} con \texttt{region:center} es también una instancia de la clase \texttt{Ext.container.Container}. El
 	\texttt{ítemId} que identifica a este componente es \texttt{NavigationPanel}. El layout utilizado es \texttt{card} donde los hijos se solapan
 	unos a otros y tan sólo uno puede ser visible a la vez. Los \emph{componentes} hijos contienen todos los gráficos y tablas que nuestra
-	aplicación ofrece, estos son mostrados en función del estado de los controles.
+	aplicación ofrece. Estos se muestran y ocultan en función del estado de los controles.
 	\par
 	En la figura \ref{fig:vista} podemos ver como se organizan los componentes de la Vista que acabamos de explicar.
 \section{Descripción funcional}
@@ -787,41 +788,41 @@ Ext.define('MyApp.controller.Users', {
 	\subsection{\texttt{Spike}}
 		El propósito de este módulo es ofrecer un gráfico interactivo que permite localizar los \emph{spikes} de forma fácil. Recordamos
 		que estos son datos anormalmente grandes o pequeños. La figura \ref{fig:spikeRevised} presenta el módulo funcional
-		\texttt{SpikeRevised}, dado que los dos módulos son muy similares podemos fijarnos en esta figura.
+		\texttt{SpikeRevised}. Dado que los dos módulos son muy similares podemos fijarnos en esta figura.
 		\par
-		Inicialmente el módulo tiene que representar todos los datos de la estación, razón por la que es utilizado el gráfico
-		\emph{Candlestick}. En este gráfico los valores máximo y mínimo para cada grupo son fáciles de distinguir. Eventualmente cuando es
-		solicitado un intervalo temporal para el que no es necesario agrupar los datos, el gráfico automáticamente cambia a un gráfico de
+		Inicialmente el módulo tiene que representar todos los datos de la estación, razón por la que se utiliza el gráfico
+		\emph{Candlestick}. En este gráfico los valores máximo y mínimo para cada grupo son fáciles de distinguir. Eventualmente cuando se
+		solicita  un intervalo temporal para el que no es necesario agrupar los datos, el gráfico automáticamente cambia a un gráfico de
 		línea. Por contrario si se vuelve a solicitar un intervalo que requiere agrupar los datos, el gráfico cambia a \emph{Candlestick}.
 		\par
-		Para solicitar un intervalo diferente de datos tenemos varias facilidades. La primera es el zoom interactivo que podemos realizar
+		Para solicitar un intervalo diferente de datos tenemos varias formas. La primera es el zoom interactivo que podemos realizar
 		haciendo \emph{click} y arrastrando sobre un intervalo del gráfico. Dependiendo de la dirección de arrastre este será un zoom In u
 		Out. La segunda alternativa es utilizar los campos de entrada disponibles en los controles para realizar una búsqueda por intervalo.
-		En estos campos podemos especificar el inicio y fin del intervalo y la búsqueda será realizada al accionar el botón \emph{Search}. La
+		En estos campos podemos especificar el inicio y fin del intervalo y la búsqueda será realizada al accionar el botón \texttt{Search}. La
 		tercera opción es utilizar el navegador que podemos encontrar en la parte inferior del gráfico. Finalmente podemos utilizar los
-		botones en la parte superior izquierda, \texttt{1m} y \texttt{All} del gráfico que permiten fijar un intervalo de un mes o volver a
+		botones en la parte superior izquierda del gráfico, \texttt{1m} y \texttt{All}, que permiten fijar un intervalo de un mes o volver a
 		mostrar todos los datos.
 		\par
-		Inicialmente son mostrados los datos \emph{sin corregir}, utilizando el botón \texttt{Choise a Series} podemos mostrar los datos
-		\emph{corregidos por presión} o los \emph{corregidos por eficiencia}. En la parte superior del gráfico son representados los valores
-		de la presión atmosférica, estos permiten correlacionar los datos respecto a esta magnitud.
+		Inicialmente se muestran los datos \emph{sin corregir}, utilizando el botón \texttt{Choise a Series} podemos mostrar los datos
+		\emph{corregidos por presión} o los \emph{corregidos por eficiencia}. En la parte superior del gráfico se representan los valores
+		de la presión atmosférica, que permiten relacionar los datos respecto a esta magnitud.
 		\par
 		Cuando no es necesario agrupar los datos el botón \texttt{Channel Chart} es habilitado. Este botón muestra un gráfico secundario con
 		los valores de los tubos contadores por separado. El intervalo de datos es marcado por el intervalo del gráfico principal. Este
 		gráfico permite observar el comportamiento de los diferentes tubos. El botón \texttt{Candle Chart} permite volver al gŕafico
 		principal.
 	\subsection{\texttt{SpikeRevised}}
-		Este módulo funcional incorpora toda la funcionalidad del módulo anterior, la diferencia radica en que este utiliza un conjunto de
+		Este módulo incorpora toda la funcionalidad del anterior, la diferencia radica en que este utiliza un conjunto de
 		datos diferente y además ofrece alguna funcionalidad extra. \texttt{Spike} utiliza los datos originales, mientras que este módulo
-		utiliza los datos revisados. La funcionalidad extra que este módulo ofrece permite añadir datos al conjunto de datos revisados.
+		utiliza los datos revisados. La funcionalidad extra de este módulo es la que permite añadir datos al conjunto de datos revisados.
 		\par
-		Para satisfacer dicha funcionalidad este módulo ofrece una tabla. Esta tabla es mostrada en una ventana separa que puede ser mostrada
+		Para satisfacer dicha funcionalidad este módulo ofrece una tabla. Esta tabla se muestra en una ventana separada que puede ser mostrada
 		u ocultada utilizando el botón \texttt{Selected Points}. Los datos de esta tabla pueden ser enviados al conjunto de datos revisados
-		utilizando el botón \texttt{Submit} que está presente en la misma ventana. Los datos añadidos a este conjunto serán considerados como
+		utilizando el botón \texttt{Submit}, que está presente en la misma ventana. Los datos añadidos a este conjunto serán considerados como
 		nulos en el futuro. Este botón además de enviar los datos, actualiza el gráfico para reflejar los cambios que acaban de producirse.
 		\par
 		Cuando los datos son representados en modo línea podemos hacer \emph{click} sobre un dato para añadir este a la tabla anteriormente
-		descrita. En el gráfico es añadido un \emph{flag}, la letra que aparece en dicho \emph{flag} se corresponde con el campo
+		descrita. En el gráfico se añade un \emph{flag}, la letra que aparece en dicho \emph{flag} se corresponde con el campo
 		\texttt{Label} de la tabla.
 		\begin{figure}[h]
 			\centering
@@ -830,12 +831,12 @@ Ext.define('MyApp.controller.Users', {
 			\label{fig:spikeRevised}
 		\end{figure}
 	\subsection{\texttt{ChannelStats}}
-		El propósito de este módulo funcional es ofrecer información de los diferentes canales por separado, de esta manera somos capaces de
-		identificar mal funcionamientos en canales aislados. El módulo ofrece una tabla en la que podemos inspeccionar la media, desviación
+		El propósito de este módulo funcional es ofrecer información de los diferentes canales por separado, de esta manera seremos capaces de
+		identificar el mal funcionamiento en canales aislados. El módulo ofrece una tabla en la que podemos inspeccionar la media, desviación
 		típica, máximo, mínimo y último valor para cada canal. Estos datos también son representados en un gráfico \emph{Candlestick}.
 		\par
 		Junto a estos datos el módulo ofrece un histograma con la distribución de cuentas para los diferentes canales. Dicho histograma puede
-		ser visto en una pestaña separada.
+		consultarse en una pestaña separada.
 		\par
 		Inicialmente los datos y el histograma son calculados para el último mes. En los controles podemos encontrar los campos de entrada que
 		permiten solicitar un intervalo de tiempo determinado. La búsqueda por intervalo está limitada a un mes dado a que las consultas
