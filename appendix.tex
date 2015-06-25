@@ -4,7 +4,7 @@
 	\label{app_soft}
 	El propósito de este punto es detallar el proceso que debe seguirse para desplegar el software de adquisición. Siendo este un software para un
 	sistema empotrado el estado del hardware tiene una gran influencia, en este punto suponemos que ya está configurado correctamente. También
-	suponemos que sobre la BeagleBone Black tenemos una distribución Angstrom recién instalada.
+	suponemos que sobre la \emph{BeagleBone Black} tenemos una distribución Angstrom recién instalada.
 	\section{Instalación de software} 
 		El primer paso es instalar el software y librerías que son necesarias. Antes de nada debemos actualizar la lista de paquetes
 		disponibles. 
@@ -68,7 +68,7 @@ $ cp /server/nmda/NMDA.conf.exmaple /server/nmda/.NMDA.conf
 	\section{\emph{System Services}}
 		\label{appendix:systemctl}
 		En el capítulo dedicado al software de adquisición se explica como el sistema de adquisición debe inicializarse automáticamente ante
-		la presencia de corriente. La BeagleBone Black por defecto está configurada para arrancar automáticamente. Nos queda configurar el
+		la presencia de corriente. La \emph{BeagleBone Black} por defecto está configurada para arrancar automáticamente. Nos queda configurar el
 		sistema operativo para arrancar nuestro software de forma automática. Para este propósito vamos a utilizar las \emph{System Services}. 
 		\par
 		Los servicios de sistema se crean mediante archivos con extensión \texttt{.service} que deben ser guardados en el directorio
@@ -140,12 +140,12 @@ server pool.ntp.org
 restrict default
 		\end{lstlisting}
 	\section{Tarjeta microSD}
-		Tal y como explicamos en el capítulo dedicado al entorno hardware la BeagleBone Black dispone de una memoria integrada (eMMC) de 4GB.
+		Tal y como explicamos en el capítulo dedicado al entorno hardware la \emph{BeagleBone Black} dispone de una memoria integrada (eMMC) de 4GB.
 		En esta memoria tenemos el sistema operativo y todo el software necesario para el sistema de adquisición. Esto hace que el porcentaje
 		de ocupación de esta memoria sea muy alto. Es conveniente hacer uso de la ranura microSD (uSD) para extender  la capacidad de
 		almacenamiento. A continuación se detallan los pasos a seguir.
 		\par
-		El primer paso es arrancar la BeagleBone Black sin la tarjeta uSD. Después debemos hacer uso del comando \texttt{fdisk}, programa que
+		El primer paso es arrancar la \emph{BeagleBone Black} sin la tarjeta uSD. Después debemos hacer uso del comando \texttt{fdisk}, programa que
 		permite manipular las particiones de los dispositivos de almacenamiento.
 		\begin{lstlisting}[style=myBash]
 # Listar las particiones de los dispositivos presentes.
@@ -186,12 +186,12 @@ Disk /dev/mmcblk1: 7948 MB, 7948206080 bytes #uSD
 $ mkfs -t vfat /dev/mmcblk1p1
 $ mkfs -t ext3 /dev/mmcblk1p2
 		\end{lstlisting}
-		Antes de seguir es conveniente explicar algunos aspectos del proceso de arranque en la BeagleBone Black. Después de una serie de
+		Antes de seguir es conveniente explicar algunos aspectos del proceso de arranque en la \emph{BeagleBone Black}. Después de una serie de
 		pasos, que están fuera del alcance de este trabajo, es cargado desde la eMMC(partición FAT16) el programa U-boot. Este es el encargado
 		de cargar el núcleo Linux y proporcionar información sobre el sistema de archivos Linux. Este programa busca el archivo
 		\texttt{uEnv.txt} desde el que lee una serie de parámetros de configuración como la posición del propio núcleo Linux que queremos
 		cargar. Algunos de estos parámetros pueden ser pasados al propio núcleo siempre y cuando este los acepte, por ejemplo la siguiente
-		línea nos permite habilitar dos de los puertos series que la BeagleBone Black ofrece.
+		línea nos permite habilitar dos de los puertos series que la \emph{BeagleBone Black} ofrece.
 		\begin{lstlisting}[style=myFile]
 optargs=quiet drm.debug=7 capemgr.enable_partno=BB-UART2,BB-UART1
 		\end{lstlisting}
@@ -344,7 +344,7 @@ $ git clone https://github.com/opobla/nmcpanel.git directorio_de_proyecto
 	\par
 	Secure Shell o SHH\cite{ssh} es un programa que implementa el protocolo con el mismo nombre. Este programa permite el acceso a máquinas
 	remotas atreves de  la red mediante un intérprete de comandos, de esta manera podemos tener control total de la máquina remota. Hemos
-	utilizado este programa para trabajar con la BeagleBone Black y actualmente lo estamos utilizando para realizar todas  las labores de
+	utilizado este programa para trabajar con la \emph{BeagleBone Black} y actualmente lo estamos utilizando para realizar todas  las labores de
 	mantenimiento del software de adquisición.
 	\par
 	Durante el desarrollo de la herramienta Web hemos utilizado el servidor Web interno que PHP ofrece. Este es muy cómodo, fácil y sobre todo

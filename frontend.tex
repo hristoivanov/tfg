@@ -6,14 +6,14 @@ este capítulo es describir el \emph{front-end}, que es el encargado de la capa 
 El \emph{front-end} se implementa en JavaScript\cite{JavaScript}. Este es un lenguaje de programación soportado por la mayoría de navegadores, que
 permite dotar de funcionalidad extra a las páginas Web. Actualmente el uso de este lenguaje está tan extendido y avanzado que permite crear
 aplicaciones enteras para navegadores Web. Existen múltiples frameworks escritos en JavaScript que facilitan la creación de aplicaciones Web. En este
-trabajo utilizamos dos: Sencha ExtJs\cite{ExtJs} y HighStock\cite{HighStock}.
+trabajo utilizamos dos: \emph{Sencha ExtJs}\cite{ExtJs} y \emph{HighStock}\cite{HighStock}.
 \par
-Sencha ExtJs es un framework orientado a la creación de aplicaciones Web interactivas. Se trata de un framework de propósito general que ofrece
+\emph{Sencha ExtJs} es un framework orientado a la creación de aplicaciones Web interactivas. Se trata de un framework de propósito general que ofrece
 abstracciones para gestionar nuestros datos, arquitectura MVC, componentes gráficos de control y otros. 
 \par
-HighStock es un framework con un propósito específico, que es la creación de gráficos. Podemos elegir entre diferentes tipos de gráficos, que pueden
+\emph{HighStock} es un framework con un propósito específico, que es la creación de gráficos. Podemos elegir entre diferentes tipos de gráficos, que pueden
 ser: lineas, barras, áreas, \emph{candlestick} y otros. Los gráficos generados son altamente interactivos lo que permite ocultar series, navegar,
-realizar zoom y mucho más.
+realizar \emph{zoom} y mucho más.
 \par
 Empezaremos este capítulo aclarando los aspectos técnicos relacionados con estos dos frameworks. Explicaremos como usarlos, que funcionalidad nos
 proporcionan, consideraciones que debemos tener en cuenta.
@@ -33,7 +33,7 @@ En nuestra aplicación también hacemos una división funcional, diferenciamos e
 
 \section{Sencha ExtJs}
 	El propósito de esta sección es explicar alguno de los aspectos básicos del framework. Empezaremos explicando como crear una aplicación básica
-	con ExtJs. En la mayoría de los casos existe un único documento HTML\cite{HTML} que contiene toda la aplicación. En él tenemos que cargar dos
+	con \emph{ExtJs}. En la mayoría de los casos existe un único documento HTML\cite{HTML} que contiene toda la aplicación. En él tenemos que cargar dos
 	\emph{scripts} de la siguiente forma.
     		\begin{center} \texttt{<script type="text/javascript" src=\textquotedbl extjs/ext-all-debug.js\textquotedbl ></script>}  \end{center}
     		\begin{center} \texttt{<script type="text/javascript" src=\textquotedbl app.js\textquotedbl ></script>}  \end{center}
@@ -58,7 +58,7 @@ Ext.application({
 	\par
 	En la primera línea hacemos uso del singleton \texttt{Ext}. Este es un objeto que encapsula todas las clases y métodos proporcionados por el
 	framework. La función utilizada \texttt{Ext.application} carga e inicializa una instancia de la clase \texttt{Ext.app.Application}. Esta clase
-	representa una aplicación ExtJs \emph{single-page}. La llamada a esta función crea la variable global \texttt{MyApp}, que debe contener todas las
+	representa una aplicación \emph{ExtJs} \emph{single-page}. La llamada a esta función crea la variable global \texttt{MyApp}, que debe contener todas las
 	clases e instancias de nuestra aplicación.
  	\par
 	En la segunda línea declaramos el nombre de nuestra aplicación. Seguidamente definimos la función \texttt{launch}. Esta función es ejecuta
@@ -66,12 +66,12 @@ Ext.application({
 	caso \texttt{Ext.container.Viewport}. \texttt{Viewport} es un \emph{contenedor} que representa el área de aplicación y puede haber tan sólo
 	uno por aplicación. 
  	\par
-	La interfaz de usuario en una aplicación ExtJs se compone de \emph{componentes}. Un \emph{contenedor} es un \emph{componente} especial que
+	La interfaz de usuario en una aplicación \emph{ExtJs} se compone de \emph{componentes}. Un \emph{contenedor} es un \emph{componente} especial que
 	contiene otros \emph{componentes}. En la figura \ref{fig:comps} podemos ver un ejemplo que ilustra esta jerarquía.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/comps.png}
-		\caption{Sencha ExtJs. Jerarquía de componentes.}   
+		\caption{\emph{Sencha ExtJs}. Jerarquía de componentes.}   
 		\label{fig:comps}
 	\end{figure}
  	\par
@@ -83,7 +83,7 @@ Ext.application({
 	\texttt{layout} especifica la forma en la que se posicionan y ajustan los \emph{componentes} hijos dentro del padre. En este caso el
 	\texttt{layout} especificado es \texttt{\cc fit\cc}, donde un único hijo ocupa todo el espacio del padre.
 	\subsection{Component Manager}
-		ExtJs ofrece el singleton \texttt{Ext.ComponentManager} que provee un registro con todos los componentes. Este facilita la referencia
+		\emph{ExtJs} ofrece el singleton \texttt{Ext.ComponentManager} que provee un registro con todos los componentes. Este facilita la referencia
 		a elementos desde cualquier punto del código. El propósito de esta sección es explicar como hacer uso de esta facilidad.
 		\par
 		Empezaremos especificando un requisito que  los componentes deben cumplir, estos deben definir el atributo \texttt{itemId}. Este
@@ -144,7 +144,7 @@ Ext.application({
 		\begin{figure}[h]
 			\centering
 			\includegraphics[keepaspectratio, width=1\textwidth]{./img/layouts.png}
-			\caption{Sencha ExtJs. Layouts.}   
+			\caption{\emph{Sencha ExtJs}. Layouts.}   
 			\label{fig:layouts}
 		\end{figure}
 
@@ -155,7 +155,7 @@ Ext.application({
 		componentes visibles según se vayan necesitando supone un incremento en el rendimiento. En páginas pequeñas con pocos componentes el
 		aumento no es apreciable, sin embargo en páginas que manejan multitud de componentes el incremento puede ser drástico. 
 		\par
-		Para implementar esta inicialización perezosa ExtJs se basa en la jerarquía de componentes previamente explicada. Cuando un componente
+		Para implementar esta inicialización perezosa \emph{ExtJs} se basa en la jerarquía de componentes previamente explicada. Cuando un componente
 		es creado también se crean todos los componentes hijos que deben ser visibles en ese momento. Tal y como explicamos los componentes
 		hijos se definen en el campo \texttt{items}. A continuación podemos ver un pequeño ejemplo. 
 		\begin{lstlisting}[style=myJs]
@@ -183,7 +183,7 @@ items: [{
 		referenciar a las clases. En nuestro caso la clase \texttt{Ext.form.field.Text} es referenciada por el \texttt{xtype:\cc
 		textfield\cc}.
 		\par
-		La lista completa de \texttt{xtypes} aceptados se puede consultar en la documentación de ExtJs\cite{ExtJsDoc}. Eventualmente podemos
+		La lista completa de \texttt{xtypes} aceptados se puede consultar en la documentación de \emph{ExtJs}\cite{ExtJsDoc}. Eventualmente podemos
 		extender esta lista declarando nuestros propios \texttt{xtypes}. Esto se hace especificando el campo \texttt{xtype} a la hora de
 		definir nuestra clase. A continuación presentamos un pequeño ejemplo.
 		\begin{lstlisting}[style=myJs]
@@ -194,7 +194,7 @@ Ext.define('MyApp.PressMeButton', {
 		\end{lstlisting}
 
 	\subsection{Events}
-		Las clases y componentes de ExtJs disparan multitud de eventos a lo largo de su ciclo de vida. Los eventos se disparan cuando algo
+		Las clases y componentes de \emph{ExtJs} disparan multitud de eventos a lo largo de su ciclo de vida. Los eventos se disparan cuando algo
 		interesante le ocurre a nuestro componente. Un ejemplo es el evento \texttt{afterrender} que se dispara después de mostrar en pantalla
 		el componente.
 		\par
@@ -212,7 +212,7 @@ Ext.create('Ext.Button',{
 });
 		\end{lstlisting}
 		\par
-		ExtJs también permite configurar eventos propios. Estos se declaran como si fuesen eventos normales. La peculiaridad está en que somos
+		\emph{ExtJs} también permite configurar eventos propios. Estos se declaran como si fuesen eventos normales. La peculiaridad está en que somos
 		nosotros los que debemos dispararlos haciendo uso de la función \texttt{fireEvent}. Esta acepta como parámetros el evento que queremos
 		disparar y todos los parámetros que la función encargada de este necesite. A continuación podemos ver un pequeño ejemplo de como
 		declarar y disparar un evento propio, que tiene como nombre \texttt{myEvent}.
@@ -228,12 +228,12 @@ var button = Ext.create('Ext.Button',{
 button.fireEvent('myEvent', 42);
 		\end{lstlisting}
 	\subsection{Componentes}  %Muy mal. %Si sobra contenido esta sección tiene que ser eliminada.
-		ExtJs ofrece multitud de componentes, que son subclases del \texttt{Ext.Component}, cada uno con un propósito diferente. El objetivo
+		\emph{ExtJs} ofrece multitud de componentes, que son subclases del \texttt{Ext.Component}, cada uno con un propósito diferente. El objetivo
 		de esta sección es describir los componentes usados en este trabajo. Nos centraremos en los aspectos técnicos sin especificar el uso
 		concreto que les hemos dado. Este será explicado en secciones futuras cuando proceda. 
 		\begin{description}[style=unboxed,leftmargin=0cm]
 			\item[\texttt{Ext.button.Button xtype:button}] Este componente permite crear un botón. El propósito de un botón es ofrecer un
-			  medio fácil al usuario para interactuar con la aplicación. Los botones que ExtJs ofrece son altamente configurables, tanto
+			  medio fácil al usuario para interactuar con la aplicación. Los botones que \emph{ExtJs} ofrece son altamente configurables, tanto
 			  funcionalmente como estéticamente. Podemos tener botones normales, botones \emph{toggle}, botones que despliegan menús y
 			  mucho más. Para dar funcionalidad a estos botones tenemos que escuchar los eventos que estos disparan. Los eventos más
 			  comunes son \texttt{click}, \texttt{toggle}, \texttt{mouseover} y \texttt{mouseout}.
@@ -247,7 +247,8 @@ button.fireEvent('myEvent', 42);
 			  respetado. El componente puede desplegar un selector de tiempo que facilita la tarea de introducir el valor deseado.
 			\item[\texttt{Ext.form.Label xtype:label}] Este componente permite generar una etiqueta de texto. Este componente es muy
 			  similar al tag HTML <label>. Este componente permite configurar múltiples aspectos y manejar múltiples eventos.
-			\item[\texttt{Ext.panel.Panel xtype:panel}] Este componente es una parte fundamental en la creación de aplicaciones con ExtJs.
+			\item[\texttt{Ext.panel.Panel xtype:panel}] Este componente es una parte fundamental en la creación de aplicaciones con
+			  \emph{ExtJs}.
 			  Esta pensado para ser utilizado como un contenedor, contener otros componentes. Este componente es altamente configurable
 			  pero el aspecto más importante es el \texttt{layout} que determina como se posicionan los componentes hijos. 
 			\item[\texttt{Ext.tab.Panel xtype:tabpanel}] Este componente es una extensión del componente anterior. Este ofrece múltiples
@@ -274,7 +275,7 @@ button.fireEvent('myEvent', 42);
 		de detectar los cambios en el \emph{hash} y actuar acuerdo a estos. De esta manera podemos preservar la funcionalidad de los botones
 		de navegación \emph{Forward/Back}. 
 		\par
-		Para implementar la funcionalidad anteriormente descrita ExtJs ofrece el singleton \texttt{Ext.util.History}. Para inicializar este
+		Para implementar la funcionalidad anteriormente descrita \emph{ExtJs} ofrece el singleton \texttt{Ext.util.History}. Para inicializar este
 		módulo tenemos que invocar la función \texttt{Ext.History.init()}. Una vez inicializado este módulo podemos hacer cambios en el
 		\emph{hash} invocando la función \texttt{Ext.History.add()}. Esta función acepta como parámetro el valor del \emph{hash}. 
 		\par
@@ -298,10 +299,10 @@ Ext.History.on('change', function(hash){
 
 \section{HighStock}
 	El propósito de esta sección es explicar alguno de los aspectos básicos del framework. Este permite añadir gráficos interactivos de forma
-	simple a páginas o aplicaciones Web. Es conveniente destacar la diferencia entre HighCharts y HighStock. El primero tiene un propósito más
+	simple a páginas o aplicaciones Web. Es conveniente destacar la diferencia entre \emph{HighCharts} y \emph{HighStock}. El primero tiene un propósito más
 	general, dado que ofrece mayor variedad de gráficos. El segundo tiene un propósito más específico, ya que está enfocado a la representación
 	gráfica de valores que evolucionan respecto al tiempo. A continuación presentaremos el código mínimo necesario para crear un gráfico con
-	HighStock. Basándose en este código explicaremos los aspectos técnicos de HighStock.
+	\emph{HighStock}. Basándose en este código explicaremos los aspectos técnicos de \emph{HighStock}.
 	\begin{lstlisting}[style=myJs]
 <script src="http://code.highcharts.com/stock/highstock.js"></script>  // Cargar el framework
 
@@ -329,10 +330,10 @@ myChart = new Highcharts.StockChart({
 	array que contenga los datos. Este array puede tener múltiples formatos que se pueden utilizar según convenga. Para ello se puede consultar la
 	documentación proporcionada\cite{HighStockDoc}.
 	\par
-	En este punto volveremos al \texttt{renderTo} a fin de explicar la integración entre HighStock y Sencha ExtJs. En secciones anteriores
-	explicamos que la interfaz de usuario de una aplicación ExtJs se constituye mediante componentes. Estos componentes son abstracciones con
+	En este punto volveremos al \texttt{renderTo} a fin de explicar la integración entre \emph{HighStock} y \emph{Sencha ExtJs}. En secciones anteriores
+	explicamos que la interfaz de usuario de una aplicación \emph{ExtJs} se constituye mediante componentes. Estos componentes son abstracciones con
 	funcionalidades muy extendidas pero en el fondo son elementos HTML. El atributo \texttt{renderTo} puede tomar el valor de una de las etiquetas
-	HTML, a fin de mostrar un gráfico HighStock en un componente de una Aplicación ExtJs. El elemento HTML de un componente es accesible de la
+	HTML, a fin de mostrar un gráfico \emph{HighStock} en un componente de una aplicación \emph{ExtJs}. El elemento HTML de un componente es accesible de la
 	siguiente forma.
     		\begin{center} \texttt{Ext.Component.getEl().dom}  \end{center}
 	\subsection{Agrupación de datos y \emph{Candlestick}} 
@@ -347,10 +348,10 @@ myChart = new Highcharts.StockChart({
 		\par
 		El problema radica en la gran cantidad de datos que tienen que ser representados. El sistema de adquisición genera una entrada de
 		datos cada minuto, 1440 datos al día o 43200 datos al mes aproximadamente. Estas cantidades de datos son excesivas comparadas con las
-		resoluciones de pantalla actuales. Consideremos una pantalla estándar con 1280 pixeles de ancho, es imposible representar 43200 datos.
+		resoluciones de pantalla actuales. Consideremos una pantalla estándar con 1280 píxeles de ancho, es imposible representar 43200 datos.
 		\par
 		Para dar solución a este problema hemos recurrido a agrupar los datos. El fin es crear un número de grupos que no exceda el ancho de
-		pixeles de nuestra pantalla. Para cada grupo tenemos que calcular un valor representativo. Una técnica común es calcular el valor
+		píxeles de nuestra pantalla. Para cada grupo tenemos que calcular un valor representativo. Una técnica común es calcular el valor
 		medio de los grupos.  Esto tiene el inconveniente de aplanar los Spikes, algo que queremos resaltar.
 		\par
 		Para evitar aplanar los Spike para cada grupo calcularemos valores más representativos que la media. En concreto calcularemos cuatro
@@ -361,7 +362,7 @@ myChart = new Highcharts.StockChart({
 		que nos permiten acceder a estos datos son \texttt{nmdbOriginalGroup} y \texttt{nmdbRevisedGroup}. Estos servicios fueron explicados
 		en el capítulo dedicado al \emph{back-end}. En este punto tan sólo nos interesa destacar el argumento \texttt{points} que estos dos
 		servicios aceptan. Este argumento especifica el número de conjuntos en los que serán agrupados los datos, que será proporcional al
-		número de pixeles que tenemos disponibles para representar nuestro gráfico. 
+		número de píxeles que tenemos disponibles para representar nuestro gráfico. 
 		\par
 		En análisis técnico bursátil los valores \emph{open} y \emph{close} tienen su significado propio, en este trabajo representan la media
 		más la desviación típica y la media menos la desviación típica respectivamente. Como podemos ver en la figura \ref{fig:candlestick} el
@@ -373,7 +374,7 @@ myChart = new Highcharts.StockChart({
 		pueden ser indicativo de un mal funcionamiento. Los valores máximo o mínimo que se alejan mucho del cuerpo de la vela nos indican la
 		presencia de un Spike en dicho grupo. 	
 	\subsection{Ampliando HighStock}
-		HighStock es construido de forma modular para facilitar la ampliación por parte de los desarrolladores. En este trabajo hemos ampliado
+		\emph{HighStock} es construido de forma modular para facilitar la ampliación por parte de los desarrolladores. En este trabajo hemos ampliado
 		el framework con dos funcionalidades adicionales. El propósito de esta sección es describir estas dos funcionalidades, pero primero
 		explicaremos el proceso para ampliar el framework.
 		\par
@@ -405,18 +406,18 @@ console.log("We just finished drawing the graph: ", this.graph);
 });
 		\end{lstlisting}
 		\par  
-		A continuación explicaremos las dos ampliaciones que hemos realizado sobre el framework. La primera permite realizar zoom Out y la
+		A continuación explicaremos las dos ampliaciones que hemos realizado sobre el framework. La primera permite realizar \emph{zoom out} y la
 		segunda permite resaltar las series de un gráfico para poder inspeccionarlas mejor.
 		\subsubsection{Zoom Out}
 			Tal y como explicamos los gráficos creados con el framework son altamente interactivos. Entre las diferentes funcionalidades
 			están las que permiten navegar por el conjunto de datos. Con navegar nos referimos a mostrar diferentes fragmentos de los
-			datos. Un ejemplo de estas funcionalidades es el zoom In, que permite ampliar una sección de los datos. Haciendo \emph{click}
-			y arrastrando, sin importar la dirrección, podemos seleccionar un intervalo para realizar el zoom In. Esto es muy útil para
-			inspeccionar los datos, el problema esta en que el framework no ofrece la posibilidad de realizar un zoom Out.
+			datos. Un ejemplo de estas funcionalidades es el \emph{zoom in}, que permite ampliar una sección de los datos. Haciendo \emph{click}
+			y arrastrando, sin importar la dirrección, podemos seleccionar un intervalo para realizar el \emph{zoom in}. Esto es muy útil para
+			inspeccionar los datos, el problema esta en que el framework no ofrece la posibilidad de realizar un \emph{zoom out}.
 			\par
 			En este trabajo hemos extendido el framework para incorporar esta funcionalidad. Para este propósito utilizamos la dirección
-			de arrastre al realizar una selección. Un arrastre de izquierda a derecha realiza un zoom In, mientras que un arrastre de
-			derecha a izquierda realiza un zoom Out. 
+			de arrastre al realizar una selección. Un arrastre de izquierda a derecha realiza un \emph{zoom in}, mientras que un arrastre de
+			derecha a izquierda realiza un \emph{zoom out}. 
 			\par
 			Para poder registrar la dirección de arrastre hemos hecho uso de dos eventos, \texttt{mousedown} y \texttt{mouseup}. En cada
 			evento registramos la posición de este y usamos la diferencia entre las posiciones para determinar la dirección de arrastre. A
@@ -434,10 +435,10 @@ H.addEvent(container, 'mouseup', function (e) {
 			\par
 			El evento que se dispara al realizar una selección es \texttt{selection}, por lo que tenemos que registrar un manejador para
 			este. La primera acción es comprobar el estado del \emph{selectDirection}, la variable que indica la dirección de arrastre. En
-			el caso de que la variable tenga un valor positivo no tomamos acción, dejamos que se realice la accion por defecto que es Zoom
-			In. Si por contrario la variable tiene un valor negativo tenemos que prevenir la acción por defecto. Seguidamente calculamos
-			los valores que definen el nuevo intervalo temporal y, para terminar aplicamos el nuevo intervalo al gráfico. A continuación
-			se puede ver el código que implementa la funcionalidad previamente descrita.
+			el caso de que la variable tenga un valor positivo no tomamos acción, dejamos que se realice la accion por defecto que es
+			\emph{zoom in}. Si por contrario la variable tiene un valor negativo tenemos que prevenir la acción por defecto. Seguidamente
+			calculamos los valores que definen el nuevo intervalo temporal y, para terminar aplicamos el nuevo intervalo al gráfico. A
+			continuación se puede ver el código que implementa la funcionalidad previamente descrita.
 			\begin{lstlisting}[style=myJs]
 H.addEvent(chart, 'selection', function (e) {
    if (selectDirection < 0) {
@@ -453,7 +454,7 @@ H.addEvent(chart, 'selection', function (e) {
 			tener un mecanismo que permita resaltar una serie del gráfico para poder inspeccionarla mejor. Para crear dicho mecanismo
 			utilizaremos la leyenda del gráfico.
 			\par
-			HighStock permite añadir una leyenda a los gráficos. Esta leyenda consiste en un elemento gráfico que facilita el identificar
+			\emph{HighStock} permite añadir una leyenda a los gráficos. Esta leyenda consiste en un elemento gráfico que facilita el identificar
 			e interpretar las diferentes series del gráfico. La leyenda, al igual que los gráficos, es altamente interactiva. Haciendo
 			\emph{click} sobre los elementos de una leyenda podemos mostrar u ocultar la serie correspondiente. En este trabajo
 			preservamos esta funcionalidad y añadimos la funcionalidad de resaltar una serie. Para este propósito utilizamos los eventos
@@ -467,7 +468,7 @@ H.addEvent(chart, 'selection', function (e) {
 			\begin{figure}[h]
 				\centering
 				\includegraphics[keepaspectratio, width=1\textwidth]{./img/resalto.png}
-				\caption{Ampliando HighStock. Resaltar series.}   
+				\caption{Ampliando \emph{HighStock}. Resaltar series.}   
 				\label{fig:resalto}
 			\end{figure}
 	
@@ -479,10 +480,10 @@ H.addEvent(chart, 'selection', function (e) {
 	\emph{front-end} es el que empieza la comunicación enviando un mensaje de petición y el \emph{back-end} responde a esa peticion con un mensaje
 	de respuesta. El \emph{modelo} es el encargado de enviar los mensajes de petición y después interpretar los mensajes de respuesta.
 	\par
-	Para dotar al \emph{modelo} de la funcionalidad necesaria utilizamos las facilidades que ExtJs ofrece, concretamente utilizamos el singleton
-	\texttt{Ext.Ajax}. Ajax\cite{AjaxWiki} es una técnica de desarrollo Web donde cliente y servidor mantienen una comunicación asíncrona en
+	Para dotar al \emph{modelo} de la funcionalidad necesaria utilizamos las facilidades que \emph{ExtJs} ofrece, concretamente utilizamos el singleton
+	\texttt{Ext.Ajax}. \emph{Ajax}\cite{AjaxWiki} es una técnica de desarrollo Web donde cliente y servidor mantienen una comunicación asíncrona en
 	segundo plano. \texttt{Ext.Ajax} es un singleton de la clase \texttt{Ext.data.Connection}, clase que encapsula la lógica necesaria para
-	realizar una comunicación Ajax. 
+	realizar una comunicación \emph{Ajax}. 
 	\par
 	Concretamente hacemos uso de la función \texttt{Ext.data.Connection.request}. Esta función envía una petición \emph{HTTP} a un servidor
 	remoto. La función acepta únicamente un parámetro que es un objeto cuyas propiedades definen el comportamiento de la función. Las propiedades de las
@@ -507,7 +508,7 @@ H.addEvent(chart, 'selection', function (e) {
 	de un objeto utilizado por nuestra aplicación. Estos modelos son usados por la clase \texttt{Ext.data.Store}, que encapsula instancias de
 	estos. Estas abstracciones son muy útiles, pero algo complejas. Por esta razón la mayoría de los datos se manejan usando el
 	\texttt{Ext.data.Connection}, mientras que hemos utilizado el \texttt{Ext.data.Store} en casos muy específicos como los datos que necesitan
-	ser mostrados en una tabla. Las tablas en ExtJs deben tener asociado un \texttt{Ext.data.Store} cuyos datos mostrar. A continuación podemos
+	ser mostrados en una tabla. Las tablas en \emph{ExtJs} deben tener asociado un \texttt{Ext.data.Store} cuyos datos mostrar. A continuación podemos
 	ver un ejemplo de como declarar un \texttt{Ext.data.Model} y un \texttt{Ext.data.Store} que enlazaremos a un \texttt{Ext.grid.Panel}.
 	\begin{lstlisting}[style=myJs]
 Ext.define('MyApp.model.MyModel',{
@@ -541,8 +542,8 @@ Ext.create('MyApp.grid.MyGrid', {
 	\end{lstlisting}
 	\par
 	Podemos ver que en la declaración del \texttt{Ext.data.Store} especificamos \texttt{proxy}. El objeto especificado se utiliza para crear una
-	instancia de la clase \texttt{Ext.data.proxy.Proxy}. Esta clase es una abstracción que agrupa diferentes técnicas de comunicación como Ajax,
-	JsonP, Rest y Direct.
+	instancia de la clase \texttt{Ext.data.proxy.Proxy}. Esta clase es una abstracción que agrupa diferentes técnicas de comunicación como
+	\emph{Ajax}, \emph{JsonP}, \emph{Rest} y \emph{Direct}.
 
 \section{Controlador}
 	El Controlador en una aplicación \emph{modelo-vista-controlador}\cite{MVCWiki} hace de intermediario entre la Vista y el Modelo. Normalmente
@@ -550,9 +551,9 @@ Ext.create('MyApp.grid.MyGrid', {
 	dirigidos a la Vista para realizar un cambio en la forma de mostrar esos datos. El Controlador contiene toda la lógica de la aplicación por lo
 	que podemos decir que es el módulo más interesante. El propósito de esta sección es hacer una descripción de este.
 	\par
-	Sencha ExtJs ofrece la clase \texttt{Ext.app.Controller}, que representa la abstracción de un Controlador. Esta clase contiene la
+	\emph{Sencha ExtJs} ofrece la clase \texttt{Ext.app.Controller}, que representa la abstracción de un Controlador. Esta clase contiene la
 	funcionalidad mínima necesaria, está pensada para ser extendida y dotada de funcionalidad por el usuario. A continuación podemos ver un
-	pequeño ejemplo de como declarar un Controlador básico en Sencha ExtJs.
+	pequeño ejemplo de como declarar un Controlador básico en \emph{Sencha ExtJs}.
 	\begin{lstlisting}[style=myJs]
 Ext.define('MyApp.controller.Users', {
    extend: 'Ext.app.Controller',
@@ -571,7 +572,7 @@ Ext.define('MyApp.controller.Users', {
 	\par
 	En nuestra aplicación hemos definido cinco Controladores, que se describirán en las las subsecciones venideras.
 	\subsection{\texttt{HighStockExtend}}
-		El propósito de este Controlador es inicializar las dos extensiones de HighStock que discutimos previamente en este capítulo. Este
+		El propósito de este Controlador es inicializar las dos extensiones de \emph{HighStock} que discutimos previamente en este capítulo. Este
 		Controlador se invoca antes de empezar a construir los gráficos de la aplicación para que las extensiones estén listas y sean
 		aplicadas a estos.
 	\subsection{\texttt{Navigation}}
@@ -602,7 +603,7 @@ Ext.define('MyApp.controller.Users', {
 			  módulo. La mayoría de las demás funciones usaran este objeto para acceder a estas variables. Después de inicializar este
 			  objeto se invoca \texttt{loadInitialData()}.
 			\item[\texttt{loadInitialData()}] Esta función carga los datos necesarios para construir el módulo. Los datos son cargados
-			  realizando una petición Ajax al \emph{back-end}. El servicio RPC que invocamos es \texttt{nmdbOriginalGroup}. Al cargar los
+			  realizando una petición \emph{Ajax} al \emph{back-end}. El servicio RPC que invocamos es \texttt{nmdbOriginalGroup}. Al cargar los
 			  datos con éxito se invocann a su vez las funciones \texttt{initCandleChart()} y \texttt{initChannelChart()}. 
 			\item[\texttt{initCandleChart()}] Esta función es la encargada de crear el gráfico \emph{Candlestick} con los datos de la
 			  estación. Hablaremos más a fondo sobre este gráfico en las secciones futuras donde discutiremos la herramienta desde un
@@ -613,22 +614,22 @@ Ext.define('MyApp.controller.Users', {
 			  intentar representar un gran número de datos en un gráfico convencional y que el gráfico \emph{Candlestick} da solución a
 			  este problema. Esta función determina si debemos utilizar un gráfico de línea o bien uno \emph{Candlestick}. La cantidad de
 			  datos se define por los parámetros \texttt{start} y \texttt{finish}, mientras que el parámetro \texttt{N\_points} representa
-			  el número de pixeles que tenemos a disposición para representar los datos.
+			  el número de píxeles que tenemos a disposición para representar los datos.
 			\item[\texttt{updateMode(start, finish)}] Esta función es invocada cuando ocurre algún cambio en el gráfico \emph{Candlestick}
 			  y calcula el modo en que deben ser representados los datos. Esta función hace un uso intensivo de la función
 			  \texttt{LineOrOhcl()}, pero tiene en cuenta más cosas como la serie actual.
 			\item[\texttt{changeSeries(series)}] Esta función cambia la serie que es presentada en el gráfico \emph{Candlestick}. El
 			  parámetro \texttt{series} es un entero que puede tomar los siguientes valores \texttt{[1, 2, 3]}, donde estos representan
-			  uncorrected, corrected for pressure y corrected for efficiency.
+			  \emph{uncorrected}, \emph{corrected for pressure} y \emph{corrected for efficiency}.
 			\item[\texttt{updateSeries()}] Esta función simplemente refresca los datos de las series del gráfico \emph{CandleStick}, y se
 			  invoca cada vez que ocurre algún cambio en este para refrescar los datos.
 			\item[\texttt{updateCandleData(start, finish)}] Esta función carga los datos para el gráfico \emph{Candlestick} en función de
-			  la petición realizada por el usuario. Para cargar los datos la función realiza una petición Ajax al \emph{back-end}. La
+			  la petición realizada por el usuario. Para cargar los datos la función realiza una petición \emph{Ajax} al \emph{back-end}. La
 			  función invoca el servicio RPC \texttt{nmdbOriginalGroup} o \texttt{nmdbOriginalRaw} en función del valor devuelto por la
 			  función \texttt{LineOrOhcl()}. El intervalo de datos que será solicitado se define por los parámetros \texttt{start} y
 			  \texttt{finish}. 
 			\item[\texttt{updateChannelData()}] Esta función carga los datos para el gráfico que representa los datos de los tubos
-			  contadores por separado. Estos datos se descargan desde el \emph{back-end} mediante una petición Ajax que invoca el servicio
+			  contadores por separado. Estos datos se descargan desde el \emph{back-end} mediante una petición \emph{Ajax} que invoca el servicio
 			  RPC \texttt{nmdadbRawData}.
 			\item[\texttt{searchInterval(start, finish)}] Esta función permite hacer una búsqueda por intervalos temporales. El intervalo
 			  es definido por los parámetros \texttt{start} y \texttt{finish}.
@@ -710,11 +711,11 @@ Ext.define('MyApp.controller.Users', {
 				contener todas las variable usadas en este módulo. Después de iniciar este objeto se invoca la función
 				\texttt{loadInitialData()}.
 			\item[\texttt{loadInitialData()}]
-				Esta función carga los datos necesarios para construir el módulo. Los datos son cargados realizando una petición Ajax
-				al \emph{back-end}. Se invocan dos servicios RPC, \texttt{nmdadbChannelStats} y \texttt{nmdadbChannelHistogram}. El
-				primero devuelve una serie de estadísticas descriptivas de los canales. Estos datos se representan en un gráfico y
-				también se muestran en una tabla. El segundo carga los datos necesarios para construir un histograma de la distribución
-				de cuentas para los 18 canales.
+				Esta función carga los datos necesarios para construir el módulo. Los datos son cargados realizando una petición
+				\emph{Ajax} al \emph{back-end}. Se invocan dos servicios RPC, \texttt{nmdadbChannelStats} y
+				\texttt{nmdadbChannelHistogram}. El primero devuelve una serie de estadísticas descriptivas de los canales. Estos
+				datos se representan en un gráfico y también se muestran en una tabla. El segundo carga los datos necesarios para
+				construir un histograma de la distribución de cuentas para los 18 canales.
 				\par
 				Al cargar los datos con éxito se invocan las funciones \texttt{initStatsChart()} y \texttt{initHistogramChart()}
 				que  crean los dos gráficos: el gráfico con las estadísticas y el histograma. Los datos de la tabla son actualizados
@@ -758,7 +759,7 @@ Ext.define('MyApp.controller.Users', {
 		\label{fig:vista}
 	\end{figure}
 	\par
-	La Vista en una aplicación ExtJs se compone de una jerarquía de \emph{componentes}. En nuestro caso en lo más alto de esta jerarquía
+	La Vista en una aplicación \emph{ExtJs} se compone de una jerarquía de \emph{componentes}. En nuestro caso en lo más alto de esta jerarquía
 	tenemos un \texttt{ViewPort} al que hemos asignado el nombre \texttt{MyViewPort}. Este es un \emph{componente} que se ajusta al área de
 	aplicación disponible. El layout que determina como se posicionan los hijos de este \emph{componente} es \texttt{border}. Los
 	\emph{componentes} hijos deben especificar el atributo \texttt{region} que determina su posicionamiento.
@@ -795,13 +796,13 @@ Ext.define('MyApp.controller.Users', {
 		solicita  un intervalo temporal para el que no es necesario agrupar los datos, el gráfico automáticamente cambia a un gráfico de
 		línea. Por contrario si se vuelve a solicitar un intervalo que requiere agrupar los datos, el gráfico cambia a \emph{Candlestick}.
 		\par
-		Para solicitar un intervalo diferente de datos tenemos varias formas. La primera es el zoom interactivo que podemos realizar
-		haciendo \emph{click} y arrastrando sobre un intervalo del gráfico. Dependiendo de la dirección de arrastre este será un zoom In u
-		Out. La segunda alternativa es utilizar los campos de entrada disponibles en los controles para realizar una búsqueda por intervalo.
-		En estos campos podemos especificar el inicio y fin del intervalo y la búsqueda será realizada al accionar el botón \texttt{Search}. La
-		tercera opción es utilizar el navegador que podemos encontrar en la parte inferior del gráfico. Finalmente podemos utilizar los
-		botones en la parte superior izquierda del gráfico, \texttt{1m} y \texttt{All}, que permiten fijar un intervalo de un mes o volver a
-		mostrar todos los datos.
+		Para solicitar un intervalo diferente de datos tenemos varias formas. La primera es el \emph{zoom} interactivo que podemos realizar
+		haciendo \emph{click} y arrastrando sobre un intervalo del gráfico. Dependiendo de la dirección de arrastre este será un \emph{zoom
+		in} u \emph{out}. La segunda alternativa es utilizar los campos de entrada disponibles en los controles para realizar una búsqueda por
+		intervalo.  En estos campos podemos especificar el inicio y fin del intervalo y la búsqueda será realizada al accionar el botón
+		\texttt{Search}. La tercera opción es utilizar el navegador que podemos encontrar en la parte inferior del gráfico. Finalmente podemos
+		utilizar los botones en la parte superior izquierda del gráfico, \texttt{1m} y \texttt{All}, que permiten fijar un intervalo de un mes
+		o volver a mostrar todos los datos.
 		\par
 		Inicialmente se muestran los datos \emph{sin corregir}, utilizando el botón \texttt{Choise a Series} podemos mostrar los datos
 		\emph{corregidos por presión} o los \emph{corregidos por eficiencia}. En la parte superior del gráfico se representan los valores

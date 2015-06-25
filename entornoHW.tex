@@ -6,9 +6,9 @@ estar familiarizado con el diseño y funcionalidad del hardware. Impulsados por 
 aspectos más importantes del hardware que compone el sistema de adquisición. Destacamos que el desarrollo de estos módulos está fuera del ámbito de
 este proyecto.
 \section{BeagleBone Black}
-	BeagleBone Black\cite{Beagle}\cite{BeagleWiki} es un computador empotrado, open-source y single board. La placa viene con Linux, distribución
-	Angstrom y versión de núcleo 3.8. En la figura \ref{fig:beaglebone} podemos ver un diagrama de bloques que refleja los componentes hardware
-	que componen la BeagleBone. A continuación vamos a hacer una breve descripción de los módulos que utilizamos para este trabajo.
+	\emph{BeagleBone Black}\cite{Beagle}\cite{BeagleWiki} es un computador empotrado, open-source y single board. La placa viene con Linux, distribución
+	\emph{Angstrom} y versión de núcleo 3.8. En la figura \ref{fig:beaglebone} podemos ver un diagrama de bloques que refleja los componentes hardware
+	que componen la \emph{BeagleBone Black}. A continuación vamos a hacer una breve descripción de los módulos que utilizamos para este trabajo.
 	\begin{itemize}
 		\item 	ARM CORTEX A8\cite{BeagleCore} y SDRAM. El procesador es suficientemente potente para soportar la distribución Linux y
 			satisfacer las necesidades de nuestro software. Los 512MB DDR3 de memoria RAM son suficientes para los propósitos de este
@@ -28,7 +28,7 @@ este proyecto.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/beaglebone.png}
-		\caption{BeagleBone Black. Diagrama de bloques hardware}
+		\caption{\emph{BeagleBone Black}. Diagrama de bloques hardware}
 		\label{fig:beaglebone}
 	\end{figure}
 	\par
@@ -54,7 +54,7 @@ este proyecto.
 		\label{fig:fpga}
 	\end{figure}	
 	\subsection{Procesado de pulsos}
-		Como hemos comentado la FPGA es la encargada de procesar las señales y trasmitir la información a la BeagleBone Black. Esta transmisión
+		Como hemos comentado la FPGA es la encargada de procesar las señales y trasmitir la información a la \emph{BeagleBone Black}. Esta transmisión
 		se realiza mediante una línea serie asíncrona de 1Mbps. La línea está controlada por una UART(Universal Asynchronous
 		Receiver-Transmitter) a la que nos referiremos como \emph{UART de pulsos}. En las tablas \ref{tab:FPGAUartPulso},
 		\ref{tab:FPGAUartOver} y \ref{tab:FPGAUartCont} podemos ver el formato de los datos transmitidos. Vemos que hay tres mensajes
@@ -70,7 +70,7 @@ este proyecto.
 				una FIFO de tamaño fijo es posible que la esta se llene y se pierdan mensajes. En este caso se genera un mensaje de
 				estado que es transmitido para indicarle al software que se han producido perdidas de datos.
 			\item	Además de medir el ancho de los pulsos la FPGA lleva la cuenta de pulsos recibidos para cada canal. Esta información
-				puede ser solicitada por la BeagleBone Black utilizando el comando apropiado(ver tabla \ref{tab:FPGAUartComm}). En la
+			 	puede ser solicitada por la \emph{BeagleBone Black} utilizando el comando apropiado(ver tabla \ref{tab:FPGAUartComm}). En la
 				tabla \ref{tab:FPGAUartCont} podemos ver el formato en el que se transmite la información de las cuentas. Los bytes 2,
 				3 y 4 son transmitidos 18 veces, una vez para cada canal. Después de transmitir la información de las cuentas la FPGA
 				reinicia los contadores para cada canal.
@@ -149,5 +149,5 @@ este proyecto.
 		excepto el multiplexor que mantiene su estado. Para la realización de dicho Reset son exportadas tres interfaces. La primera es un
 		boton hardware accesible de forma física. La segunda es un commando trasmitido por la \emph{UART de pulsos}, de acuerdo a la
 		especificación presentada en la tabla \ref{tab:FPGAUartComm}. Finalmente, la tercera es una señal digital activa a bajo nivel. Dicha
-		señal definida como \emph{BS1}, está conectada al pin \emph{P9\_42(GPIO\_7)} de la BeagleBone Black, por consiguiente, es accesible
+		señal definida como \emph{BS1}, está conectada al pin \emph{P9\_42(GPIO\_7)} de la \emph{BeagleBone Black}, por consiguiente, es accesible
 		desde nuestro software de adquisición.

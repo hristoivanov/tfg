@@ -6,7 +6,7 @@ barómetro, las fuentes de alimentación y los sensores de temperatura si estos 
 almacenada en una base de datos. 
 \par
 Antes de empezar a discutir a fondo el software de adquisición es conveniente estar familiarizados con el entorno hardware descrito en el capítulo
-\ref{entornoHW}. El software es ejecutado en la BeagleBone Black sobre un Linux, distribución Angstrom. El lenguaje elegido para el desarrollo es
+\ref{entornoHW}. El software es ejecutado en la \emph{BeagleBone Black} sobre un Linux, distribución Angstrom. El lenguaje elegido para el desarrollo es
 Python\cite{Python}. Este  es un lenguaje interpretado de alto nivel con una sintaxis centrada en producir un código legible. El lenguaje se adapta
 igualmente bien a programación imperativa y orientada a objetos. El tipado dinámico da mucha flexibilidad al lenguaje. Todas estas propiedades del
 lenguaje permiten un desarrollo rápido. Además el lenguaje ofrece una amplia cantidad de librerías que también aligeran el trabajo. 
@@ -35,10 +35,10 @@ principales, a continuación hacemos una breve descripción de estos.
 \end{sidewaysfigure}
 
 \section{Arranque automático del sistema}
-	Uno de los requisitos del sistema es el arranque automático ante la presencia de corriente eléctrica. La BeagleBone Black por defecto está
+	Uno de los requisitos del sistema es el arranque automático ante la presencia de corriente eléctrica. La \emph{BeagleBone Black} por defecto está
 	configurada para arrancar automáticamente,pero debemos configurarla para que también inicialice nuestro software. Para este propósito vamos a
 	utilizar las \emph{System Services}\cite{AngSystemctl} que Angstrom proporciona. Esta distribución utiliza \texttt{systemd}\cite{systemdWiki}
-	para gestionar los servicios de sistema y la forma en la que estos servicios arrancan cuando se pone en marcha la BeagleBone Black. Este es un
+	para gestionar los servicios de sistema y la forma en la que estos servicios arrancan cuando se pone en marcha la \emph{BeagleBone Black}. Este es un
 	conjunto de demonios, librerías y utilidades diseñados para facilitar la administración de sistemas Linux.
 	\par
 	Para operar sobre la configuración de \texttt{systemd} tenemos el comando \texttt{systemctl}. A continuación podemos ver como usar este
@@ -84,7 +84,7 @@ $ systemctl disable  nombre_de_servicio
 		Un Watchdog \cite{WatchDogWiki} es un mecanismo de seguridad que realiza un Reset en el sistema cuando es detectado un mal
 		funcionamiento. Consiste en un temporizador que realiza una cuenta atrás, de forma que, cuando esta cuenta llega a cero, el sistema es
 		reiniciado. Es nuestro software el que debe reponer el valor de este contador para evitar que expire. Los Watchdogs pueden ser
-		software o hardware, el utilizado en este trabajo está implementado en la BeagleBone Black y es hardware. Los Watchdogs hardware son
+		software o hardware, el utilizado en este trabajo está implementado en la \emph{BeagleBone Black} y es hardware. Los Watchdogs hardware son
 		más fiables, los software son más susceptibles a bloquearse.
 		\par
 		El Watchdog es accesible mediante el archivo \texttt{/dev/watchdog}. Para activar el mecanismo basta con escribir cualquier valor en
@@ -124,7 +124,7 @@ while True:
 		son iguales si en los últimos 5 minutos el sistema de adquisición no ha generado ningún dato. Por contrario si se han generado datos
 		durante los últimos 5 minutos estos dos valores son diferentes, en tal caso se sigue con la ejecución del bucle \texttt{while}. 
 	\subsection{Sincronización de fecha y hoara}
-		La BeagleBone Black no implementa ningún mecanismo hardware para mantener la fecha y hora actuales, por lo que en cada reinicio la
+		La \emph{BeagleBone Black} no implementa ningún mecanismo hardware para mantener la fecha y hora actuales, por lo que en cada reinicio la
 		fecha y hora se pierden. Es nuestra responsabilidad realizar un mecanismo software que sincronice la fecha y hora con el resto del
 		mundo\cite{ntpd}. Utilizamos el programa \texttt{ntpd} para este propósito. Este programa hace uso del \emph{Network Time
 		Protocol}\cite{ntpWiki}, que permite la sincronización entre dos relojes a través de una red de datos con latencia variable. Son
@@ -219,7 +219,7 @@ usage: NMDA.py
 		\end{lstlisting}
 
 	\subsection{Configurar la BeagleBone Black}
-		Tal y como explicamos en el capítulo de entorno hardware la BeagleBone Black proporciona dos conectores de expansión de 46 pines cada
+		Tal y como explicamos en el capítulo de entorno hardware la \emph{BeagleBone Black} proporciona dos conectores de expansión de 46 pines cada
 		uno\cite{BeagleWikiExp}. Muchos de estos pines son multipropósito, es decir, que están compartidos por varias unidades funcionales
 		internas, por lo que debe configurarse a cuál de ellas se conectará. Esta configuración se realiza mediante el uso de \emph{Device
 		Tree Overlay}, que es una estructura de datos utilizada para describir el hardware.
@@ -254,7 +254,7 @@ Pin P8_10(GPIO_68)   --> Señal STROBE del barómetro AP1.
 	\subsection{Resetear FPGA}
 		Como hemos explicado en el capítulo \ref{entornoHW}, la FPGA permite realizar un Reset, que el software realizará antes de empezar con
 		la adquisición de datos. Este Reset asegura que la FPGA está en un correcto estado. Para realizar el Reset utilizamos la señal
-		digital, \emph{BS1}, que está conectada al pin \emph{P9\_42} de la BeagleBone Black. Volvemos a recordar que esta es activa a nivel
+		digital, \emph{BS1}, que está conectada al pin \emph{P9\_42} de la \emph{BeagleBone Black}. Volvemos a recordar que esta es activa a nivel
 		bajo. Para controlarla utilizaremos la librería de \emph{AdaFruit}\cite{AdaFruitGit}, que gestiona las entradas y salidas de propósito
 		general(GPIO) de la siguiente forma.
 		\begin{lstlisting}[style=myPython]
