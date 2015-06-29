@@ -6,13 +6,13 @@ barómetro, las fuentes de alimentación y los sensores de temperatura si estos 
 almacenada en una base de datos. 
 \par
 Antes de empezar a discutir a fondo el software de adquisición es conveniente estar familiarizados con el entorno hardware descrito en el capítulo
-\ref{entornoHW}. El software es ejecutado en la \emph{BeagleBone Black} sobre un Linux, distribución Angstrom. El lenguaje elegido para el desarrollo es
-Python\cite{Python}. Este  es un lenguaje interpretado de alto nivel con una sintaxis centrada en producir un código legible. El lenguaje se adapta
+\ref{entornoHW}. El software es ejecutado en la \emph{BeagleBone Black} sobre un Linux, distribución \emph{Angstrom}. El lenguaje elegido para el desarrollo es
+\emph{Python}\cite{Python}. Este  es un lenguaje interpretado de alto nivel con una sintaxis centrada en producir un código legible. El lenguaje se adapta
 igualmente bien a programación imperativa y orientada a objetos. El tipado dinámico da mucha flexibilidad al lenguaje. Todas estas propiedades del
-lenguaje permiten un desarrollo rápido. Además el lenguaje ofrece una amplia cantidad de librerías que también aligeran el trabajo. 
+lenguaje permiten un desarrollo rápido. Además el lenguaje ofrece una amplia cantidad de bibliotecas que también aligeran el trabajo. 
 \par
-Para gestionar la base de datos utilizamos Sqlite3\cite{Sqlite}. Este es un gestor muy ligero y adecuado para sistemas empotrados. Aparte de esta base
-de datos local, el software permite mantener una segunda réplica remota. Para esta réplica remota utilizamos MySql\cite{MySql} que es un gestor más
+Para gestionar la base de datos utilizamos \emph{Sqlite3}\cite{Sqlite}. Este es un gestor muy ligero y adecuado para sistemas empotrados. Aparte de esta base
+de datos local, el software permite mantener una segunda réplica remota. Para esta réplica remota utilizamos \emph{MySql}\cite{MySql} que es un gestor más
 completo con enfoque \emph{Cliente-Servidor}.
 \par
 En la figura \ref{fig:soft_adquisición} podemos ver un diagrama de flujo que describe el funcionamiento de nuestro software. A lo largo de este
@@ -37,9 +37,9 @@ principales, a continuación hacemos una breve descripción de estos.
 \section{Arranque automático del sistema}
 	Uno de los requisitos del sistema es el arranque automático ante la presencia de corriente eléctrica. La \emph{BeagleBone Black} por defecto está
 	configurada para arrancar automáticamente,pero debemos configurarla para que también inicialice nuestro software. Para este propósito vamos a
-	utilizar las \emph{System Services}\cite{AngSystemctl} que Angstrom proporciona. Esta distribución utiliza \texttt{systemd}\cite{systemdWiki}
+	utilizar las \emph{System Services}\cite{AngSystemctl} que \emph{Angstrom} proporciona. Esta distribución utiliza \texttt{systemd}\cite{systemdWiki}
 	para gestionar los servicios de sistema y la forma en la que estos servicios arrancan cuando se pone en marcha la \emph{BeagleBone Black}. Este es un
-	conjunto de demonios, librerías y utilidades diseñados para facilitar la administración de sistemas Linux.
+	conjunto de demonios, bibliotecas y utilidades diseñados para facilitar la administración de sistemas Linux.
 	\par
 	Para operar sobre la configuración de \texttt{systemd} tenemos el comando \texttt{systemctl}. A continuación podemos ver como usar este
 	comando.
@@ -70,7 +70,7 @@ $ systemctl disable  nombre_de_servicio
 	\end{itemize}
 	\par
 	En la figura \ref{fig:boot} podemos ver la secuencia que define el proceso de arranque del sistema de adquisición. Esta secuencia empieza con
-	el servicio \texttt{myWatchDog.service}, que es el encargado de arrancar el software que controla el Watchdog. El servicio
+	el servicio \texttt{myWatchDog.service}, que es el encargado de arrancar el software que controla el \emph{Watchdog}. El servicio
 	\texttt{ntpdate.service} es el responsable de establecer la fecha y hora actuales mientras que el servicio \texttt{ntpd.service} tiene como
 	tarea corregir las derivas que pueden presentrase. Finalmente el servicio \texttt{nmda.service} es el encargado de arrancar el software de
 	adquisición.
@@ -81,17 +81,17 @@ $ systemctl disable  nombre_de_servicio
 		\label{fig:boot}
 	\end{figure}
 	\subsection{Watchdog}
-		Un Watchdog \cite{WatchDogWiki} es un mecanismo de seguridad que realiza un Reset en el sistema cuando es detectado un mal
+		Un \emph{Watchdog} \cite{WatchDogWiki} es un mecanismo de seguridad que realiza un \emph{Reset} en el sistema cuando es detectado un mal
 		funcionamiento. Consiste en un temporizador que realiza una cuenta atrás, de forma que, cuando esta cuenta llega a cero, el sistema es
-		reiniciado. Es nuestro software el que debe reponer el valor de este contador para evitar que expire. Los Watchdogs pueden ser
-		software o hardware, el utilizado en este trabajo está implementado en la \emph{BeagleBone Black} y es hardware. Los Watchdogs hardware son
+		reiniciado. Es nuestro software el que debe reponer el valor de este contador para evitar que expire. Los \emph{Watchdogs} pueden ser
+		software o hardware, el utilizado en este trabajo está implementado en la \emph{BeagleBone Black} y es hardware. Los \emph{Watchdogs} hardware son
 		más fiables, los software son más susceptibles a bloquearse.
 		\par
-		El Watchdog es accesible mediante el archivo \texttt{/dev/watchdog}. Para activar el mecanismo basta con escribir cualquier valor en
+		El \emph{Watchdog} es accesible mediante el archivo \texttt{/dev/watchdog}. Para activar el mecanismo basta con escribir cualquier valor en
 		dicho archivo. El contador se pone en marcha automáticamente y, si este llegara a expirar, se produciría el reinicio del sistema. El
 		valor inicial del contador es de 60 segundos, valor que adquiere cada vez que es reiniciado. El contador es reiniciado al volver a
 		escribir en el archivo. Al cerrar dicho archivo el mecanismo es deshabilitado. A continuación presentamos una parte del código fuente
-		responsable de controlar el WatchDog.
+		responsable de controlar el \emph{WatchDog}.
 		\begin{lstlisting}[style=myPython]
 args		= NMDA.create_parser().parse_args()
 conn_local      = sqlite3.connect(args.database)
@@ -116,11 +116,11 @@ while True:
 		Primero se establece la conexión con la base de datos local. La base de datos es utilizada para comprobar si el sistema de adquisición
 		genera correctamente datos. Si no fuera así, la placa debe ser reiniciada. Una vez establecida la conexión se procede a invocar la
 		función \texttt{get\_last()}, que devuelve el último valor presente en la base de datos. Seguidamente se abre el archivo que permite
-		manejar el WatchDog. Una vez abierto el archivo se entra en un bucle \texttt{while} sin condición de salida. En cada iteración de este
-		bucle se escribe un salto de línea que reinicia el contador del WatchDog. Dentro del bucle también hay una llamada a la función
+		manejar el \emph{WatchDog}. Una vez abierto el archivo se entra en un bucle \texttt{while} sin condición de salida. En cada iteración de este
+		bucle se escribe un salto de línea que reinicia el contador del \emph{WatchDog}. Dentro del bucle también hay una llamada a la función
 		\texttt{time.sleep(20)}, las iteraciones del bucle están espaciadas 20 segundos. Cada 15 iteraciones o aproximadamente 5 minutos se
 		vuelve a invocar la función \texttt{get\_last()}. El valor devuelto es comparado con el valor anterior. Si estos dos valores son
-		iguales es invocada la función \texttt{time.sleep(120)}, intervalo suficiente para que el contador del WatchDog expire. Los valores
+		iguales es invocada la función \texttt{time.sleep(120)}, intervalo suficiente para que el contador del \emph{WatchDog} expire. Los valores
 		son iguales si en los últimos 5 minutos el sistema de adquisición no ha generado ningún dato. Por contrario si se han generado datos
 		durante los últimos 5 minutos estos dos valores son diferentes, en tal caso se sigue con la ejecución del bucle \texttt{while}. 
 	\subsection{Sincronización de fecha y hoara}
@@ -142,7 +142,7 @@ $ /usr/bin/ntpd -p /run/ntpd.pid
 	de flujo que representa el funcionamiento de este. En las siguientes subsecciones describiremos las funcionalidades más relevantes de este
 	módulo.
 	\subsection{Logger}
-		Haciendo uso de la librería \texttt{logging}\cite{py_logging} se configura un archivo de Log. En este archivo se registran los sucesos
+		Haciendo uso de la biblioteca \texttt{logging}\cite{py_logging} se configura un archivo de Log. En este archivo se registran los sucesos
 		de eventos importantes. Un ejemplo de los posibles eventos que se registran son los relacionados con las pérdidas de datos. El
 		mecanismo está configurado para que automáticamente se guarde la hora y fecha de cada mensaje. A continuación se muestra cómo se
 		configura y usa este mecanismo. Los comentarios representan la entrada producida en el archivo de Log.
@@ -157,7 +157,7 @@ logging.info('Uart_1 Overflow')
 	\subsection{Archivo de configuración y Flags}
 		Existen una serie de parámetros que varían en función de la estación o que simplemente pueden cambiar con el tiempo. No es buena idea
 		tener los valores de estas variables en el código. Este problema nos ha llevado a exportar estos parámetros a un archivo de
-		configuración. Para leer este archivo utilizamos la librería \texttt{ConfigParser}\cite{py_ConfigParser}. A continuación mostramos un
+		configuración. Para leer este archivo utilizamos la biblioteca \texttt{ConfigParser}\cite{py_ConfigParser}. A continuación mostramos un
 		ejemplo de este archivo que nos ayudará a entender mejor su estructura. Los comentarios explicativos son suficientes para entender el
 		propósito de cado uno de los campos.
 		\begin{lstlisting}[style=myFile]
@@ -204,9 +204,11 @@ beta_pressure=0.0067
 beta_efficiency=1.0
 \end{lstlisting} 
 		\par
-		Los valores de los parámetros exportados son también accesibles a través de flags. En este caso hemos utilizado la librería
+		Los valores de los parámetros exportados son también accesibles a través de flags. En este caso hemos utilizado la biblioteca
 		\texttt{argparse}\cite{py_argparse}. Los valores especificados mediante flags tienen precedencia sobre los mismos que estuvieran en el
 		archivo de configuración. Los flags se usan de la siguiente forma.
+		\newpage
+		%\enlargethispage{-1\baselineskip}
 		\begin{lstlisting}[style=myBash]
 $ python NMDA.py -h
 usage: NMDA.py 
@@ -224,7 +226,7 @@ usage: NMDA.py
 		internas, por lo que debe configurarse a cuál de ellas se conectará. Esta configuración se realiza mediante el uso de \emph{Device
 		Tree Overlay}, que es una estructura de datos utilizada para describir el hardware.
 		\par
-		En este trabajo utilizamos la librería \emph{Adafruit BeagleBone IO Python}\cite{AdaFruitGit} que facilita la tarea de configurar
+		En este trabajo utilizamos la biblioteca \emph{Adafruit BeagleBone IO Python}\cite{AdaFruitGit} que facilita la tarea de configurar
 		estas cabeceras. A continuación podemos ver una lista de los pines utilizados y la función de cada uno en el ámbito de este proyecto.
 		\begin{lstlisting}[style=myBash]
 Pin P9_21(UART2_TXD) --> Uart de Control trasmisión
@@ -244,18 +246,18 @@ Pin P8_10(GPIO_68)   --> Señal STROBE del barómetro AP1.
 	\subsection{Iniciar recursos}
 		Al ser el módulo principal, \texttt{NMDA} es el encargado de iniciar todos los recursos que serán utilizados. Por recursos nos
 		referimos a las variables compartidas entre \emph{threads}, conectores a las bases de datos, interfaces de los puertos serie y otros.
-		Para los conectores a las bases de datos utilizamos las librerías \texttt{sqlite3} y \texttt{MySQLdb}, volvemos a recordar que tenemos
-		una réplica local con Sqlite3 y otra réplica remota que gestionamos con MySql. Las tablas son creadas automáticamente en caso de no
-		existir, esto simplifica mucho el proceso de implantación. Para la interfaz de los puertos serie utilizamos la librería
+		Para los conectores a las bases de datos utilizamos las bibliotecas \texttt{sqlite3} y \texttt{MySQLdb}, volvemos a recordar que tenemos
+		una réplica local con \emph{Sqlite3} y otra réplica remota que gestionamos con \emph{MySql}. Las tablas son creadas automáticamente en caso de no
+		existir, esto simplifica mucho el proceso de implantación. Para la interfaz de los puertos serie utilizamos la biblioteca
 		\texttt{serial}.
 		\par
 		Son inicializados los otros dos \emph{threads}, \texttt{FPGASerialReader} y \texttt{CountsManager}. Estos dos realizan todo el proceso
 		de adquisición y serán descritos más adelante en este capítulo. 
 	\subsection{Resetear FPGA}
-		Como hemos explicado en el capítulo \ref{entornoHW}, la FPGA permite realizar un Reset, que el software realizará antes de empezar con
-		la adquisición de datos. Este Reset asegura que la FPGA está en un correcto estado. Para realizar el Reset utilizamos la señal
+		Como hemos explicado en el capítulo \ref{entornoHW}, la FPGA permite realizar un \emph{Reset}, que el software realizará antes de empezar con
+		la adquisición de datos. Este \emph{Reset} asegura que la FPGA está en un correcto estado. Para realizar el \emph{Reset} utilizamos la señal
 		digital, \emph{BS1}, que está conectada al pin \emph{P9\_42} de la \emph{BeagleBone Black}. Volvemos a recordar que esta es activa a nivel
-		bajo. Para controlarla utilizaremos la librería de \emph{AdaFruit}\cite{AdaFruitGit}, que gestiona las entradas y salidas de propósito
+		bajo. Para controlarla utilizaremos la biblioteca de \emph{AdaFruit}\cite{AdaFruitGit}, que gestiona las entradas y salidas de propósito
 		general(GPIO) de la siguiente forma.
 		\begin{lstlisting}[style=myPython]
 import Adafruit_BBIO.GPIO as GPIO
@@ -319,7 +321,7 @@ GPIO.output('P9_42', GPIO.HIGH)
 	\subsection{Median Algorithm y Correcciones}
 		Como hemos comentado al principio de esta sección este módulo calcula el valor global y una serie de correcciones sobre este. El valor
 		global es una representación de las mediciones de todos los tubos, algo como una media. En el capítulo \ref{cap1} explicamos la
-		necesidad de este valor, en este vamos a explicar el algoritmo que es utilizado para calcular este valor.
+		necesidad de este valor, en este vamos a explicar el algoritmo que es utilizado para calcularle.
 	  	\par 
 		El MedianAlgorithm\cite{MedianAlgr} tiene dos entradas, un vector con las cuentas actuales de cada canal y un segundo vector con la
 		media de cuentas para cada canal. Este vector con cuentas medias es calculado durante un intervalo temporal en el que la presión
@@ -353,19 +355,19 @@ def medianAlgorithm(self, counts):
 		\end{equation}
 		La segunda corrección que realizaremos es la corrección por eficiencia. Esta es una corrección muy simple, consiste en aplicar un
 		factor multiplicativo a la corrección por presión. Esta corrección se puede ver en la fórmula \ref{eq:efficiencia}, donde $N_0$ es el
-		valor de la corrección por presión, $N$ el valor de la corrección por eficiencia y $\beta$ el factor de corrección. 
+		valor de la corrección por presión, $N$ el valor de la corrección por eficiencia y $\gamma$ el factor de corrección. 
 		\begin{equation}\label{eq:efficiencia}
-		  N=N_0*\beta
+		  N=N_0*\gamma
 		\end{equation}
 		Cambios en el entorno de la estación pueden causar cambios en la cantidad de eventos medidos, por ejemplo las precipitaciones de nieve
 		pueden reducir la cantidad de partículas que llegan al instrumento. Una persona que analiza los datos con propósito científico puede
 		equívocamente asociar el decremento con algún fenómeno físico, mientras que este es debido a un fenómeno técnico.  Este problema es
 		solventado con la corrección por eficiencia.   
 	\subsection{Base de datos}
-		Como ya hemos explicado los datos son guardados en una base de datos para cuya gestión utilizamos Sqlite3. En la base de datos tenemos
+		Como ya hemos explicado los datos son guardados en una base de datos para cuya gestión utilizamos \emph{Sqlite3}. En la base de datos tenemos
 		tres tablas que a continuación procedemos a explicar.
 	    	\par
-		La primera tiene el nombre de \texttt{binTable}, nombre que hemos heredado de los primeros sistemas de adquisición Rusos. En esta
+		La primera tiene el nombre de \texttt{binTable}, nombre que hemos heredado de los primeros sistemas de adquisición rusos. En esta
 		guardamos la información de las cuentas de cada minuto. Junto a las cuentas guardamos la fecha y hora en los que se realizó la medida,
 		la lectura del barómetro y la lectura de las fuentes de alta tensión.
 	    	\par 
@@ -399,10 +401,10 @@ def medianAlgorithm(self, counts):
 	\subsection{Presión atmosférica}
 		Para leer el valor actual de la presión atmosférica este módulo nos ofrece la función \texttt{read\_pressure}. Si en el archivo de
 		configuración hemos especificado que no tenemos barómetro esta función devuelve un \emph{-1}, así como en el caso de que se produzca
-		algún error. Actualmente se soportan dos tipos de barómetros, el BM35 y el AP1. La lógica para manejar estos dos barómetros se
-		encuentra en los archivos \texttt{BM53Driver} y \texttt{AP1Driver} respectivamente. No explicaremos a fondo el funcionamiento de
-		estos dos. Tan solo destacaremos que el BM35 se comunica mediante un puerto serie y el AP1 mediante tres señales digitales que son
-		reloj, \emph{strobe} y datos.
+		algún error. Actualmente se soportan dos tipos de barómetros, el \emph{BM35} y el \emph{AP1}. La lógica para manejar estos dos
+		barómetros se encuentra en los archivos \texttt{BM53Driver} y \texttt{AP1Driver} respectivamente. No explicaremos a fondo el
+		funcionamiento de estos dos. Tan solo destacaremos que el \emph{BM35} se comunica mediante un puerto serie y el \emph{AP1} mediante
+		tres señales digitales que son reloj, \emph{strobe} y datos.
 	\subsection{Fuentes de alta tensión}
 		En el caso de las fuentes de alta tensión las tenemos de dos tipos, analógicas y digitales. Las digitales transmiten su información
 		mediante un puerto serie. Las analógicas mediante una señal analógica entre 0V y 5V, que es proporcional a la tensión ofrecida por la
@@ -459,14 +461,14 @@ class ReturnSequence(object):
 	\par
 	El objeto \texttt{port} es el objeto que representa el puerto como vemos este es un \emph{mock}. La función \texttt{inWaiting} que devuelve el
 	número de datos disponibles es configurada para que siempre devuelva \texttt{1}. La función \texttt{read} es configurada para devolver
-	múltiples valores en un orden concreto. Seguidamente es creado el objeto cuya función queremos probar pasándole la referencia del mock, una
+	múltiples valores en un orden concreto. Seguidamente es creado el objeto cuya función queremos probar pasándole la referencia del \emph{mock}, una
 	vez creado invocamos la función \texttt{run}. Finalmente comprobamos si el atributo \texttt{shared\_countsFromEvents} tiene el valor esperado.
 	\par
 	En el ejemplo anterior hicimos la comprobación sobre el valor de un atributo con la función \texttt{assertEqual()}. Los \emph{mocks} ofrecen
 	aún más funcionalidad, las funciones \texttt{assert\_called\_with()} y \texttt{assert\_has\_calls()} que permiten comprobar las llamadas que
 	han sido realizadas sobre los \emph{mocks}.
 	\par
-	Junto a las pruebas unitarias hemos utilizado la librería \texttt{coverage} que permite medir la cobertura de estas. Una mayor cobertura
+	Junto a las pruebas unitarias hemos utilizado la biblioteca \texttt{coverage} que permite medir la cobertura de estas. Una mayor cobertura
 	siempre es mejor, pero no debe convertirse en un objetivo principal. Como hemos dicho para ciertas funciones, como las que interactúan con una
 	base de datos es difícil concebir una prueba unitaria. En la figura \ref{fig:coverage} presentamos el resumen de cobertura generado por
 	\texttt{coverage}. Podemos ver que las pruebas para el \texttt{CountManager} no son muy extensas debido a que este es un módulo que interactúa

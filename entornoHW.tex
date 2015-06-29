@@ -37,7 +37,7 @@ este proyecto.
 	expansión\cite{BeagleWikiExp}. Estos conectores tienen 2x46 pines, de los cuales muchos son multipropósito. Estos pueden ser configurados para tener
 	funcionalidades diversas y además esta configuración puede ser realizada de forma dinámica. La configuración de los pines se realiza mediante
 	el \emph{Device Tree Overlay}, estructura de datos que se utiliza para describir el hardware. En la realización de este trabajo no lidiamos
-	con este mecanismo, sino que utilizamos una librería que facilita el trabajo. La librería utilizada es \emph{Adafruit BeagleBone IO
+	con este mecanismo, sino que utilizamos una biblioteca que facilita el trabajo. La biblioteca utilizada es \emph{Adafruit BeagleBone IO
 	Python}\cite{AdaFruitGit}. Esta ayuda a configurar dinámicamente los pines de expansión, además ofrece métodos para
 	operar sobre estos una vez configurados.
 
@@ -146,6 +146,7 @@ este proyecto.
 		\ref{tab:FPGAUartComm}. Ejemplo de dispositivos que requiren un puerto serie son el barómetro \emph{BM35} utilizado en CALMA, varias
 		fuentes de alimentación comerciales, estaciones meteorológicas, GPS, etc.
 	\subsection{Reset}
+		\enlargethispage{2\baselineskip}
 		El \emph{IP core} permite realizar un \emph{Reset} del estado interno de la FPGA. Todas las variables son puestas a sus valores iniciales,
 		excepto el multiplexor que mantiene su estado. Para la realización de dicho Reset son exportadas tres interfaces. La primera es un
 		boton hardware accesible de forma física. La segunda es un commando trasmitido por la \emph{UART de pulsos}, de acuerdo a la
