@@ -7,22 +7,22 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 	y en muchos casos haberlos sobrepasado. 
 	\par
 	Durante el desarrollo del software de adquisición se han adquirido y reforzado multitud de conocimientos. Las experiencias obtenidas del
-	trabajo conjunto con el equipo de CALMA han sido muy positivas. El diseño del software ha sido muy condicionado por el hardware ya existente,
+	trabajo conjunto con el equipo de CALMA han sido muy positivas. El diseño del software ha sido muy condicionado por el hardware ya existente;
 	en sistemas empotrados estos dos están muy enlazados. El autor no considera esto como una desventaja sino como una ventaja. Raras veces en
-	proyectos reales uno tiene libertad total, la mayoría de veces uno se ve forzado  a colaborar y adaptarse a las limitaciones que le son
+	proyectos reales uno tiene libertad total, la mayoría de veces uno se ve forzado  a colaborar y adaptarse a las condiciones que le son
 	impuestas. Además el colaborar con personas conlleva el aprender muchas cosas nuevas. Veamos el impacto que han tenido algunas de las
 	decisiones que hemos tomado.
 	\par
 	La \emph{BeagleBone Black} ha sido una de las cosas que nos han sido impuestas, sin embargo hemos tenido la libertad de elegir la distribución Linux.
 	Entre Angstrom y Debian, las dos distribuciones oficiales que la placa soporta, nos quedamos con la primera. A pesar de haber cumplido todas
 	nuestras necesidades esta no es una distribución muy popular y pocas personas están acostumbradas a trabajar con ella. Encontrar información o
-	ayuda también ha sido desafiante debido a la pequeña comunidad de usuarios. Con respeto a esta elección podemos decir que no estamos
+	ayuda también ha sido un desafío debido a la pequeña comunidad de usuarios. Con respeto a esta elección podemos decir que no estamos
 	arrepentidos, sin embargo no es la mejor elección que pudimos tomar. 
 	\par
-	El desarrollo del software de adquisición en Python es una elección que el autor considera afortunada. El gran número de librerías, la gran
+	El desarrollo del software de adquisición en Python es una elección que el autor considera afortunada. El gran número de bibliotecas, la gran
 	comunidad existente y todas las propiedades inherentes del lenguaje han permitido avanzar rápidamente en el proceso de implementación. El
-	código generado es claro, corto e intuitivo. La librería de \emph{AdaFruit}\cite{AdaFruitGit} nos ha permitido operar sobre las cabeceras de
-	extensión de la \emph{BeagleBone Black} de forma fácil e intuitiva.    
+	código generado es claro, corto e intuitivo. La librería de \emph{AdaFruit}\cite{AdaFruitGit} nos ha permitido operar sobre el hardware de la
+	\emph{BeagleBone Black} de forma fácil e intuitiva.    
 	\par
 	Otra elección que consideramos afortunada es utilizar Sqlite\cite{Sqlite} para la gestión de la base de datos local. Este sistema de gestión
 	de bases de datos relacionales es muy ligero cosa que lo hace muy adecuado para este trabajo.
@@ -34,7 +34,7 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 	\par
 	Utilizar Zendframework y Apigility para la realización del \emph{back-end} ha sido una elección buena, sin embargo el autor no esta
 	completamente satisfecho. La combinación entre framework y herramienta han facilitado y acelerado el proceso de implementación. Sin embargo
-	los primeros pasos han sido un poco confusos, el autor considera que este es un framework muy completo pero también muy complicado para
+	los primeros pasos han sido un poco confusos. El autor considera que este es un framework muy completo pero también muy complicado para
 	principiantes.
 	\par
 	La realización del \emph{front-end} en Sencha ExtJs es una elección que el autor considera afortunada. El framework es muy completo y en
@@ -42,7 +42,7 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 	principiante. 
 	\par
 	HighStock es una elección con la que estamos muy satisfechos. La funcionalidad ofrecida ha cubierto todos nuestros requisitos. Además trabajar
-	con el framework ha sido un placer, este es muy intuitivo y podemos encontrar múltiples ejemplos de uso.
+	con el framework ha sido un placer, este es muy intuitivo y podemos encontrar numerosos ejemplos de uso.
 	\par
 	A continuación procederemos a detallar los resultados conseguidos en este trabajo, empezando por el software de adquisición. Conjuntamente al
 	sistema de adquisición actual e intentando interferir lo menos posible hemos desplegado el nuevo sistema de adquisición. El objetivo es
@@ -61,8 +61,8 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 		\label{fig:resultados}
 	\end{figure}
 	\par
-	En la figura \ref{fig:resultados} podemos ver una captura de la herramienta Web, el gráfico es generado con los datos producidos por el
-	sistema de adquisición. En relación a la herramienta Web podemos decir poco debido a que no hemos realizado un uso real de esta, recordamos
+	En la figura \ref{fig:resultados} podemos ver una captura de la herramienta Web. Este gráfico ha sido generado con los datos registrados por el
+	sistema de adquisición. En relación a la herramienta Web podemos decir poco debido a que no hemos realizado un uso real de esta. Recordamos
 	que en este trabajo tan sólo nos centramos en el proceso de desarrollo. Sin embargo basándose en las opiniones recibidas podemos decir que la
 	herramienta tiene un futuro prometedor.
 
@@ -75,26 +75,26 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 	Volvemos a hacer hincapié, al ser este un sistema empotrado el hardware también podría sufrir modificaciones. Este proceso implicaría
 	implantar y mantener el sistema de adquisición en estas estaciones.
 	\subsection{Software de adquisición}
-		A continuación son detalladas una serie de mejoras y cambios que el software de adquisición podría experimentar a fin de mejorar.
+		A continuación se detallan una serie de mejoras y cambios que el software de adquisición podría experimentar a fin de mejorar.
 		\begin{description}[style=unboxed,leftmargin=0cm,labelwidth=1cm]
 			\item[Debian]
 				Para la realización del software de adquisición hemos utilizado Angstrom, la distribución que viene por defecto con la
 				\emph{BeagleBone Black}. Esta es una distribución muy ligera y adecuada, pero la comunidad de usuarios es muy pequeña.
 				Proponemos como trabajo futuro cambiar la Angstrom a alguna distribución derivada de Debian. Actualmente existen
 				distribuciones basadas en Debian que son compatibles con las placas, gran parte de los usuarios instalan estas
-				distribuciones en sus placas. El fabricante también ha anunciado que en un futuro las placas serán distribuidas con un
+				distribuciones en sus placas. El fabricante también ha anunciado que en un futuro las placas serán distribuidas con
 				Debian por defecto. El inconveniente que este cambio presenta, razón por la que no ha sido realizado en este trabajo,
 				es que el software existente tendrá que sufrir algunos cambios a fin de adaptarse al nuevo entorno.
 				\par
-				Actualmente el núcleo Linux y todo el sistema de archivos son cargados desde la memoria interna de la placa a la que
+				Actualmente el núcleo Linux y todo el sistema de archivos se cargan desde la memoria interna de la placa a la que
 				nos referimos con el acrónimo eMMC. Es posible albergar la nueva distribución en la tarjeta microSD. El contenido de
 				la tarjeta uSD es fácilmente duplicable, podemos exportar este a un archivo de imagen que contendría una copia exacta.
 				Seguidamente podemos grabar este archivo de imagen en una nueva uSD. De esta manera todo el proceso descrito en el
-				apéndice \ref{app_soft} queda obsoleto, para desplegar el software de adquisición tan sólo tenemos que grabar un
+				apéndice \ref{app_soft} queda obsoleto, para desplegar el software de adquisición tan sólo tendríamos que grabar un
 				archivo de imagen en una tarjeta uSD e introducirla en la ranura de la \emph{BeagleBone Black}. 
 		\end{description}
 	\subsection{Herramienta Web}
-		A continuación son detalladas una serie de mejoras y cambios que la herramienta Web podría experimentar a fin de mejorar.
+		A continuación se detallan una serie de mejoras y cambios que la herramienta Web podría experimentar a fin de mejorar.
 		\begin{description}[style=unboxed,leftmargin=0cm,labelwidth=1cm]
 			\item[Extender el soporte de navegación por el historial]
 				En el capítulo dedicado al \emph{front-end} comentamos que el soporte de navegación por el historial es algo pobre.
@@ -103,8 +103,8 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 				gráficos. De esta manera utilizando los botones de navegación podríamos volver al estado anterior del gráfico.
 			\item[Anchos de pulso] 
 				Tal y como explicamos anteriormente en este trabajo el nuevo sistema de adquisición registra los anchos de los pulsos,
-				anchos que son proporcionales a la energía de la señal original. Con estos datos son construidos histogramas con una
-				resolución de 10 minuto que son guardados en la base de datos en forma de cadenas Json. Proponemos como trabajo futuro
+				anchos que son proporcionales a la energía de la señal original. Con estos datos se construyen histogramas con una
+				resolución de 10 minutos que se guardan en la base de datos en forma de cadenas Json. Proponemos como trabajo futuro
 				extender la herramienta con un módulo funcional que permita visualizar estos datos. Para este propósito debemos
 				encontrar la manera más efectiva de presentar los datos. Al igual que el resto de la herramienta este módulo debe ser
 				intuitivo, altamente interactivo y además debe permitirnos especificar diferentes intervalos temporales,
@@ -127,7 +127,7 @@ El propósito de este capítulo es exponer las experiencias obtenidas a la largo
 				servicios de consulta serian accesible por todos los usuarios, sin embargo los servicios de acción serian accesible
 				tan sólo para los usuarios autorizados.
 			\item[Implantación y Mantenimiento]
-				En el capítulo de introducción especificamos los objetivos de este trabajo, entre estos objetivos tan sólo
+				En el capítulo de introducción especificamos los objetivos de este trabajo, y entre estos objetivos tan sólo
 				contemplamos el desarrollo de la herramienta. Proponemos como trabajo futuro el implantar y mantener el software que
 				compone la herramienta Web. 
 		\end{description}
