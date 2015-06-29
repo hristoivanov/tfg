@@ -16,7 +16,7 @@ más importantes del proceso de implementación. Finalmente el documento incluye
 utilizadas en el trabajo. 
 
 \section{Introducción a los rayos cósmicos}
-	A principios del siglo XX se descubrió la existencia de los rayos cósmicos. Estos son partículas subatómicas provenientes del espacio
+	A principios del siglo \emph{XX} se descubrió la existencia de los rayos cósmicos. Estos son partículas subatómicas provenientes del espacio
 	exterior. Estas partículas, en su mayoría protones y núcleos de Helio, son muy energéticas debido a su gran velocidad. El origen de estas no
 	está muy claro, pero sabemos que proceden del espacio exterior. Raras veces la actividad solar puede producir partículas tan energéticas. 
 	\par
@@ -38,11 +38,11 @@ utilizadas en el trabajo.
 		\item	Ciclo solar. Como hemos explicado existe una fuerte relación entre la cantidad de radiación cósmica y la actividad solar. La
 			radiación cósmica es un buen indicador de la actividad solar donde la relación es inversa. Menos radiación generalmente
 			significa una actividad solar elevada.
-		\item	Forbush decrease\cite{Forbush1938}. Estos sucesos consisten en un descenso rápido de los niveles de radiación cósmica medida
+		\item	\emph{Forbush decrease}\cite{Forbush1938}. Estos sucesos consisten en un descenso rápido de los niveles de radiación cósmica medida
 			en la Tierra. Estos descensos son consecuencia de CME's(Eyección de masa coronal). La materia expulsada en un CME al ser en su
 			mayoría plasma, extiende e intensifica el campo magnético solar. Como ya hemos explicado el aumento del campo magnético solar
 			conlleva al descenso de radiación cósmica.
-		\item	Ground level enhancements(GLE). Eventualmente la actividad solar es tan elevada que el Sol es capaz de emitir partículas muy
+		\item	\emph{Ground level enhancements}(GLE). Eventualmente la actividad solar es tan elevada que el Sol es capaz de emitir partículas muy
 			energéticas. Estas partículas son a veces tan energéticas que pueden generar cascadas atmosféricas que alcanzan la superficie
 			terrestre. Estos sucesos son muy raros, entre 10 y 15 por década. A pesar de ser muy raros estos pueden tener un gran impacto
 			en nuestras vidas cotidianas, pueden afectar el funcionamiento de la electrónica sensible que está en orbita e incluso la que
@@ -148,7 +148,7 @@ utilizadas en el trabajo.
 		de forma fácil y rápida. El hardware y software deben ser diseñados con este requisito en mente.
 	\subsection{Bases de datos}
 		La base de datos que genera CALMA está diseñada de acuerdo con el estándar impuesto por NMDB. Los eventos por minuto de los 18 canales
-		se guardan en la tabla \texttt{binTable}. En una segunda tabla,\texttt{CALM\_ori}, se guarda el valor global de la estación, calculado
+		se guardan en la tabla \texttt{binTable}. En una segunda tabla, \texttt{CALM\_ori}, se guarda el valor global de la estación, calculado
 		a partir de los datos de todos los tubos. Junto a este valor global también se guardan las correcciones que se realizan sobre este. El
 		valor global y las correcciones se explican en la última sección de este capítulo. Los datos de esta segunda tabla son revisados
 		por un operador humano y finalmente guardados en una tercera tabla cuyo nombre es \texttt{CALM\_rev}. Los datos de estas dos últimas
@@ -217,17 +217,18 @@ utilizadas en el trabajo.
 		El sistema de adquisición que se está desarrollando es un sistema empotrado donde hardware y software están muy vinculados. Esto en
 		gran medida condiciona el diseño del software que queremos realizar. El software debe ejecutarse sobre una \emph{BeagleBone
 		Black}\cite{Beagle} que está integrada con el resto de componentes hardware. La distribución Linux elegida para este trabajo es
-		\emph{Angstrom}, la distribución por defecto. El lenguaje de programación elegido es Python\cite{Python}, lenguaje interpretado de alto nivel
-		con tipado dinámico y sintaxis centrada en producir código legible.  Actualmente Python es muy popular y existen muchas bibliotecas de
+		\emph{Angstrom}, la distribución por defecto. El lenguaje de programación elegido es \emph{Python}\cite{Python}, lenguaje interpretado de alto nivel
+		con tipado dinámico y sintaxis centrada en producir código legible. Actualmente \emph{Python} es muy popular y existen muchas bibliotecas de
 		las que haremos uso. El uso de bibliotecas reduce la carga de trabajo y normalmente resulta en software más robusto. Para la gestión
-		de la base de datos hemos elegido Sqlite3\cite{Sqlite}, una elección popular en sistemas empotrados. Este es un sistema ligero, de
+		de la base de datos hemos elegido \emph{Sqlite3}\cite{Sqlite}, una elección popular en sistemas empotrados. Este es un sistema ligero, de
 		alto rendimineto que implementa la base de datos en un único archivo. Esto junto al API bien definido simplifica la administración.
 		\par
 		En la figura \ref{fig:soft_control_preliminar} podemos ver el diseño preliminar del software de adquisición. Ante la presencia de
-		corriente eléctrica este debe ser capaz de inicializarse solo. El primer paso que debe hacer es realizar la configuración necesaria
-		para el correcto funcionamiento del sistema de adquisición. Seguidamente debe continuar con el funcionamiento nominal. Este consiste
-		de tres pasos que se repiten cíclicamente. El primero es solicitar la información a la FPGA, seguidamente el software debe interpretar
-		dicha información y finalmente la información debe ser guardada. Los posibles estados anómalos deben ser detectados y contrarrestados. 
+		corriente eléctrica este debe ser capaz de inicializarse automáticamente. El primer paso que debe hacer es realizar la configuración
+		necesaria para el correcto funcionamiento del sistema de adquisición. Seguidamente debe continuar con el funcionamiento nominal. Este
+		consiste de tres pasos que se repiten cíclicamente. El primero es solicitar la información a la FPGA, seguidamente el software debe
+		interpretar dicha información y finalmente la información debe ser guardada. Los posibles estados anómalos deben ser detectados y
+		contrarrestados. 
 		\begin{figure}[h]
 			\centering
 			\includegraphics[keepaspectratio, width=1\textwidth]{./img/soft_control_preliminar.png}
@@ -237,25 +238,25 @@ utilizadas en el trabajo.
 	\subsection{Herramienta Web}
 		En la figura \ref{fig:herramienta_web_preliminar} podemos ver el diseño preliminar de la herramienta Web. Como podemos observar el
 		diseño está fuertemente basado en el modelo \emph{Cliente-Servidor}\cite{MVCWiki}. En este trabajo utilizamos los términos
-		\emph{back-end} y \emph{front-end} para referirnos al Cliente y al Servidor respectivamente. A continuación explicamos los componentes
+		\emph{back-end} y \emph{front-end} para referirnos al \emph{Cliente} y al \emph{Servidor} respectivamente. A continuación explicamos los componentes
 		básicos.
 		\begin{description}
 			\item[Base de Datos.]    
 				En este componente residen los datos de nuestra estación. Para la gestión de estos utilizamos un servidor
-				MySQL\cite{MySql}.
+				\emph{MySQL}\cite{MySql}.
 			\item[\emph{Back-End}.]
 				Este componente es el encargado de recibir y procesar los mensajes de petición provenientes del \emph{Front-End}.
 				Estas peticiones pueden ser de consulta o de acción. En ambos casos este componente procede a comunicarse con la base
 				de datos a fin de satisfacer la petición. Finalmente el resultado es trasmitido al \emph{Front-End} en un mensaje de
 				respuesta. En el caso de una petición de consulta son devueltos los datos especificados. En el caso de una petición de
 				acción es devuelto un mensaje de estado. Para la implementación de este componente hemos utilizado
-				ZendFramework\cite{ZF} y Apygility\cite{Apigility}.
+				\emph{ZendFramework}\cite{ZF} y \emph{Apygility}\cite{Apigility}.
 			\item[\emph{Front-end}.] 
 				Este componente implementa la interfaz de nuestra aplicación. Es el encargado de presentar la información y manejar
 				las peticiones del usuario. El módulo está basado en el patrón \emph{Modelo-Vista-Controlador}. Para implementar la
-				Vista encargada de presentar los datos hemos utilizado \emph{HighStock}\cite{HighStock}, para el Controlador
-				responsable de gestionar los eventos empleamos ExtJs\cite{ExtJs} y para el modelo encargado de manejar los datos
-				utilizamos peticiones \emph{Ajax}\cite{AjaxWiki}.
+				\emph{Vista} encargada de presentar los datos hemos utilizado \emph{HighStock}\cite{HighStock}, para el
+				\emph{Controlador} responsable de gestionar los eventos empleamos \emph{ExtJs}\cite{ExtJs} y para el modelo encargado
+				de manejar los datos utilizamos peticiones \emph{Ajax}\cite{AjaxWiki}.
 		\end{description}
 		\begin{figure}[h]
 			\centering
@@ -283,8 +284,8 @@ utilizadas en el trabajo.
 	utilizamos el término de \emph{valor corregido por presión} para referirnos a este valor. El software de adquisición elaborado para este
 	trabajo debe ser capaz de leer el valor de presión desde un barómetro y debe poder calcular esta corrección. 
 	\par
-	También es realizada una \emph{corrección por eficiencia}. Esta es muy simple y consiste en aplicar un factor multiplicativo al valor
-	corregido por presión. Este valor es utilizado para para solventar problemas técnicos. Cambios en el entorno inmediato del instrumento o
+	También es realizada una \emph{corrección por eficiencia}. Esta es muy simple y consiste en aplicar un factor multiplicativo al \emph{valor
+	corregido por presión}. Este valor es utilizado para para solventar problemas técnicos. Cambios en el entorno inmediato del instrumento o
 	cambios en la electrónica utilizada pueden afectan a la cantidad de eventos medidos. Estos cambios son identificados, evaluados y finalmente
 	contrarrestados con esta corrección por eficiencia. Este valor dota la estación de consistencia histórica, de esta manera pueden ser
 	comparados datos de diferentes intervalos temporales. El software también debe ser capaz de realizar esta corrección. 
