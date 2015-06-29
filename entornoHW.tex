@@ -6,9 +6,10 @@ estar familiarizado con el diseño y funcionalidad del hardware. Impulsados por 
 aspectos más importantes del hardware que compone el sistema de adquisición. Destacamos que el desarrollo de estos módulos está fuera del ámbito de
 este proyecto.
 \section{BeagleBone Black}
-	\emph{BeagleBone Black}\cite{Beagle}\cite{BeagleWiki} es un computador empotrado, open-source y single board. La placa viene con Linux, distribución
-	\emph{Angstrom} y versión de núcleo 3.8. En la figura \ref{fig:beaglebone} podemos ver un diagrama de bloques que refleja los componentes hardware
-	que componen la \emph{BeagleBone Black}. A continuación vamos a hacer una breve descripción de los módulos que utilizamos para este trabajo.
+	\emph{BeagleBone Black}\cite{Beagle}\cite{BeagleWiki} es un computador empotrado, \emph{open-source} y \emph{single board}. La placa viene con
+	Linux, distribución \emph{Angstrom} y versión de núcleo 3.8. En la figura \ref{fig:beaglebone} podemos ver un diagrama de bloques que refleja
+	los componentes hardware que componen la \emph{BeagleBone Black}. A continuación vamos a hacer una breve descripción de los módulos que
+	utilizamos para este trabajo.
 	\begin{itemize}
 		\item 	ARM CORTEX A8\cite{BeagleCore} y SDRAM. El procesador es suficientemente potente para soportar la distribución Linux y
 			satisfacer las necesidades de nuestro software. Los 512MB DDR3 de memoria RAM son suficientes para los propósitos de este
@@ -43,10 +44,10 @@ este proyecto.
 \section{FPGA}
 	La FPGA es el núcleo fundamental del sistema, ya que se encarga de procesar las señales y de transmitir la información al software de
 	adquisición. Una FPGA es un circuito integrado formado por unidades lógicas cuya interconexión y funcionalidad pueden ser configurados
-	mediante un lenguaje de descripción de hardware, típicamente Verilog o VHDL. Esta configuración del hardware de la FPGA, también conocida como
-	\emph{IP core}, es la que establece la funcionalidad de una FPGA. En esta sección vamos a hacer una descripción funcional de la FPGA, y por
-	consiguiente se describirá el \emph{IP core} de la misma. En la figura \ref{fig:fpga} podemos ver un diagrama de bloques que refleja los
-	módulos e interfaces que el IP core posee.
+	mediante un lenguaje de descripción de hardware, típicamente \emph{Verilog} o \emph{VHDL}. Esta configuración del hardware de la FPGA, también
+	conocida como \emph{IP core}, es la que establece la funcionalidad de una FPGA. En esta sección vamos a hacer una descripción funcional de la
+	FPGA, y por consiguiente se describirá el \emph{IP core} de la misma. En la figura \ref{fig:fpga} podemos ver un diagrama de bloques que
+	refleja los módulos e interfaces que el \emph{IP core} posee.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[keepaspectratio, width=1\textwidth]{./img/fpga.png}
@@ -54,9 +55,9 @@ este proyecto.
 		\label{fig:fpga}
 	\end{figure}	
 	\subsection{Procesado de pulsos}
-		Como hemos comentado la FPGA es la encargada de procesar las señales y trasmitir la información a la \emph{BeagleBone Black}. Esta transmisión
-		se realiza mediante una línea serie asíncrona de 1Mbps. La línea está controlada por una UART(Universal Asynchronous
-		Receiver-Transmitter) a la que nos referiremos como \emph{UART de pulsos}. En las tablas \ref{tab:FPGAUartPulso},
+		Como hemos comentado la FPGA es la encargada de procesar las señales y trasmitir la información a la \emph{BeagleBone Black}. Esta
+		transmisión se realiza mediante una línea serie asíncrona de 1Mbps. La línea está controlada por una UART(\emph{Universal Asynchronous
+		Receiver-Transmitter}) a la que nos referiremos como \emph{UART de pulsos}. En las tablas \ref{tab:FPGAUartPulso},
 		\ref{tab:FPGAUartOver} y \ref{tab:FPGAUartCont} podemos ver el formato de los datos transmitidos. Vemos que hay tres mensajes
 		diferentes que la FPGA puede transmitir.
 		\begin{itemize}
@@ -145,7 +146,7 @@ este proyecto.
 		\ref{tab:FPGAUartComm}. Ejemplo de dispositivos que requiren un puerto serie son el barómetro \emph{BM35} utilizado en CALMA, varias
 		fuentes de alimentación comerciales, estaciones meteorológicas, GPS, etc.
 	\subsection{Reset}
-		El \emph{IP core} permite realizar un Reset del estado interno de la FPGA. Todas las variables son puestas a sus valores iniciales,
+		El \emph{IP core} permite realizar un \emph{Reset} del estado interno de la FPGA. Todas las variables son puestas a sus valores iniciales,
 		excepto el multiplexor que mantiene su estado. Para la realización de dicho Reset son exportadas tres interfaces. La primera es un
 		boton hardware accesible de forma física. La segunda es un commando trasmitido por la \emph{UART de pulsos}, de acuerdo a la
 		especificación presentada en la tabla \ref{tab:FPGAUartComm}. Finalmente, la tercera es una señal digital activa a bajo nivel. Dicha
