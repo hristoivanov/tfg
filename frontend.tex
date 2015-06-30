@@ -3,9 +3,9 @@
 Nuestra aplicación Web está dividida en \emph{back-end} y \emph{front-end}. En el capítulo anterior se describió el \emph{back-end}. El propósito de
 este capítulo es describir el \emph{front-end}, que es el encargado de la capa de presentación.
 \par
-El \emph{front-end} se implementa en JavaScript\cite{JavaScript}. Este es un lenguaje de programación soportado por la mayoría de navegadores, que
+El \emph{front-end} se implementa en \emph{JavaScript}\cite{JavaScript}. Este es un lenguaje de programación soportado por la mayoría de navegadores, que
 permite dotar de funcionalidad extra a las páginas Web. Actualmente el uso de este lenguaje está tan extendido y avanzado que permite crear
-aplicaciones enteras para navegadores Web. Existen múltiples frameworks escritos en JavaScript que facilitan la creación de aplicaciones Web. En este
+aplicaciones enteras para navegadores Web. Existen múltiples frameworks escritos en \emph{JavaScript} que facilitan la creación de aplicaciones Web. En este
 trabajo utilizamos dos: \emph{Sencha ExtJs}\cite{ExtJs} y \emph{HighStock}\cite{HighStock}.
 \par
 \emph{Sencha ExtJs} es un framework orientado a la creación de aplicaciones Web interactivas. Se trata de un framework de propósito general que ofrece
@@ -268,7 +268,7 @@ button.fireEvent('myEvent', 42);
 		nombre que recibe porque va precedido del símbolo \textbf{\#}. El \emph{hash} es una parte opcional de la URL que históricamente se
 		utilizaba para navegar por documentos largos. Un cambio en el \emph{hash} hace que se muestren diferentes partes del documento.
 		\par
-		Actualmente el \emph{hash} es usado por aplicaciones \emph{single-page} para manipular la pila de historial. El hash es cambiado
+		Actualmente el \emph{hash} es usado por aplicaciones \emph{single-page} para manipular la pila de historial. El \emph{hash} es cambiado
 		acuerdo al estado de la aplicación. Esto hace que los cambios en la aplicación sean registrados en la pila de historial.
 		\par
 		Al pulsar el botón de navegación hacia atrás el \emph{hash} de la URL cambia a su estado anterior. Nuestra aplicación debe ser capaz
@@ -380,7 +380,7 @@ myChart = new Highcharts.StockChart({
 		\par
 		La primera consideración que tenemos que tener es el ámbito o \emph{scope}, nombre que utilizaremos a lo largo de este trabajo.
 		Debemos tener cuidado de no contaminar el \emph{scope} global con variables. Para este propósito debemos utilizar una función
-		\emph{self-invoking}. En JavaScript esta es una función que se ejecuta inmediatamente y crea su propio \emph{scope}, de esta manera
+		\emph{self-invoking}. En \emph{JavaScript} esta es una función que se ejecuta inmediatamente y crea su propio \emph{scope}, de esta manera
 		evitamos contaminar el \emph{scope} global. A continuación presentamos un ejemplo de como declarar una de estas funciones.
 		\begin{lstlisting}[style=myJs]
 (function (H) {
@@ -395,6 +395,7 @@ myChart = new Highcharts.StockChart({
 		función como segundo argumento y la función de sustitución como tercer argumento. La función original se pasa como el primer
 		argumento de la función de sustitución. Es conveniente fijarnos en el ejemplo de código a continuación presentado para entender mejor
 		el uso de la función \texttt{wrap}.
+		\enlargethispage{-1\baselineskip}
 		\begin{lstlisting}[style=myJs]
 H.wrap(H.Series.prototype, 'drawGraph', function (proceed) {
 // Antes de la función original.
@@ -554,6 +555,7 @@ Ext.create('MyApp.grid.MyGrid', {
 	\emph{Sencha ExtJs} ofrece la clase \texttt{Ext.app.Controller}, que representa la abstracción de un Controlador. Esta clase contiene la
 	funcionalidad mínima necesaria, está pensada para ser extendida y dotada de funcionalidad por el usuario. A continuación podemos ver un
 	pequeño ejemplo de como declarar un Controlador básico en \emph{Sencha ExtJs}.
+	\enlargethispage{-1\baselineskip}
 	\begin{lstlisting}[style=myJs]
 Ext.define('MyApp.controller.Users', {
    extend: 'Ext.app.Controller',

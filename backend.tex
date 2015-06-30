@@ -6,9 +6,9 @@ Fijándonos en el diseño preliminar de la figura \ref{fig:herramienta_web_preli
 capa de presentación, sobre este hablaremos más en el próximo capítulo. En este capítulo nos centraremos en explicar el \emph{back-end}. Este es el
 responsable de procesar las peticiones provenientes del \emph{front-end} y devolver le a este la información solicitada. 
 \par
-El \emph{back-end} es implementado en PHP\cite{PHP}. Este es un lenguaje diseñado para desarrollo Web y además es una elección muy popular. Hemos
-utilizado ZendFramework\cite{ZF}, este es un framework orientado al desarrollo de aplicaciones Web. Junto al framework hemos utilizado
-Apigility\cite{Apigility}, herramienta que simplifica la creación y mantenimiento de APIs.
+El \emph{back-end} es implementado en \emph{PHP}\cite{PHP}. Este es un lenguaje diseñado para desarrollo Web y además es una elección muy popular. Hemos
+utilizado \emph{ZendFramework}\cite{ZF}, este es un framework orientado al desarrollo de aplicaciones Web. Junto al framework hemos utilizado
+\emph{Apigility}\cite{Apigility}, herramienta que simplifica la creación y mantenimiento de APIs.
 \par
 El \emph{back-end} tiene un enfoque RPC o \emph{Remote Procedure Call}. Este módulo exporta un conjunto de procedimientos que pueden ser invocados por
 el \emph{front-end}. Estos procedimientos realizan tareas específicas sobre un recurso concreto. A lo largo de este trabajo nos referiremos a estos
@@ -22,7 +22,7 @@ existe, en este caso el \emph{front-end} es el componente de \emph{Vista}. Todos
 \emph{Controlador} es la encargada de gestionar los mensajes de petición y respuesta.
 \par
 En este capítulo procederemos a explicar los servicios RPC, pero primero explicaremos algunos aspectos técnicos como la base de datos o el
-ZendFramework.
+\emph{ZendFramework}.
 \section{Protocolo de comunicación}
 	Hemos explicado que entre el \emph{back-end} y \emph{front-end} existe una comunicación, para la que hemos elegido un enfoque RPC. Siendo la
 	aplicación que desarrollamos una aplicación Web es de esperar que el protocolo utilizado para la comunicación entre los dos módulos sea
@@ -33,23 +33,23 @@ ZendFramework.
 	también especifican un método, que puede ser \emph{GET} o \emph{POST} (o más cosas) dependiendo de si la operación es lectura o escritura.
 	Todos los servicios RPC implementados por el \emph{back-end} son servicios de lectura, a excepción de \texttt{nmdbMarkNull}.
 \section{ZendFramework y Apigility}
-	Para la realización de este trabajo hemos utilizado ZendFramework, este es un framework orientado al desarrollo de aplicaciones y servicios
-	Web. Basado en PHP 5.3+ el framework sigue un diseño orientado a objetos. Esta enfocado en la creación de aplicaciones según el patrón MVC,
+	Para la realización de este trabajo hemos utilizado \emph{ZendFramework}, este es un framework orientado al desarrollo de aplicaciones y servicios
+	Web. Basado en \emph{PHP 5.3+} el framework sigue un diseño orientado a objetos. Esta enfocado en la creación de aplicaciones según el patrón MVC,
 	ofrece abstracciones para las bases de datos, autenticación y validación de parámetros. El framework también disfruta de una amplia comunidad
 	de usuarios. Todas estas ventajas nombradas anteriormente son la razón para elegir este framework en nuestro trabajo.
 	\par
 	A la hora de abordar un diseño desde cero, el framework ofrece la aplicación esqueleto. Esta aplicación consiste del código mínimo necesario
-	para construir una aplicación usando ZendFramework, no tiene ninguna funcionalidad y está pensada para ser extendida. En este trabajo hemos
+	para construir una aplicación usando \emph{ZendFramework}, no tiene ninguna funcionalidad y está pensada para ser extendida. En este trabajo hemos
 	empezado con esta aplicación esqueleto.
   	\par
-	Apigility es una herramienta creada por el equipo responsable de ZendFramework. Esta puede utilizarse sin necesidad del framework, sin embargo
+	\emph{Apigility} es una herramienta creada por el equipo responsable de \emph{ZendFramework}. Esta puede utilizarse sin necesidad del framework, sin embargo
 	se integra muy bien con este. El obejetivo principal de esta es facilitar la creación y mantenimiento de aplicaciones Web. En nuestro caso nos
 	ha ayudado a crear los servicios RPC de nuestra aplicación. La herramienta ofrece un entorno gráfico accesible desde un navegador Web, que es
 	muy fácil e intuitivo de utilizar.
 \section{Bases de datos}
 	Tal y como hemos explicado al principio del capítulo la función del \emph{back-end} es  procesar las peticiones del \emph{front-end} y
 	responderle con la información solicitada. Esta información es guardada en dos bases de datos. Para la gestión de las bases de datos
-	utilizamos MySql\cite{MySql}. En la figura \ref{fig:tablas} podemos ver el esquema de las tablas con las que vamos a trabajar.
+	utilizamos \emph{MySql}\cite{MySql}. En la figura \ref{fig:tablas} podemos ver el esquema de las tablas con las que vamos a trabajar.
 	\par
 	En la tabla \texttt{binTable} guardamos la información de las cuentas de cada canal. Junto a esta información guardamos las lecturas del
 	barómetro, las fuentes de alta tensión y la fecha y hora actuales. La resolución de los datos es de un minuto.
@@ -75,7 +75,7 @@ ZendFramework.
 	Es interesante destacar que en las tres tablas un existe índice. En los tres casos el elemento indexado es el campo
 	\texttt{start\_date\_time}. Este índice es muy útil para la mayoría de consultas que realizamos sobre los datos.
 	\par
-	ZendFramework ofrece abstracciones para las bases de datos que facilitan el trabajo con estas. A continuación presentamos un pequeño ejemplo
+	\emph{ZendFramework} ofrece abstracciones para las bases de datos que facilitan el trabajo con estas. A continuación presentamos un pequeño ejemplo
 	de cómo hacer uso de estas facilidades. \texttt{Zend\textbackslash Db\textbackslash Adapter\textbackslash AdapterInterface} es la abstracción
 	que representa un conector a una base de datos. En este ejemplo la variable \texttt{\$this->adapter} es una instancia de esta clase. La
 	variable \texttt{resultSet} instancia de la clase \texttt{Zend\textbackslash Db\textbackslash ResultSet\textbackslash ResultSet} es un
