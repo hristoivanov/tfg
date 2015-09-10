@@ -347,7 +347,7 @@ def medianAlgorithm(self, counts):
 		por presión. Como explicamos en el cápitulo \ref{cap1} la presión atmosférica influye en el proceso de adquisición. Para realizar la
 		corrección por presión hay dos factores que se toman en cuenta. El primero es la desviación de la presión actual respecto al valor
 		medio de presión para la estación. El segundo es el coeficiente de correlación de los tubos respecto a la presión atmosférica. Este
-		coeficiente ha sido calculado por el equipo de CALMA, siendo el método utilizado desconocido para el autor de este trabajo. En la
+		coeficiente ha sido calculado por el equipo de CaLMa, siendo el método utilizado desconocido para el autor de este trabajo. En la
 		ecuación \ref{eq:pression} podemos ver como se usan estos dos factores, donde $N_0$ es el valor sin corregir, $N$ el valor corregido,
 		$\beta$ el coeficiente de corelación, $P$ la presión actual y $P_0$ la presión media para la estación.
 		\begin{equation}\label{eq:pression}
@@ -376,7 +376,7 @@ def medianAlgorithm(self, counts):
 		atmosférica.
 	    	\par
 		En la última tabla guardamos los valores de los anchos de pulsos. Dado al gran número de pulsos, guardar la información de cada uno
-		por separado no es práctico. Para ilustrar el problema pondremos de ejemplo la estación de CALMA donde son procesados unos 4500 pulsos
+		por separado no es práctico. Para ilustrar el problema pondremos de ejemplo la estación de CaLMa donde son procesados unos 4500 pulsos
 		cada minuto, siendo esta una de las estaciones con menos eventos por minuto debido a su baja latitud.  Para sobrevenir este problema
 		construimos un histograma que guardamos en la base de datos, en forma de cadenas JSON\cite{JSON}. Los histogramas se construyen con
 		los datos de diez minutos, intervalo que marca la resolución de los datos de esta tabla.
@@ -412,7 +412,7 @@ def medianAlgorithm(self, counts):
 		no está implementada porque no hemos podido trabajar con estas. Eventualmente si se produce algún error se devuelve el valor de
 		\emph{-1}.
 	\subsection{Temperatura}
-		Como hemos comentado en muchas estaciones la temperatura ambiente es monitorizada también. Este no es el caso de CALMA, razón por la
+		Como hemos comentado en muchas estaciones la temperatura ambiente es monitorizada también. Este no es el caso de CaLMa, razón por la
 		que no hemos escrito ningunos drivers. Sin embargo el código está pensado para poder ser fácilmente ampliado en caso de necesidad. 
 
 \section{Pruebas unitarias}

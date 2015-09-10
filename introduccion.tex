@@ -102,16 +102,16 @@ utilizadas en el trabajo.
 	GLE\cite{GleAlarm}. Como hemos explicado un GLE fuerte puede tener un gran impacto negativo en nuestras vidas. Es beneficioso poder detectar
 	estos eventos lo antes posible y este es uno de los objetivos principales del NMDB. 
 
-\section{CALMA}
-	CALMA\cite{Medina2013} o \emph{Castilla la Mancha Neutron Monitor} es el primer y único monitor de neutrones en España. Este forma parte del
+\section{CaLMa}
+	CaLMa\cite{Medina2013} o \emph{Castilla la Mancha Neutron Monitor} es el primer y único monitor de neutrones en España. Este forma parte del
 	NMDB, el equipo técnico responsable de la estación está profundamente implicado en desarrollar sistemas y herramientas que mejoran la red. Un
 	ejemplo es el sistema de adquisición implantado en la estación, también implantado en otras estaciones de la red. La estación empezó a operar
 	de forma plena en diciembre de 2012 y desde entonces lleva haciéndolo ininterrumpidamente con pequeñas excepciones. Desde su puesta en marcha
 	la estación ha registrado 18 Forbush decreases. Desafortunadamente aún no ha habido ningún GLE que detectar, aunque este tendría que ser muy
-	energético para ser detectado en una estación con tan poca latitud. A continuación procedemos a hablar más a fondo del estado actual de CALMA,
+	energético para ser detectado en una estación con tan poca latitud. A continuación procedemos a hablar más a fondo del estado actual de CaLMa,
 	hablaremos del sistema de adquisición, base de datos, herramientas y técnicas que son utilizadas.
 	\subsection{Sistema de adquisición}
-		Como hemos mencionado el sistema de adquisición que está implantado en CALMA es producto del propio equipo\cite{Garcia2014}. Este está
+		Como hemos mencionado el sistema de adquisición que está implantado en CaLMa es producto del propio equipo\cite{Garcia2014}. Este está
 		basado en un sistema empotrado Linux. Si las señales generadas por los tubos contadores superan un determinado umbral, estas son
 		covertidas en pulsos digitales por los amplificadores. A continuación, un circuito de adaptación se encarga de elevar los niveles de
 		tensión de los pulsos digitales a niveles \emph{TTL} y de adaptar la impedancia de la línea de comunicaciones si el amplificador
@@ -128,7 +128,7 @@ utilizadas en el trabajo.
 			\label{fig:acqsis}
 		\end{figure}
 		\par
-		Actualmente el equipo de CALMA está desarrollando un nuevo sistema de adquisición de datos. El esquema presentado en la figura
+		Actualmente el equipo de CaLMa está desarrollando un nuevo sistema de adquisición de datos. El esquema presentado en la figura
 		\ref{fig:acqsis} es aplicable al nuevo sistema. Las diferencias entre los dos sistemas de adquisición radican en los componentes. La
 		primera de estas está en los amplificadores. Los utilizados en el sistema actual generan pulsos fijos, mientras que los amplificadores
 		utilizados en este nuevo sistema de adquisición generan pulsos cuyo ancho es proporcional a la energia de la señal original. El fin es
@@ -147,7 +147,7 @@ utilizadas en el trabajo.
 		El nuevo sistema también está pensado para ofrecer una mayor compatibilidad. El fin es poder implantar este en diferentes estaciones
 		de forma fácil y rápida. El hardware y software deben ser diseñados con este requisito en mente.
 	\subsection{Bases de datos}
-		La base de datos que genera CALMA está diseñada de acuerdo con el estándar impuesto por NMDB. Los eventos por minuto de los 18 canales
+		La base de datos que genera CaLMa está diseñada de acuerdo con el estándar impuesto por NMDB. Los eventos por minuto de los 18 canales
 		se guardan en la tabla \texttt{binTable}. En una segunda tabla, \texttt{CALM\_ori}, se guarda el valor global de la estación, calculado
 		a partir de los datos de todos los tubos. Junto a este valor global también se guardan las correcciones que se realizan sobre este. El
 		valor global y las correcciones se explican en la última sección de este capítulo. Los datos de esta segunda tabla son revisados
@@ -155,7 +155,7 @@ utilizadas en el trabajo.
 		tablas se envian al NMDB. Este envío es realizado por un proceso que se ejecuta cada minuto. El envío consiste en calcular las
 		diferencias entre los dos conjuntos de datos y tan solo enviar estas.
 	\subsection{Herramientas y técnicas}
-		El equipo de CALMA hace uso de herramientas que les ayudan a analizar la información desde el punto de vista científico. Actualmente
+		El equipo de CaLMa hace uso de herramientas que les ayudan a analizar la información desde el punto de vista científico. Actualmente
 		no existe ninguna herramienta que proporcione información sobre el estado técnico de la estación, todas las labores relacionadas con
 		el mantenimiento son realizadas de forma manual.
 
@@ -164,7 +164,7 @@ utilizadas en el trabajo.
 	herramienta que permite operar y monitorizar el estado de la estación}. A continuación procedemos a hacer una descripción más detallada de los
 	objetivos de este trabajo.  
 	\subsection{Software de adquisición}
-		Tal y como hemos explicado en secciones anteriores el equipo de CALMA está desarrollando un nuevo sistema de adquisición. Actualmente
+		Tal y como hemos explicado en secciones anteriores el equipo de CaLMa está desarrollando un nuevo sistema de adquisición. Actualmente
 		la mayoría de módulos hardware incluyendo la FPGA están listos. El propósito de este trabajo es realizar el software de adquisición. A
 		continuación exponemos algunos de los requisitos más relevantes.
 		\begin{itemize}
@@ -186,11 +186,11 @@ utilizadas en el trabajo.
 				anómalos, la mayoría de problemas se solucionan realizando un reinicio del sistema.
 		\end{itemize}
 		Aparte de la realización del software en este trabajo también contemplamos el proceso de implantación y mantenimiento de este.
-		Volvemos a recordar que los demás módulos que componen el sistema de adquisición ya están desarrollados por el equipo de CALMA. Las
+		Volvemos a recordar que los demás módulos que componen el sistema de adquisición ya están desarrollados por el equipo de CaLMa. Las
 		interfaces de estos son descritas, dado que es necesario para entender este trabajo.
 	\subsection{Herramienta Web}
 		El segundo objetivo de este trabajo es el desarrollo de una herramienta que facilite la gestión de una estación. La idea de esta
-		es del equipo de CALMA. Procedemos a detallar las funcionalidades de la herramienta tal y como las concibe este.
+		es del equipo de CaLMa. Procedemos a detallar las funcionalidades de la herramienta tal y como las concibe este.
 		%TODO Citar el artículo de la herramienta.
 		\begin{itemize}
 			\item	\textbf{Spike Tool}. Módulo que permitirá la detección de Spikes. Un Spike es un dato anómalo, un dato
